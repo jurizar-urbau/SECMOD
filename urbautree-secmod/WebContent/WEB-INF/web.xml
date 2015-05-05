@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+
+    <description>
+      Urbau Security Module
+    </description>
+    <display-name>Urbau Security Module</display-name>
+
+ 
+        <!-- Define servlets that are included in the example application -->
+
+    <servlet>
+      <servlet-name>UrbauConfig</servlet-name>
+      <servlet-class>com.urbau.servlet.UrbauConfig</servlet-class>
+      <init-param>
+        <param-name>dbdriver</param-name>
+        <param-value>com.mysql.jdbc.Driver</param-value>
+      </init-param>
+      <init-param>
+        <param-name>dburl</param-name>
+        <param-value>jdbc:mysql://127.0.0.1/urbausec</param-value> 
+      </init-param>
+      <init-param>
+        <param-name>dbuser</param-name>
+        <param-value>urbau</param-value>
+      </init-param>
+      <init-param>
+        <param-name>dbpassword</param-name>
+        <param-value>secmod</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+      <servlet-name>VerifyUser</servlet-name>
+      <servlet-class>com.urbau.security.servlet.VerifyUser</servlet-class>
+    </servlet>
+    <servlet>
+      <servlet-name>Logout</servlet-name>
+      <servlet-class>com.urbau.security.servlet.Logout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UrbauConfig</servlet-name>
+        <url-pattern>/config/UrbauConfig</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>VerifyUser</servlet-name>
+        <url-pattern>/bin/VerifyUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/bin/Logout</url-pattern>
+    </servlet-mapping>
+   <context-param> 
+    <description>Location to store uploaded file</description> 
+    <param-name>file-upload-path</param-name> 
+    <param-value>
+         /Users/xumakgt/Desktop/
+    </param-value> 
+</context-param>
+
+</web-app>
