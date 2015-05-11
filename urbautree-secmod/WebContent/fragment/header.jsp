@@ -2,7 +2,7 @@
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Ocultar/Mostrar navegaci&oacute;n"></div>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>Urbau</b></a>
+            <a href="index.html" class="logo"><b>VOLCANCITO</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
@@ -18,6 +18,7 @@
             </div>
             <div class="top-menu">
               <ul class="nav pull-right top-menu">
+              		<li><a class="profile" href="profile.jsp">Jose Alejandro Urizar</a></li>
                     <li><a class="logout" href="bin/Logout">Salir</a></li>
               </ul>
             </div>

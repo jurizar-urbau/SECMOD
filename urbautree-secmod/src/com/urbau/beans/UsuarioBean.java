@@ -10,7 +10,18 @@ public class UsuarioBean implements Bean {
 	private String clave;
 	private int rol;
 	private boolean estado;
-	private boolean logged = false;
+	private String email;
+	private String telefono; 
+	
+	private int total_regs;
+	
+	public int getTotal_regs() {
+		return total_regs;
+	}
+	public void setTotal_regs(int total_regs) {
+		this.total_regs = total_regs;
+	}
+	private boolean logged = false; 
 	 
 	public int getRol() {
 		return rol;
@@ -56,10 +67,25 @@ public class UsuarioBean implements Bean {
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	} 
 	@Override
 	public int getProgramId() {
 		return 1;
 	}
+	
 	
 	
 	

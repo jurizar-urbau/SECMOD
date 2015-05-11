@@ -27,18 +27,22 @@ public class UsuariosMain extends AbstractMain {
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
+			int total_regs = 0;
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO FROM USUARIOS LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				total_regs = Util.getTotalRegs( "USUARIOS", "" );
 			} else {
 				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO FROM USUARIOS " + Util.getUsuariosWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				total_regs = Util.getTotalRegs( "USUARIOS", Util.getUsuariosWhere( q ) );
 			}
 			while( rs.next() ){
 				UsuarioBean bean = new UsuarioBean();
+				bean.setTotal_regs( total_regs );
 				bean.setId(  rs.getInt   ( 1  ));
 				bean.setUsuario( Util.trimString( rs.getString( 2 )));
 				bean.setNombre(  Util.trimString( rs.getString( 3 )));
 				bean.setClave( Util.trimString( rs.getString( 4 )));
-				bean.setRol( rs.getInt( 5 ) );
+				bean.setRol(rs.getInt( 5 ) );
 				bean.setEstado( rs.getBoolean( 6 ));
 				list.add( bean );
 			}

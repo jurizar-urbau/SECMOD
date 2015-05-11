@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.UsuarioBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.UsuariosMain"%>
@@ -8,7 +9,17 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 		UsuariosMain um = new UsuariosMain();
-		ArrayList<UsuarioBean> usuarios = um.getUsuario( request.getParameter("q"), 0 );
+		
+		int from = 0;
+		if( request.getParameter( "from" ) != null ){
+			from = Integer.parseInt( request.getParameter( "from" ) );
+		}
+		ArrayList<UsuarioBean> list = um.getUsuario( request.getParameter("q"), from );
+		int total_regs = -1;
+		
+		if( list.size() > 0 ){
+			total_regs = ((UsuarioBean)list.get( 0 )).getTotal_regs();
+		}
 	%>
 	<script>
 		function edit( id ){
@@ -28,15 +39,6 @@
    
    <body>
    
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -68,14 +70,34 @@
       
       <section id="main-content">
           <section class="wrapper site-min-height">
-          	<h3><i class="fa fa-angle-right"></i> SEGURIDAD</h3>
+          <br/>
+          <div class="col-lg-6"> 
+           
+          </div>
+          <div class="col-lg-6">
+          		<form>
+	          		<div class="top-menu">
+			              <ul class="nav pull-right top-menu">
+			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+			                    <li><button class="btn btn-primary">Buscar</button></li>
+			              </ul>
+		            </div>
+			    </form>
+			  </div>
+			  <br/>
+			  
+          	
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				  <span class="pull-right">
+          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
+          				  
+          				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> USUARIOS</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> USUARIOS </h4>
 	                  	  	  <hr>
-                              <thead>
+	                  	  	  <thead>
                               <tr>
                                   <th>Usuario</th>
                                   <th class="hidden-phone">Nombre</th>
@@ -86,7 +108,7 @@
                               </thead>
                               <tbody>
                               <%
-                              	for( UsuarioBean us : usuarios ){
+                              	for( UsuarioBean us : list ){
                               %>
                               <tr>
                                   <td><%= us.getUsuario() %></td>
@@ -102,16 +124,54 @@
                                   </td>
                                   <td>
                                       
-                                      <button class="btn btn-primary btn-xs" onclick="edit();"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="remove();"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view();"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="remove('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                   </td>
                               </tr>
                               <% } %>
                               
                               </tbody>
                           </table>
+                         
                       </div>
+                      <%
+			int init = from + 1;
+			
+			int end  = (from + Constants.ITEMS_PER_PAGE  ) >= total_regs ? total_regs : (from + Constants.ITEMS_PER_PAGE  );
+			
+			boolean backButton = true;
+			boolean forwardButton = true;
+			if( from <= 0 ){ 
+				backButton = false;
+			}
+			if( end >= total_regs ){
+				forwardButton = false;
+			}
+		%>
+		              <nav>
+					  <ul class="pager">
+					  <% if( backButton ) {%>
+					  <li class="previous">
+					    		<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
+					  <% } else { %>
+					  <li class="previous disabled">
+					    		<a href="javascript: return null">
+					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
+					  <% } %>
+					    <% if( forwardButton ){  %>
+					    <li class="next">
+					    	<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+					    <% } else { %>
+					    <li class="next disabled">
+					    	<a href="javascript: return null">
+					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+					    <% } %>
+					    
+					  </ul>
+					</nav>
           		</div>
           	</div>
 			

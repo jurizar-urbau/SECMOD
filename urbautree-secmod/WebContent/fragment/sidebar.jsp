@@ -3,12 +3,12 @@
               
                   <p class="centered">
                   <a href="profile.html">
-                  <img src="assets/cl/logo.png" class="img-circle" width="60">
+                  <img src="https://scontent-mia.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10742_714103018653633_713490040812823849_n.png?oh=1e76af0ab2ff870bbeffd15cb90b57ff&oe=55CE1A43" class="img-circle" width="60">
                   </a></p>
                   <h5 class="centered"><%= loggedUser.getNombre() %></h5>
                     
                   <li class="mt">
-                      <a class="active" href="index.html">
+                      <a class="active" href="home.jsp">
                           <i class="fa fa-dashboard"></i>
                           <span>Inicio</span>
                       </a>
