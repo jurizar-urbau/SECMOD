@@ -24,17 +24,23 @@ public class UsuariosMain extends AbstractMain {
 		Connection con  = null;
 		Statement  stmt = null;
 		ResultSet  rs   = null;
+		String sql = "";
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			int total_regs = 0;
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO FROM USUARIOS LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
 				total_regs = Util.getTotalRegs( "USUARIOS", "" );
+				 
 			} else {
-				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO FROM USUARIOS " + Util.getUsuariosWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
+				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				
 				total_regs = Util.getTotalRegs( "USUARIOS", Util.getUsuariosWhere( q ) );
 			}
+			System.out.println( "sql: " + sql );
 			while( rs.next() ){
 				UsuarioBean bean = new UsuarioBean();
 				bean.setTotal_regs( total_regs );
@@ -44,10 +50,14 @@ public class UsuariosMain extends AbstractMain {
 				bean.setClave( Util.trimString( rs.getString( 4 )));
 				bean.setRol(rs.getInt( 5 ) );
 				bean.setEstado( rs.getBoolean( 6 ));
+				bean.setEmail( Util.trimString( rs.getString( 7 )));
+				bean.setTelefono( Util.trimString( rs.getString( 8 )));
+				
 				list.add( bean );
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
+			System.out.println( "sql: [" + sql + "]");
 		} finally {
 			ConnectionManager.close( con, stmt, rs );
 		}
@@ -86,7 +96,7 @@ public class UsuariosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO FROM USUARIOS WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS WHERE ID=" + id );
 			while( rs.next() ){
 				bean = new UsuarioBean();
 			    bean.setId(  rs.getInt   ( 1  ));
@@ -95,6 +105,9 @@ public class UsuariosMain extends AbstractMain {
 				bean.setClave( Util.trimString( rs.getString( 4 )));
 				bean.setRol(  rs.getInt( 5 ) );
 				bean.setEstado( rs.getBoolean( 6 ));
+				bean.setEmail( Util.trimString( rs.getString( 7 )));
+				bean.setTelefono( Util.trimString( rs.getString( 8 )));
+				
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -133,6 +146,8 @@ public class UsuariosMain extends AbstractMain {
 		bean.setClave( "" );
 		bean.setRol( -1 );
 		bean.setEstado( false );
+		bean.setEmail( "" );
+		bean.setTelefono( "" );
 		return bean;
 	}
 	public boolean addUsuario( UsuarioBean bean ){
@@ -142,9 +157,9 @@ public class UsuariosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO USUARIOS " +
-					"(USUARIO,NOMBRE,CLAVE,ROL,ESTADO) " +
+					"(USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO) " +
 						"VALUES " +
-					"('"+ bean.getUsuario()+"','"+ bean.getNombre()+"','"+ bean.getClave()+"','"+ bean.getRol()+"',"+bean.isEstado()+")";
+					"('"+ bean.getUsuario()+"','"+ bean.getNombre()+"','"+ bean.getClave()+"','"+ bean.getRol()+"',"+bean.isEstado()+",'"+bean.getEmail()+"','"+bean.getTelefono()+"')";
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -169,7 +184,9 @@ public class UsuariosMain extends AbstractMain {
 					"NOMBRE = " + Util.vs( bean.getNombre() ) + ", " +
 					"CLAVE = " + Util.vs( bean.getClave() ) + ", " +
 					"ROL = " +  bean.getRol()  + ", " +
-					"ESTADO = " +  bean.isEstado()  + " " +
+					"ESTADO = " +  bean.isEstado()  + ", " +
+					"CORREO = " + Util.vs( bean.getEmail() )+ ", " +
+				    "TELEFONO = " + Util.vs( bean.getTelefono() ) + " "+
 					"WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
 			return total>0;

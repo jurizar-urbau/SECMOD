@@ -1,3 +1,4 @@
+<%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.UsuarioBean"%>
 <%@page import="java.util.ArrayList"%>
@@ -9,6 +10,7 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 		UsuariosMain um = new UsuariosMain();
+		RolesMain roles_main = new RolesMain();
 		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
@@ -25,7 +27,7 @@
 		function edit( id ){
 			location.replace( "users-detail.jsp?mode=edit&id="+id);
 		}
-		function remove( id ){
+		function removereg( id ){
 			location.replace( "users-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
@@ -99,10 +101,13 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th>Usuario</th>
-                                  <th class="hidden-phone">Nombre</th>
+                                  <th class="hidden-phone">Usuario</th>
+                                  <th>Nombre</th>
+                                  <th class="hidden-phone">Correo</th>
+                                  <th>Telefono</th>
                                   <th>Rol</th>
                                   <th>Estado</th>
+                                  
                                   <th></th>
                               </tr>
                               </thead>
@@ -111,9 +116,11 @@
                               	for( UsuarioBean us : list ){
                               %>
                               <tr>
-                                  <td><%= us.getUsuario() %></td>
-                                  <td class="hidden-phone"><%= us.getNombre() %></td>
-                                  <td><%= us.getRol() %></td>
+                                  <td class="hidden-phone"><%= us.getUsuario() %></td>
+                                  <td><%= us.getNombre() %></td>
+                                  <td class="hidden-phone"><%= us.getEmail() %></td>
+                                  <td><%= us.getTelefono() %></td>
+                                  <td><%= roles_main.getRol( us.getRol() ).getDescription() %></td>
                                   <td>
                                   
                                   <% if( us.isEstado()){ %>
@@ -122,10 +129,11 @@
                                   	<span class="label label-danger label-mini">Inactivo</span>
                                   	<% } %>
                                   </td>
+                                  
                                   <td>
                                       
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="remove('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                   </td>
                               </tr>

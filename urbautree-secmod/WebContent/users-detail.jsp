@@ -7,6 +7,8 @@
 	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
 			UsuariosMain rm = new UsuariosMain();
+			RolesMain roles_main = new RolesMain();
+			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 			UsuarioBean bean = rm.getUsuario( id );
 			String cmd = "Nuevo usuario";
@@ -92,17 +94,25 @@
           			    <div class="form-panel">
           			   
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="users.jsp">&nbsp;Regresar</a> </h4>
-                      <form class="form-horizontal style-form" method="get" id="form" name="form">
+                      <form class="form-horizontal style-form" method="POST" id="form" name="form" action="bin/Users">
+                      <input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
+                      <input type="hidden" name="id" value="<%= request.getParameter("id")%>">
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Login ID</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="loginid" id="login-id" value="<%= bean.getUsuario() %>">
+                                  <input type="text" class="form-control" name="loginid" id="loginid" value="<%= bean.getUsuario() %>">
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Nombres y Apellidos</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="nombresapellidos" id="nombres-apellidos" value="<%= bean.getNombre() %>">
+                                  <input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" value="<%= bean.getNombre() %>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Clave</label>
+                              <div class="col-sm-10">
+                                  <input type="password" class="form-control" name="clave" id="clave" value="<%= bean.getClave() %>">
                               </div>
                           </div>
                           
@@ -123,11 +133,15 @@
                               <label class="col-sm-2 col-sm-2 control-label">Rol</label>
                               <div class="col-sm-10">
                                   <select class="form-control" name="rol">
-									  <option>ROL 1</option>
-									  <option>ROL 2</option>
-									  <option>ROL 3</option>
-									  <option>ROL 4</option>
-									  <option>ROL 5</option>
+                                  <%
+                                  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
+                                  	for( String[] rol : roles_list ){
+                                  %>
+                                  	<option value="<%= rol[0]%>"><%= rol[1] %></option>
+                                  <% } %>
+									  <option value="0">ROL 1</option>
+									  <option value="1">ROL 2</option>
+									  
 									</select>
                               </div>
                           </div>
@@ -142,7 +156,7 @@
                           </div>
                           
                            <div class="form-actions">
-                           	    <button type="submit" class="btn btn-success">Guardar</button> 
+                           	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 					            <button class="btn" onclick="location.replace('users.jsp')">Cancelar</button>
 					        </div>  
                           
@@ -198,7 +212,32 @@
               }
              });
             }); // end document.ready
+            
+            
+            
+           
         </script>
+        <script>
+		 $(function() {
+		//twitter bootstrap script
+		 $("#savebutton").click(function(){
+		         $.ajax({
+		     type: "POST",
+		 url: "./bin/Users",
+		 data: $('#form').serialize(),
+		         success: function(msg){
+		                  alert(msg);
+		                  location.replace( "users.jsp" );
+		         },
+		 error: function(){
+		 alert("failure");
+		 
+		 }
+		       });
+		 });
+		});
+		</script>
+        
   </body>
 </html>
 <% 		

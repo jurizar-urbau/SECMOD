@@ -1,7 +1,7 @@
 package com.urbau.misc;
 
 public class Constants {
-	public static final int ITEMS_PER_PAGE = 5;
+	public static final int ITEMS_PER_PAGE = 20;
 	
 	public static final int OPTIONS_ADD = 1;
 	public static final int OPTIONS_MODIFY = 2;
