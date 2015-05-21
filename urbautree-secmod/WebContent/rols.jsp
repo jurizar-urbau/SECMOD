@@ -1,8 +1,36 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.RolesMain"%>
+
+<%
+	
+	System.out.println(">>>>>>>>>>>>>>>>>>>>ROLS JSP >>>>>>>>>>>>>>>>>>>>>>>>>><<<<");
+	
+	RolesMain roles_main = new RolesMain();				
+%>  
+
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	<%@include file="fragment/head.jsp"%>
+		<%@include file="fragment/head.jsp"%>
+	
+	
+		<script>
+			function edit( id ){
+				location.replace( "rols-detail.jsp?mode=edit&id="+id);
+			}
+			function removereg( id ){
+				
+				location.replace( "rols-detail.jsp?mode=remove&id="+id);
+			}
+			function view( id ){
+				location.replace( "rols-detail.jsp?mode=view&id="+id);
+			}
+			function add(){
+				location.replace( "rols-detail.jsp?mode=add" );
+			}
+		</script>
+		
 	</head>
    
    <body>
@@ -47,12 +75,22 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           	<h3><i class="fa fa-angle-right"></i> SEGURIDAD</h3>
+          	
+          	
           	<div class="row mt">
           		<div class="col-lg-12">
           			<div class="content-panel">
-          			<table class="table table-striped table-advance table-hover">
+          				          			
+          				<span class="pull-right">
+      				  		<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				 
+      				  	</span>
+      				  	
+      				  	
+          				<table class="table table-striped table-advance table-hover">
+          					
 	                  	  	  <h4><i class="fa fa-angle-right"></i> ROLES</h4>
 	                  	  	  <hr>
+	                  	  	  
                               <thead>
                               <tr>
                                   <th>Rol</th>
@@ -60,34 +98,31 @@
                               </tr>
                               </thead>
                               <tbody>
-                              <tr>
-                              <td>Administrador</td>
-                              	<td>
-                                      <button class="btn btn-primary btn-xs" onclick="mod();"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="del();"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view();"><i class="fa fa-check"></i></button>
-                                  </td>
+                              
+                              	  <%
+                                  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
+                                  	for( String[] rol : roles_list ){
+                                  %>
                                   
+                                  <tr>
+                              		<td><%= rol[1] %></td>
+                              		<td>          
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= rol[0]  %>');"><i class="fa fa-pencil"></i></button>
+                                   		<button class="btn btn-danger btn-xs" onclick="removereg('<%= rol[0]  %>');"><i class="fa fa-trash-o "></i></button>
+                                   		<button class="btn btn-success btn-xs" onclick="view('<%= rol[0]  %>');"><i class="fa fa-check"></i></button>
+                                  	</td>                                                                  
+                              	  </tr>
+                                  	
+                                <% } %>
                                   
-                              </tr>
-                              <tr>
-                                  <td>
-                                      Cajero
-                                  </td>
-                                  <td>
-                                      <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                  </td>
-                                  
-                              </tr>
+                              
                               </tbody>
                           </table>
                           </div>
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->

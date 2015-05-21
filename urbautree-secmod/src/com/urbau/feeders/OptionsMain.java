@@ -39,7 +39,31 @@ public class OptionsMain {
 		return list;
 	}
 	
-	
+	public ArrayList<String[]> getAllOptions( ){
+		
+		
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM OPCIONES" );
+			
+			while( rs.next() ){
+				String[] bean = new String[2];
+				bean[0] = Util.trimString( rs.getString( 1  ));
+				bean[1] = Util.trimString( rs.getString( 2  ));
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
 	
 	public OptionBean getOption( int id ){
 		if( id < 0 ){

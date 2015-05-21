@@ -37,6 +37,15 @@
     <servlet-name>Users</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Users</servlet-class>
   </servlet>
+    <servlet>
+    <servlet-name>Rols</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Rols</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Options</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Options</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -53,7 +62,15 @@
     <servlet-name>Users</servlet-name>
     <url-pattern>/bin/Users</url-pattern>
   </servlet-mapping>
-  
+    <servlet-mapping>
+    <servlet-name>Rols</servlet-name>
+    <url-pattern>/bin/Rols</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Options</servlet-name>
+    <url-pattern>/bin/Options</url-pattern>
+  </servlet-mapping>
+    
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>

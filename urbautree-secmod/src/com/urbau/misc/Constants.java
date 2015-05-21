@@ -25,6 +25,17 @@ public class Constants {
 	public static final String ACCOUNTS_SUBSTRACT = "D";
 	public static final String ACCOUNTS_ADDS_SUBSTRACT = "DH";
 	
+	public static final String ADD ="add";
+	public static final String REMOVE = "remove";
+	public static final String EDIT = "edit";
+	
+	/*parameters*/
+	public static final String MODE_PARAMETER = "mode";
+	public static final String ID_PARAMETER = "id";
+	public static final String ROL_NAME_PARAMETER = "rolname";
+	public static final String OPTION_NAME_PARAMETER = "optionname";
+
+	
 	
 }
 
