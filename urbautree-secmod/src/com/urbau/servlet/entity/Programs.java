@@ -8,25 +8,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
-import com.urbau.beans.RolBean;
-import com.urbau.feeders.RolesMain;
+import com.urbau.beans.ProgramBean;
+import com.urbau.feeders.ProgramsMain;
 
 import static com.urbau.misc.Constants.ADD;
 import static com.urbau.misc.Constants.EDIT;
 import static com.urbau.misc.Constants.REMOVE;
 import static com.urbau.misc.Constants.MODE_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
-import static com.urbau.misc.Constants.ROL_NAME_PARAMETER;
+import static com.urbau.misc.Constants.PROGRAM_DESCRIPTION_PARAMETER;
+import static com.urbau.misc.Constants.PROGRAM_NAME_PARAMETER;
 
 
-@WebServlet("/Rols")
-public class Rols extends Entity {
+
+@WebServlet("/Programs")
+public class Programs extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
 						
-			System.out.println( ">>>>>>>>>>>>>> Rols >>>>>>>>>>>>>>>>>>: " );						
+			System.out.println( ">>>>>>>>>>>>>> Programs >>>>>>>>>>>>>>>>>>: " );						
 			System.out.println( "message recieved: " + request.getQueryString() );
 			
 			HttpSession session = request.getSession();
@@ -40,37 +42,41 @@ public class Rols extends Entity {
 			System.out.println( "\tid: " + idParameter );
 										
 			if( idParameter != null){
-				RolBean rolBean = new RolBean();
+				ProgramBean programBean = new ProgramBean();
 								
-				String rolName = request.getParameter(ROL_NAME_PARAMETER);
-				rolBean.setDescription(rolName);													
-					
+				String programDes = request.getParameter(PROGRAM_DESCRIPTION_PARAMETER);
+				programBean.setDescription(programDes);
+				
+				String programName = request.getParameter(PROGRAM_NAME_PARAMETER);
+				programBean.setProgram_name(programName);	
+				
+									
 				if( !ADD.equals( modeParameter ) ){
-					rolBean.setId( Integer.parseInt( idParameter));
+					programBean.setId( Integer.parseInt( idParameter));
 				}
 								
 				
-				System.out.println( "\trolName: " + rolName );
+				System.out.println( "\tProgramDes: " + programDes );
 				
-				RolesMain rolesMain = new RolesMain();
+				ProgramsMain programsMain = new ProgramsMain();
 				
 				if( ADD.equals( modeParameter )){
-					if ( rolesMain.addRol(rolBean) ){
-						message = "Rol creado con exito.";
+					if ( programsMain.addPrograma(programBean) ){
+						message = "Programa creado con exito.";
 					} else {
-						showMessage( "No se pudo crear el Rol" , response );
+						showMessage( "No se pudo crear el Programa" , response );
 					}
 				}else if( EDIT.equals( modeParameter )){
-					if ( rolesMain.modRol(rolBean)){
-						message = "Rol modificado con exito.";
+					if ( programsMain.modPrograma(programBean)){
+						message = "Programa modificado con exito.";
 					} else {
-						showMessage( "No se pudo modificar el Rol", response  );
+						showMessage( "No se pudo modificar el Programa", response  );
 					}
 				} else if( REMOVE.equals( modeParameter )){
-					if ( rolesMain.delRol(rolBean)){
-						message = "Rol eliminado con exito.";					
+					if ( programsMain.delPrograma(programBean)){
+						message = "Programa eliminado con exito.";					
 					} else {
-						showMessage( "No se pudo eliminar el Rol" , response );
+						showMessage( "No se pudo eliminar el Programa" , response );
 					}
 				}
 											

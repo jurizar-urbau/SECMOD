@@ -1,8 +1,47 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.ProgramsMain"%>
+<%@page import="com.urbau.beans.ProgramBean"%>
+
+<%	
+	System.out.println(">>>>>>>>>>>>>>>>>>>>PROGRAMS JSP >>>>>>>>>>>>>>>>>>>>>>>>>><<<<");	
+				
+	
+	ProgramsMain programsMain = new ProgramsMain();
+	
+	int from = 0;
+	if( request.getParameter( "from" ) != null ){
+		from = Integer.parseInt( request.getParameter( "from" ) );
+	}
+	ArrayList<ProgramBean> list = programsMain.getProgram( request.getParameter("q"), from );
+	int total_regs = -1;
+	
+	if( list.size() > 0 ){
+		total_regs = ((ProgramBean)list.get( 0 )).getTotal_regs();
+	}
+	
+	
+%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
+	
 	<head>
-	<%@include file="fragment/head.jsp"%>
+		<%@include file="fragment/head.jsp"%>
+		<script>
+			function edit( id ){
+				location.replace( "programs-detail.jsp?mode=edit&id="+id);
+			}
+			function removereg( id ){
+				
+				location.replace( "programs-detail.jsp?mode=remove&id="+id);
+			}
+			function view( id ){
+				location.replace( "programs-detail.jsp?mode=view&id="+id);
+			}
+			function add(){
+				location.replace( "programs-detail.jsp?mode=add" );
+			}
+		</script>
 	</head>
    
    <body>
@@ -50,37 +89,37 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		
+          			<span class="pull-right">          				
+     					<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				 
+     				</span>      				  	
+      				  	
 	          		<table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> PROGRAMAS</h4>
 	                  	  	  <hr>
                               <thead>
                               <tr>
                                   <th>NOMBRE</th>
-                                  <th></th>
+                                  <th>PROGRAMA</th>
                               </tr>
                               </thead>
                               <tbody>
-                              <tr>
-                              <td>Usuarios</td>
-                              	<td>
-                                      <button class="btn btn-primary btn-xs" onclick="mod();"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="del();"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view();"><i class="fa fa-check"></i></button>
-                                  </td>
+                              
+	                              <%
+	                              	for( ProgramBean program : list ){
+	                              %>
                                   
-                                  
-                              </tr>
-                              <tr>
-                                  <td>
-                                      Roles
-                                  </td>
-                                  <td>
-                                      <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                                  </td>
-                                  
-                              </tr>
+                                  <tr>
+                              		<td><%= program.getDescription() %></td>
+                              		<td><%= program.getProgram_name() %></td>
+                              		<td>          
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= program.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                   		<button class="btn btn-danger btn-xs" onclick="removereg('<%= program.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                   		<button class="btn btn-success btn-xs" onclick="view('<%= program.getId()  %>');"><i class="fa fa-check"></i></button>
+                                  	</td>                                                                  
+                              	  </tr>
+                                  	
+                                <% } %>                                                                                           
                               </tbody>
                           </table>
 	          	</div>	

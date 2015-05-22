@@ -7,8 +7,14 @@ public class ProgramBean implements Bean {
 	private int id;
 	private String description;
 	private String program_name;
+	private int total_regs;
 	
-	
+	public int getTotal_regs() {
+		return total_regs;
+	}
+	public void setTotal_regs(int total_regs) {
+		this.total_regs = total_regs;
+	}
 	
 	public int getId() {
 		return id;

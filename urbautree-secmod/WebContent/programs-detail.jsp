@@ -1,18 +1,18 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.beans.OptionBean"%>
-<%@page import="com.urbau.feeders.OptionsMain"%>
+<%@page import="com.urbau.beans.ProgramBean"%>
+<%@page import="com.urbau.feeders.ProgramsMain"%>
       
 <%
 	
-System.out.println(">>>>>OPTIONS DETAIL STARTED >>>>>>");
+System.out.println(">>>>>PROGRAMS DETAIL STARTED >>>>>>");
 	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){			
-			OptionsMain optionsMain = new OptionsMain();
+			ProgramsMain programsMain = new ProgramsMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 System.out.println("id>> " + id);		
 			
-			OptionBean bean = optionsMain.getOption(id);
+ProgramBean bean = programsMain.getProgram(id);
 							
 			String mode = request.getParameter( "mode" );
 System.out.println("mode>> " + mode);			
@@ -27,7 +27,7 @@ System.out.println("mode>> " + mode);
 		<%@include file="fragment/head.jsp"%>
 		<script>
 			function back(){
-				location.replace( "options.jsp");
+				location.replace( "programs.jsp");
 			}			
 		</script>
 	</head>
@@ -80,7 +80,7 @@ System.out.println("mode>> " + mode);
           			
           			    <div class="form-panel">
           			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="options.jsp">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="programs.jsp">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horizontal style-form" id="form" name="form">
                       	                      
@@ -93,11 +93,28 @@ System.out.println("mode>> " + mode);
                  	            <%
 	                          	if( "edit".equals( mode ) || "add".equals( mode ) ){
 	                          	%>
-	                          		<input type="text" class="form-control" name="optionname" id="optionname" value="<%= bean.getDescription() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="programdesc" id="programdesc" value="<%= bean.getDescription() %>">	                          	                          	                          		
 	                          	<%
 	                          	}else{
 	                          	%>
-	                          		<input type="text" class="form-control" name="optionname" id="optionname" disabled value="<%= bean.getDescription() %>">
+	                          		<input type="text" class="form-control" name="programdesc" id="programdesc" disabled value="<%= bean.getDescription() %>">	                          		
+	                          	<%
+	                          	}                          	
+	                          	%>                              
+                          	</div>
+                      	</div>
+                      	
+                      	<div class="form-group">                      	
+                          	<label class="col-sm-2 col-sm-2 control-label">Programa</label>
+                          	<div class="col-sm-10">
+                 	            <%
+	                          	if( "edit".equals( mode ) || "add".equals( mode ) ){
+	                          	%>	                          		                          	                         
+	                          		<input type="text" class="form-control" name="programname" id="programname" value="<%= bean.getProgram_name() %>">
+	                          	<%
+	                          	}else{
+	                          	%>	                          		
+	                          		<input type="text" class="form-control" name="programname" id="programname" disabled value="<%= bean.getProgram_name() %>">
 	                          	<%
 	                          	}                          	
 	                          	%>                              
@@ -105,7 +122,7 @@ System.out.println("mode>> " + mode);
                       	</div>
                           
                        <div class="form-actions">
-       	    				<button type="submit" class="btn btn-success" id="savebuttonoptions">Guardar</button> 
+       	    				<button type="submit" class="btn btn-success" id="savebuttonprograms">Guardar</button> 
 			            	<button class="btn" onclick="back()">Cancelar</button>
 			        	</div>                           
                       </form>
@@ -133,10 +150,15 @@ System.out.println("mode>> " + mode);
         $(document).ready(function(){        	
          	$('#form').validate({         		
               	rules: {                        
-            		optionname: {
-                  	minlength: 3,
-                  	maxlength: 50,
-                  	required: true
+              		programdesc: {
+                  		minlength: 3,
+                  		maxlength: 50,
+                  		required: true
+                	},
+                	programname: {
+                  		minlength: 3,
+                  		maxlength: 50,
+                  		required: true
                 	}
              	},
              	
@@ -159,17 +181,17 @@ System.out.println("mode>> " + mode);
     		});
     		
     		
-    		$("#savebuttonoptions").click(function(){
+    		$("#savebuttonprograms").click(function(){
     			    					
     			var form =$('#form');
     	     	$.ajax({
     	     		type:'POST',
-    	 			url: './bin/Options',
+    	 			url: './bin/Programs',
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		        	
     		        	alert(msg);
-    		            location.replace( "options.jsp" );
+    		            location.replace( "programs.jsp" );
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
@@ -185,11 +207,11 @@ System.out.println("mode>> " + mode);
     		
     		var mode = getUrlParameter('mode');    		
     		if(mode === "remove"){
-    			$("#savebuttonoptions").removeClass("btn btn-success");
-    			$("#savebuttonoptions").addClass("btn btn-danger");
-    			$("#savebuttonoptions").html("Borrar");						
+    			$("#savebuttonprograms").removeClass("btn btn-success");
+    			$("#savebuttonprograms").addClass("btn btn-danger");
+    			$("#savebuttonprograms").html("Borrar");						
     		}else if(mode === "view"){
-    			$("#savebuttonoptions").hide();
+    			$("#savebuttonprograms").hide();
     		}
     		
     		

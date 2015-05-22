@@ -23,18 +23,23 @@ public class Users extends Entity {
 			validateRequest( session );
 			String mode = request.getParameter( "mode" );
 			System.out.println( "mode: " + mode );
-			System.out.println( "id: " + request.getParameter( "id") );
+			
 			
 			String message = "";
 			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
 					UsuarioBean rm = new UsuarioBean();
+					
 					rm.setUsuario( request.getParameter("loginid") );
 					rm.setNombre( request.getParameter("nombresapellidos") );
 					rm.setClave( request.getParameter("clave") );
 					rm.setEmail( request.getParameter( "email" ));
 					rm.setEstado( request.getParameter("activo") != null );
-					rm.setTelefono( request.getParameter( "telefono" ));
-					rm.setRol( Integer.parseInt( request.getParameter("rol") ));
+					rm.setTelefono( request.getParameter( "telefono" ));					
+					
+					if(null != request.getParameter("rol")){
+						rm.setRol( Integer.parseInt( request.getParameter("rol") ));
+					}
+												
 					if( !"add".equals( request.getParameter( "mode" ) ) ){
 						rm.setId( Integer.parseInt( request.getParameter( "id" )));
 					}

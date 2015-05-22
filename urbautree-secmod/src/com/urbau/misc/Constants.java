@@ -34,6 +34,10 @@ public class Constants {
 	public static final String ID_PARAMETER = "id";
 	public static final String ROL_NAME_PARAMETER = "rolname";
 	public static final String OPTION_NAME_PARAMETER = "optionname";
+	public static final String PROGRAM_DESCRIPTION_PARAMETER = "programdesc";
+	public static final String PROGRAM_NAME_PARAMETER = "programname";
+	
+	
 
 	
 	

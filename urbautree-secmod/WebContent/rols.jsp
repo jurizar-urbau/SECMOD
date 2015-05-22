@@ -13,8 +13,7 @@
 <html lang="en">
 	<head>
 		<%@include file="fragment/head.jsp"%>
-	
-	
+			
 		<script>
 			function edit( id ){
 				location.replace( "rols-detail.jsp?mode=edit&id="+id);
@@ -30,7 +29,7 @@
 				location.replace( "rols-detail.jsp?mode=add" );
 			}
 		</script>
-		
+			
 	</head>
    
    <body>

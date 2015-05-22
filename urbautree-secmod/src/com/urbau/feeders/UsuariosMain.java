@@ -199,6 +199,8 @@ public class UsuariosMain extends AbstractMain {
 	}
 	
 	public boolean delUsuario( UsuarioBean bean ){
+		
+		System.out.println("bean.getId()>>>> " + bean.getId());
 		if ( bean.getId() <= 0 ){
 			return false;
 		}

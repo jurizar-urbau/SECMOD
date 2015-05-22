@@ -10,39 +10,14 @@ System.out.println(">>>>>ROLS DETAIL STARTED >>>>>>");
 			RolesMain rolesMain = new RolesMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-System.out.println("id>> " + id);		
+			
+			System.out.println("id>> " + id);		
 			
 			RolBean bean = rolesMain.getRol(id);
-			
-			
-			String cmd = "Nuevo usuario";
+									
 			String mode = request.getParameter( "mode" );
 System.out.println("mode>> " + mode);
-			
-			String keyReadOnly = "readonly=\"readonly\"";
-			String optionalReadOnly = "";
-			String mandatoryReadOnly = "";
-			String jsFunction = "save();";
-			String validateUser = "";
-			
-			
-			if( "edit".equals( mode ) ){
-				cmd = "Editar usuario " + id;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "edit();";
-			} else if( "view".equals( mode )){
-				cmd = "Ver usuario " + id;
-				mandatoryReadOnly = keyReadOnly;
-				optionalReadOnly = keyReadOnly;
-			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar Rol " + id;
-				optionalReadOnly = keyReadOnly;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "deleteReg();";
-			} else {
-				validateUser = "onchange=\"validateUser(this.value)\"";
-			}
-					
+System.out.println("Name>> " + bean.getDescription());				
 					
 %>  
 
@@ -50,7 +25,12 @@ System.out.println("mode>> " + mode);
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	<%@include file="fragment/head.jsp"%>
+		<%@include file="fragment/head.jsp"%>
+		<script>
+			function back(){
+				location.replace( "rols.jsp");
+			}			
+		</script>
 	</head>
    
    <body>
@@ -103,7 +83,7 @@ System.out.println("mode>> " + mode);
           			   
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="rols.jsp">&nbsp;Regresar</a> </h4>
                   	  
-                      <form class="form-horizontal style-form" method="POST" id="form" name="form" action="bin/Rols">
+                      <form class="form-horizontal style-form" method="POST" id="form" name="form">
                       	                      
                       	<input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
@@ -111,13 +91,26 @@ System.out.println("mode>> " + mode);
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Nombre</label>
                           	<div class="col-sm-10">
-                              <input type="text" class="form-control" name="rolname" id="rolname" value="">
+                          	
+                          	<%
+                          	if( "edit".equals( mode ) || "add".equals( mode ) ){
+                          	%>
+                          		<input type="text" class="form-control" name="rolname" id="rolname" value="<%= bean.getDescription() %>">	                          	                          
+                          	<%
+                          	}else{
+                          	%>
+                          		<input type="text" class="form-control" name="rolname" id="rolname" disabled value="<%= bean.getDescription() %>">
+                          	<%
+                          	}                          	
+                          	%>
+                              
+                              
                           	</div>
                       	</div>
                           
                        <div class="form-actions">
-       	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-			            	<button class="btn" onclick="location.replace('users.jsp')">Cancelar</button>
+       	    				<button type="submit" class="btn btn-success" id="savebuttonrol">Guardar</button> 
+			            	<button class="btn" onclick="back()">Cancelar</button>
 			        	</div>                           
                       </form>
                       
@@ -167,22 +160,63 @@ System.out.println("mode>> " + mode);
         <script>
 		 $(function() {
 		//twitter bootstrap script
-		 $("#savebutton").click(function(){
-		         $.ajax({
-		     type: "POST",
-		 url: "./bin/Rols",
-		 data: $('#form').serialize(),
-		         success: function(msg){
-		                  alert(msg);
-		                  location.replace( "rols.jsp" );
-		         },
-		 error: function(){
-		 alert("failure");
-		 
-		 }
-		       });
-		 });
+	
+		$('#form').submit(function(e){
+			e.preventDefault();
 		});
+		
+		
+		$("#savebuttonrol").click(function(){
+						
+			var form =$('#form');
+	     	$.ajax({
+	     		type:'POST',
+	 			url: './bin/Rols',
+	 			data: form.serialize(),
+	 			
+		        success: function(msg){		        	
+		        	alert(msg);
+		            location.replace( "rols.jsp" );
+		        },
+	 			error: function(jqXHR, textStatus, errorThrown){
+	 				console.log("ERROR srtatus: ", textStatus);
+	 				console.log("ERROR errorThrown: ", errorThrown);
+	 				alert("Se prudujo un error al hacer la operaciòn");	
+	 			}
+		        
+		        
+	       });
+	     	return false;
+	 	});
+				 
+		
+		var mode = getUrlParameter('mode');		
+		if(mode === "remove"){
+			$("#savebuttonrol").removeClass("btn btn-success");
+			$("#savebuttonrol").addClass("btn btn-danger");
+			$("#savebuttonrol").html("Borrar");						
+		}else if(mode === "view"){
+			$("#savebuttonrol").hide();
+		}
+		
+		
+		});
+		 
+		 
+		 function getUrlParameter(sParam)
+		 {
+		     var sPageURL = window.location.search.substring(1);
+		     var sURLVariables = sPageURL.split('&');
+		     for (var i = 0; i < sURLVariables.length; i++) 
+		     {
+		         var sParameterName = sURLVariables[i].split('=');
+		         if (sParameterName[0] == sParam) 
+		         {
+		             return sParameterName[1];
+		         }
+		     }
+		 } 
+		 
 		</script>
         
   </body>

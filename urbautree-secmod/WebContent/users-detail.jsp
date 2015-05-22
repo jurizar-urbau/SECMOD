@@ -11,8 +11,13 @@
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 			UsuarioBean bean = rm.getUsuario( id );
+			
+			String rolUser =roles_main.getRol( bean.getRol() ).getDescription();
+			int idRol =roles_main.getRol( bean.getRol() ).getId();
+	
 			String cmd = "Nuevo usuario";
 			String mode = request.getParameter( "mode" );
+			
 			String keyReadOnly = "readonly=\"readonly\"";
 			String optionalReadOnly = "";
 			String mandatoryReadOnly = "";
@@ -35,7 +40,7 @@
 				validateUser = "onchange=\"validateUser(this.value)\"";
 			}
 			
-					
+			
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -94,53 +99,77 @@
           			    <div class="form-panel">
           			   
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="users.jsp">&nbsp;Regresar</a> </h4>
-                      <form class="form-horizontal style-form" method="POST" id="form" name="form" action="bin/Users">
-                      <input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
-                      <input type="hidden" name="id" value="<%= request.getParameter("id")%>">
+                  	  
+                      <form class="form-horizontal style-form" id="form" name="form">
+                      <input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>">
+                      <input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>">
+                      <input type="hidden" name="idRol" id="idRol" value="<%= idRol %>">
+                       
+                      
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Login ID</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Usuario</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="loginid" id="loginid" value="<%= bean.getUsuario() %>">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
+	                          		<input type="text" class="form-control" name="loginid" id="loginid" value="<%= bean.getUsuario() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="loginid" id="loginid" disabled value="<%= bean.getUsuario() %>">	                          		
+	                          	<%}%>   	                                  
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Nombres y Apellidos</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" value="<%= bean.getNombre() %>">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
+	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" value="<%= bean.getNombre() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" disabled value="<%= bean.getNombre() %>">	                          			                          	
+	                          	<%}%>                                 
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Clave</label>
                               <div class="col-sm-10">
-                                  <input type="password" class="form-control" name="clave" id="clave" value="<%= bean.getClave() %>">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
+	                          		<input type="password" class="form-control" name="clave" id="clave" value="<%= bean.getClave() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="password" class="form-control" name="clave" id="clave" disabled value="<%= bean.getClave() %>">	                          			                          	
+	                          	<%}%>
+                                  
                               </div>
                           </div>
                           
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Correo Electronico</label>
                               <div class="col-sm-10">
-                              <input type="email" class="form-control" name="email" id="email" value="<%= bean.getEmail() %>">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
+	                          		<input type="email" class="form-control" name="email" id="email" value="<%= bean.getEmail() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="email" class="form-control" name="email" id="email" disabled value="<%= bean.getEmail() %>">	                          			                          	
+	                          	<%}%>                              
                               </div>
                           </div>
+                          
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Tel&eacute;fono</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="telefono" id="telefono" value="<%= bean.getTelefono() %>">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
+	                          		<input type="text" class="form-control" name="telefono" id="telefono" value="<%= bean.getTelefono() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="telefono" id="telefono" disabled value="<%= bean.getTelefono() %>">	                          			                          	
+	                          	<%}%>                                  
                               </div>
                           </div>
                           
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Rol</label>
                               <div class="col-sm-10">
-                                  <select class="form-control" name="rol">
+                                  <select class="form-control" name="rol" id="rolSelect">
                                   <%
                                   	ArrayList<String[]> roles_list = roles_main.getAllRoles();
                                   	for( String[] rol : roles_list ){
                                   %>
                                   	<option value="<%= rol[0]%>"><%= rol[1] %></option>
-                                  <% } %>
-									  <option value="0">ROL 1</option>
-									  <option value="1">ROL 2</option>
+                                  <% } %>									  
 									  
 									</select>
                               </div>
@@ -150,7 +179,7 @@
                               <label class="col-sm-2 col-sm-2 control-label">Activo</label>
                               <div class="col-sm-10">
 	                              <div class="col-sm-6 text-left">
-			                      	<input type="checkbox" name="activo" data-toggle="switch" />
+			                      	<input type="checkbox" name="activo" id="activo" data-toggle="switch" />
 			                      </div>
 		                      </div>
                           </div>
@@ -159,11 +188,7 @@
                            	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 					            <button class="btn" onclick="location.replace('users.jsp')">Cancelar</button>
 					        </div>  
-                          
-                         
-                          
-                         
-                         
+                                                                                                                           
                       </form>
                   </div>
 
@@ -171,7 +196,7 @@
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->
@@ -217,26 +242,87 @@
             
            
         </script>
-        <script>
-		 $(function() {
-		//twitter bootstrap script
-		 $("#savebutton").click(function(){
-		         $.ajax({
-		     type: "POST",
-		 url: "./bin/Users",
-		 data: $('#form').serialize(),
-		         success: function(msg){
-		                  alert(msg);
-		                  location.replace( "users.jsp" );
-		         },
-		 error: function(){
-		 alert("failure");
-		 
-		 }
-		       });
-		 });
-		});
-		</script>
+       
+		<script>        	
+        
+        $(function() {
+    		    	
+    		$('#form').submit(function(e){
+    			e.preventDefault();
+    		});
+    		
+    		
+    		$("#savebutton").click(function(){
+    			    					
+    			var form =$('#form');
+    	     	$.ajax({
+    	     		type:'POST',
+    	 			url: './bin/Users',
+    	 			data: form.serialize(),
+    	 			
+    		        success: function(msg){		        	
+    		        	alert(msg);
+    		            location.replace( "users.jsp" );
+    		        },
+    	 			error: function(jqXHR, textStatus, errorThrown){
+    	 				console.log("ERROR srtatus: ", textStatus);
+    	 				console.log("ERROR errorThrown: ", errorThrown);
+    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 			}
+    		            		        
+    	       });
+    	     	
+    	     	return false;
+    	 	});
+    				 
+    		
+    		var mode = getUrlParameter('mode');    		
+    		if(mode === "remove"){
+    			$("#rolSelect").attr('disabled','disabled');
+    			$("#activo").attr('disabled','disabled');
+    			
+    			$("#savebutton").removeClass("btn btn-success");
+    			$("#savebutton").addClass("btn btn-danger");
+    			$("#savebutton").html("Borrar");						
+    		}else if(mode === "view"){
+    			$("#rolSelect").attr('disabled','disabled');
+    			$("#activo").attr('disabled','disabled');
+    			$("#savebutton").hide();    			    	    	
+    			
+    		}else if(mode === "add"){    			
+    			$("#nombresapellidos").attr('value', ' ');
+    			$("#clave").attr('value', '');    			
+    		}
+    		
+    		// select option by id 
+    		var idRol = $("#idRol").val();    		    		    	
+    		if(idRol){
+    			$("#rolSelect option[value="+idRol+"]").attr('selected','selected');    			
+    		}
+    		
+    		
+    		
+    		
+   		}); // end function 
+    		 
+    		 
+		function getUrlParameter(sParam){
+   			
+		    var sPageURL = window.location.search.substring(1);
+		    var sURLVariables = sPageURL.split('&');
+		    
+		    for (var i = 0; i < sURLVariables.length; i++) {
+		    	
+		        var sParameterName = sURLVariables[i].split('=');
+		        if (sParameterName[0] == sParam) {
+		             return sParameterName[1];
+		        }
+		    }
+	    } // end getUrlParameter 
+        
+            
+           
+	</script>
         
   </body>
 </html>

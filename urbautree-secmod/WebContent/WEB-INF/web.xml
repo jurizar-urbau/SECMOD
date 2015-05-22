@@ -45,6 +45,10 @@
     <servlet-name>Options</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Options</servlet-class>
   </servlet>
+    <servlet>
+    <servlet-name>Programs</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Programs</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
@@ -69,6 +73,10 @@
   <servlet-mapping>
     <servlet-name>Options</servlet-name>
     <url-pattern>/bin/Options</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>Programs</servlet-name>
+    <url-pattern>/bin/Programs</url-pattern>
   </servlet-mapping>
     
   <context-param>

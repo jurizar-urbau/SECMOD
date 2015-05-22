@@ -124,7 +124,7 @@
                                   <td>
                                   
                                   <% if( us.isEstado()){ %>
-                                  	<span class="label label-success label-mini">Activo</span>
+                                  	<span class="label label-success label-mini">&nbsp;Activo&nbsp;&nbsp;</span>
                                   	<% } else { %>
                                   	<span class="label label-danger label-mini">Inactivo</span>
                                   	<% } %>
