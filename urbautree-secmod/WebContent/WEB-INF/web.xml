@@ -49,7 +49,10 @@
     <servlet-name>Programs</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Programs</servlet-class>
   </servlet>
-  
+  <servlet>
+    <servlet-name>Vehicles</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Vehicles</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -79,6 +82,12 @@
     <url-pattern>/bin/Programs</url-pattern>
   </servlet-mapping>
     
+
+  <servlet-mapping>
+    <servlet-name>Vehicles</servlet-name>
+    <url-pattern>/bin/vehicles</url-pattern>
+  </servlet-mapping>
+  
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
