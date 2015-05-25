@@ -13,7 +13,31 @@
                           <span>Inicio</span>
                       </a>
                   </li>
-
+				<li class="sub-menu">
+					<a href="javascript:;" >
+                          <i class="fa fa-desktop"></i>
+                          <span>Ventas</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="sellers.jsp">Vendedores</a></li>
+                          <li><a  href="clientType.jsp">Tipos de Clientes</a></li>
+                          
+                      </ul>
+                    
+				</li>
+				<li class="sub-menu">
+					<a href="javascript:;" >
+                          <i class="fa fa-desktop"></i>
+                          <span>Recursos</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="vehicles.jsp">Vehiculos</a></li>
+                          <li><a  href="pilots.jsp">Pilotos</a></li>
+                          <li><a  href="technician.jsp">Tecnicos</a></li>
+                          
+                      </ul>
+                    
+				</li>
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-desktop"></i>
@@ -25,9 +49,10 @@
                           <li><a  href="programs.jsp">Programas</a></li>
                           <li><a  href="options.jsp">Opciones</a></li>
                           <li><a  href="optionsprogram.jsp">Opciones/Programa</a></li>
+                      
                       </ul>
                   </li>
-
+				
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-cogs"></i>
