@@ -53,6 +53,14 @@
     <servlet-name>Vehicles</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Vehicles</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Sellers</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Sellers</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ClientType</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ClientType</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -86,6 +94,15 @@
   <servlet-mapping>
     <servlet-name>Vehicles</servlet-name>
     <url-pattern>/bin/vehicles</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Sellers</servlet-name>
+    <url-pattern>/bin/sellers</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ClientType</servlet-name>
+    <url-pattern>/bin/clientType</url-pattern>
   </servlet-mapping>
   
   <context-param>
