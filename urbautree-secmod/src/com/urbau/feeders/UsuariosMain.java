@@ -31,13 +31,12 @@ public class UsuariosMain extends AbstractMain {
 			int total_regs = 0;
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
-				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "USUARIOS", "" );
 				 
 			} else {
 				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
-				rs = stmt.executeQuery( "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
-				
+				rs = stmt.executeQuery(  sql );
 				total_regs = Util.getTotalRegs( "USUARIOS", Util.getUsuariosWhere( q ) );
 			}
 			System.out.println( "sql: " + sql );
