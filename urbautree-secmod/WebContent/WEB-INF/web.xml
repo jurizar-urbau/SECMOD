@@ -57,6 +57,11 @@
     <servlet-name>Programs</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Programs</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Bancos</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Bancos</servlet-class>
+  </servlet>
+  
   
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
@@ -94,7 +99,11 @@
     <servlet-name>Programs</servlet-name>
     <url-pattern>/bin/Programs</url-pattern>
   </servlet-mapping>
-    
+  <servlet-mapping>
+    <servlet-name>Bancos</servlet-name>
+    <url-pattern>/bin/Bancos</url-pattern>
+  </servlet-mapping>
+      
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
