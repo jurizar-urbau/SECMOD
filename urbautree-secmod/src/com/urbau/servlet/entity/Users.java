@@ -46,19 +46,19 @@ public class Users extends Entity {
 					UsuariosMain rmain = new UsuariosMain();
 					
 					if( "add".equals( mode )){
-						if ( rmain.addUsuario( rm ) ){
+						if ( rmain.add( rm ) ){
 							message = "Usuario creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el usuario" , response );
 						}
 					} else if( "edit".equals( mode )){
-						if ( rmain.modUsuario( rm ) ){
+						if ( rmain.mod( rm ) ){
 							message = "Usuario modificado con exito.";
 						} else {
 							showMessage( "No se pudo modificar el usuario", response  );
 						}
 					} else if( "remove".equals( mode )){
-						if ( rmain.delUsuario( rm ) ){
+						if ( rmain.del( rm ) ){
 							message = "Usuario eliminado con exito.";
 						} else {
 							showMessage( "No se pudo eliminar el usuario" , response );
