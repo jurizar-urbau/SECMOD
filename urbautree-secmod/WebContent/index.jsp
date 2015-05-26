@@ -56,6 +56,7 @@
 		        %>
 		          
 		        <div class="login-wrap">
+		        
 		            <input type="text" class="form-control" name="user" placeholder="Usuario" autofocus>
 		            <br>
 		            <input type="password" class="form-control" placeholder="Clave" name="password">

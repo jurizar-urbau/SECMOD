@@ -1,21 +1,16 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.beans.UsuarioBean"%>
-<%@page import="com.urbau.feeders.UsuariosMain"%>
-<%@page import="com.urbau.feeders.RolesMain"%>
+<%@page import="com.urbau.beans.ProductoBean"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>
       
 <%
 	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-			UsuariosMain rm = new UsuariosMain();
-			RolesMain roles_main = new RolesMain();
+			ProductosMain rm = new ProductosMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			UsuarioBean bean = rm.get( id );
+			ProductoBean bean = rm.getProducto( id );
 			
-			String rolUser =roles_main.getRol( bean.getRol() ).getDescription();
-			int idRol =roles_main.getRol( bean.getRol() ).getId();
-	
-			String cmd = "Nuevo usuario";
+			String cmd = "Nuevo producto";
 			String mode = request.getParameter( "mode" );
 			
 			String keyReadOnly = "readonly=\"readonly\"";
@@ -24,15 +19,15 @@
 			String jsFunction = "save();";
 			String validateUser = "";
 			if( "edit".equals( mode ) ){
-				cmd = "Editar usuario " + id;
+				cmd = "Editar producto " + id;
 				mandatoryReadOnly = keyReadOnly;
 				jsFunction = "edit();";
 			} else if( "view".equals( mode )){
-				cmd = "Ver usuario " + id;
+				cmd = "Ver producto " + id;
 				mandatoryReadOnly = keyReadOnly;
 				optionalReadOnly = keyReadOnly;
 			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar usuario " + id;
+				cmd = "Eliminar producto " + id;
 				optionalReadOnly = keyReadOnly;
 				mandatoryReadOnly = keyReadOnly;
 				jsFunction = "deleteReg();";
@@ -92,101 +87,99 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE USUARIO</h3>
+          	<h3><i class="fa fa-angle-right"></i> DETALLE PRODUCTO</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
           			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="users.jsp">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="productos.jsp">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horizontal style-form" id="form" name="form">
                       <input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>">
                       <input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>">
-                      <input type="hidden" name="idRol" id="idRol" value="<%= idRol %>">
-                       
                       
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Usuario</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Codigo</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-	                          		<input type="text" class="form-control" name="loginid" id="loginid" value="<%= bean.getUsuario() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="codigo" id="codigo" value="<%= bean.getCodigo() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="text" class="form-control" name="loginid" id="loginid" disabled value="<%= bean.getUsuario() %>">	                          		
+	                          		<input type="text" class="form-control" name="codigo" id="codigo" disabled value="<%= bean.getCodigo() %>">	                          		
 	                          	<%}%>   	                                  
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Nombres y Apellidos</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Descripci&oacute;n</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" value="<%= bean.getNombre() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="descripcion" id="descripcion" value="<%= bean.getDescripcion() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" disabled value="<%= bean.getNombre() %>">	                          			                          	
+	                          		<input type="text" class="form-control" name="descripcion" id="descripcion" disabled value="<%= bean.getDescripcion() %>">	                          			                          	
 	                          	<%}%>                                 
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Clave</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Coeficiente de unidad</label>
+                              <div class="col-sm-10">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
+	                          		<input type="text" class="form-control" name="coeficiente_unidad" id="coeficiente_unidad" value="<%= bean.getCoeficiente_unidad() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="coeficiente_unidad" id="coeficiente_unidad" disabled value="<%= bean.getCoeficiente_unidad() %>">	                          			                          	
+	                          	<%}%>                                 
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Proveedor</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
-	                          		<input type="password" class="form-control" name="clave" id="clave" value="<%= bean.getClave() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="proveedor" id="proveedor" value="<%= bean.getProveedor() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="password" class="form-control" name="clave" id="clave" disabled value="<%= bean.getClave() %>">	                          			                          	
+	                          		<input type="text" class="form-control" name="proveedor" id="proveedor" disabled value="<%= bean.getProveedor() %>">	                          			                          	
+	                          	<%}%>
+                                  
+                              </div>
+                          </div>
+                           <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Precio</label>
+                              <div class="col-sm-10">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
+	                          		<input type="text" class="form-control" name="precio" id="precio" value="<%= bean.getPrecio() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="precio" id="precio" disabled value="<%= bean.getPrecio() %>">	                          			                          	
+	                          	<%}%>
+                                  
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Precio importaci&oacuten;</label>
+                              <div class="col-sm-10">
+                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
+	                          		<input type="text" class="form-control" name="precio_importacion" id="precio_importacion" value="<%= bean.getPrecio_importacion() %>">	                          	                          
+	                          	<%}else{%>
+	                          		<input type="text" class="form-control" name="precio_importacion" id="precio_importacion" disabled value="<%= bean.getPrecio_importacion() %>">	                          			                          	
 	                          	<%}%>
                                   
                               </div>
                           </div>
                           
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Correo Electronico</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Imagen</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
-	                          		<input type="email" class="form-control" name="email" id="email" value="<%= bean.getEmail() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="image_path" id="image_path" value="<%= bean.getImage_path() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="email" class="form-control" name="email" id="email" disabled value="<%= bean.getEmail() %>">	                          			                          	
-	                          	<%}%>                              
+	                          		<input type="text" class="form-control" name="image_path" id="image_path" disabled value="<%= bean.getImage_path() %>">	                          			                          	
+	                          	<%}%>
+                                  
                               </div>
                           </div>
                           
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Tel&eacute;fono</label>
-                              <div class="col-sm-10">
-                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
-	                          		<input type="text" class="form-control" name="telefono" id="telefono" value="<%= bean.getTelefono() %>">	                          	                          
-	                          	<%}else{%>
-	                          		<input type="text" class="form-control" name="telefono" id="telefono" disabled value="<%= bean.getTelefono() %>">	                          			                          	
-	                          	<%}%>                                  
-                              </div>
-                          </div>
-                          
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Rol</label>
-                              <div class="col-sm-10">
-                                  <select class="form-control" name="rol" id="rolSelect">
-                                  <%
-                                  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
-                                  	for( String[] rol : roles_list ){
-                                  %>
-                                  	<option value="<%= rol[0]%>"><%= rol[1] %></option>
-                                  <% } %>									  
-									  
-									</select>
-                              </div>
-                          </div>
-                          
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Activo</label>
-                              <div class="col-sm-10">
-	                              <div class="col-sm-6 text-left">
-			                      	<input type="checkbox" name="activo" id="activo" data-toggle="switch" />
-			                      </div>
-		                      </div>
                           </div>
                           
                            <div class="form-actions">
                            	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-					            <button class="btn" onclick="location.replace('users.jsp')">Cancelar</button>
+					            <button class="btn" onclick="location.replace('productos.jsp')">Cancelar</button>
 					        </div>  
                                                                                                                            
                       </form>
@@ -213,19 +206,20 @@
              $('#form').validate(
              {
               rules: {
-                loginid: {
+                nombre: {
                   minlength: 2,
-                  maxlength: 10,
+                  maxlength: 30,
                   required: true
                 },
-                email: {
-                  required: true,
-                  email: true
+                direccion: {
+                	minlength: 2,
+                    maxlength: 250,
+                    required: true
                 },
-                nombresapellidos: {
-                  minlength: 3,
-                  maxlength: 50,
-                  required: true
+                telefono: {
+                	minlength: 2,
+                    maxlength: 15,
+                    required: true
                 }
               },
               highlight: function(element) {
@@ -257,17 +251,17 @@
     			var form =$('#form');
     	     	$.ajax({
     	     		type:'POST',
-    	 			url: './bin/Users',
+    	 			url: './bin/Productos',
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		        	
     		        	alert(msg);
-    		            location.replace( "users.jsp" );
+    		            location.replace( "productos.jsp" );
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
     	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 				alert("Se prudujo un error al hacer la operacion");	
     	 			}
     		            		        
     	       });

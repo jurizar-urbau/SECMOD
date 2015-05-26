@@ -19,7 +19,7 @@ import com.urbau.misc.Util;
  */
 public class UsuariosMain extends AbstractMain {
 	
-	public ArrayList<UsuarioBean> getUsuario( String q, int from ){
+	public ArrayList<UsuarioBean> get( String q, int from ){
 		ArrayList<UsuarioBean> list = new ArrayList<UsuarioBean>();
 		Connection con  = null;
 		Statement  stmt = null;
@@ -72,7 +72,7 @@ public class UsuariosMain extends AbstractMain {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery( "SELECT ID FROM USUARIOS WHERE USUARIO='" + user + "' AND CLAVE='" + pass + "'" );
 			if( rs.next() ){
-				return getUsuario( rs.getInt( 1 ) );
+				return get( rs.getInt( 1 ) );
 			} else {
 				return null;
 			}
@@ -84,7 +84,7 @@ public class UsuariosMain extends AbstractMain {
 		return null;
 	}
 	
-	public UsuarioBean getUsuario( int id ){
+	public UsuarioBean get( int id ){
 		if( id < 0 ){
 			return getBlankBean();
 		}
@@ -149,7 +149,8 @@ public class UsuariosMain extends AbstractMain {
 		bean.setTelefono( "" );
 		return bean;
 	}
-	public boolean addUsuario( UsuarioBean bean ){
+	public boolean add( UsuarioBean bean ){
+		
 		Connection con = null;
 		Statement  stmt= null;
 		try {
@@ -169,7 +170,7 @@ public class UsuariosMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
-	public boolean modUsuario( UsuarioBean bean ){
+	public boolean mod( UsuarioBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -197,7 +198,7 @@ public class UsuariosMain extends AbstractMain {
 		}
 	}
 	
-	public boolean delUsuario( UsuarioBean bean ){
+	public boolean del( UsuarioBean bean ){
 		
 		System.out.println("bean.getId()>>>> " + bean.getId());
 		if ( bean.getId() <= 0 ){

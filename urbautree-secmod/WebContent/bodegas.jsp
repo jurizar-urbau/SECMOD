@@ -1,40 +1,39 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.UsuarioBean"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.UsuariosMain"%>
+<%@page import="com.urbau.feeders.BodegasMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-		UsuariosMain um = new UsuariosMain();
-		RolesMain roles_main = new RolesMain();
+		BodegasMain um = new BodegasMain();
 		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
-		ArrayList<UsuarioBean> list = um.get( request.getParameter("q"), from );
+		ArrayList<BodegaBean> list = um.getBodega( request.getParameter("q"), from );
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){
-			total_regs = ((UsuarioBean)list.get( 0 )).getTotal_regs();
+			total_regs = ((BodegaBean)list.get( 0 )).getTotal_regs();
 		}
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "users-detail.jsp?mode=edit&id="+id);
+			location.replace( "bodegas-detail.jsp?mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "users-detail.jsp?mode=remove&id="+id);
+			location.replace( "bodegas-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "users-detail.jsp?mode=view&id="+id);
-		}
+			location.replace( "bodegas-detail.jsp?mode=view&id="+id);
+		} 
 		function add(){
-			location.replace( "users-detail.jsp?mode=add" );
+			location.replace( "bodegas-detail.jsp?mode=add" );
 		}
 	</script>
 	</head>
@@ -97,39 +96,25 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> USUARIOS </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> BODEGAS </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th class="hidden-phone">Usuario</th>
-                                  <th>Nombre</th>
-                                  <th class="hidden-phone">Correo</th>
-                                  <th>Telefono</th>
-                                  <th>Rol</th>
-                                  <th>Estado</th>
                                   
+                                  <th>Nombre</th>
+                                  <th class="hidden-phone">Direcci&oacute;n</th>
+                                  <th>Telefono</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( UsuarioBean us : list ){
+                              	for( BodegaBean us : list ){
                               %>
                               <tr>
-                                  <td class="hidden-phone"><%= us.getUsuario() %></td>
                                   <td><%= us.getNombre() %></td>
-                                  <td class="hidden-phone"><%= us.getEmail() %></td>
-                                  <td><%= us.getTelefono() %></td>
-                                  <td><%= roles_main.getRol( us.getRol() ).getDescription() %></td>
-                                  <td>
-                                  
-                                  <% if( us.isEstado()){ %>
-                                  	<span class="label label-success label-mini">&nbsp;Activo&nbsp;&nbsp;</span>
-                                  	<% } else { %>
-                                  	<span class="label label-danger label-mini">Inactivo</span>
-                                  	<% } %>
-                                  </td>
-                                  
+                                  <td class="hidden-phone"><%= us.getDireccion() %></td>
+                                  <td ><%= us.getTelefono() %></td>
                                   <td>
                                       
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
@@ -161,7 +146,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -170,7 +155,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">

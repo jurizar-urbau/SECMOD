@@ -37,6 +37,14 @@
     <servlet-name>Users</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Users</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Bodegas</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Bodegas</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Productos</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Productos</servlet-class>
+  </servlet>
     <servlet>
     <servlet-name>Rols</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Rols</servlet-class>
@@ -65,6 +73,14 @@
   <servlet-mapping>
     <servlet-name>Users</servlet-name>
     <url-pattern>/bin/Users</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Bodegas</servlet-name>
+    <url-pattern>/bin/Bodegas</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Productos</servlet-name>
+    <url-pattern>/bin/Productos</url-pattern>
   </servlet-mapping>
     <servlet-mapping>
     <servlet-name>Rols</servlet-name>

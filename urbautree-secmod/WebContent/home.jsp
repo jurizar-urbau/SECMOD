@@ -1,4 +1,12 @@
+<%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page pageEncoding="utf-8" %>
+<%@page import="com.urbau.feeders.BodegasMain"%>
+<% 
+	BodegasMain bm = new BodegasMain();
+    ProductosMain pm = new ProductosMain();
+	long total_bodegas = bm.count();
+	long total_productos = pm.count();
+%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -7,7 +15,7 @@
    
    <body>
    
-<div id="fb-root"></div>
+<!-- div id="fb-root"></div>  FACEBOOK DIV -->
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -53,11 +61,13 @@
                     <div class="row mtbox">
                       <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
                         <div class="box1">
-                  <span class="li_heart"></span>
-                  <h3>933</h3>
+                        <a href="bodegas.jsp">
+                  <span class="li_data"></span>
+                  <h3>BODEGAS</h3>
                         </div>
-                  <p>933 People liked your page the last 24hs. Whoohoo!</p>
+                  <p><%= total_productos %> Productos en <%= total_bodegas %> Bodegas</p>
                       </div>
+                      </a>
                       <div class="col-md-2 col-sm-2 box0">
                         <div class="box1">
                   <span class="li_cloud"></span>
@@ -276,9 +286,9 @@
       *********************************************************************************************************************************************************** -->                  
                   
                   <div class="col-lg-3 ds">
-                    <div class="fb-page" data-href="https://www.facebook.com/naturaloilgt" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"></div>
+                    <!-- div class="fb-page" data-href="https://www.facebook.com/naturaloilgt" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"></div -->
                     <!--COMPLETED ACTIONS DONUTS CHART-->
-            <h3>NOTIFICATIONS</h3>
+            <h3>NOTIFICACIONES</h3>
                                         
                       <!-- First Action -->
                       <div class="desc">
@@ -286,7 +296,7 @@
                           <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
                         </div>
                         <div class="details">
-                          <p><muted>2 Minutes Ago</muted><br/>
+                          <p><muted>Hacd 2 Dias</muted><br/>
                              <a href="#">James Brown</a> subscribed to your newsletter.<br/>
                           </p>
                         </div>
@@ -409,7 +419,7 @@
                         </div><!-- / calendar -->
                       
                   </div><!-- /col-lg-3 -->
-              </div><! --/row -->
+              </div><!--/row -->
           </section>
       </section>
 
@@ -417,8 +427,8 @@
       <!--footer start-->
       <footer class="site-footer">
           <div class="text-center">
-               <a href="http://www.urbau-tree.com">2015 - Urbau Tree</a>
-              <a href="index.html#" class="go-top">
+               <a href="http://www.urbau-digital.com">2015 - Urbau Digital</a>
+              <a href="home.jsp" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
           </div>
@@ -448,6 +458,8 @@
   
   <script type="text/javascript">
         $(document).ready(function () {
+        	
+        	/*
         var unique_id = $.gritter.add({
             // (string | mandatory) the heading of the notification
             title: 'Bienvenido Alejandro!',
@@ -456,7 +468,7 @@
             // (string | optional) the image to display on the left
             image: 'assets/img/ui-jur.jpg',
             // (bool | optional) if you want it to fade out on its own or just sit there
-            sticky: true,
+            sticky: false,
             // (int | optional) the time you want it to be alive for before fading out
             time: '',
             // (string | optional) the class name you want to apply to that specific message
@@ -465,6 +477,7 @@
 
         return false;
         });
+        */
   </script>
   
   <script type="application/javascript">

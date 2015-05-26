@@ -34,7 +34,7 @@ public class VerifyUser extends HttpServlet {
 		String pass = request.getParameter( "password" );
 		System.out.println("loggin in [" + user + "]");
 		UsuariosMain usuarios = new UsuariosMain();
-		UsuarioBean  usuario =  usuarios.logIn(user, pass);
+		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass);
 		if( usuario != null ){
 			System.out.println("user exists.");
 			usuario.setLogged( true );

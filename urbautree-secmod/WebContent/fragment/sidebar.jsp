@@ -2,7 +2,7 @@
 <ul class="sidebar-menu" id="nav-accordion">
               
                   <p class="centered">
-                  <a href="profile.html">
+                  <a href="home.jsp">
                   <img src="https://scontent-mia.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10742_714103018653633_713490040812823849_n.png?oh=1e76af0ab2ff870bbeffd15cb90b57ff&oe=55CE1A43" class="img-circle" width="60">
                   </a></p>
                   <h5 class="centered"><%= loggedUser.getNombre() %></h5>
@@ -14,33 +14,34 @@
                       </a>
                   </li>
 
-                  <li class="sub-menu">
+                  
+
+                   <li class="sub-menu" id="menu-operaciones">
                       <a href="javascript:;" >
-                          <i class="fa fa-desktop"></i>
+                          <i class="fa fa-tasks"></i>
+                          <span>Operaciones</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="bodegas.jsp">Bodegas</a></li>
+                          <li><a  href="productos.jsp">Productos</a></li>
+                      </ul>
+                  </li> 
+                  <li class="sub-menu" id="menu-seguridad">
+                      <a href="javascript:;" >
+                          <i class="fa fa-cogs"></i>
                           <span>Seguridad</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="users.jsp">Usuarios</a></li>
+                      	  <li><a  href="users.jsp">Usuarios</a></li>
                           <li><a  href="rols.jsp">Roles</a></li>
                           <li><a  href="programs.jsp">Programas</a></li>
                           <li><a  href="options.jsp">Opciones</a></li>
-                          <li><a  href="optionsprogram.jsp">Opciones/Programa</a></li>
+                          <li><a  href="optionsprogram.jsp">Opciones/Programa *</a></li>
                       </ul>
                   </li>
-
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-cogs"></i>
-                          <span>Configuraci&oacute;n</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="calendar.html">Programas</a></li>
-                          <li><a  href="gallery.html">Opciones</a></li>
-                          <li><a  href="todo_list.html">Opciones x Programa</a></li>
-                          <li><a  href="todo_list.html">Servicio de correo</a></li>
-                          <li><a  href="todo_list.html">Facebook</a></li>
-                      </ul>
-                  </li>
+                  
+                  
+                  <!-- 
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-book"></i>
@@ -52,6 +53,8 @@
                           <li><a  href="lock_screen.html">Lock Screen</a></li>
                       </ul>
                   </li>
+                   -->
+                   <!-- 
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-tasks"></i>
@@ -61,6 +64,8 @@
                           <li><a  href="form_component.html">Form Components</a></li>
                       </ul>
                   </li>
+                   -->
+                   <!--  
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-th"></i>
@@ -81,6 +86,6 @@
                           <li><a  href="chartjs.html">Chartjs</a></li>
                       </ul>
                   </li>
-
+ 					-->
               </ul>
               

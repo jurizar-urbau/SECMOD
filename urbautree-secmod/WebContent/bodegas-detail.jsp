@@ -1,21 +1,16 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.beans.UsuarioBean"%>
-<%@page import="com.urbau.feeders.UsuariosMain"%>
-<%@page import="com.urbau.feeders.RolesMain"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.feeders.BodegasMain"%>
       
 <%
 	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-			UsuariosMain rm = new UsuariosMain();
-			RolesMain roles_main = new RolesMain();
+			BodegasMain rm = new BodegasMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			UsuarioBean bean = rm.get( id );
+			BodegaBean bean = rm.getBodega( id );
 			
-			String rolUser =roles_main.getRol( bean.getRol() ).getDescription();
-			int idRol =roles_main.getRol( bean.getRol() ).getId();
-	
-			String cmd = "Nuevo usuario";
+			String cmd = "Nueva bodega";
 			String mode = request.getParameter( "mode" );
 			
 			String keyReadOnly = "readonly=\"readonly\"";
@@ -24,15 +19,15 @@
 			String jsFunction = "save();";
 			String validateUser = "";
 			if( "edit".equals( mode ) ){
-				cmd = "Editar usuario " + id;
+				cmd = "Editar bodega " + id;
 				mandatoryReadOnly = keyReadOnly;
 				jsFunction = "edit();";
 			} else if( "view".equals( mode )){
-				cmd = "Ver usuario " + id;
+				cmd = "Ver bodega " + id;
 				mandatoryReadOnly = keyReadOnly;
 				optionalReadOnly = keyReadOnly;
 			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar usuario " + id;
+				cmd = "Eliminar bodega " + id;
 				optionalReadOnly = keyReadOnly;
 				mandatoryReadOnly = keyReadOnly;
 				jsFunction = "deleteReg();";
@@ -92,63 +87,38 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE USUARIO</h3>
+          	<h3><i class="fa fa-angle-right"></i> DETALLE BODEGA</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
           			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="users.jsp">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="bodegas.jsp">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horizontal style-form" id="form" name="form">
                       <input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>">
                       <input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>">
-                      <input type="hidden" name="idRol" id="idRol" value="<%= idRol %>">
-                       
                       
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Usuario</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Nombre</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-	                          		<input type="text" class="form-control" name="loginid" id="loginid" value="<%= bean.getUsuario() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="nombre" id="nombre" value="<%= bean.getNombre() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="text" class="form-control" name="loginid" id="loginid" disabled value="<%= bean.getUsuario() %>">	                          		
+	                          		<input type="text" class="form-control" name="nombre" id="nombre" disabled value="<%= bean.getNombre() %>">	                          		
 	                          	<%}%>   	                                  
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Nombres y Apellidos</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Direcci&oacute;n</label>
                               <div class="col-sm-10">
                               	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" value="<%= bean.getNombre() %>">	                          	                          
+	                          		<input type="text" class="form-control" name="direccion" id="direccion" value="<%= bean.getDireccion() %>">	                          	                          
 	                          	<%}else{%>
-	                          		<input type="text" class="form-control" name="nombresapellidos" id="nombresapellidos" disabled value="<%= bean.getNombre() %>">	                          			                          	
+	                          		<input type="text" class="form-control" name="direccion" id="direccion" disabled value="<%= bean.getDireccion() %>">	                          			                          	
 	                          	<%}%>                                 
                               </div>
                           </div>
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Clave</label>
-                              <div class="col-sm-10">
-                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
-	                          		<input type="password" class="form-control" name="clave" id="clave" value="<%= bean.getClave() %>">	                          	                          
-	                          	<%}else{%>
-	                          		<input type="password" class="form-control" name="clave" id="clave" disabled value="<%= bean.getClave() %>">	                          			                          	
-	                          	<%}%>
-                                  
-                              </div>
-                          </div>
-                          
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Correo Electronico</label>
-                              <div class="col-sm-10">
-                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          			                          		
-	                          		<input type="email" class="form-control" name="email" id="email" value="<%= bean.getEmail() %>">	                          	                          
-	                          	<%}else{%>
-	                          		<input type="email" class="form-control" name="email" id="email" disabled value="<%= bean.getEmail() %>">	                          			                          	
-	                          	<%}%>                              
-                              </div>
-                          </div>
-                          
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Tel&eacute;fono</label>
                               <div class="col-sm-10">
@@ -156,37 +126,17 @@
 	                          		<input type="text" class="form-control" name="telefono" id="telefono" value="<%= bean.getTelefono() %>">	                          	                          
 	                          	<%}else{%>
 	                          		<input type="text" class="form-control" name="telefono" id="telefono" disabled value="<%= bean.getTelefono() %>">	                          			                          	
-	                          	<%}%>                                  
+	                          	<%}%>
+                                  
                               </div>
                           </div>
                           
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Rol</label>
-                              <div class="col-sm-10">
-                                  <select class="form-control" name="rol" id="rolSelect">
-                                  <%
-                                  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
-                                  	for( String[] rol : roles_list ){
-                                  %>
-                                  	<option value="<%= rol[0]%>"><%= rol[1] %></option>
-                                  <% } %>									  
-									  
-									</select>
-                              </div>
-                          </div>
                           
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Activo</label>
-                              <div class="col-sm-10">
-	                              <div class="col-sm-6 text-left">
-			                      	<input type="checkbox" name="activo" id="activo" data-toggle="switch" />
-			                      </div>
-		                      </div>
                           </div>
                           
                            <div class="form-actions">
                            	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-					            <button class="btn" onclick="location.replace('users.jsp')">Cancelar</button>
+					            <button class="btn" onclick="location.replace('bodegas.jsp')">Cancelar</button>
 					        </div>  
                                                                                                                            
                       </form>
@@ -213,19 +163,20 @@
              $('#form').validate(
              {
               rules: {
-                loginid: {
+                nombre: {
                   minlength: 2,
-                  maxlength: 10,
+                  maxlength: 30,
                   required: true
                 },
-                email: {
-                  required: true,
-                  email: true
+                direccion: {
+                	minlength: 2,
+                    maxlength: 250,
+                    required: true
                 },
-                nombresapellidos: {
-                  minlength: 3,
-                  maxlength: 50,
-                  required: true
+                telefono: {
+                	minlength: 2,
+                    maxlength: 15,
+                    required: true
                 }
               },
               highlight: function(element) {
@@ -257,17 +208,17 @@
     			var form =$('#form');
     	     	$.ajax({
     	     		type:'POST',
-    	 			url: './bin/Users',
+    	 			url: './bin/Bodegas',
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		        	
     		        	alert(msg);
-    		            location.replace( "users.jsp" );
+    		            location.replace( "bodegas.jsp" );
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
     	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 				alert("Se prudujo un error al hacer la operacion");	
     	 			}
     		            		        
     	       });

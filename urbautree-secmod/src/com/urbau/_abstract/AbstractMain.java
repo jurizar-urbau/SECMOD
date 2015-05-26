@@ -3,7 +3,6 @@
  */
 package com.urbau._abstract;
 
-
 import com.urbau.db.ConnectionManager;
 
 import java.sql.Connection;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
  */
 public abstract class AbstractMain {
 
+	
 	public ArrayList<String[]> getComboItems( String table ){
         ArrayList<String[]> list = new ArrayList<String[]>();
 		Connection con = null;
