@@ -61,6 +61,17 @@
     <servlet-name>Bancos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Bancos</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>OptionsByPrograms</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.OptionsByPrograms</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OptionsByProgramsList</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.OptionsByProgramsList</servlet-class>
+  </servlet>
+  
+  
+  
   
   
   <servlet-mapping>
@@ -102,6 +113,14 @@
   <servlet-mapping>
     <servlet-name>Bancos</servlet-name>
     <url-pattern>/bin/Bancos</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OptionsByPrograms</servlet-name>
+    <url-pattern>/bin/OptionsByPrograms</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OptionsByProgramsList</servlet-name>
+    <url-pattern>/bin/OptionsByProgramsList</url-pattern>
   </servlet-mapping>
       
   <context-param>

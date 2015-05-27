@@ -10,8 +10,8 @@ import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Util;
 
 public class OptionsByProgramMain {
-	
-	public ArrayList<OptionsByProgramBean> getOption( String rol ){
+		
+	public ArrayList<OptionsByProgramBean> get( String rol ){
 		ArrayList<OptionsByProgramBean> list = new ArrayList<OptionsByProgramBean>();
 		Connection con  = null;
 		Statement  stmt = null;
@@ -19,7 +19,7 @@ public class OptionsByProgramMain {
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "select opprog.id, id_programa, prg.descripcion, id_opcion, op.descripcion   from opcionesxprograma opprog , programas prg, opciones op where prg.id = id_programa and op.id = id_opcion and id_rol=" + rol + " order by id_programa, id_opcion" );
+			rs = stmt.executeQuery( "select opprog.id, id_programa, prg.descripcion, id_opcion, op.descripcion   from OPCIONESXPROGRAMA opprog , PROGRAMAS prg, OPCIONES op where prg.id = id_programa and op.id = id_opcion and id_rol=" + rol + " order by id_programa, id_opcion" );
 			
 			while( rs.next() ){
 				OptionsByProgramBean bean = new OptionsByProgramBean();
@@ -40,7 +40,7 @@ public class OptionsByProgramMain {
 	}
 	
 	
-	public boolean addOption(OptionsByProgramBean bean ){
+	public boolean add(OptionsByProgramBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
 		try {
@@ -59,7 +59,7 @@ public class OptionsByProgramMain {
 	}
 	
 	
-	public boolean delOption( OptionsByProgramBean bean ){
+	public boolean del( OptionsByProgramBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
