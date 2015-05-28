@@ -9,8 +9,8 @@
 		<%@include file="fragment/head.jsp"%>
 		<%			
 			RolesMain roles_main = new RolesMain();
-			ProgramsMain programs_main = new ProgramsMain();
-			OptionsMain options_main = new OptionsMain();			
+ 			ProgramsMain programs_main = new ProgramsMain();
+			OptionsMain options_main = new OptionsMain();					
 		%>			
 				
 	</head>
@@ -166,53 +166,26 @@
 	<script>        	
         
         $(function() {
-    
+            	
     		$tbody = $('#optionsprogramtbody');
-    		$tbody.hide();  					// hide tbody when not exits rol selected  
-    		     		 
-    		$rolSelect = $("#rolSelect");
     		
+    		// hide tbody when not exits rol selected
+    		$tbody.hide();  					  
+    		     		 
+    		// populate programs and options by the rol selected by the user
+    		$rolSelect = $("#rolSelect");    		
     		$rolSelect.click(function(){
     			    		
     			var rol = $rolSelect.val();    			
     			document.getElementById("idRol").value = rol;
     			document.getElementById("mode").value = "add";
     			    			
-    			if(rol){
-    				
-    				$tbody.show();										
-    				
-    				$.ajax({
-        				url: './bin/OptionsByProgramsList',
-        	     		type:'POST',    	 			
-        	 		    data: { idRol: rol},        	 			
-        		        success: function(data, textStatus, jqXHR){		        	
-        		        	 		        
-        		        	$('#optionsprogramtbody > tr:gt(0)').remove();
-        		        	
-        		        	var trHTML="";
-        		        	
-        		        	if(data instanceof Array){
-        		        		for(var i=0; i<data.length; i++){
-        		        			//console.log("	data: " , data[i]);
-        		        			trHTML += '<tr><td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td><td><div class="form-actions"><button type="submit" class="btn btn-danger" id="'+data[i].id+'"  idRol="'+data[i].idRol+'">&nbsp;Borrar&nbsp;&nbsp;</button></div></td></tr>';                                    	                    		                    	
-        		        		}
-        		        	}
-        		            
-        		        	$('#optionsprogramtable').append(trHTML);
-        		        },
-        	 			error: function(jqXHR, textStatus, errorThrown){
-        	 				console.log("ERROR srtatus: ", textStatus);
-        	 				console.log("ERROR errorThrown: ", errorThrown);
-        	 				alert("Se prudujo un error al hacer la operacion");	
-        	 			}
-        		            		        
-        	       });
-
+    			if(rol){    				
+    				$tbody.show();										    				
+    				getOptionsByProgramsList(rol);
     			}else{
     				$tbody.hide();
-    			}
-    			
+    			}    			
     	     	
     	     	return false;
     		});
@@ -222,10 +195,14 @@
     		$('#form').submit(function(e){
     			e.preventDefault();
     		});
-    		    		
+    		    	
+    		
     		$("#savebutton").click(function(){
     			    					
-    			var form =$('#form');
+    			var form =$('#form');    			    			    			
+    			var idRol = $("#idRol").val();
+    			var mode = $("#mode").val();    			
+    			
     	     	$.ajax({
     	     		type:'POST',
     	 			url: './bin/OptionsByPrograms',
@@ -233,7 +210,7 @@
     	 			
     		        success: function(msg){		        	
     		        	alert(msg);
-    		            location.replace( "optionsprogram.jsp" );
+    		            location.replace( "optionsprogram.jsp?rol="+idRol+"&mode="+mode );
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
@@ -241,64 +218,93 @@
     	 				alert("Se prudujo un error al hacer la operacion");	
     	 			}
     		            		        
-    	       });
+    	       });    			    		
     	     	
     	     	return false;
     	 	});
     		    		
+    		    	    	
     		
-    		$(document).on('click','.btn-danger', function(){
-    			var id = $(".btn-danger").attr("id");
-    			var idRol = $(".btn-danger").attr("idRol");    			
-    			
-    			if(id != ""){    			
-    				$.ajax({
-        	     		type:'POST',
-        	 			url: './bin/OptionsByPrograms',    	 			
-        	 			data: { id: id, "mode": "remove"},
-        	 			
-        		        success: function(msg){		        	
-        		        	alert(msg);
-        		            location.replace( "optionsprogram.jsp");
-        		        },
-        	 			error: function(jqXHR, textStatus, errorThrown){
-        	 				console.log("ERROR srtatus: ", textStatus);
-        	 				console.log("ERROR errorThrown: ", errorThrown);
-        	 				alert("Se prudujo un error al hacer la operacion");	
-        	 			}
-        		            		        
-        	       });	
-    			}
-    			
-    	     	
-    	     	return false;
-
-    		});
-    		/*
     		
-    		var mode = getUrlParameter('mode');    		
-    		if(mode === "remove"){
-    			$("#rolSelect").attr('disabled','disabled');
-    			$("#activo").attr('disabled','disabled');
-    			
-    			$("#savebutton").removeClass("btn btn-success");
-    			$("#savebutton").addClass("btn btn-danger");
-    			$("#savebutton").html("Borrar");						
-    		}else if(mode === "view"){
-    			$("#rolSelect").attr('disabled','disabled');
-    			$("#activo").attr('disabled','disabled');
-    			$("#savebutton").hide();    			    	    	
-    			
-    		}else if(mode === "add"){    			
-    			$("#nombresapellidos").attr('value', ' ');
-    			$("#clave").attr('value', '');    			
-    		}
-    		*/
-    		    		    		    		    		
-    		
+    		var rolParameter = getUrlParameter('rol');    		    		
+    		    				
+    		if(rolParameter){    	
+    			document.getElementById("idRol").value = rolParameter;    			
+    			document.getElementById("mode").value = "add";	
+    			    			    			    			    			    	
+				if(rolParameter){    			
+    				$tbody.show();
+    				$("#rolSelect option[value='"+rolParameter+"']").attr('selected','selected');
+    				getOptionsByProgramsList(rolParameter);    				
+    			}else{
+    				$tbody.hide();
+    			}    			    	
+    		}    		
+    		    		    		    		    		    		
    		}); // end function 
     		 
-    		 
+    		 		
+            
+	    function getOptionsByProgramsList(idRol){
+	    	if(null != idRol){
+	    	
+	    		$.ajax({
+					url: './bin/OptionsByProgramsList',
+		     		type:'POST',    	 			
+		 		    data: { idRol: idRol},        	 			
+			        success: function(data, textStatus, jqXHR){		        	
+			        	 		        
+			        	$('#optionsprogramtbody > tr:gt(0)').remove();
+			        	
+			        	var trHTML="";
+			        	
+			        	if(data instanceof Array){
+			        		for(var i=0; i<data.length; i++){
+			        			//console.log("	data: " , data[i]);
+			        			trHTML += '<tr><td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td><td><div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;&nbsp;</button></div></td></tr>';                                    	                    		                    	
+			        		}
+			        	}
+			            
+			        	$('#optionsprogramtable').append(trHTML);
+			        },
+		 			error: function(jqXHR, textStatus, errorThrown){
+		 				console.log("ERROR srtatus: ", textStatus);
+		 				console.log("ERROR errorThrown: ", errorThrown);
+		 				alert("Se prudujo un error al hacer la operacion");	
+		 			}
+			            		        
+		       });
+	    	}	    		    	
+	    }// end getOptionsByProgramsList 
+	    
+	    
+	    function removeItem(id){	    	
+			var idRol = $(".btn-danger").attr("idRol");
+								
+			if(id){    			
+				$.ajax({
+    	     		type:'POST',
+    	 			url: './bin/OptionsByPrograms',    	 			
+    	 			data: { id: id, "mode": "remove"},
+    	 			
+    		        success: function(msg){		        	
+    		        	alert(msg);
+    		            location.replace( "optionsprogram.jsp?rol="+idRol);
+    		        },
+    	 			error: function(jqXHR, textStatus, errorThrown){
+    	 				console.log("ERROR srtatus: ", textStatus);
+    	 				console.log("ERROR errorThrown: ", errorThrown);
+    	 				alert("Se prudujo un error al hacer la operacion");	
+    	 			}
+    		            		        
+    	       });	
+			}
+				    
+	     	return false;
+
+	    }// end removeItem 
+           
+	    
 		function getUrlParameter(sParam){
    			
 		    var sPageURL = window.location.search.substring(1);
@@ -313,8 +319,7 @@
 		    }
 	    } // end getUrlParameter 
         
-            
-           
 	</script>
   </body>
 </html>
+

@@ -78,6 +78,32 @@ public class OptionsByProgramMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
+	
+	public boolean duplicate( OptionsByProgramBean bean ){
+		
+		if ( null == bean.getId_program() && null == bean.getId_option() && null == bean.getId_rol()){
+			return false;
+		}
+				
+		Connection con = null;
+		Statement  stmt= null;
+		ResultSet  rs   = null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();			
+			String sql = "SELECT * from OPCIONESXPROGRAMA where ID_PROGRAMA="+bean.getId_program()+" AND ID_OPCION="+bean.getId_option()+" AND ID_ROL="+bean.getId_rol();
+			rs = stmt.executeQuery(sql);			
+			rs.beforeFirst();
+			rs.last();
+			int total = rs.getRow();			
+			return total >= 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
 
 	public static int getProgramId() {
 		return 1;

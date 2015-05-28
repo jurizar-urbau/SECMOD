@@ -16,9 +16,7 @@ public class OptionsByPrograms extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-						
-			System.out.println( "message recieved: " + request.getQueryString() );
+		try{									
 			
 			HttpSession session = request.getSession();
 			validateRequest( session );
@@ -27,10 +25,10 @@ public class OptionsByPrograms extends Entity {
 			String idOption =request.getParameter("idOption");
 			String idRol = request.getParameter( "idRol" );
 			String id = request.getParameter( "id" );
-						
-			
-			String message = "";
+														
 			if( null != mode ){
+								
+				String message = "";
 				
 					OptionsByProgramBean rm = new OptionsByProgramBean();
 																											
@@ -43,20 +41,31 @@ public class OptionsByPrograms extends Entity {
 					if(null != idRol){
 						rm.setId_rol(idRol);	
 					}
-																																		
-					if( !"add".equals( mode ) && null != id){
-						rm.setId( Integer.parseInt( id));
-					}
+																																							
 										
 					OptionsByProgramMain rmain = new OptionsByProgramMain();
 					
 					if( "add".equals( mode )){
-						if ( rmain.add( rm ) ){
-							message = "Registro creado con exito.";
-						} else {
-							showMessage( "No se pudo crear el registro" , response );
+					
+						if(rmain.duplicate(rm)){
+							message = "Registro ya existe!";
+						}else{
+							if ( rmain.add( rm ) ){
+								message = "Registro creado con exito.";
+							} else {
+								showMessage( "No se pudo crear el registro" , response );
+							}
 						}
+						
 					} else if( "remove".equals( mode )){
+						
+						try{
+							rm.setId( Integer.parseInt( id));
+						}catch(NumberFormatException e){
+							showMessage( "No se pudo eliminar el registro" , response );
+							System.out.println( "Error: " + e.getMessage() );
+						}
+												
 						if ( rmain.del( rm ) ){
 							message = "Registro eliminado con exito.";
 						} else {
