@@ -163,6 +163,8 @@
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
 	
+	
+	
 	<script>        	
         
         $(function() {
@@ -202,30 +204,33 @@
     			var form =$('#form');    			    			    			
     			var idRol = $("#idRol").val();
     			var mode = $("#mode").val();    			
+    			var idProgram = $("#idProgram").val();
+    			var idOption = $("#idOption").val();
+    			    			    	
+    			if(idProgram && idOption){
+    				$.ajax({
+        	     		type:'POST',
+        	 			url: './bin/OptionsByPrograms',
+        	 			data: form.serialize(),
+        	 			
+        		        success: function(msg){		        	
+        		        	alert(msg);
+        		            location.replace( "optionsprogram.jsp?rol="+idRol+"&mode="+mode );
+        		        },
+        	 			error: function(jqXHR, textStatus, errorThrown){
+        	 				console.log("ERROR srtatus: ", textStatus);
+        	 				console.log("ERROR errorThrown: ", errorThrown);
+        	 				alert("Se prudujo un error al hacer la operacion");	
+        	 			}
+        		            		        
+        	       });	
+    			}
     			
-    	     	$.ajax({
-    	     		type:'POST',
-    	 			url: './bin/OptionsByPrograms',
-    	 			data: form.serialize(),
-    	 			
-    		        success: function(msg){		        	
-    		        	alert(msg);
-    		            location.replace( "optionsprogram.jsp?rol="+idRol+"&mode="+mode );
-    		        },
-    	 			error: function(jqXHR, textStatus, errorThrown){
-    	 				console.log("ERROR srtatus: ", textStatus);
-    	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operacion");	
-    	 			}
-    		            		        
-    	       });    			    		
-    	     	
     	     	return false;
     	 	});
     		    		
     		    	    	
-    		
-    		
+    		    		
     		var rolParameter = getUrlParameter('rol');    		    		
     		    				
     		if(rolParameter){    	
@@ -320,6 +325,7 @@
 	    } // end getUrlParameter 
         
 	</script>
+		
   </body>
 </html>
 
