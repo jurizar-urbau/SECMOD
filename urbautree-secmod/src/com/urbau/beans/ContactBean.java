@@ -1,9 +1,19 @@
 package com.urbau.beans;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.urbau.beans._interface.Bean;
 
 public class ContactBean  implements Bean {
-
+   
+	public final static  HashMap<String,String> MAP_FIELDS;
+	static{
+		Map<String,String> aMap = new HashMap<>();
+		aMap.put("NAME","NAME_TAG" );
+		MAP_FIELDS = (HashMap<String, String>) Collections.unmodifiableMap(aMap);
+	}	
 	
 	public static String SQL_FIELDS = "NAME, SURNAME, TEL1, TEL2, MOBILE, "
 								    + "ASINGMENT, EMAIL, EMAIL2, COMMENT, AREA, FAX, COUNTRY, USER, "
@@ -29,17 +39,17 @@ public class ContactBean  implements Bean {
 	private String comment;
 	private String area;
 	private String fax;
-	private String country;
-	private String user;
-	private String client;
+	private int country;
+	private int user;
+	private int client;
 	private String addrr1line1;
 	private String addrr1line2;
-	private String municipality1;
-	private String depto1;
+	private int municipality1;
+	private int depto1;
 	private String addrr2line1;
 	private String addrr2line2;
-	private String depto2;
-	private String municipality2;
+	private int depto2;
+	private int municipality2;
 	
 	public static String NAME_TAG = "{name}";
 	public static String SURNAME_TAG = "{surname}";
@@ -150,24 +160,7 @@ public class ContactBean  implements Bean {
 	public void setFax(String fax) {
 		this.fax = fax;
 	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public String getClient() {
-		return client;
-	}
-	public void setClient(String client) {
-		this.client = client;
-	}
+	
 	public String getAddrr1line1() {
 		return addrr1line1;
 	}
@@ -180,18 +173,7 @@ public class ContactBean  implements Bean {
 	public void setAddrr1line2(String addrr1line2) {
 		this.addrr1line2 = addrr1line2;
 	}
-	public String getMunicipality1() {
-		return municipality1;
-	}
-	public void setMunicipality1(String municipality1) {
-		this.municipality1 = municipality1;
-	}
-	public String getDepto1() {
-		return depto1;
-	}
-	public void setDepto1(String depto1) {
-		this.depto1 = depto1;
-	}
+	
 	public String getAddrr2line1() {
 		return addrr2line1;
 	}
@@ -204,18 +186,47 @@ public class ContactBean  implements Bean {
 	public void setAddrr2line2(String addrr2line2) {
 		this.addrr2line2 = addrr2line2;
 	}
-	public String getDepto2() {
+	public int getCountry() {
+		return country;
+	}
+	public void setCountry(int country) {
+		this.country = country;
+	}
+	public int getUser() {
+		return user;
+	}
+	public void setUser(int user) {
+		this.user = user;
+	}
+	public int getClient() {
+		return client;
+	}
+	public void setClient(int client) {
+		this.client = client;
+	}
+	public int getMunicipality1() {
+		return municipality1;
+	}
+	public void setMunicipality1(int municipality1) {
+		this.municipality1 = municipality1;
+	}
+	public int getDepto1() {
+		return depto1;
+	}
+	public void setDepto1(int depto1) {
+		this.depto1 = depto1;
+	}
+	public int getDepto2() {
 		return depto2;
 	}
-	public void setDepto2(String depto2) {
+	public void setDepto2(int depto2) {
 		this.depto2 = depto2;
 	}
-	public String getMunicipality2() {
+	public int getMunicipality2() {
 		return municipality2;
 	}
-	public void setMunicipality2(String municipality2) {
+	public void setMunicipality2(int municipality2) {
 		this.municipality2 = municipality2;
 	}
-	
 	
 }

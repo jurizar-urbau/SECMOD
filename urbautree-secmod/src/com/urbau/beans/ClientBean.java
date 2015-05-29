@@ -17,17 +17,18 @@ public class ClientBean  implements Bean {
 	private String numfiscal;
 	private String addrfiscal;
 	private String email;
-	private String rating;
+	private int rating;
 	private String addrship;
-	private String country;
-	private String tipo_cliente;
-	private String seller;
+	private int country;
+	private int tipo_cliente;
+	private int seller;
 	
 	
 	
 	public static String SQL_FIELDS = " RZSOCIAL, CLIENT, FAX, FAXALT, TEL, "+
 			  "TELALT, NUMFISCAL, ADDRFISCAL, EMAIL, " +
 			    "RATING, ADDRSHIP, COUNTRY, TIPO_CLIENTE, SELLER";
+	
 		public static String SQL_STATMENT = "SELECT ID,"+SQL_FIELDS+"  FROM ";
 		public static String TABLE = "CLIENTS";
 		public static final String  RZSOCIAL_TAG =  "{rzsocial}"; 
@@ -121,34 +122,35 @@ public class ClientBean  implements Bean {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getRating() {
-		return rating;
-	}
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+	
 	public String getAddrship() {
 		return addrship;
 	}
 	public void setAddrship(String addrship) {
 		this.addrship = addrship;
 	}
-	public String getCountry() {
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	public int getCountry() {
 		return country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(int country) {
 		this.country = country;
 	}
-	public String getTipo_cliente() {
+	public int getTipo_cliente() {
 		return tipo_cliente;
 	}
-	public void setTipo_cliente(String tipo_cliente) {
+	public void setTipo_cliente(int tipo_cliente) {
 		this.tipo_cliente = tipo_cliente;
 	}
-	public String getSeller() {
+	public int getSeller() {
 		return seller;
 	}
-	public void setSeller(String seller) {
+	public void setSeller(int seller) {
 		this.seller = seller;
 	}
 	

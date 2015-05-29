@@ -1,4 +1,5 @@
 package com.urbau.beans;
+import java.sql.Date;
 import java.util.Calendar;
 
 import com.urbau.beans._interface.Bean;
@@ -7,16 +8,14 @@ public class CallsBean  implements Bean {
 	
 	private int id;
 	private String topic; 
-	
-
-	private Calendar callDate;
-	private String reason;
-	private String client;
+	private Date callDate;
+	private int reason;
+	private int client;
 	private String description;
-	private String type;
-	private String status;
-	private String seller;
-	private String contact;
+	private int type;
+	private int status;
+	private int seller;
+	private int contact;
 	
 	
 	public static String SQL_FIELDS = "TOPIC, DATE_CALL, REASON, CLIENT "
@@ -69,23 +68,11 @@ public class CallsBean  implements Bean {
 	public void setTopic(String topic) {
 		this.topic = topic;
 	}
-	public Calendar getCallDate() {
+	public Date getCallDate() {
 		return callDate;
 	}
-	public void setCallDate(Calendar callDate) {
+	public void setCallDate(Date callDate) {
 		this.callDate = callDate;
-	}
-	public String getReason() {
-		return reason;
-	}
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
-	public String getClient() {
-		return client;
-	}
-	public void setClient(String client) {
-		this.client = client;
 	}
 	public String getDescription() {
 		return description;
@@ -93,29 +80,41 @@ public class CallsBean  implements Bean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getType() {
+	public int getReason() {
+		return reason;
+	}
+	public void setReason(int reason) {
+		this.reason = reason;
+	}
+	public int getClient() {
+		return client;
+	}
+	public void setClient(int client) {
+		this.client = client;
+	}
+	public int getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public String getSeller() {
+	public int getSeller() {
 		return seller;
 	}
-	public void setSeller(String seller) {
+	public void setSeller(int seller) {
 		this.seller = seller;
 	}
-	public String getContact() {
+	public int getContact() {
 		return contact;
 	}
-	public void setContact(String contact) {
+	public void setContact(int contact) {
 		this.contact = contact;
 	}
-
+	
 }
