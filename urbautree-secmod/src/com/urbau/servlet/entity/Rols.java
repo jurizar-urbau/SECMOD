@@ -26,18 +26,12 @@ public class Rols extends Entity {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
 						
-			System.out.println( ">>>>>>>>>>>>>> Rols >>>>>>>>>>>>>>>>>>: " );						
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
-			String message = "";
-			
-			System.out.println( "mode: " + modeParameter );
-			System.out.println( "\tid: " + idParameter );
+			String message = "";					
 										
 			if( idParameter != null){
 				RolBean rolBean = new RolBean();
@@ -47,30 +41,31 @@ public class Rols extends Entity {
 					
 				if( !ADD.equals( modeParameter ) ){
 					rolBean.setId( Integer.parseInt( idParameter));
-				}
-								
-				
-				System.out.println( "\trolName: " + rolName );
+				}											
 				
 				RolesMain rolesMain = new RolesMain();
 				
-				if( ADD.equals( modeParameter )){
-					if ( rolesMain.addRol(rolBean) ){
-						message = "Rol creado con exito.";
-					} else {
-						showMessage( "No se pudo crear el Rol" , response );
-					}
+				if( ADD.equals( modeParameter )){					
+					if(rolesMain.duplicate(rolBean)){
+						message = "Registro ya existe!";
+					}else{
+						if ( rolesMain.add( rolBean ) ){
+							message = "Registro creado con exito.";
+						} else {
+							showMessage( "No se pudo crear el registro" , response );
+						}
+					}														
 				}else if( EDIT.equals( modeParameter )){
-					if ( rolesMain.modRol(rolBean)){
-						message = "Rol modificado con exito.";
+					if ( rolesMain.mod(rolBean)){
+						message = "Registro modificado con exito.";
 					} else {
-						showMessage( "No se pudo modificar el Rol", response  );
+						showMessage( "No se pudo modificar el Registro", response  );
 					}
 				} else if( REMOVE.equals( modeParameter )){
-					if ( rolesMain.delRol(rolBean)){
-						message = "Rol eliminado con exito.";					
+					if ( rolesMain.del(rolBean)){
+						message = "Registro eliminado con exito.";					
 					} else {
-						showMessage( "No se pudo eliminar el Rol" , response );
+						showMessage( "No se pudo eliminar el Registro" , response );
 					}
 				}
 											
@@ -86,8 +81,7 @@ public class Rols extends Entity {
 			exception.printStackTrace();						
 			response.getOutputStream().write( exception.getMessage().getBytes() );
 			response.getOutputStream().flush();
-			response.getOutputStream().close();
-			
+			response.getOutputStream().close();			
 		}
 	}
 	

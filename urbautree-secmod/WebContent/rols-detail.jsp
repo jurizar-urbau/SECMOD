@@ -1,24 +1,13 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.RolBean"%>
-<%@page import="com.urbau.feeders.RolesMain"%>
-      
-<%
-	
-System.out.println(">>>>>ROLS DETAIL STARTED >>>>>>");
-	
-		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){			
-			RolesMain rolesMain = new RolesMain();
-			
-			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			
-			System.out.println("id>> " + id);		
-			
-			RolBean bean = rolesMain.getRol(id);
-									
-			String mode = request.getParameter( "mode" );
-System.out.println("mode>> " + mode);
-System.out.println("Name>> " + bean.getDescription());				
-					
+<%@page import="com.urbau.feeders.RolesMain"%>    
+<%						
+	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
+
+		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+		RolesMain roles_main = new RolesMain();		
+		RolBean bean = roles_main.get( id );		
+		String mode = request.getParameter( "mode" );		
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -85,31 +74,20 @@ System.out.println("Name>> " + bean.getDescription());
                   	  
                       <form class="form-horizontal style-form" method="POST" id="form" name="form">
                       	                      
-                      	<input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
+                      	<input type="hidden" name="mode" value="<%= mode%>">
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
                                                           		
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Nombre</label>
                           	<div class="col-sm-10">
-                          	
-                          	<%
-                          	if( "edit".equals( mode ) || "add".equals( mode ) ){
-                          	%>
-                          		<input type="text" class="form-control" name="rolname" id="rolname" value="<%= bean.getDescription() %>">	                          	                          
-                          	<%
-                          	}else{
-                          	%>
-                          		<input type="text" class="form-control" name="rolname" id="rolname" disabled value="<%= bean.getDescription() %>">
-                          	<%
-                          	}                          	
-                          	%>
-                              
+                          	            
+								<input type="text" class="form-control" name="rolname" id="rolname" value="<%= bean.getDescription() %>">	                          	                                                                    
                               
                           	</div>
                       	</div>
                           
                        <div class="form-actions">
-       	    				<button type="submit" class="btn btn-success" id="savebuttonrol">Guardar</button> 
+       	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 			            	<button class="btn" onclick="back()">Cancelar</button>
 			        	</div>                           
                       </form>
@@ -132,92 +110,90 @@ System.out.println("Name>> " + bean.getDescription());
   </section>
   
 	<%@include file="fragment/footerscripts.jsp"%>
-<script>
-            $(document).ready(function(){
-             $('#form').validate(
-             {
-              rules: {                        
-                rolname: {
-                  minlength: 3,
-                  maxlength: 50,
-                  required: true
-                }
-              },
-              highlight: function(element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-              },
-              success: function(element) {
-                element
-                .closest('.form-group').removeClass('has-error').addClass('has-success');
-              }
-             });
-            }); // end document.ready
-            
-            
-            
-           
-        </script>
-        <script>
-		 $(function() {
-		//twitter bootstrap script
+	<script>
+	    $(document).ready(function(){
+	    	
+	     	$('#form').validate({
+		      rules: {                        
+		        rolname: {
+		          minlength: 3,
+		          maxlength: 50,
+		          required: true
+		        }
+		      },
+		      highlight: function(element) {
+		        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		      },
+		      success: function(element) {
+		        element
+		        .closest('.form-group').removeClass('has-error').addClass('has-success');
+		      }
+	     	});
+	    });                                  
+	</script>
+	<script>
 	
-		$('#form').submit(function(e){
-			e.preventDefault();
-		});
-		
-		
-		$("#savebuttonrol").click(function(){
+		$(function() {
+		//twitter bootstrap script
+					
+			$('#form').submit(function(e){
+				e.preventDefault();
+			});
+			
+			$savebutton  = $("#savebutton");
+									
+			$savebutton.click(function(){
 						
-			var form =$('#form');
-	     	$.ajax({
-	     		type:'POST',
-	 			url: './bin/Rols',
-	 			data: form.serialize(),
-	 			
-		        success: function(msg){		        	
-		        	alert(msg);
-		            location.replace( "rols.jsp" );
-		        },
-	 			error: function(jqXHR, textStatus, errorThrown){
-	 				console.log("ERROR srtatus: ", textStatus);
-	 				console.log("ERROR errorThrown: ", errorThrown);
-	 				alert("Se prudujo un error al hacer la operaciòn");	
-	 			}
-		        
-		        
-	       });
-	     	return false;
-	 	});
+				var form =$('#form');
+				
+	     		$.ajax({
+		     		type:'POST',
+		 			url: './bin/Rols',
+		 			data: form.serialize(),
+		 			dataType: "text",		 			
+			        success: function(msg){
+			        	console.log("msg:: ", msg);
+			        	alert(msg);
+			            location.replace( "rols.jsp" );
+			        },
+		 			error: function(jqXHR, textStatus, errorThrown){
+		 				console.log("ERROR srtatus: ", textStatus);
+		 				console.log("ERROR errorThrown: ", errorThrown);
+		 				alert("Se prudujo un error al hacer la operaciòn");	
+		 			}
+	       		});
+	     		return false;
+	 		});
 				 
 		
-		var mode = getUrlParameter('mode');		
-		if(mode === "remove"){
-			$("#savebuttonrol").removeClass("btn btn-success");
-			$("#savebuttonrol").addClass("btn btn-danger");
-			$("#savebuttonrol").html("Borrar");						
-		}else if(mode === "view"){
-			$("#savebuttonrol").hide();
-		}
-		
-		
+			var mode = getUrlParameter('mode');		
+			if(mode === "remove"){
+				$("#rolname").attr('disabled','disabled');				
+				$savebutton.removeClass("btn btn-success");
+				$savebutton.addClass("btn btn-danger");
+				$savebutton.html("Borrar");
+				
+			}else if(mode === "view"){
+				$("#rolname").attr('disabled','disabled');				
+				$savebutton.hide();
+			}			
 		});
 		 
 		 
-		 function getUrlParameter(sParam)
-		 {
-		     var sPageURL = window.location.search.substring(1);
-		     var sURLVariables = sPageURL.split('&');
-		     for (var i = 0; i < sURLVariables.length; i++) 
-		     {
-		         var sParameterName = sURLVariables[i].split('=');
-		         if (sParameterName[0] == sParam) 
-		         {
-		             return sParameterName[1];
-		         }
-		     }
-		 } 
+		function getUrlParameter(sParam){
+			
+		    var sPageURL = window.location.search.substring(1);
+		    var sURLVariables = sPageURL.split('&');
+		    
+		    for (var i = 0; i < sURLVariables.length; i++) {
+				var sParameterName = sURLVariables[i].split('=');
+		        if (sParameterName[0] == sParam) {
+					return sParameterName[1];
+		        }
+		    }
+		} 
 		 
-		</script>
+	</script>
         
   </body>
 </html>

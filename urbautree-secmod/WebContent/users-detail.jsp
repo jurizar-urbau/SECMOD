@@ -2,9 +2,9 @@
 <%@page import="com.urbau.beans.UsuarioBean"%>
 <%@page import="com.urbau.feeders.UsuariosMain"%>
 <%@page import="com.urbau.feeders.RolesMain"%>
+<%@page import="com.urbau.beans.RolBean"%>
       
-<%
-	
+<%	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
 			UsuariosMain rm = new UsuariosMain();
 			RolesMain roles_main = new RolesMain();
@@ -12,35 +12,10 @@
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 			UsuarioBean bean = rm.get( id );
 			
-			String rolUser =roles_main.getRol( bean.getRol() ).getDescription();
-			int idRol =roles_main.getRol( bean.getRol() ).getId();
-	
-			String cmd = "Nuevo usuario";
+			String rolUser =roles_main.get( bean.getRol() ).getDescription();
+			int idRol =roles_main.get( bean.getRol() ).getId();
 			String mode = request.getParameter( "mode" );
-			
-			String keyReadOnly = "readonly=\"readonly\"";
-			String optionalReadOnly = "";
-			String mandatoryReadOnly = "";
-			String jsFunction = "save();";
-			String validateUser = "";
-			if( "edit".equals( mode ) ){
-				cmd = "Editar usuario " + id;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "edit();";
-			} else if( "view".equals( mode )){
-				cmd = "Ver usuario " + id;
-				mandatoryReadOnly = keyReadOnly;
-				optionalReadOnly = keyReadOnly;
-			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar usuario " + id;
-				optionalReadOnly = keyReadOnly;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "deleteReg();";
-			} else {
-				validateUser = "onchange=\"validateUser(this.value)\"";
-			}
-			
-			
+																		
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -165,10 +140,10 @@
                               <div class="col-sm-10">
                                   <select class="form-control" name="rol" id="rolSelect">
                                   <%
-                                  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
-                                  	for( String[] rol : roles_list ){
+                                  	ArrayList<RolBean> roles_list = roles_main.get(null, 0);
+                                  	for( RolBean rol : roles_list ){
                                   %>
-                                  	<option value="<%= rol[0]%>"><%= rol[1] %></option>
+                                  	<option value="<%= rol.getId()%>"><%= rol.getDescription() %></option>
                                   <% } %>									  
 									  
 									</select>

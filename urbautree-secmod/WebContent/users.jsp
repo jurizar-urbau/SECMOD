@@ -120,7 +120,7 @@
                                   <td><%= us.getNombre() %></td>
                                   <td class="hidden-phone"><%= us.getEmail() %></td>
                                   <td><%= us.getTelefono() %></td>
-                                  <td><%= roles_main.getRol( us.getRol() ).getDescription() %></td>
+                                  <td><%= roles_main.get( us.getRol() ).getDescription() %></td>
                                   <td>
                                   
                                   <% if( us.isEstado()){ %>
