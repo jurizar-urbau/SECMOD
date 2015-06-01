@@ -11,10 +11,18 @@ import com.urbau.servlet.entity.UserNotAuthenticatedException;
 /**
  * Servlet implementation class Entity
  */
+
 @WebServlet("/Entity")
 public class Entity extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-
+	public static final String ADD_MODE = "add";
+	public static final String DEL_MODE = "remove";
+	public static final String EDIT_MODE = "edit";
+	public static final String LIST_MODE = "list";
+	public static final int SUCCESS_STATUS = 200;
+	public static final String SUCCES_MESSAGE = "SUCCES";
+	
 	public void validateRequest(HttpSession session ) throws UserNotAuthenticatedException{
 		UsuarioBean loggedUser = (UsuarioBean) session.getAttribute( "loggedUser" );
 		

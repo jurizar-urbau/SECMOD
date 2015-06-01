@@ -54,6 +54,14 @@
     <servlet-class>com.urbau.servlet.entity.Vehicles</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>Accounts</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Acounts</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>TypeCalls</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TypeCalls</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>Sellers</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Sellers</servlet-class>
   </servlet>
@@ -94,6 +102,14 @@
   <servlet-mapping>
     <servlet-name>Vehicles</servlet-name>
     <url-pattern>/bin/vehicles</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TypeCalls</servlet-name>
+    <url-pattern>/bin/typecalls</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Accounts</servlet-name>
+    <url-pattern>/bin/account</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Sellers</servlet-name>

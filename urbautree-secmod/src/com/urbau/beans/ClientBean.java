@@ -1,51 +1,58 @@
 	package com.urbau.beans;
 
+import com.eclipsesource.json.JsonObject;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.urbau.beans._interface.Bean;
-
+@DatabaseTable(tableName = "CLIENTS")
 public class ClientBean  implements Bean {
 
 	private int total_regs;
 	//mapped fields
+	@DatabaseField(generatedId = true )
 	private int id;
 	
+	@DatabaseField(columnName ="RZSOCIAL" )
 	private String rzsocial;
+	
+	@DatabaseField(columnName = "CLIENT")
 	private String client;
+	
+	@DatabaseField(columnName = "FAX")
 	private String fax;
+	
+	@DatabaseField(columnName = "FAXALT")
 	private String faxalt;
+	
+	@DatabaseField(columnName = "TEL")
 	private String tel;
+	@DatabaseField(columnName = "TELALT")
 	private String telalt;
+	
+	@DatabaseField(columnName = "NUMFISCAL"	)
 	private String numfiscal;
+	
+	@DatabaseField(columnName = "ADDRFISCAL")
 	private String addrfiscal;
+	
+	@DatabaseField(columnName = "EMAIL")
 	private String email;
+	
+	@DatabaseField(columnName = "RATING")
 	private int rating;
+	
+	@DatabaseField(columnName = "ADDRSHIP")
 	private String addrship;
+	
+	@DatabaseField(columnName = "COUNTRY")
 	private int country;
+	
+	@DatabaseField(columnName = "TIPO_CLIENTE")
 	private int tipo_cliente;
+	
+	@DatabaseField(columnName = "SELLER")
 	private int seller;
 	
-	
-	
-	public static String SQL_FIELDS = " RZSOCIAL, CLIENT, FAX, FAXALT, TEL, "+
-			  "TELALT, NUMFISCAL, ADDRFISCAL, EMAIL, " +
-			    "RATING, ADDRSHIP, COUNTRY, TIPO_CLIENTE, SELLER";
-	
-		public static String SQL_STATMENT = "SELECT ID,"+SQL_FIELDS+"  FROM ";
-		public static String TABLE = "CLIENTS";
-		public static final String  RZSOCIAL_TAG =  "{rzsocial}"; 
-		public static final String  CLIENT_TAG =  "{client}"; 
-		public static final String  FAX_TAG =  "{fax}"; 
-		public static final String  FAXALT_TAG =  "{faxalt}"; 
-		public static final String  TEL_TAG =  "{tel}"; 
-		public static final String  TELALT_TAG =  "{telalt}"; 
-		public static final String  NUMFISCAL_TAG =  "{numfiscal}"; 
-		public static final String  ADDRFISCAL_TAG =  "{addrfiscal}"; 
-		public static final String  EMAIL_TAG =  "{email}"; 
-		public static final String  RATING_TAG =  "{rating}";
-		public static final String  ADDRSHIP_TAG =  "{addrship}"; 
-		public static final String  COUNTRY_TAG =  "{country}"; 
-		public static final String  TIPO_CLIENTE_TAG =  "{tipo_cliente}"; 
-		public static final String  SELLER_TAG =  "{seller}";    
-		
 	
 
 	public int getTotal_regs() {
@@ -152,6 +159,27 @@ public class ClientBean  implements Bean {
 	}
 	public void setSeller(int seller) {
 		this.seller = seller;
+	}
+	public String getJsonBean() {
+		JsonObject jo  = new JsonObject();
+		jo.add("rzsocial", 	this.getRzsocial());
+		jo.add("client",	this.getClient());
+		jo.add("fax", 		this.getFax());
+		jo.add("faxalt",	this.getFaxalt());
+		jo.add("tel", 		this.getTel());
+		jo.add("telalt", 	this.getTelalt());
+		jo.add("numfiscal", this.getNumfiscal());
+		jo.add("addrfiscal", this.getAddrfiscal());
+		jo.add("email", this.getEmail());
+		jo.add("rating", this.getRating());
+		jo.add("addrship", this.getAddrfiscal());
+		jo.add("country",this.getCountry());
+		jo.add("tipoClient", this.getTipo_cliente());
+		jo.add("seller", this.getTipo_cliente());
+		
+		
+		
+		return  jo;
 	}
 	
 	

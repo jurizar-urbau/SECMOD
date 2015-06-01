@@ -1,6 +1,7 @@
 package com.urbau.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.urbau.db.ConnectionManager;
+import com.urbau.db.ORMConnectionManager;
 
 /**
  * Servlet implementation class VidrioMarketConfig
@@ -43,6 +45,7 @@ public class UrbauConfig extends HttpServlet {
 		String user   = config.getInitParameter( "dbuser" );
 		String password   = config.getInitParameter( "dbpassword" );
 		ConnectionManager.set(driver, url, user, password);
+		ORMConnectionManager.set(driver, url, user, password);
 	}
 
 	/**
