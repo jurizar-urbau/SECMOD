@@ -16,7 +16,7 @@ import static com.urbau.misc.Constants.EDIT;
 import static com.urbau.misc.Constants.REMOVE;
 import static com.urbau.misc.Constants.MODE_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
-import static com.urbau.misc.Constants.OPTION_NAME_PARAMETER;
+import static com.urbau.misc.Constants.NAME_PARAMETER;
 
 
 @WebServlet("/Options")
@@ -25,53 +25,49 @@ public class Options extends Entity {
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-						
-			System.out.println( ">>>>>>>>>>>>>> Options >>>>>>>>>>>>>>>>>>: " );						
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+												
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
-			String message = "";
-			
-			System.out.println( "mode: " + modeParameter );
-			System.out.println( "\tid: " + idParameter );
+			String message = "";					
 										
 			if( idParameter != null){
-				OptionBean optionBean = new OptionBean();
+				OptionBean bean = new OptionBean();
 								
-				String optionName = request.getParameter(OPTION_NAME_PARAMETER);
-				optionBean.setDescription(optionName);													
+				String name = request.getParameter(NAME_PARAMETER);
+				bean.setDescription(name);													
 					
 				if( !ADD.equals( modeParameter ) ){
-					optionBean.setId( Integer.parseInt( idParameter));
-				}
-								
+					bean.setId( Integer.parseInt( idParameter));
+				}															
 				
-				System.out.println( "\toptionName: " + optionName );
-				
-				OptionsMain optionsMain = new OptionsMain();
+				OptionsMain main = new OptionsMain();
 				
 				if( ADD.equals( modeParameter )){
-					if ( optionsMain.addOption(optionBean)){
-						message = "Opcion creado con exito.";
-					} else {
-						showMessage( "No se pudo crear la Opcion" , response );
+					
+					if(main.duplicate(bean)){
+						message = "Registro ya existe!";
+					}else{
+						if ( main.add( bean ) ){
+							message = "Registro creado con exito.";
+						} else {
+							showMessage( "No se pudo crear el registro" , response );
+						}
 					}
+										
 				}else if( EDIT.equals( modeParameter )){
-					if ( optionsMain.modOption(optionBean)){
-						message = "Opcion modificado con exito.";
+					if ( main.mod(bean)){
+						message = "Registro modificado con exito.";
 					} else {
-						showMessage( "No se pudo modificar la Opcion", response  );
+						showMessage( "No se pudo modificar el Registro", response  );
 					}
 				} else if( REMOVE.equals( modeParameter )){
-					if ( optionsMain.delOption(optionBean)){
-						message = "Opcion eliminado con exito.";
-						System.out.println("message>> " + message);
+					if ( main.del(bean)){
+						message = "Registro eliminado con exito.";						
 					} else {
-						showMessage( "No se pudo eliminar la Opcion" , response );
+						showMessage( "No se pudo eliminar el Registro" , response );
 					}
 				}
 											

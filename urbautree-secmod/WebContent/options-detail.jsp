@@ -1,24 +1,14 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.OptionBean"%>
 <%@page import="com.urbau.feeders.OptionsMain"%>
-      
-<%
-	
-System.out.println(">>>>>OPTIONS DETAIL STARTED >>>>>>");
-	
-		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){			
-			OptionsMain optionsMain = new OptionsMain();
-			
-			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-System.out.println("id>> " + id);		
-			
-			OptionBean bean = optionsMain.getOption(id);
-							
-			String mode = request.getParameter( "mode" );
-System.out.println("mode>> " + mode);			
-			
-					
-%>  
+<%						
+	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
+		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+		
+		OptionsMain options_main = new OptionsMain();		
+		OptionBean bean = options_main.get( id );		
+		String mode = request.getParameter( "mode" );		
+%>   
 
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
@@ -84,28 +74,18 @@ System.out.println("mode>> " + mode);
                   	  
                       <form class="form-horizontal style-form" id="form" name="form">
                       	                      
-                      	<input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
+                      	<input type="hidden" name="mode" value="<%= mode%>">
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
                                                           		
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Nombre</label>
-                          	<div class="col-sm-10">
-                 	            <%
-	                          	if( "edit".equals( mode ) || "add".equals( mode ) ){
-	                          	%>
-	                          		<input type="text" class="form-control" name="optionname" id="optionname" value="<%= bean.getDescription() %>">	                          	                          
-	                          	<%
-	                          	}else{
-	                          	%>
-	                          		<input type="text" class="form-control" name="optionname" id="optionname" disabled value="<%= bean.getDescription() %>">
-	                          	<%
-	                          	}                          	
-	                          	%>                              
+                          	<div class="col-sm-10">                 	            	                          
+                          		<input type="text" class="form-control" name="name" id="name" value="<%= bean.getDescription() %>">	                          	                          	                          	                          
                           	</div>
                       	</div>
                           
                        <div class="form-actions">
-       	    				<button type="submit" class="btn btn-success" id="savebuttonoptions">Guardar</button> 
+       	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 			            	<button class="btn" onclick="back()">Cancelar</button>
 			        	</div>                           
                       </form>
@@ -133,10 +113,10 @@ System.out.println("mode>> " + mode);
         $(document).ready(function(){        	
          	$('#form').validate({         		
               	rules: {                        
-            		optionname: {
-                  	minlength: 3,
-                  	maxlength: 50,
-                  	required: true
+            		name: {
+                  		minlength: 3,
+                  		maxlength: 50,
+                  		required: true
                 	}
              	},
              	
@@ -144,7 +124,7 @@ System.out.println("mode>> " + mode);
                 	$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
               	},
               	success: function(element) {
-                element.closest('.form-group').removeClass('has-error').addClass('has-success');
+              		$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
               }
              });
         }); // end document.ready 
@@ -158,38 +138,45 @@ System.out.println("mode>> " + mode);
     			e.preventDefault();
     		});
     		
+    		$savebutton = $("#savebutton");
+    		$name = $("#name");
     		
-    		$("#savebuttonoptions").click(function(){
-    			    					
-    			var form =$('#form');
-    	     	$.ajax({
-    	     		type:'POST',
-    	 			url: './bin/Options',
-    	 			data: form.serialize(),
-    	 			
-    		        success: function(msg){		        	
-    		        	alert(msg);
-    		            location.replace( "options.jsp" );
-    		        },
-    	 			error: function(jqXHR, textStatus, errorThrown){
-    	 				console.log("ERROR srtatus: ", textStatus);
-    	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
-    	 			}
-    		            		        
-    	       });
-    	     	
+    		$savebutton.click(function(){
+    			
+    			if($name.val()){
+    				
+    				var form =$('#form');
+        	     	$.ajax({
+        	     		type:'POST',
+        	 			url: './bin/Options',
+        	 			data: form.serialize(),
+        	 			dataType: "text",
+        		        success: function(msg){		        	
+        		        	alert(msg);
+        		            location.replace( "options.jsp" );
+        		        },
+        	 			error: function(jqXHR, textStatus, errorThrown){
+        	 				console.log("ERROR srtatus: ", textStatus);
+        	 				console.log("ERROR errorThrown: ", errorThrown);
+        	 				alert("Se prudujo un error al hacer la operaciòn");	
+        	 			}
+        		            		        
+        	       });	
+    			}
+    			    					    			    	     
     	     	return false;
     	 	});
     				 
     		
     		var mode = getUrlParameter('mode');    		
     		if(mode === "remove"){
-    			$("#savebuttonoptions").removeClass("btn btn-success");
-    			$("#savebuttonoptions").addClass("btn btn-danger");
-    			$("#savebuttonoptions").html("Borrar");						
+    			$name.attr('disabled','disabled');
+    			$savebutton.removeClass("btn btn-success");
+    			$savebutton.addClass("btn btn-danger");
+    			$savebutton.html("Borrar");						
     		}else if(mode === "view"){
-    			$("#savebuttonoptions").hide();
+    			$name.attr('disabled','disabled');
+    			$savebutton.hide();
     		}
     		
     		
