@@ -1,6 +1,9 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.feeders.ProgramsMain"%>
 <%@page import="com.urbau.feeders.OptionsMain"%>
+<%@page import="com.urbau.beans.RolBean"%>
+<%@page import="com.urbau.beans.ProgramBean"%>
+<%@page import="com.urbau.beans.OptionBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
@@ -72,10 +75,10 @@
 									<select class="form-control" name="rolSelect" id="rolSelect">
 									<option value=""></option>
 									  <%
-									  	ArrayList<String[]> roles_list = roles_main.getAllRoles();
-									  	for( String[] rol : roles_list ){
+									  	ArrayList<RolBean> roles_list = roles_main.get(null, 0);
+									  	for( RolBean rol : roles_list ){
 									  %>
-								  		<option value="<%= rol[0]%>"><%= rol[1] %></option>
+								  		<option value="<%= rol.getId()%>"><%= rol.getDescription() %></option>
 								  	  <% } %>									  
 								  	  
 													  
@@ -106,10 +109,10 @@
 													<select class="form-control" name="idProgram" id="idProgram">
 														<option value=""> </option>
 													  <%
-													  	ArrayList<String[]> programs_list = programs_main.getAllPrograms();
-													  	for( String[] program : programs_list ){
+													  	ArrayList<ProgramBean> programs_list = programs_main.get(null, 0);
+													  	for( ProgramBean program : programs_list ){
 													  %>
-												  		<option value="<%= program[0]%>"><%= program[1] %></option>
+												  		<option value="<%= program.getId()%>"><%= program.getDescription() %></option>
 												  	  <% } %>									  												  	  																	
 												 	</select>
 											    </div>
@@ -122,10 +125,10 @@
 													<select class="form-control" name="idOption" id="idOption">
 														<option value=""> </option>
 													  <%
-													  	ArrayList<String[]> options_list = options_main.getAllOptions();
-													  	for( String[] option: options_list ){
+													  	ArrayList<OptionBean> options_list = options_main.get(null, 0);
+													  	for( OptionBean option: options_list ){
 													  %>
-												  		<option value="<%= option[0]%>"><%= option[1] %></option>
+												  		<option value="<%= option.getId()%>"><%= option.getDescription() %></option>
 												  	  <% } %>									  												  	  																	
 												 	</select>
 											    </div>
@@ -212,7 +215,7 @@
         	     		type:'POST',
         	 			url: './bin/OptionsByPrograms',
         	 			data: form.serialize(),
-        	 			
+        	 			dataType: "text",
         		        success: function(msg){		        	
         		        	alert(msg);
         		            location.replace( "optionsprogram.jsp?rol="+idRol+"&mode="+mode );
@@ -266,7 +269,7 @@
 			        	if(data instanceof Array){
 			        		for(var i=0; i<data.length; i++){
 			        			//console.log("	data: " , data[i]);
-			        			trHTML += '<tr><td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td><td><div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;&nbsp;</button></div></td></tr>';                                    	                    		                    	
+			        			trHTML += '<tr><td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td><td><div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;</button></div></td></tr>';                                    	                    		                    	
 			        		}
 			        	}
 			            
