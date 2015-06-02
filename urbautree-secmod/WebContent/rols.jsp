@@ -96,7 +96,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i>ROLES</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> ROLES</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

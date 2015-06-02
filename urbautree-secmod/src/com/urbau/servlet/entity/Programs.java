@@ -19,27 +19,20 @@ import static com.urbau.misc.Constants.ID_PARAMETER;
 import static com.urbau.misc.Constants.PROGRAM_DESCRIPTION_PARAMETER;
 import static com.urbau.misc.Constants.PROGRAM_NAME_PARAMETER;
 
-
-
 @WebServlet("/Programs")
 public class Programs extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-						
-			System.out.println( ">>>>>>>>>>>>>> Programs >>>>>>>>>>>>>>>>>>: " );						
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+												
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
 			String message = "";
-			
-			System.out.println( "mode: " + modeParameter );
-			System.out.println( "\tid: " + idParameter );
+						
 										
 			if( idParameter != null){
 				ProgramBean programBean = new ProgramBean();
@@ -53,30 +46,27 @@ public class Programs extends Entity {
 									
 				if( !ADD.equals( modeParameter ) ){
 					programBean.setId( Integer.parseInt( idParameter));
-				}
-								
-				
-				System.out.println( "\tProgramDes: " + programDes );
+				}																
 				
 				ProgramsMain programsMain = new ProgramsMain();
 				
 				if( ADD.equals( modeParameter )){
-					if ( programsMain.addPrograma(programBean) ){
-						message = "Programa creado con exito.";
+					if ( programsMain.add(programBean) ){
+						message = "Registro creado con exito.";
 					} else {
-						showMessage( "No se pudo crear el Programa" , response );
+						showMessage( "No se pudo crear el Registro" , response );
 					}
 				}else if( EDIT.equals( modeParameter )){
-					if ( programsMain.modPrograma(programBean)){
-						message = "Programa modificado con exito.";
+					if ( programsMain.mod(programBean)){
+						message = "Registro modificado con exito.";
 					} else {
-						showMessage( "No se pudo modificar el Programa", response  );
+						showMessage( "No se pudo modificar el Registro", response  );
 					}
 				} else if( REMOVE.equals( modeParameter )){
-					if ( programsMain.delPrograma(programBean)){
-						message = "Programa eliminado con exito.";					
+					if ( programsMain.del(programBean)){
+						message = "Registro eliminado con exito.";					
 					} else {
-						showMessage( "No se pudo eliminar el Programa" , response );
+						showMessage( "No se pudo eliminar el Registro" , response );
 					}
 				}
 											

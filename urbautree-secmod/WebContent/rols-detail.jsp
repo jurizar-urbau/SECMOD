@@ -122,11 +122,10 @@
 		        }
 		      },
 		      highlight: function(element) {
-		        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		    	  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
 		      },
 		      success: function(element) {
-		        element
-		        .closest('.form-group').removeClass('has-error').addClass('has-success');
+		    	  $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
 		      }
 	     	});
 	    });                                  
@@ -141,40 +140,44 @@
 			});
 			
 			$savebutton  = $("#savebutton");
-									
+			$rolname = $("#rolname");
+			
 			$savebutton.click(function(){
-						
-				var form =$('#form');
 				
-	     		$.ajax({
-		     		type:'POST',
-		 			url: './bin/Rols',
-		 			data: form.serialize(),
-		 			dataType: "text",		 			
-			        success: function(msg){
-			        	console.log("msg:: ", msg);
-			        	alert(msg);
-			            location.replace( "rols.jsp" );
-			        },
-		 			error: function(jqXHR, textStatus, errorThrown){
-		 				console.log("ERROR srtatus: ", textStatus);
-		 				console.log("ERROR errorThrown: ", errorThrown);
-		 				alert("Se prudujo un error al hacer la operaciòn");	
-		 			}
-	       		});
+				if($rolname.val()){
+					
+					var form =$('#form');					
+		     		$.ajax({
+			     		type:'POST',
+			 			url: './bin/Rols',
+			 			data: form.serialize(),
+			 			dataType: "text",		 			
+				        success: function(msg){
+				        	console.log("msg:: ", msg);
+				        	alert(msg);
+				            location.replace( "rols.jsp" );
+				        },
+			 			error: function(jqXHR, textStatus, errorThrown){
+			 				console.log("ERROR srtatus: ", textStatus);
+			 				console.log("ERROR errorThrown: ", errorThrown);
+			 				alert("Se prudujo un error al hacer la operaciòn");	
+			 			}
+		       		});
+						
+				}						
 	     		return false;
 	 		});
 				 
 		
 			var mode = getUrlParameter('mode');		
 			if(mode === "remove"){
-				$("#rolname").attr('disabled','disabled');				
+				$rolname.attr('disabled','disabled');				
 				$savebutton.removeClass("btn btn-success");
 				$savebutton.addClass("btn btn-danger");
 				$savebutton.html("Borrar");
 				
 			}else if(mode === "view"){
-				$("#rolname").attr('disabled','disabled');				
+				$rolname.attr('disabled','disabled');				
 				$savebutton.hide();
 			}			
 		});
