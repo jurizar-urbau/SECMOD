@@ -5,6 +5,8 @@
 <%@page import="com.urbau.beans.ProgramBean"%>
 <%@page import="com.urbau.beans.OptionBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.misc.Constants"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +15,9 @@
 		<%			
 			RolesMain roles_main = new RolesMain();
  			ProgramsMain programs_main = new ProgramsMain();
-			OptionsMain options_main = new OptionsMain();					
-		%>			
-				
+			OptionsMain options_main = new OptionsMain();			
+			boolean isAuthorizedToDelete = Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS_BY_PROGRAM, Constants.OPTIONS_DELETE);					
+		%>										
 	</head>
    
    <body>
@@ -136,9 +138,11 @@
 										</td>
 										
 										<td>
+										<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS_BY_PROGRAM, Constants.OPTIONS_ADD)){ %>
 		                            		<div class="form-actions">
 												<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 											
 											</div>                                    	
+										<%}%>	
                                 		</td>	
 										
 	                        		</form>
@@ -267,9 +271,21 @@
 			        	var trHTML="";
 			        	
 			        	if(data instanceof Array){
+			        		
+			        		var isAuthorizedToDelete = <%=isAuthorizedToDelete%>;
+			        		
 			        		for(var i=0; i<data.length; i++){
-			        			//console.log("	data: " , data[i]);
-			        			trHTML += '<tr><td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td><td><div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;</button></div></td></tr>';                                    	                    		                    	
+			        			
+			        			trHTML += '<tr>';
+			        			trHTML += '<td>'+data[i].programDescription+'</td><td>'+data[i].optionDescription+'</td>';
+			        			trHTML += '<td>';
+			        			
+			        			if(isAuthorizedToDelete){
+			        					trHTML += '<div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;</button></div>';	
+			        			}
+			        			
+			        			trHTML += '</td></tr>';
+			        			                                 	                    		                    	
 			        		}
 			        	}
 			            
