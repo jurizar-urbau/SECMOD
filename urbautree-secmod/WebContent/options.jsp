@@ -2,6 +2,7 @@
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.OptionBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,10 +92,11 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS, Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+          				<%} %>  
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> OPCIONES</h4>
 	                  	  	  <hr>
@@ -111,9 +113,15 @@
                               <tr>
 							  	<td><%= option.getDescription() %></td>
 								<td>
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS, Constants.OPTIONS_MODIFY)){ %>
 									<button class="btn btn-primary btn-xs" onclick="edit('<%= option.getId() %>');"><i class="fa fa-pencil"></i></button>
+								<%}%>	
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS, Constants.OPTIONS_DELETE)){ %>
 									<button class="btn btn-danger btn-xs" onclick="removereg('<%= option.getId() %>');"><i class="fa fa-trash-o "></i></button>
+								<%}%>	
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_OPTIONS, Constants.OPTIONS_VIEW)){ %>
 									<button class="btn btn-success btn-xs" onclick="view('<%= option.getId() %>');"><i class="fa fa-check"></i></button>
+								<%}%>	
 								</td>
 							   </tr>
                               <% } %>
