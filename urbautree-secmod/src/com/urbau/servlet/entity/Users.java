@@ -27,38 +27,38 @@ public class Users extends Entity {
 			
 			String message = "";
 			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
-					UsuarioBean rm = new UsuarioBean();
+					UsuarioBean bean = new UsuarioBean();
 					
-					rm.setUsuario( request.getParameter("loginid") );
-					rm.setNombre( request.getParameter("nombresapellidos") );
-					rm.setClave( request.getParameter("clave") );
-					rm.setEmail( request.getParameter( "email" ));
-					rm.setEstado( request.getParameter("activo") != null );
-					rm.setTelefono( request.getParameter( "telefono" ));					
+					bean.setUsuario( request.getParameter("loginid") );
+					bean.setNombre( request.getParameter("nombresapellidos") );
+					bean.setClave( request.getParameter("clave") );
+					bean.setEmail( request.getParameter( "email" ));
+					bean.setEstado( request.getParameter("activo") != null );
+					bean.setTelefono( request.getParameter( "telefono" ));					
 					
 					if(null != request.getParameter("rol")){
-						rm.setRol( Integer.parseInt( request.getParameter("rol") ));
+						bean.setRol( Integer.parseInt( request.getParameter("rol") ));
 					}
 												
 					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						rm.setId( Integer.parseInt( request.getParameter( "id" )));
+						bean.setId( Integer.parseInt( request.getParameter( "id" )));
 					}
-					UsuariosMain rmain = new UsuariosMain();
+					UsuariosMain main = new UsuariosMain();
 					
 					if( "add".equals( mode )){
-						if ( rmain.add( rm ) ){
+						if ( main.add( bean ) ){
 							message = "Usuario creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el usuario" , response );
 						}
 					} else if( "edit".equals( mode )){
-						if ( rmain.mod( rm ) ){
+						if ( main.mod( bean ) ){
 							message = "Usuario modificado con exito.";
 						} else {
 							showMessage( "No se pudo modificar el usuario", response  );
 						}
 					} else if( "remove".equals( mode )){
-						if ( rmain.del( rm ) ){
+						if ( main.del( bean ) ){
 							message = "Usuario eliminado con exito.";
 						} else {
 							showMessage( "No se pudo eliminar el usuario" , response );

@@ -21,35 +21,33 @@ public class Bancos extends Entity {
 			
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			System.out.println( "mode: " + mode );
-			
+			String mode = request.getParameter( "mode" );						
 			
 			String message = "";
 			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
-					BancoBean rm = new BancoBean();
+					BancoBean bean = new BancoBean();
 					
-					rm.setNombre( request.getParameter("nombre") );					
+					bean.setNombre( request.getParameter("nombre") );					
 												
 					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						rm.setId( Integer.parseInt( request.getParameter( "id" )));
+						bean.setId( Integer.parseInt( request.getParameter( "id" )));
 					}
-					BancosMain rmain = new BancosMain();
+					BancosMain main = new BancosMain();
 					
 					if( "add".equals( mode )){
-						if ( rmain.add( rm ) ){
+						if ( main.add( bean ) ){
 							message = "Registro creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el registro" , response );
 						}
 					} else if( "edit".equals( mode )){
-						if ( rmain.mod( rm ) ){
+						if ( main.mod( bean ) ){
 							message = "Registro modificado con exito.";
 						} else {
 							showMessage( "No se pudo modificar el registro", response  );
 						}
 					} else if( "remove".equals( mode )){
-						if ( rmain.del( rm ) ){
+						if ( main.del( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {
 							showMessage( "No se pudo eliminar el registro" , response );

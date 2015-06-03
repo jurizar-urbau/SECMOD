@@ -34,35 +34,35 @@ public class Rols extends Entity {
 			String message = "";					
 										
 			if( idParameter != null){
-				RolBean rolBean = new RolBean();
+				RolBean bean = new RolBean();
 								
 				String rolName = request.getParameter(ROL_NAME_PARAMETER);
-				rolBean.setDescription(rolName);													
+				bean.setDescription(rolName);													
 					
 				if( !ADD.equals( modeParameter ) ){
-					rolBean.setId( Integer.parseInt( idParameter));
+					bean.setId( Integer.parseInt( idParameter));
 				}											
 				
-				RolesMain rolesMain = new RolesMain();
+				RolesMain main = new RolesMain();
 				
 				if( ADD.equals( modeParameter )){					
-					if(rolesMain.duplicate(rolBean)){
+					if(main.duplicate(bean)){
 						message = "Registro ya existe!";
 					}else{
-						if ( rolesMain.add( rolBean ) ){
+						if ( main.add( bean ) ){
 							message = "Registro creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el registro" , response );
 						}
 					}														
 				}else if( EDIT.equals( modeParameter )){
-					if ( rolesMain.mod(rolBean)){
+					if ( main.mod(bean)){
 						message = "Registro modificado con exito.";
 					} else {
 						showMessage( "No se pudo modificar el Registro", response  );
 					}
 				} else if( REMOVE.equals( modeParameter )){
-					if ( rolesMain.del(rolBean)){
+					if ( main.del(bean)){
 						message = "Registro eliminado con exito.";					
 					} else {
 						showMessage( "No se pudo eliminar el Registro" , response );

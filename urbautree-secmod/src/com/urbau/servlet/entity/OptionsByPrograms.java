@@ -30,27 +30,26 @@ public class OptionsByPrograms extends Entity {
 								
 				String message = "";
 				
-					OptionsByProgramBean rm = new OptionsByProgramBean();
+					OptionsByProgramBean bean = new OptionsByProgramBean();
 																											
 					if(null != idProgram){
-						rm.setId_program( idProgram );
+						bean.setId_program( idProgram );
 					}
 					if(null != idOption){
-						rm.setId_option(idOption);
+						bean.setId_option(idOption);
 					}
 					if(null != idRol){
-						rm.setId_rol(idRol);	
+						bean.setId_rol(idRol);	
 					}
-																																							
-										
-					OptionsByProgramMain rmain = new OptionsByProgramMain();
+																																																	
+					OptionsByProgramMain main = new OptionsByProgramMain();
 					
 					if( "add".equals( mode )){
 					
-						if(rmain.duplicate(rm)){
+						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
 						}else{
-							if ( rmain.add( rm ) ){
+							if ( main.add( bean ) ){
 								message = "Registro creado con exito.";
 							} else {
 								showMessage( "No se pudo crear el registro" , response );
@@ -60,13 +59,13 @@ public class OptionsByPrograms extends Entity {
 					} else if( "remove".equals( mode )){
 						
 						try{
-							rm.setId( Integer.parseInt( id));
+							bean.setId( Integer.parseInt( id));
 						}catch(NumberFormatException e){
 							showMessage( "No se pudo eliminar el registro" , response );
 							System.out.println( "Error: " + e.getMessage() );
 						}
 												
-						if ( rmain.del( rm ) ){
+						if ( main.del( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {
 							showMessage( "No se pudo eliminar el registro" , response );
