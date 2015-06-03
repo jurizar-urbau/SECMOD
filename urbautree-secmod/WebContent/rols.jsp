@@ -2,6 +2,7 @@
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.RolBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +22,8 @@
 		if( list.size() > 0 ){
 			total_regs = ((RolBean)list.get( 0 )).getTotal_regs();
 		}
+		
+		
 	%>
 	<script>
 		function edit( id ){
@@ -91,10 +94,13 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
-          				  </span>
+          		
+						  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_ROLS, Constants.OPTIONS_ADD)){ %>		
+          				  	<span class="pull-right">
+          				  		<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
+          				  	</span>
+						  <%}%>
+						  
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> ROLES</h4>
 	                  	  	  <hr>
@@ -111,9 +117,15 @@
                               <tr>
 							  	<td><%= rol.getDescription() %></td>
 								<td>
-									<button class="btn btn-primary btn-xs" onclick="edit('<%= rol.getId() %>');"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs" onclick="removereg('<%= rol.getId() %>');"><i class="fa fa-trash-o "></i></button>
-									<button class="btn btn-success btn-xs" onclick="view('<%= rol.getId() %>');"><i class="fa fa-check"></i></button>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_ROLS, Constants.OPTIONS_MODIFY)){ %>
+										<button class="btn btn-primary btn-xs" onclick="edit('<%= rol.getId() %>');"><i class="fa fa-pencil"></i></button>
+									<%}%>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_ROLS, Constants.OPTIONS_DELETE)){ %>
+										<button class="btn btn-danger btn-xs" onclick="removereg('<%= rol.getId() %>');"><i class="fa fa-trash-o "></i></button>
+									<%}%>	
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_ROLS, Constants.OPTIONS_VIEW)){ %>
+										<button class="btn btn-success btn-xs" onclick="view('<%= rol.getId() %>');"><i class="fa fa-check"></i></button>
+									<%}%>
 								</td>
 							   </tr>
                               <% } %>

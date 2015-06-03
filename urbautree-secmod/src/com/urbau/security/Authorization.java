@@ -84,7 +84,7 @@ public class Authorization {
 		Connection con = null; 
 		Statement  stmt = null;
 		ResultSet  rs  = null;
-		String sql = "SELECT count( * ) FROM OPCIONESXPROGRAMA , programas prg WHERE ID_ROL='"+idrol+"' AND ID_PROGRAMA = prg.id and prg.`PROGRAM_NAME` = '"+programa_name+"' AND ID_OPCION='" + option + "'";
+		String sql = "SELECT count( * ) FROM OPCIONESXPROGRAMA , PROGRAMAS prg WHERE ID_ROL='"+idrol+"' AND ID_PROGRAMA = prg.id and prg.`PROGRAM_NAME` = '"+programa_name+"' AND ID_OPCION='" + option + "'";
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
