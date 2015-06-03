@@ -151,5 +151,31 @@ public class ProgramsMain {
 	}
 
 	
+	public boolean duplicate( ProgramBean bean ){
+		
+		if ( null == bean.getDescription()){
+			return false;
+		}
+				
+		Connection con = null;
+		Statement  stmt= null;
+		ResultSet  rs   = null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();			
+			String sql = "SELECT * from PROGRAMAS where DESCRIPCION = '"+bean.getDescription()+"' AND PROGRAM_NAME = '" +bean.getProgram_name()+"'"; 
+			rs = stmt.executeQuery(sql);			
+			rs.beforeFirst();
+			rs.last();
+			int total = rs.getRow();			
+			return total >= 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
 	
 }

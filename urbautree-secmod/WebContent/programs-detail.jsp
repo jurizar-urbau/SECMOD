@@ -87,9 +87,15 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Programa</label>
                           	<div class="col-sm-10">
-                          		<input type="text" class="form-control" name="programname" id="programname" value="<%= bean.getProgram_name() %>">                 	                                          
+                          	
+                          		<select class="form-control" name="programname" id="programname">                          																 
+								</select>
+                          		                 	                                          
                           	</div>
                       	</div>
+                      	
+                      	
+                      	
                           
                        <div class="form-actions">
        	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
@@ -125,8 +131,7 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
                   		maxlength: 50,
                   		required: true
                 	},
-                	programname: {
-                  		minlength: 3,
+                	programname: {                  		
                   		maxlength: 50,
                   		required: true
                 	}
@@ -153,6 +158,41 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
     		$savebutton  = $("#savebutton");
     		$programdesc = $("#programdesc");
     		$programname =$("#programname");
+    		
+    		var programName = "<%=bean.getProgram_name() %>";    		
+    		
+    		$.ajax({
+				url: './bin/FeedersList',
+	     		type:'POST',    	 			
+	 		    data: { packageName: 'com.urbau.feeders'},        	 			
+		        success: function(data, textStatus, jqXHR){		        			        	 		        		        			        	
+		        	
+		        	if(data instanceof Array){
+		        		for(var i=0; i < data.length; i++){
+		        			
+		        			if(data[i].name){
+		        				if(programName === data[i].name){
+		        					$programname.append($("<option />").val(data[i].name).text(data[i].name).attr('selected',true));	
+		        				}else{
+		        					$programname.append($("<option />").val(data[i].name).text(data[i].name));
+		        				}
+			        				
+		        			}
+		        					        	                                    	                    		                    	
+		        		}
+		        	}
+		            		        	
+		        },
+	 			error: function(jqXHR, textStatus, errorThrown){
+	 				console.log("ERROR srtatus: ", textStatus);
+	 				console.log("ERROR errorThrown: ", errorThrown);
+	 				alert("Se prudujo un error al hacer la operacion");	
+	 			}
+		            		        
+	       });
+    		
+    		    		    		    		   
+    		
     		
     		$savebutton.click(function(){
     			        			    		
@@ -182,16 +222,17 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
     	 	});
     				 
     		
-    		var mode = getUrlParameter('mode');    		
-    		if(mode === "remove"){
-    			
+    		var mode = getUrlParameter('mode');  
+    		    		    		
+    		if(mode === "remove"){    			    	    		
     			$programdesc.attr('disabled','disabled');
     			$programname.attr('disabled','disabled');
     			
     			$savebutton.removeClass("btn btn-success");
     			$savebutton.addClass("btn btn-danger");
-    			$savebutton.html("Borrar");						
-    		}else if(mode === "view"){
+    			$savebutton.html("Borrar");			
+    			
+    		}else if(mode === "view"){    			    	    			
     			$programdesc.attr('disabled','disabled');
     			$programname.attr('disabled','disabled');
     			
@@ -215,9 +256,7 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
 		        }
 		    }
 	    } // end getUrlParameter 
-        
-            
-           
+                              
 	</script>
         
         

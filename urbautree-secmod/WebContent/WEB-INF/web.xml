@@ -69,6 +69,11 @@
     <servlet-name>OptionsByProgramsList</servlet-name>
     <servlet-class>com.urbau.servlet.entity.OptionsByProgramsList</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>FeedersList</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.FeedersList</servlet-class>
+  </servlet>
+  
   
   
   
@@ -122,6 +127,11 @@
     <servlet-name>OptionsByProgramsList</servlet-name>
     <url-pattern>/bin/OptionsByProgramsList</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FeedersList</servlet-name>
+    <url-pattern>/bin/FeedersList</url-pattern>
+  </servlet-mapping>
+  
       
   <context-param>
     <description>Location to store uploaded file</description>

@@ -35,35 +35,45 @@ public class Programs extends Entity {
 						
 										
 			if( idParameter != null){
-				ProgramBean programBean = new ProgramBean();
+				ProgramBean bean = new ProgramBean();
 								
 				String programDes = request.getParameter(PROGRAM_DESCRIPTION_PARAMETER);
-				programBean.setDescription(programDes);
+				bean.setDescription(programDes);
 				
 				String programName = request.getParameter(PROGRAM_NAME_PARAMETER);
-				programBean.setProgram_name(programName);	
+				bean.setProgram_name(programName);	
 				
 									
 				if( !ADD.equals( modeParameter ) ){
-					programBean.setId( Integer.parseInt( idParameter));
+					bean.setId( Integer.parseInt( idParameter));
 				}																
 				
-				ProgramsMain programsMain = new ProgramsMain();
+				ProgramsMain main = new ProgramsMain();
 				
 				if( ADD.equals( modeParameter )){
-					if ( programsMain.add(programBean) ){
-						message = "Registro creado con exito.";
-					} else {
-						showMessage( "No se pudo crear el Registro" , response );
-					}
+					
+					if(main.duplicate(bean)){
+						message = "Registro ya existe!";
+					}else{
+						if ( main.add( bean ) ){
+							message = "Registro creado con exito.";
+						} else {
+							showMessage( "No se pudo crear el registro" , response );
+						}
+					}									
 				}else if( EDIT.equals( modeParameter )){
-					if ( programsMain.mod(programBean)){
-						message = "Registro modificado con exito.";
-					} else {
-						showMessage( "No se pudo modificar el Registro", response  );
-					}
+					
+					if(main.duplicate(bean)){
+						message = "Registro ya existe!";
+					}else{
+						if ( main.mod( bean ) ){
+							message = "Registro modificado con exito.";
+						} else {
+							showMessage( "No se pudo modificar el Registro", response  );
+						}
+					}					
 				} else if( REMOVE.equals( modeParameter )){
-					if ( programsMain.del(programBean)){
+					if ( main.del(bean)){
 						message = "Registro eliminado con exito.";					
 					} else {
 						showMessage( "No se pudo eliminar el Registro" , response );
