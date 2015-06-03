@@ -2,6 +2,7 @@
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.ProgramBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,10 +93,11 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+          				<%} %>  
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> PROGRAMAS</h4>
 	                  	  	  <hr>
@@ -114,9 +116,15 @@
 							  	<td><%= program.getDescription() %></td>
 							  	<td><%= program.getProgram_name() %></td>
 								<td>
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_MODIFY)){ %>
 									<button class="btn btn-primary btn-xs" onclick="edit('<%= program.getId() %>');"><i class="fa fa-pencil"></i></button>
+								<%} %>
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_DELETE)){ %>	
 									<button class="btn btn-danger btn-xs" onclick="removereg('<%= program.getId() %>');"><i class="fa fa-trash-o "></i></button>
+								<%} %>	
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_VIEW)){ %>
 									<button class="btn btn-success btn-xs" onclick="view('<%= program.getId() %>');"><i class="fa fa-check"></i></button>
+								<%} %>	
 								</td>
 							   </tr>
                               <% } %>
