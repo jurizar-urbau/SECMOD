@@ -3,6 +3,7 @@
 <%@page import="com.urbau.beans.UsuarioBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.UsuariosMain"%>
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,10 +93,11 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_ADD)){ %>          				
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+          				<%}%>  
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> USUARIOS </h4>
 	                  	  	  <hr>
@@ -124,17 +126,22 @@
                                   <td>
                                   
                                   <% if( us.isEstado()){ %>
-                                  	<span class="label label-success label-mini">&nbsp;Activo&nbsp;&nbsp;</span>
+                                  	<span class="label label-success label-mini">&nbsp;Activo&nbsp;</span>
                                   	<% } else { %>
                                   	<span class="label label-danger label-mini">Inactivo</span>
                                   	<% } %>
                                   </td>
                                   
                                   <td>
-                                      
+                                  	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_MODIFY)){ %>                                     
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                    <%}%>  
+                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_DELETE)){ %>  
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                    <%}%>  
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_VIEW)){ %>                                      
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                    <%}%>  
                                   </td>
                               </tr>
                               <% } %>
