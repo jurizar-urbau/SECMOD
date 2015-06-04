@@ -73,6 +73,10 @@
     <servlet-name>FeedersList</servlet-name>
     <servlet-class>com.urbau.servlet.entity.FeedersList</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Monedas</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Monedas</servlet-class>
+  </servlet>
   
   
   
@@ -130,6 +134,10 @@
   <servlet-mapping>
     <servlet-name>FeedersList</servlet-name>
     <url-pattern>/bin/FeedersList</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Monedas</servlet-name>
+    <url-pattern>/bin/Monedas</url-pattern>
   </servlet-mapping>
   
       
