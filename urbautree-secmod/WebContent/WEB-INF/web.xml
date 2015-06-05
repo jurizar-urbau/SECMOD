@@ -77,6 +77,15 @@
     <servlet-name>Monedas</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Monedas</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Paises</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Paises</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MonedasList</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.MonedasList</servlet-class>
+  </servlet>
+  
   
   
   
@@ -139,7 +148,14 @@
     <servlet-name>Monedas</servlet-name>
     <url-pattern>/bin/Monedas</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+    <servlet-name>Paises</servlet-name>
+    <url-pattern>/bin/Paises</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  <servlet-name>MonedasList</servlet-name>
+    <url-pattern>/bin/MonedasList</url-pattern>
+  </servlet-mapping>  
       
   <context-param>
     <description>Location to store uploaded file</description>

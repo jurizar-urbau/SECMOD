@@ -221,7 +221,7 @@ public class Util {
 		Connection con  = null;
 		Statement  stmt = null;
 		ResultSet  rs   = null;
-		String sql = "SELECT COUNT( * ) FROM " + table + " " + where ;
+		String sql = "SELECT COUNT( * ) FROM " + table + " " + where ;		
 		int total_regs = -1;
 		try{
 			con  = ConnectionManager.getConnection();
@@ -339,6 +339,17 @@ public class Util {
 			sb.append( getFieldLikes( "NOMBRE", q) );
 			sb.append( " OR " );
 			sb.append( getFieldLikes( "SIMBOLO", q) );
+			return sb.toString();
+		}
+	}
+	
+	public static String getPaisesWhere(String q) {
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( "NOMBRE", q) );			
 			return sb.toString();
 		}
 	}
