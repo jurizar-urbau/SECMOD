@@ -1,7 +1,10 @@
 package com.urbau.beans;
 
+import com.eclipsesource.json.JsonObject;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.urbau.beans._interface.Bean;
-
+@DatabaseTable(tableName = "COUNTRIES")
 public class CountryBean  implements Bean {
 
 	
@@ -11,11 +14,17 @@ public class CountryBean  implements Bean {
 	public static String TABLE = "COUNTRIES";
 	
 	public static final String  COUNTRY_TAG   = "{country}";
+
+	private static final String COUNTRY_NAME = "countryName";
+
+	private static final String ID = "id";
 	
 	private int total_regs;
 	//mapped fields
+	@DatabaseField(generatedId = true)
 	private int id;
-	private String name; 
+	
+	@DatabaseField(columnName ="COUNTRY")
 	private String country; 
 	
 	public int getTotal_regs() {
@@ -39,19 +48,17 @@ public class CountryBean  implements Bean {
 		return 0;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	
 	public String getCountry() {
 		return country;
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public JsonObject getJsonBean() {
+		JsonObject jo  = new JsonObject();
+		jo.add(ID, getId());
+		jo.add(COUNTRY_NAME, getCountry());
+		return jo;
 	}
 	
 	

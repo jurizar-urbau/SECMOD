@@ -19,11 +19,11 @@ public class Vehicles extends Entity {
 	private static final String ADD_MODE = "add";
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
+//		try{
 			System.out.println( "message recieved: " + request.getQueryString() );
 			
 			HttpSession session = request.getSession();
-			validateRequest( session );
+//			validateRequest( session );
 			String mode = request.getParameter( "mode" );
 			System.out.println( "mode: " + mode );
 			System.out.println( "id: " + request.getParameter( "id") );
@@ -42,7 +42,7 @@ public class Vehicles extends Entity {
 						rm.setId( Integer.parseInt( request.getParameter( "id" )));
 					}
 					VehicleMain rmain = new VehicleMain();
-					
+					message = "listado ";
 					if( ADD_MODE.equals( mode )){
 						if ( rmain.addVehicle(rm) ){
 							message = "Vehiculo creado con exito.";
@@ -61,19 +61,21 @@ public class Vehicles extends Entity {
 						} else {
 							showMessage( "No se pudo eliminar el vehiculo" , response );
 						}
+					} else if("list".equals( mode )) {
+						message = "listado ";
 					}
 					response.getOutputStream().write( message.getBytes() );
 					response.getOutputStream().flush();
 					response.getOutputStream().close();
 				}
 			
-		} catch( UserNotAuthenticatedException exception ){
-			System.out.println( "Error: " + exception.getMessage() );
-			exception.printStackTrace();
-			response.getOutputStream().write( exception.getMessage().getBytes() );
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
-		}
+//		} catch( UserNotAuthenticatedException exception ){
+//			System.out.println( "Error: " + exception.getMessage() );
+//			exception.printStackTrace();
+//			response.getOutputStream().write( exception.getMessage().getBytes() );
+//			response.getOutputStream().flush();
+//			response.getOutputStream().close();
+//		}
 	}
 	
 }

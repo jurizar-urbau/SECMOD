@@ -44,8 +44,11 @@ public class ClientBean  implements Bean {
 	@DatabaseField(columnName = "ADDRSHIP")
 	private String addrship;
 	
-	@DatabaseField(columnName = "COUNTRY")
-	private int country;
+	@DatabaseField( columnName = "COUNTRY_ID",
+				    foreign = true,
+				    foreignAutoRefresh = true
+					)
+	private CountryBean country;
 	
 	@DatabaseField(columnName = "TIPO_CLIENTE")
 	private int tipo_cliente;
@@ -142,10 +145,10 @@ public class ClientBean  implements Bean {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	public int getCountry() {
+	public CountryBean getCountry() {
 		return country;
 	}
-	public void setCountry(int country) {
+	public void setCountry(CountryBean country) {
 		this.country = country;
 	}
 	public int getTipo_cliente() {
@@ -160,7 +163,8 @@ public class ClientBean  implements Bean {
 	public void setSeller(int seller) {
 		this.seller = seller;
 	}
-	public String getJsonBean() {
+	public JsonObject getJsonBean() {
+		
 		JsonObject jo  = new JsonObject();
 		jo.add("rzsocial", 	this.getRzsocial());
 		jo.add("client",	this.getClient());
@@ -173,7 +177,7 @@ public class ClientBean  implements Bean {
 		jo.add("email", this.getEmail());
 		jo.add("rating", this.getRating());
 		jo.add("addrship", this.getAddrfiscal());
-		jo.add("country",this.getCountry());
+		jo.add("country",this.getCountry().getJsonBean());
 		jo.add("tipoClient", this.getTipo_cliente());
 		jo.add("seller", this.getTipo_cliente());
 		

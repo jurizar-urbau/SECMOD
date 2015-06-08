@@ -20,6 +20,7 @@ public class Entity extends HttpServlet {
 	public static final String DEL_MODE = "remove";
 	public static final String EDIT_MODE = "edit";
 	public static final String LIST_MODE = "list";
+	public static final String VIEW_MODE = "view";
 	public static final int SUCCESS_STATUS = 200;
 	public static final String SUCCES_MESSAGE = "SUCCES";
 	

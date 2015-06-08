@@ -62,12 +62,20 @@
     <servlet-class>com.urbau.servlet.entity.TypeCalls</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>Clients</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Clients</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>Sellers</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Sellers</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>ClientType</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ClientType</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Countries</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Countries</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
@@ -108,6 +116,10 @@
     <url-pattern>/bin/typecalls</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>Clients</servlet-name>
+    <url-pattern>/bin/clients</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>Accounts</servlet-name>
     <url-pattern>/bin/account</url-pattern>
   </servlet-mapping>
@@ -121,6 +133,11 @@
     <url-pattern>/bin/clientType</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+    <servlet-name>Countries</servlet-name>
+    <url-pattern>/bin/countries</url-pattern>
+  </servlet-mapping>
+  
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
@@ -128,4 +145,12 @@
          /Users/xumakgt/Desktop/
     </param-value>
   </context-param>
+  <filter>
+  <filter-name>CorsFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>CorsFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
 </web-app>

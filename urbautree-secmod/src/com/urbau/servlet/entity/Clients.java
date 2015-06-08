@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.eclipsesource.json.JsonObject;
 import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.ClientBean;
+import com.urbau.beans.CountryBean;
 import com.urbau.feeders.ClientMain;
+import com.urbau.feeders.CountryMain;
 
 
 @WebServlet("/clients")
@@ -41,15 +43,21 @@ public class Clients extends Entity {
 				bean.setRzsocial( request.getParameter("rzsocial") );
 				bean.setClient(	request.getParameter("client"));
 				bean.setFax(		request.getParameter("fax"));
+				bean.setTel(	 request.getParameter("tel"));
+				bean.setTelalt(	 request.getParameter("telalt"));
 				bean.setFaxalt(	request.getParameter("faxalt"));
 				bean.setNumfiscal(request.getParameter("numfiscal"));
 				bean.setAddrfiscal(request.getParameter("addrfiscal"));
 				bean.setEmail(	request.getParameter("email"));
-				bean.setRating( 	Integer.valueOf(request.getParameter("rating")) );
+				
+				bean.setRating( 	getIntParameter(request,"rating"));
+				
 				bean.setAddrship(	request.getParameter("addrship"));
-				bean.setCountry( 	Integer.valueOf(request.getParameter("country")));
-				bean.setTipo_cliente( Integer.valueOf(request.getParameter("tipocliente")));
-				bean.setSeller(	Integer.valueOf(request.getParameter("seller")));
+				CountryMain countryMain = new  CountryMain(); 
+				CountryBean cbBean = countryMain.getItem(getIntParameter(request,"country" ));
+				bean.setCountry( 	cbBean);
+				bean.setTipo_cliente( getIntParameter(request,"tipocliente" ));
+				bean.setSeller( getIntParameter(request,"seller" ));
 					
 			status = fieldMain.addItem(bean);
 				
@@ -84,6 +92,56 @@ public class Clients extends Entity {
 			
 			
 			
+		
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String mode  = request.getParameter("mode");
+		ClientMain fieldMain = new ClientMain(); 	
+		JsonObject jo = new JsonObject();
+		boolean status = false;
+	
+		if(LIST_MODE.equals(mode)) {
+			ArrayList<ClientBean> tcb = fieldMain.getItems();
+			JsonObject jsonBeans  = new JsonObject();
+			Iterator<ClientBean> iTcb = tcb.iterator();
+			while(iTcb.hasNext()) {
+				ClientBean itBean = iTcb.next();
+				jsonBeans.add(String.valueOf(itBean.getId()), itBean.getJsonBean());
+				
+			}
+			status = true; 
+			
+			jo.add("data", jsonBeans);
+		}else if(VIEW_MODE.equals(mode)){
+			String id = request.getParameter("id");
+			if(!id.isEmpty()){
+				ClientBean cb = fieldMain.getItem(Integer.valueOf(id));
+				if(cb != null ) {
+					jo = cb.getJsonBean();
+					status = true;
+				} else {
+					status = false;
+					jo.add("message", "id didint exist");
+				}
+				
+			}
+			
+		}
+		
+		
+		processStatus(status,jo,response);
+		
+	
+		
+	}
+	private int getIntParameter(HttpServletRequest request, String parameter) {
+		String strParam = request.getParameter(parameter);
+		if(strParam != null && !strParam.isEmpty()){
+			return Integer.valueOf(request.getParameter("rating"));
+		}else {
+			return 0;
+		}
 		
 	}
 
@@ -132,7 +190,7 @@ public class Clients extends Entity {
 			editBean.setEmail(	request.getParameter("email"));
 			editBean.setRating( 	Integer.valueOf(request.getParameter("rating")) );
 			editBean.setAddrship(	request.getParameter("addrship"));
-			editBean.setCountry( 	Integer.valueOf(request.getParameter("country")));
+//			editBean.setCountry( 	Integer.valueOf(request.getParameter("country")));
 			editBean.setTipo_cliente( Integer.valueOf(request.getParameter("tipocliente")));
 			editBean.setSeller(	Integer.valueOf(request.getParameter("seller")));
 			

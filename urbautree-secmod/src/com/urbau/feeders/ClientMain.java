@@ -9,6 +9,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.urbau._abstract.AbstractMain;
 import com.urbau.beans.ClientBean;
+import com.urbau.beans.CountryBean;
 import com.urbau.db.ORMConnectionManager;
 import com.urbau.misc.Util;
 
@@ -47,7 +48,7 @@ public class ClientMain extends AbstractMain {
 	}
 
 
-
+@Deprecated
 	public ClientBean getBean(ResultSet rs) throws Exception {
 		ClientBean bean = new ClientBean();
 		
@@ -110,7 +111,7 @@ public class ClientMain extends AbstractMain {
 		bean.setEmail("");
 		bean.setRating(0);
 		bean.setAddrship("");
-		bean.setCountry(0);
+		bean.setCountry(new CountryBean());
 		bean.setTipo_cliente(0);
 		bean.setSeller(0);
 		

@@ -42,6 +42,10 @@
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	<%@include file="fragment/nodeHeads.jsp"%>
+	<!--  <script src="js/fesapp.js"> </script> --> 
+	<script src="scripts/formApp.js"></script>
+    <script src="scripts/MainController.js"></script>
 	</head>
    <body>
    <%@include file="fragment/fbsection.jsp" %>
@@ -75,27 +79,22 @@
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height" ng-app="fesApp"  ng-controller="formCtrl" >
+          <section class="wrapper site-min-height" >
           	<h3><i class="fa fa-angle-right"></i>  {{beanService.titleCrud}} </h3>
           	<div class="row mt">
           		<div class="col-lg-12">
-          			<div class="form-panel">
+          			<div class="form-panel" ng-app="formsApp" ng-controller="clientFormController as vm">
           			   
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="typecalls.jsp">&nbsp;Regresar</a> </h4>
-                      <form class="form-horizontal style-form" id="form" name="form" novalidate>
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Tipo</label>
-                              <div class="col-sm-10">
-                                  <input type="text" class="form-control"  ng-model="beanService.bean.type"  >
-                              </div>
-                          </div>
-                          
-                           <div class="form-actions">
-                           	    <input  class="btn"  type="button" ng-click="reset()" value="Reset" />
- 								<input type="submit" class="btn btn-success"  ng-click="update(beanService.bean)" value="Guardar" />
-					        </div>  
-                      </form>
-                  </div>
+<%--                       <%@include file="fragment/forms/client-form.jsp" %> --%>
+<%--                       <%@include file="fragment/forms/test.jsp" %>
+ --%>
+ 					 <form  ng-submit="vm.onSubmit()" novalidate>
+			            <formly-form model="vm.client" fields="vm.clientFields" form="vm.clientForm">
+			                <button type="submit" class="btn btn-primary"ng-disabled="vm.clientForm.$invalid"  >Submit</button>
+			            </formly-form>
+			        </form>
+                   </div>
 
                      
           		</div>
@@ -113,9 +112,9 @@
   </section>
   
 	<%@include file="fragment/footerscripts.jsp"%>
-	
+<%-- 	
 <script>
-	fesApp.service('beanService', function () {
+formsApp.service('beanService', function () {
 			var type = "Cliente"
         	var mode =    '<%= request.getParameter("mode")%>';
         	if(mode=='add') {
@@ -124,7 +123,7 @@
         	}else if(mode=="edit"){
         		title =" Editar "+type;
         	}else if(mode=="remove"){
-        		title =" Eliminar " type;
+        		title =" Eliminar " +type;
         	}
         	this.config = {
                 bean: {
@@ -142,11 +141,11 @@
         			rating: '<%=bean.getRating()%>',
         			addrShip: '<%=bean.getAddrship()%>',
         			country: '<%=bean.getCountry()%>',
-        			tipoCliente: '<%=bean.getTipo_cliente()%>',
+        			tipocliente: '<%=bean.getTipo_cliente()%>',
         			seller: '<%=bean.getSeller()%>',
                 },
-                url: './bin/typecalls',
-    			redirectUrl : "typecalls.jsp",
+                url: './bin/clients',
+    			redirectUrl : "clients.jsp",
     			titleCrud: title
             };
 
@@ -154,7 +153,7 @@
         })
 
     </script>
-	    
+	     --%>
   </body>
 </html>
 <% 		
