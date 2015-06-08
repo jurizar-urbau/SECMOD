@@ -27,6 +27,7 @@
                           <li><a  href="bancos.jsp">Bancos</a></li>
                           <li><a  href="monedas.jsp">Monedas</a></li>
                           <li><a  href="paises.jsp">Paises</a></li>
+                          <li><a  href="proveedores.jsp">Proveedores</a></li>
                       </ul>
                   </li> 
                   <li class="sub-menu" id="menu-seguridad">

@@ -198,6 +198,14 @@ public class Util {
 				getFieldLikes( "NOMBRE", q ) + " OR " + getFieldLikes( "USUARIO", q );					
 		}
 	}
+	public static String getProveedoresWhere( String q ){
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			return " WHERE " +
+				getFieldLikes( "NOMBRE", q ) + " OR " + getFieldLikes( "RAZON_SOCIAL", q )+ " OR " + getFieldLikes( "NIT", q )+ " OR " + getFieldLikes( "CONTACTO", q )+ " OR " + getFieldLikes( "TELEFONO", q )+ " OR " + getFieldLikes( "CORREO", q );					
+		}
+	}
 	public static int getNextId( String table ){
 		Connection con  = null;
 		Statement  stmt = null;

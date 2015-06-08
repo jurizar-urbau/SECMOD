@@ -188,6 +188,7 @@ public class UsuariosMain extends AbstractMain {
 					"CORREO = " + Util.vs( bean.getEmail() )+ ", " +
 				    "TELEFONO = " + Util.vs( bean.getTelefono() ) + " "+
 					"WHERE ID = " + bean.getId();
+			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {

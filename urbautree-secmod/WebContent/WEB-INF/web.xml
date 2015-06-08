@@ -85,6 +85,10 @@
     <servlet-name>MonedasList</servlet-name>
     <servlet-class>com.urbau.servlet.entity.MonedasList</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Proveedores</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Proveedores</servlet-class>
+  </servlet>  
   
   
   
@@ -156,6 +160,10 @@
   <servlet-name>MonedasList</servlet-name>
     <url-pattern>/bin/MonedasList</url-pattern>
   </servlet-mapping>  
+  <servlet-mapping>
+    <servlet-name>Proveedores</servlet-name>
+    <url-pattern>/bin/Proveedores</url-pattern>
+  </servlet-mapping>
       
   <context-param>
     <description>Location to store uploaded file</description>
