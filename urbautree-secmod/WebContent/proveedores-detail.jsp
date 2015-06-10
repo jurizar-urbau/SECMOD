@@ -12,7 +12,7 @@
 			PaisesMain paises_main = new PaisesMain();
 			MonedasMain monedas_main = new MonedasMain();
 			
-			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );								
 			ProveedorBean bean = proveedores_main.get( id );
 			String mode = request.getParameter( "mode" );									
 																		

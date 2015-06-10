@@ -105,17 +105,11 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th class="hidden-phone">Nit</th>
-                                  <th class="hidden-phone">Codigo</th>
+                                  <th>Nit</th>                                  
                                   <th>Nombre</th>
-                                  <th class="hidden-phone">Razon Social</th>
-                                  <th class="hidden-phone">Contacto</th>
-                                  <th>Direccion</th>
+                                  <th class="hidden-phone">Razon Social</th>                                                                    
                                   <th>Telefono</th>
-                                  <th>Correo</th>
-                                  <th >Pais</th>
-                                  <th>Moneda</th>
-                                  <th>Limite Credito</th>
+                                  <th class="hidden-phone">Correo</th>                                  
                                   <th>Saldo</th>
                                   <th></th>
                               </tr>
@@ -125,22 +119,11 @@
                               	for(ProveedorBean proveedor: list ){
                               %>
                               <tr>
-                                  <td class="hidden-phone"><%= proveedor.getNit() %></td>
-                                  <td class="hidden-phone"><%= proveedor.getCodigo() %></td>
+                                  <td><%= proveedor.getNit() %></td>                                  
                                   <td><%= proveedor.getNombre() %></td>
-                                  <td class="hidden-phone"><%= proveedor.getRazonSocial() %></td>
-                                  <td class="hidden-phone"><%= proveedor.getContacto() %></td>
-                                  <td><%= proveedor.getDireccion() %></td>
+                                  <td class="hidden-phone" ><%= proveedor.getRazonSocial() %></td>                                                                    
                                   <td><%= proveedor.getTelefono() %></td>
-                                  <td><%= proveedor.getEmail() %></td>
-                                  <td><%= paises_main.get( proveedor.getPais() ).getNombre() %></td>
-                                  
-                                  <%                                  
-                                  	MonedaBean moneda = monedas_main.get(Integer.parseInt(paises_main.get( proveedor.getPais() ).getMoneda()));                                                                                                     
-                                  %>
-                                  
-                                  <td><%= moneda.getNombre() %></td>                                  
-                                  <td><%= proveedor.getLimiteCredito() %></td>
+                                  <td class="hidden-phone" ><%= proveedor.getEmail() %></td>                                                                                                                                                                         
                                   <td><%= proveedor.getSaldo() %></td>
                                                                     
                                   <td>

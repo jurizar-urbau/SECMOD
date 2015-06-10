@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
+import com.urbau.beans.PaisBean;
 import com.urbau.beans.ProveedorBean;
 import com.urbau.feeders.ProveedoresMain;
+import com.urbau.feeders.PaisesMain;
 
 @WebServlet("/Proveedores")
 public class Proveedores extends Entity {
@@ -38,17 +40,21 @@ public class Proveedores extends Entity {
 					bean.setTelefono( request.getParameter( "telefono" ));
 					bean.setEmail( request.getParameter( "correo" ));
 					
-					String pais =request.getParameter( "pais" );
-					String moneda =request.getParameter( "moneda" );
+					String pais =request.getParameter( "pais" );					
 					String limiteCredito =request.getParameter( "limitecredito" );
 					String saldo =request.getParameter( "saldo" );
 					
+					
 					if(pais != null){
-						bean.setPais( Integer.parseInt(pais));	
+						int paisId =  Integer.parseInt(pais);												
+						bean.setPais( paisId);
+						
+						PaisesMain paises_main = new PaisesMain();
+						PaisBean paisBean = paises_main.get(paisId);																		
+						bean.setMoneda( Integer.parseInt(paisBean.getMoneda()));
+						
 					}
-					if(moneda != null){
-						bean.setMoneda( Integer.parseInt(moneda));	
-					}
+					
 					if(limiteCredito != null){
 						bean.setLimiteCredito( Double.parseDouble(limiteCredito));	
 					}

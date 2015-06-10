@@ -74,7 +74,9 @@ public class ProveedoresMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,NIT,CODIGO,NOMBRE,RAZON_SOCIAL,CONTACTO,DIRECCION,TELEFONO,CORREO,PAIS,MONEDA,LIMITE_CREDITO,SALDO FROM PROVEEDORES WHERE ID=" + id );
+			String query  = "SELECT ID,NIT,CODIGO,NOMBRE,RAZON_SOCIAL,CONTACTO,DIRECCION,TELEFONO,CORREO,PAIS,MONEDA,LIMITE_CREDITO,SALDO FROM PROVEEDORES WHERE ID=" + id ;
+			System.out.println("query:"+ query);
+			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new ProveedorBean();
 				bean.setId(  rs.getInt   ( 1  ));
