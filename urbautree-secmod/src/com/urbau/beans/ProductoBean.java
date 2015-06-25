@@ -12,6 +12,7 @@ public class ProductoBean implements Bean {
 	private double precio;
 	private double precio_importacion;
 	private String image_path;
+	private int stock_minimo;
 	
 	private int total_regs;
 	
@@ -22,6 +23,12 @@ public class ProductoBean implements Bean {
 		this.total_regs = total_regs;
 	}
 	
+	public int getStock_minimo() {
+		return stock_minimo;
+	}
+	public void setStock_minimo(int stock_minimo) {
+		this.stock_minimo = stock_minimo;
+	}
 	public int getId() {
 		return id;
 	}

@@ -3,24 +3,30 @@
 <%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>
+<%@page import="com.urbau.feeders.ProveedoresMain"%>
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%
-	ProductosMain um = new ProductosMain();
-		
+	<%    
+		ProductosMain productos_main = new ProductosMain();
+		ProveedoresMain proveedores_main = new ProveedoresMain();
+					
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
-		ArrayList<ProductoBean> list = um.getProducto( request.getParameter("q"), from );
+		ArrayList<ProductoBean> list = productos_main.get( request.getParameter("q"), from );
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){
 			total_regs = ((ProductoBean)list.get( 0 )).getTotal_regs();
 		}
+		
+		
+		//System.out.println("host>>:: " + pageContext.getRequest().getServerName());
 	%>
 	<script>
 		function edit( id ){
@@ -92,7 +98,9 @@
           		<div class="col-lg-12">
           		<div class="content-panel">
           				  <span class="pull-right">
+          				  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_ADD)){ %>
           				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
+          				  <%} %>
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
@@ -107,6 +115,7 @@
                                   <th class="hidden-phone">Proveedor</th>
                                   <th>Precio</th>
                                   <th class="hidden-phone">Precio importaci&oacute;n</th>
+                                  <th >Stock M&iacute;nimo</th>
                                   <th>Foto</th>
                                   <th></th>
                               </tr>
@@ -119,17 +128,23 @@
                                   <td><%= us.getCodigo() %></td>
                                   <td><%= us.getDescripcion() %></td>
                                   <td><%= us.getCoeficiente_unidad() %></td>
-                                  <td><%= us.getProveedor() %></td>
+                                  <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
                                   <td><%= us.getPrecio() %></td>
                                   <td ><%= us.getPrecio_importacion() %></td>
-                                  <td><% //= us.getImage_path() %>
-                                  	<img src="assets/dummy/BAT_100_MISILES.jpg" width="100px">
+                                  <td ><%= us.getStock_minimo() %></td>
+                                  <td>
+                                  	<img src="http://localhost:8080/urbautree-secmod/bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">
                                   </td>
                                   <td>
-                                      
+                                	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_MODIFY)){ %>	                                     
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                    <%} %>  
+                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_DELETE)){ %>  
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                    <%} %>  
+                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                    <%} %>  
                                   </td>
                               </tr>
                               <% } %>

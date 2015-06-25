@@ -24,6 +24,7 @@ public class Constants {
 	public static final String NAME_MONEDAS = "com.urbau.feeders.MonedasMain";
 	public static final String NAME_PAISES = "com.urbau.feeders.PaisesMain";
 	public static final String NAME_PROVEEDORES = "com.urbau.feeders.ProveedoresMain";
+	public static final String NAME_PRODUCTOS = "com.urbau.feeders.ProductosMain";
 	
 	public static final String ACCOUNTS_ADDS = "H";
 	public static final String ACCOUNTS_SUBSTRACT = "D";

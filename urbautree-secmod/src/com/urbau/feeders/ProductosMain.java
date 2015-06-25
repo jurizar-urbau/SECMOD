@@ -12,7 +12,8 @@ import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
 
 public class ProductosMain extends AbstractMain {
-	public ArrayList<ProductoBean> getProducto( String q, int from ){
+	
+	public ArrayList<ProductoBean> get( String q, int from ){
 		ArrayList<ProductoBean> list = new ArrayList<ProductoBean>();
 		Connection con  = null;
 		Statement  stmt = null;
@@ -23,13 +24,13 @@ public class ProductosMain extends AbstractMain {
 			stmt = con.createStatement();
 			int total_regs = 0;
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH FROM PRODUCTOS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
-				rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH FROM PRODUCTOS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
+				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
 				total_regs = Util.getTotalRegs( "PRODUCTOS", "" );
 				 
 			} else {
-				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
-				rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
+				rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
 				
 				total_regs = Util.getTotalRegs( "PRODUCTOS", Util.getProductosWhere( q ) );
 			}
@@ -44,7 +45,8 @@ public class ProductosMain extends AbstractMain {
 				bean.setProveedor( rs.getInt( 5 ));
 				bean.setPrecio( rs.getDouble( 6 )); 
 				bean.setPrecio_importacion( rs.getDouble( 7 )) ;
-				bean.setImage_path( Util.trimString( rs.getString( 8 )) );
+				bean.setStock_minimo(rs.getInt( 8 ));
+				bean.setImage_path( Util.trimString( rs.getString( 9 )) );
 				list.add( bean );
 			}
 		} catch( Exception e ){
@@ -58,7 +60,7 @@ public class ProductosMain extends AbstractMain {
 	
 	
 	
-	public ProductoBean getProducto( int id ){
+	public ProductoBean get( int id ){
 		if( id < 0 ){
 			return getBlankBean();
 		}
@@ -69,7 +71,7 @@ public class ProductosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH FROM PRODUCTOS WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS WHERE ID=" + id );
 			while( rs.next() ){
 				bean = new ProductoBean();
 				bean.setId(  rs.getInt   ( 1  ));
@@ -79,7 +81,8 @@ public class ProductosMain extends AbstractMain {
 				bean.setProveedor( rs.getInt( 5 ));
 				bean.setPrecio( rs.getDouble( 6 )); 
 				bean.setPrecio_importacion( rs.getDouble( 7 )) ;
-				bean.setImage_path( Util.trimString( rs.getString( 8 )) );
+				bean.setStock_minimo(rs.getInt( 8 ));
+				bean.setImage_path( Util.trimString( rs.getString( 9 )) );
 				
 			}
 		} catch( Exception e ){
@@ -96,23 +99,26 @@ public class ProductosMain extends AbstractMain {
 		ProductoBean bean = new ProductoBean();
 		bean.setCodigo( "");
 		bean.setDescripcion( "");
-		bean.setCoeficiente_unidad(-1);
+		bean.setCoeficiente_unidad(0);
 		bean.setProveedor(-1);
 		bean.setPrecio( 0); 
 		bean.setPrecio_importacion( 0) ;
+		bean.setStock_minimo(1);
 		bean.setImage_path( "");
 		return bean;
 	}
-	public boolean addProducto( ProductoBean bean ){
+	public boolean add( ProductoBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO PRODUCTOS " +
-					"(CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,IMAGE_PATH) " +
+					"(CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_IMPORTACION,STOCK_MINIMO,IMAGE_PATH) " +
 						"VALUES " +
-					"('"+ bean.getCodigo()+"','"+ bean.getDescripcion()+"',"+ bean.getCoeficiente_unidad()+","+ bean.getProveedor()+","+ bean.getPrecio()+","+ bean.getPrecio_importacion()+",'"+ bean.getImage_path()+"')";
+					"('"+ bean.getCodigo()+"','"+ bean.getDescripcion()+"',"+ bean.getCoeficiente_unidad()+","+ bean.getProveedor()+","+ bean.getPrecio()+","+ bean.getPrecio_importacion()+","+ bean.getStock_minimo()+",'"+ bean.getImage_path()+"')";
+			
+			System.out.println("sql:: " + sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -123,7 +129,7 @@ public class ProductosMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
-	public boolean modProducto( ProductoBean bean ){
+	public boolean mod( ProductoBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -132,7 +138,7 @@ public class ProductosMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "UPDATE ProductoS SET " +
+			String sql = "UPDATE PRODUCTOS SET " +
 					
 					"CODIGO = " + Util.vs( bean.getCodigo() ) + ", " +
 					"DESCRIPCION = " + Util.vs( bean.getDescripcion() ) + ", " +
@@ -140,6 +146,7 @@ public class ProductosMain extends AbstractMain {
 					"PROVEEDOR = " + bean.getProveedor() + ", " +
 					"PRECIO = " + bean.getPrecio() + ", " +
 					"PRECIO_IMPORTACION = " + bean.getPrecio_importacion() + ", " +
+					"STOCK_MINIMO = " + bean.getStock_minimo() + ", " +
 					"IMAGE_PATH = " + Util.vs( bean.getImage_path() ) + " " +
 					"WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
@@ -152,7 +159,7 @@ public class ProductosMain extends AbstractMain {
 		}
 	}
 	
-	public boolean delProducto( ProductoBean bean ){
+	public boolean del( ProductoBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
