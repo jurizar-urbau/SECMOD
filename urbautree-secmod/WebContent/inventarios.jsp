@@ -3,44 +3,74 @@
 <%@page import="com.urbau.beans.InvetarioBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.InventariosMain"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.feeders.BodegasMain"%>
+
+<%
+	
+	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
+
+	String idBodegaParameter = request.getParameter("bodega");
+	int idBodega  = -1;
+	try{
+		idBodega = Integer.parseInt(idBodegaParameter);	
+	}catch(NumberFormatException e){
+		System.out.print("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
+	}	
+	
+	
+	if(idBodega >= 0){
+	
+		System.out.print("idBodega: " + idBodega);
+		
+		InventariosMain inventario_main = new InventariosMain();
+		
+		int from = 0;
+		if( request.getParameter( "from" ) != null ){
+			from = Integer.parseInt( request.getParameter( "from" ) );
+		}				
+		
+		ArrayList<InvetarioBean> inventario_list = inventario_main.get( request.getParameter("q"), from ,idBodega);
+		int total_regs = -1;
+		
+		if( inventario_list.size() > 0 ){
+			total_regs = ((InvetarioBean)inventario_list.get( 0 )).getTotal_regs();
+		}
+		
+		BodegasMain bodega_main = new BodegasMain();
+		BodegaBean bodegaBean = bodega_main.getBodega(idBodega);
+		
+				
+%>
+
+
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%
-	
-		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
-	
-		InventariosMain um = new InventariosMain();
-		
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}
-		
-		String idBodega = request.getParameter("bodega");
-		System.out.print("idBodega: " + idBodega);
-		
-		ArrayList<InvetarioBean> list = um.get( request.getParameter("q"), from ,1);
-		int total_regs = -1;
-		
-		if( list.size() > 0 ){
-			total_regs = ((InvetarioBean)list.get( 0 )).getTotal_regs();
-		}
-	%>
+
 	<script>
 		function edit( id ){
-			location.replace( "invetarios-detail.jsp?mode=edit&id="+id);
+			var idBodega = <%=idBodega%>;
+			console.log("AAAAAAA " , idBodega);
+			location.replace( "inventarios-detail.jsp?mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "invetarios-detail.jsp?mode=remove&id="+id);
+			var idBodega = <%=idBodega%>;
+			console.log("AAAAAAA " , idBodega);
+			location.replace( "inventarios-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "invetarios-detail.jsp?mode=view&id="+id);
+			var idBodega = <%=idBodega%>;
+			console.log("AAAAAAA " , idBodega);
+			location.replace( "inventarios-detail.jsp?mode=view&id="+id);
 		} 
-		function add(){
-			location.replace( "invetarios-detail.jsp?mode=add" );
+		function add(){			
+			var idBodega = <%=idBodega%>;
+			console.log("AAAAAAA " , idBodega);
+			
+			location.replace( "inventarios-detail.jsp?mode=add&bodega="+idBodega);
 		}
 	</script>
 	</head>
@@ -106,7 +136,7 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> INVENTARIO </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> INVENTARIO  DE <%= bodegaBean.getNombre()%></h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
@@ -119,7 +149,7 @@
                               </thead>
                               <tbody>
                               <%
-                              	for( InvetarioBean bean : list ){
+                              	for( InvetarioBean bean : inventario_list ){
                               %>
                               <tr>
                                   <td><%= bean.getId_product() %></td>
@@ -198,3 +228,11 @@
 	<%@include file="fragment/footerscripts.jsp"%>
   </body>
 </html>
+
+<% 		
+} else {
+%>
+		<p>La bodega NO EXISTE</p>
+<%
+ } 
+%>
