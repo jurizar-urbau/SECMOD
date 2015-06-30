@@ -25,7 +25,7 @@ public class BodegasMain extends AbstractMain {
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
-				total_regs = Util.getTotalRegs( "BodegaS", "" );
+				total_regs = Util.getTotalRegs( "BODEGAS", "" );
 				 
 			} else {
 				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
@@ -97,7 +97,7 @@ public class BodegasMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "INSERT INTO BodegaS " +
+			String sql = "INSERT INTO BODEGAS " +
 					"(NOMBRE,DIRECCION,TELEFONO) " +
 						"VALUES " +
 					"('"+ bean.getNombre()+"','"+ bean.getDireccion()+"','"+ bean.getTelefono()+"')";

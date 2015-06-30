@@ -41,21 +41,21 @@ public class Bodegas extends Entity {
 					
 					if( "add".equals( mode )){
 						if ( rmain.addBodega( rm ) ){
-							message = "Bodega creada con exito.";
+							message = "Registro creado con exito.";
 						} else {
-							showMessage( "No se pudo crear la bodega" , response );
+							showMessage( "No se pudo crear el registro" , response );
 						}
 					} else if( "edit".equals( mode )){
 						if ( rmain.modBodega( rm ) ){
-							message = "Bodega modificada con exito.";
+							message = "Registro modificada con exito.";
 						} else {
-							showMessage( "No se pudo modificar la bodega", response  );
+							showMessage( "No se pudo modificar el registro", response  );
 						}
 					} else if( "remove".equals( mode )){
 						if ( rmain.delBodega( rm ) ){
-							message = "Bodega eliminada con exito.";
+							message = "Registro eliminado con exito.";
 						} else {
-							showMessage( "No se pudo eliminar la bodega" , response );
+							showMessage( "No se pudo eliminar el registro" , response );
 						}
 					}
 					response.getOutputStream().write( message.getBytes() );

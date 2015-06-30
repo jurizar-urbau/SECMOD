@@ -8,34 +8,8 @@
 			BodegasMain rm = new BodegasMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			BodegaBean bean = rm.getBodega( id );
-			
-			String cmd = "Nueva bodega";
-			String mode = request.getParameter( "mode" );
-			
-			String keyReadOnly = "readonly=\"readonly\"";
-			String optionalReadOnly = "";
-			String mandatoryReadOnly = "";
-			String jsFunction = "save();";
-			String validateUser = "";
-			if( "edit".equals( mode ) ){
-				cmd = "Editar bodega " + id;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "edit();";
-			} else if( "view".equals( mode )){
-				cmd = "Ver bodega " + id;
-				mandatoryReadOnly = keyReadOnly;
-				optionalReadOnly = keyReadOnly;
-			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar bodega " + id;
-				optionalReadOnly = keyReadOnly;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "deleteReg();";
-			} else {
-				validateUser = "onchange=\"validateUser(this.value)\"";
-			}
-			
-			
+			BodegaBean bean = rm.getBodega( id );						
+			String mode = request.getParameter( "mode" );									
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -210,7 +184,7 @@
     	     		type:'POST',
     	 			url: './bin/Bodegas',
     	 			data: form.serialize(),
-    	 			
+    	 			dataType: "text",    	 			
     		        success: function(msg){		        	
     		        	alert(msg);
     		            location.replace( "bodegas.jsp" );
@@ -244,15 +218,7 @@
     			$("#nombresapellidos").attr('value', ' ');
     			$("#clave").attr('value', '');    			
     		}
-    		
-    		// select option by id 
-    		var idRol = $("#idRol").val();    		    		    	
-    		if(idRol){
-    			$("#rolSelect option[value="+idRol+"]").attr('selected','selected');    			
-    		}
-    		
-    		
-    		
+    		    
     		
    		}); // end function 
     		 
