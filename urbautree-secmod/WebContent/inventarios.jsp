@@ -6,6 +6,10 @@
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.feeders.BodegasMain"%>
 
+
+<%@page import="com.urbau.feeders.ProductosMain"%>
+<%@page import="com.urbau.beans.ProductoBean"%>
+
 <%
 	
 	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
@@ -15,13 +19,13 @@
 	try{
 		idBodega = Integer.parseInt(idBodegaParameter);	
 	}catch(NumberFormatException e){
-		System.out.print("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
+		System.out.println("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
 	}	
 	
 	
 	if(idBodega >= 0){
 	
-		System.out.print("idBodega: " + idBodega);
+		System.out.println("idBodega: " + idBodega);
 		
 		InventariosMain inventario_main = new InventariosMain();
 		
@@ -40,6 +44,8 @@
 		BodegasMain bodega_main = new BodegasMain();
 		BodegaBean bodegaBean = bodega_main.getBodega(idBodega);
 		
+		ProductosMain productos_main = new ProductosMain();
+		
 				
 %>
 
@@ -51,26 +57,21 @@
 	<%@include file="fragment/head.jsp"%>
 
 	<script>
-		function edit( id ){
-			var idBodega = <%=idBodega%>;
-			console.log("AAAAAAA " , idBodega);
-			location.replace( "inventarios-detail.jsp?mode=edit&id="+id);
+		function edit( id, estatus ){		
+			var bodega = <%=idBodega%>;
+			location.replace( "inventarios-detail.jsp?mode=edit&id="+id+"&estatus="+estatus+"&bodega="+bodega);
 		}
-		function removereg( id ){
-			var idBodega = <%=idBodega%>;
-			console.log("AAAAAAA " , idBodega);
-			location.replace( "inventarios-detail.jsp?mode=remove&id="+id);
+		function removereg( id, estatus ){
+			var bodega = <%=idBodega%>;
+			location.replace( "inventarios-detail.jsp?mode=remove&id="+id+"&estatus="+estatus+"&bodega="+bodega);
 		}
-		function view( id ){
-			var idBodega = <%=idBodega%>;
-			console.log("AAAAAAA " , idBodega);
-			location.replace( "inventarios-detail.jsp?mode=view&id="+id);
+		function view( id, estatus ){	
+			var bodega = <%=idBodega%>;
+			location.replace( "inventarios-detail.jsp?mode=view&id="+id+"&estatus="+estatus+"&bodega="+bodega);
 		} 
-		function add(){			
-			var idBodega = <%=idBodega%>;
-			console.log("AAAAAAA " , idBodega);
-			
-			location.replace( "inventarios-detail.jsp?mode=add&bodega="+idBodega);
+		function add(){
+			var bodega = <%=idBodega%>;
+			location.replace( "inventarios-detail.jsp?mode=add&bodega="+bodega);
 		}
 	</script>
 	</head>
@@ -150,18 +151,19 @@
                               <tbody>
                               <%
                               	for( InvetarioBean bean : inventario_list ){
+                              		 ProductoBean productoBean = productos_main.get(bean.getId_product());
                               %>
                               <tr>
-                                  <td><%= bean.getId_product() %></td>
+                                  <td><%= productoBean.getDescripcion() %></td>
                                   <td class="hidden-phone"><%= bean.getEstatus() %></td>
                                   <td ><%= bean.getAmount() %></td>
                                   <td>
                                   	                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-pencil"></i></button>
                         			  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-trash-o "></i></button>
                                       
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId_product() %>','<%= bean.getEstatus()  %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                       
                                                                         
                                                                   

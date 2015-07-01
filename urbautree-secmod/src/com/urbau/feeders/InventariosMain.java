@@ -1,5 +1,6 @@
 package com.urbau.feeders;
 
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -10,6 +11,7 @@ import com.urbau.beans.InvetarioBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
+import com.urbau.misc.InventarioHelper;
 
 public class InventariosMain extends AbstractMain {
 	
@@ -30,6 +32,11 @@ public class InventariosMain extends AbstractMain {
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
+			
+			InventarioHelper invHelper = new InventarioHelper();
+			invHelper.addBodega( idBodega );
+			
+			
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				rs = stmt.executeQuery( "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" LIMIT " + from + "," + items );
 				total_regs = Util.getTotalRegs( TABLE_NAME+idBodega, "" );
@@ -56,8 +63,8 @@ public class InventariosMain extends AbstractMain {
 	
 	
 	
-	public InvetarioBean get( int id, int idBodega ){
-		if( id < 0 ){
+	public InvetarioBean get( int id, String estatus, int idBodega ){
+		if( id < 0  || null == estatus){
 			return getBlankBean();
 		}
 		InvetarioBean bean = null;
@@ -67,7 +74,9 @@ public class InventariosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" WHERE ID=" + id );
+			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + id +" AND ESTATUS='"+estatus+"'";
+			System.out.println("query:"+query);
+			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new InvetarioBean();
 			    bean.setId_product(  rs.getInt   ( 1  ));
@@ -87,7 +96,7 @@ public class InventariosMain extends AbstractMain {
 		InvetarioBean bean = new InvetarioBean();
 		bean.setId_product(-1);
 		bean.setEstatus("");
-		bean.setAmount(-1);		
+		bean.setAmount(0);		
 		return bean;
 	}
 	
@@ -125,9 +134,9 @@ public class InventariosMain extends AbstractMain {
 			String sql = "UPDATE "+TABLE_NAME+bean.getIdBodega()+" SET " +
 					"ID_PRODUCT = " + bean.getId_product() + " , " +
 					"ESTATUS = " + Util.vs( bean.getEstatus() ) + ", " +
-					"AMOUNT = " + bean.getEstatus() + " " +
+					"AMOUNT = " + bean.getAmount() + " " +
 					"WHERE ID_PRODUCT = " + bean.getId_product() + " " + 
-					"AND ESTATUS = " + bean.getEstatus();
+					"AND ESTATUS = " + Util.vs( bean.getEstatus() );
 					
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
@@ -149,7 +158,8 @@ public class InventariosMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM "+TABLE_NAME+bean.getIdBodega()+" WHERE ID_PRODUCT = " + bean.getId_product() + " AND ESTATUS = "+bean.getEstatus();
+			String sql = "DELETE FROM "+TABLE_NAME+bean.getIdBodega()+" WHERE ID_PRODUCT = " + bean.getId_product() + " AND ESTATUS = '"+bean.getEstatus()+"'";
+			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
