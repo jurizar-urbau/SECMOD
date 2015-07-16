@@ -1,50 +1,50 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.InvetarioBean"%>
+<%@page import="com.urbau.beans.PreciosClienteBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.InventariosMain"%>
-<%@page import="com.urbau.beans.BodegaBean"%>
-<%@page import="com.urbau.feeders.BodegasMain"%>
+<%@page import="com.urbau.feeders.PreciosClientesMain"%>
+<%@page import="com.urbau.beans.PrecioBean"%>
+<%@page import="com.urbau.feeders.PreciosMain"%>
 
 
-<%@page import="com.urbau.feeders.ProductosMain"%>
-<%@page import="com.urbau.beans.ProductoBean"%>
+<%@page import="com.urbau.feeders.PreciosMain"%>
+<%@page import="com.urbau.beans.PrecioBean"%>
 
 <%
 	
 	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
 
-	String idBodegaParameter = request.getParameter("bodega");
-	int idBodega  = -1;
+	String idClienteParameter = request.getParameter("cliente");
+	int idCliente  = -1;
 	try{
-		idBodega = Integer.parseInt(idBodegaParameter);	
+		idCliente = Integer.parseInt(idClienteParameter);	
 	}catch(NumberFormatException e){
 		System.out.println("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
 	}	
 	
 	
-	if(idBodega >= 0){
+	if(idCliente >= 0){
 	
-		System.out.println("idBodega: " + idBodega);
+		System.out.println("idBodega: " + idCliente);
 		
-		InventariosMain inventario_main = new InventariosMain();
+		PreciosClientesMain preciosClientes_main = new PreciosClientesMain();
 		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}				
 		
-		ArrayList<InvetarioBean> inventario_list = inventario_main.get( request.getParameter("q"), from ,idBodega);
+		ArrayList<PreciosClienteBean> inventario_list = preciosClientes_main.get( request.getParameter("q"), from);
 		int total_regs = -1;
 		
 		if( inventario_list.size() > 0 ){
-			total_regs = ((InvetarioBean)inventario_list.get( 0 )).getTotal_regs();
+			total_regs = ((PreciosClienteBean)inventario_list.get( 0 )).getTotal_regs();
 		}
 		
-		BodegasMain bodega_main = new BodegasMain();
-		BodegaBean bodegaBean = bodega_main.getBodega(idBodega);
+		PreciosMain precion_main = new PreciosMain();		
+		PrecioBean bodegaBean = precion_main.get(idCliente);
 		
-		ProductosMain productos_main = new ProductosMain();
+		PreciosMain precios_main = new PreciosMain();
 		
 				
 %>
@@ -57,21 +57,21 @@
 	<%@include file="fragment/head.jsp"%>
 
 	<script>
-		function edit( id, estatus ){		
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=edit&id="+id+"&estatus="+estatus+"&bodega="+bodega);
+		function edit( id ){		
+			var cliente = <%=idCliente%>;
+			location.replace( "precios_cliente-detail.jsp?mode=edit&id="+id+"&cliente="+cliente);
 		}
-		function removereg( id, estatus ){
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=remove&id="+id+"&estatus="+estatus+"&bodega="+bodega);
+		function removereg( id ){
+			var cliente = <%=idCliente%>;
+			location.replace( "precios_cliente-detail.jsp?mode=remove&id="+id+"&cliente="+cliente);
 		}
-		function view( id, estatus ){	
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=view&id="+id+"&estatus="+estatus+"&bodega="+bodega);
+		function view( id){	
+			var cliente = <%=idCliente%>;
+			location.replace( "precios_cliente-detail.jsp?mode=view&id="+id+"&cliente="+cliente);
 		} 
 		function add(){
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=add&bodega="+bodega);
+			var cliente = <%=idCliente%>;
+			location.replace( "precios_cliente-detail.jsp?mode=add&cliente="+cliente);
 		}
 	</script>
 	</head>
@@ -137,37 +137,33 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-                          	  <h4><i class="fa fa-angle-left"></i><a href="bodegas.jsp">INVENTARIO  DE <%= bodegaBean.getNombre()%></a> </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> PRECIOS DE CLIENTE</h4>
+	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="clientes.jsp">&nbsp;Regresar</a> </h4>
 	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
-                              <tr>
-                                  
-                                  <th>Producto</th>
-                                  <th class="hidden-phone">Estatus</th>
-                                  <th>Cantidad</th>
+                              <tr>                                                                                                    
+                                  <th>Nombre</th>
+                                  <th>Coeficiente</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( InvetarioBean bean : inventario_list ){
-                              		 ProductoBean productoBean = productos_main.get(bean.getId_product());
+                              	for( PreciosClienteBean bean : inventario_list ){
+                              		PrecioBean precioBean = precios_main.get(bean.getIdCliente());
                               %>
                               <tr>
-                                  <td><%= productoBean.getDescripcion() %></td>
-                                  <td class="hidden-phone"><%= bean.getEstatus() %></td>
-                                  <td ><%= bean.getAmount() %></td>
+                                  <td><%= precioBean.getNombre() %></td>                                  
+                                  <td ><%= precioBean.getCoeficiente() %></td>
                                   <td>
                                   	                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
                         			  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                       
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId_product() %>','<%= bean.getEstatus()  %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      
-                                                                        
-                                                                  
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
+                                                                                                                                                                             
                                                                                                            
                                     
                                   </td>

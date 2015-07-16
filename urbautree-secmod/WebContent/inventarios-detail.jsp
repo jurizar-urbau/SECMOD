@@ -3,6 +3,8 @@
 <%@page import="com.urbau.beans.InvetarioBean"%>
 <%@page import="com.urbau.feeders.InventariosMain"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>    
+<%@page import="com.urbau.beans.ProductoBean"%>     
+
 <%				
 	ProductosMain pm = new ProductosMain();
 	String idBodegaParameter = request.getParameter("bodega");
@@ -16,8 +18,12 @@
 	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" )) && idBodega >= 0 ){
 
 		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+		String estatus = request.getParameter( "estatus" );
 		InventariosMain main = new InventariosMain();		
-		InvetarioBean bean = main.get( id, idBodega );		
+		InvetarioBean bean = main.get( id, estatus, idBodega );		
+		
+		ProductosMain productoMain = new ProductosMain();
+		String mode = request.getParameter( "mode" );				
 		
 		String mode = request.getParameter( "mode" );	
 		ArrayList<ProductoBean> list = pm.get(null, 0);
@@ -30,7 +36,7 @@
 		<%@include file="fragment/head.jsp"%>
 		<script>
 			function back(){
-				int bodega = <%=idBodega%>;
+				var bodega = <%=idBodega%>;
 				location.replace( "inventarios.jsp?bodega="+bodega);
 			}			
 		</script>
@@ -89,8 +95,30 @@
                       <form class="form-horizontal style-form" method="POST" id="form" name="form">
                       	                      
                       	<input type="hidden" name="mode" value="<%= mode%>">
-                      	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
-                                                          		
+                      	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">
+                      	<input type="hidden" name="bodega" value="<%= request.getParameter("bodega")%>">                      
+                      	<input type="hidden" name="estatusremove" value="<%= request.getParameter("estatus")%>">
+                                                          		                      	
+                      	<div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Producto</label>
+                              <div class="col-sm-10">
+                              
+                              		<select class="form-control" name="producto" id="producto">
+	                                  <%
+	                                  	ArrayList<ProductoBean> producto_list = productoMain.get(null, 0);
+	                                  	for( ProductoBean producto : producto_list ){
+	                                  %>
+	                                  	<option value="<%= producto.getId()%>"><%= producto.getDescripcion() %></option>
+	                                  <% } %>									  
+									  
+									</select>
+                              	
+                                  
+                              </div>
+                        </div>
+                          
+                          
+                      	
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Producto</label>
                           	<div class="col-sm-10">
@@ -102,6 +130,9 @@
                           	 	<% } %>
                           	</select>                          	            
 								<!--  input type="text" class="form-control" name="product" id="product" value="" -->	                          	                                                                                                  
+                          	<label class="col-sm-2 col-sm-2 control-label">Estatus</label>
+                          	<div class="col-sm-10">                          	            
+								<input type="text" class="form-control" name="estatus" id="estatus" value="<%=bean.getEstatus()%>">	                          	                                                                                                  
                           	</div>
                       	</div>
                       	
@@ -120,6 +151,10 @@
                           			<option>EN TRANSITO</option>
                           		</select>           
 									                          	                                                                                                  
+                          	<label class="col-sm-2 col-sm-2 control-label">Cantidad</label>
+                          	<div class="col-sm-10">                          	            
+								<input type="text" class="form-control" name="cantidad" id="cantidad" value="<%=bean.getAmount()%>">	                          	                                                                                                  
+
                           	</div>
                       	</div>
                           
@@ -182,22 +217,23 @@
 			});
 			
 			$savebutton  = $("#savebutton");
-			$name = $("#name");
-			$symbol = $("#symbol");
+			$producto = $("#producto");
+			$estatus = $("#estatus");
+			$cantidad = $("#cantidad");
 			
 			$savebutton.click(function(){
 				
-				if($name.val() && $symbol.val()){
-					
+				if($producto.val() && $estatus.val()){									
 					var form =$('#form');					
 		     		$.ajax({
 			     		type:'POST',
-			 			url: './bin/Monedas',
+			 			url: './bin/Inventarios',
 			 			data: form.serialize(),
 			 			dataType: "text",		 			
 				        success: function(msg){				        	
 				        	alert(msg);
-				            location.replace( "monedas.jsp" );
+				        	var bodega = getUrlParameter('bodega');
+				            location.replace( "inventarios.jsp?bodega="+bodega );
 				        },
 			 			error: function(jqXHR, textStatus, errorThrown){
 			 				console.log("ERROR srtatus: ", textStatus);
@@ -213,17 +249,28 @@
 		
 			var mode = getUrlParameter('mode');		
 			if(mode === "remove"){
-				$name.attr('disabled','disabled');				
-				$symbol.attr('disabled','disabled');
+				$producto.attr('disabled','disabled');				
+				$estatus.attr('disabled','disabled');
+				$cantidad.attr('disabled','disabled');
 				$savebutton.removeClass("btn btn-success");
 				$savebutton.addClass("btn btn-danger");
 				$savebutton.html("Borrar");
 				
 			}else if(mode === "view"){				
-				$name.attr('disabled','disabled');
-				$symbol.attr('disabled','disabled');
+				$producto.attr('disabled','disabled');
+				$estatus.attr('disabled','disabled');
+				$cantidad.attr('disabled','disabled');
 				$savebutton.hide();
 			}			
+			
+			
+			
+			// select option by id 
+    		var id = getUrlParameter('id');    		
+			console.log("id:" + id);
+    		if(id){
+    			$("#producto option[value="+id+"]").attr('selected','selected');    			
+    		}
 		});
 		 
 		 

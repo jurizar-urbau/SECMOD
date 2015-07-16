@@ -14,7 +14,13 @@ import com.urbau.misc.Util;
 
 public class ClientesMain {
 	
-	public ArrayList<ClienteBean> getCliente( String q, int from ){
+	public ArrayList<ClienteBean> get( String q, int from ){
+		return get( q, from, -1 );
+	}
+	
+	public ArrayList<ClienteBean> get( String q, int from, int limit ){
+		int items = limit > 0 ? limit : Constants.ITEMS_PER_PAGE;
+		
 		ArrayList<ClienteBean> list = new ArrayList<ClienteBean>();
 		Connection con  = null;
 		Statement  stmt = null;
@@ -23,10 +29,14 @@ public class ClientesMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,EMAIL,TELEFONO, CELULAR, FECHA_INGRESO,OBSERVACIONES FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				System.out.println( "sql:" + sql );
+				rs = stmt.executeQuery( sql );
+				
 			} else {
-				rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,EMAIL,TELEFONO, CELULAR, FECHA_INGRESO,OBSERVACIONES FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
-				System.out.println( " searching with: " + "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,EMAIL,TELEFONO, CELULAR, FECHA_INGRESO,OBSERVACIONES FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
+				System.out.println( "sql:" + sql );
+				rs = stmt.executeQuery( sql);				
 			}
 			while( rs.next() ){
 				ClienteBean bean = new ClienteBean();
@@ -35,11 +45,9 @@ public class ClientesMain {
 				bean.setNombres(  Util.trimString( rs.getString( 3 )));
 				bean.setApellidos( Util.trimString( rs.getString( 4 )));
 				bean.setDireccion( Util.trimString( rs.getString( 5 )) );
-				bean.setEmail( Util.trimString( rs.getString( 6 )));
-				bean.setTelefono( Util.trimString( rs.getString( 7 )) );
-				bean.setCelular( Util.trimString( rs.getString( 8 )) );
-				bean.setFecha_ingreso( new java.util.Date( rs.getDate( 9 ).getTime() ));
-				bean.setObservaciones( Util.trimString( rs.getString( 10 )));
+				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
+				bean.setEmail( Util.trimString( rs.getString( 7 )));
+								
 				list.add( bean );
 			}
 		} catch( Exception e ){
@@ -50,7 +58,7 @@ public class ClientesMain {
 		return list;
 	}
 	
-	public ClienteBean getCliente( int id ){
+	public ClienteBean get( int id ){
 		if( id < 0 ){
 			return getBlankBean();
 		}
@@ -61,7 +69,7 @@ public class ClientesMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,EMAIL,TELEFONO, CELULAR, FECHA_INGRESO,OBSERVACIONES FROM CLIENTES WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO FROM CLIENTES WHERE ID=" + id );
 			while( rs.next() ){
 				bean = new ClienteBean();
 				bean.setId(  rs.getInt   ( 1  ));
@@ -69,12 +77,8 @@ public class ClientesMain {
 				bean.setNombres(  Util.trimString( rs.getString( 3 )));
 				bean.setApellidos( Util.trimString( rs.getString( 4 )));
 				bean.setDireccion( Util.trimString( rs.getString( 5 )) );
-				bean.setEmail( Util.trimString( rs.getString( 6 )));
-				bean.setTelefono( Util.trimString( rs.getString( 7 )) );
-				bean.setCelular( Util.trimString( rs.getString( 8 )) );
-				bean.setFecha_ingreso( new java.util.Date( rs.getDate( 9 ).getTime() ));
-				bean.setObservaciones( Util.trimString( rs.getString( 10 )));
-
+				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
+				bean.setEmail( Util.trimString( rs.getString( 7 )));
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -83,6 +87,7 @@ public class ClientesMain {
 		}
 		return bean;
 	}
+	
 	public ClienteBean getBlankBean(){
 		ClienteBean bean = new ClienteBean();
 		bean.setNit(  "" );
@@ -96,14 +101,16 @@ public class ClientesMain {
 		bean.setObservaciones( "" );
 		return bean;
 	}
-	public boolean addCliente( ClienteBean bean ){
+	
+	public boolean add( ClienteBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "INSERT INTO CLIENTES ( NIT, NOMBRES, APELLIDOS, DIRECCION, EMAIL, TELEFONO, CELULAR, FECHA_INGRESO,OBSERVACIONES ) VALUES " +
-						 "('" + bean.getNit() + "','"+bean.getNombres()+"','"+bean.getApellidos()+"','"+bean.getDireccion()+"','"+bean.getEmail()+"','"+bean.getTelefono()+"','"+bean.getCelular()+"','"+getDateString ( bean.getFecha_ingreso() )+"','" + bean.getObservaciones() + "')";
+			String sql = "INSERT INTO CLIENTES ( NIT, NOMBRES, APELLIDOS, DIRECCION, TELEFONO, CORREO ) VALUES " +
+						 "('" + bean.getNit() + "','"+bean.getNombres()+"','"+bean.getApellidos()+"','"+bean.getDireccion()+"','"+bean.getTelefono()+"','"+bean.getEmail()+ "')";
+			System.out.println("sql: " +sql );
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -114,7 +121,8 @@ public class ClientesMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
-	public boolean modCliente( ClienteBean bean ){
+	
+	public boolean mod( ClienteBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -125,9 +133,8 @@ public class ClientesMain {
 			stmt= con.createStatement();
 			String sql = "UPDATE CLIENTES SET " +
 					"NIT=" + Util.vs( bean.getNit() ) + ", NOMBRES=" + Util.vs( bean.getNombres() ) + ", APELLIDOS=" + Util.vs( bean.getApellidos() ) + ", DIRECCION=" + Util.vs( bean.getDireccion() ) + "," + 
-					"EMAIL=" + Util.vs( bean.getEmail() ) + ", TELEFONO=" + Util.vs( bean.getTelefono() ) + ", CELULAR=" + Util.vs( bean.getCelular() ) + ", FECHA_INGRESO='" + getDateString( bean.getFecha_ingreso() ) + "', " +
-					"OBSERVACIONES=" + Util.vs( bean.getObservaciones() ) + " " +
-					"WHERE ID=" + bean.getId();
+					"CORREO=" + Util.vs( bean.getEmail() ) + ", TELEFONO=" + Util.vs( bean.getTelefono() ) + " WHERE ID=" + bean.getId();
+			System.out.println("sql: " + sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -138,7 +145,7 @@ public class ClientesMain {
 		}
 	}
 	
-	public boolean delCliente( ClienteBean bean ){
+	public boolean del( ClienteBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -161,6 +168,7 @@ public class ClientesMain {
 	public static int getProgramId() {
 		return 2;
 	}
+	
 	public String getDateString( Date date ){
 		Calendar cal = Calendar.getInstance();
 		String str = cal.get(Calendar.YEAR ) + "-" + ( cal.get( Calendar.MONTH ) + 1 ) + "-" + cal.get( Calendar.DAY_OF_MONTH );

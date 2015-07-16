@@ -1,77 +1,42 @@
-<%@page import="com.urbau.feeders.RolesMain"%>
+<%@page import="com.urbau.feeders.PreciosMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.InvetarioBean"%>
+<%@page import="com.urbau.beans.PrecioBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.InventariosMain"%>
-<%@page import="com.urbau.beans.BodegaBean"%>
-<%@page import="com.urbau.feeders.BodegasMain"%>
-
-
-<%@page import="com.urbau.feeders.ProductosMain"%>
-<%@page import="com.urbau.beans.ProductoBean"%>
-
-<%
-	
-	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
-
-	String idBodegaParameter = request.getParameter("bodega");
-	int idBodega  = -1;
-	try{
-		idBodega = Integer.parseInt(idBodegaParameter);	
-	}catch(NumberFormatException e){
-		System.out.println("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
-	}	
-	
-	
-	if(idBodega >= 0){
-	
-		System.out.println("idBodega: " + idBodega);
-		
-		InventariosMain inventario_main = new InventariosMain();
-		
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}				
-		
-		ArrayList<InvetarioBean> inventario_list = inventario_main.get( request.getParameter("q"), from ,idBodega);
-		int total_regs = -1;
-		
-		if( inventario_list.size() > 0 ){
-			total_regs = ((InvetarioBean)inventario_list.get( 0 )).getTotal_regs();
-		}
-		
-		BodegasMain bodega_main = new BodegasMain();
-		BodegaBean bodegaBean = bodega_main.getBodega(idBodega);
-		
-		ProductosMain productos_main = new ProductosMain();
-		
-				
-%>
-
-
+<%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-
+	<%		
+		PreciosMain main = new PreciosMain();
+		
+		int from = 0;
+		if( request.getParameter( "from" ) != null ){
+			from = Integer.parseInt( request.getParameter( "from" ) );
+		}
+				
+		ArrayList<PrecioBean> list = main.get( request.getParameter("q"), from );
+		int total_regs = -1;
+		
+		if( list.size() > 0 ){
+			total_regs = ((PrecioBean)list.get( 0 )).getTotal_regs();
+		}
+		
+		
+	%>
 	<script>
-		function edit( id, estatus ){		
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=edit&id="+id+"&estatus="+estatus+"&bodega="+bodega);
+		function edit( id ){
+			location.replace( "precios-detail.jsp?mode=edit&id="+id);
 		}
-		function removereg( id, estatus ){
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=remove&id="+id+"&estatus="+estatus+"&bodega="+bodega);
+		function removereg( id ){
+			location.replace( "precios-detail.jsp?mode=remove&id="+id);
 		}
-		function view( id, estatus ){	
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=view&id="+id+"&estatus="+estatus+"&bodega="+bodega);
-		} 
+		function view( id ){
+			location.replace( "precios-detail.jsp?mode=view&id="+id);
+		}
 		function add(){
-			var bodega = <%=idBodega%>;
-			location.replace( "inventarios-detail.jsp?mode=add&bodega="+bodega);
+			location.replace( "precios-detail.jsp?mode=add" );
 		}
 	</script>
 	</head>
@@ -108,7 +73,7 @@
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height">
+          <section class="wrapper site-min-height">          
           <br/>
           <div class="col-lg-6"> 
            
@@ -130,48 +95,41 @@
           		<div class="col-lg-12">
           		<div class="content-panel">
           		
-          				
-          				  <span class="pull-right">
-          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
-          				  </span>
-          				
-          				  
+						  <% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRECIOS, Constants.OPTIONS_ADD)){ %>		
+          				  	<span class="pull-right">
+          				  		<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
+          				  	</span>
+						  <%//}%>
+						  
                           <table class="table table-striped table-advance table-hover">
-                          	  <h4><i class="fa fa-angle-left"></i><a href="bodegas.jsp">INVENTARIO  DE <%= bodegaBean.getNombre()%></a> </h4>
-	                  	  	  
+	                  	  	  <h4><i class="fa fa-angle-right"></i> PRECIOS</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  
-                                  <th>Producto</th>
-                                  <th class="hidden-phone">Estatus</th>
-                                  <th>Cantidad</th>
+                                  <th class="hidden-phone">Nombre</th>                                                                                                      
+                                  <th class="hidden-phone">Coeficiente</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( InvetarioBean bean : inventario_list ){
-                              		 ProductoBean productoBean = productos_main.get(bean.getId_product());
+                              	for( PrecioBean bean : list ){
                               %>
                               <tr>
-                                  <td><%= productoBean.getDescripcion() %></td>
-                                  <td class="hidden-phone"><%= bean.getEstatus() %></td>
-                                  <td ><%= bean.getAmount() %></td>
-                                  <td>
-                                  	                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-pencil"></i></button>
-                        			  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId_product()  %>', '<%= bean.getEstatus()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId_product() %>','<%= bean.getEstatus()  %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      
-                                                                        
-                                                                  
-                                                                                                           
-                                    
-                                  </td>
-                              </tr>
+							  	<td><%= bean.getNombre() %></td>							  	
+							  	<td><%= bean.getCoeficiente() %></td>
+								<td>
+									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRECIOS, Constants.OPTIONS_MODIFY)){ %>
+										<button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>');"><i class="fa fa-pencil"></i></button>
+									<%//}%>
+									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRECIOS, Constants.OPTIONS_DELETE)){ %>
+										<button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId() %>');"><i class="fa fa-trash-o "></i></button>
+									<%//}%>	
+									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRECIOS, Constants.OPTIONS_VIEW)){ %>
+										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>
+									<%//}%>
+								</td>
+							   </tr>
                               <% } %>
                               
                               </tbody>
@@ -196,7 +154,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="paises.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -205,7 +163,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="paises.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -231,11 +189,3 @@
 	<%@include file="fragment/footerscripts.jsp"%>
   </body>
 </html>
-
-<% 		
-} else {
-%>
-		<p>La bodega NO EXISTE</p>
-<%
- } 
-%>
