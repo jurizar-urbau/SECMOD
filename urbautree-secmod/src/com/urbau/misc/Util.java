@@ -303,12 +303,10 @@ public class Util {
 			sb.append( " OR " );
 			sb.append( getFieldLikes( "DIRECCION", q) );
 			sb.append( " OR " );
-			sb.append( getFieldLikes( "EMAIL", q) );
-			sb.append( " OR " ); 
-			sb.append( getFieldLikes( "CELULAR", q) );
-			sb.append( " OR " ); 
+			sb.append( getFieldLikes( "CORREO", q) );
+			sb.append( " OR " ); 			
 			sb.append( getFieldLikes( "TELEFONO", q) );
-			
+						
 			return sb.toString();
 		}
 	}
@@ -361,6 +359,16 @@ public class Util {
 			return sb.toString();
 		}
 	}
+	public static String getColumNameGenericWhere(String columnName , String q) {
+		if ( (q == null || q.trim().length() == 0) && (columnName == null || columnName.trim().length() == 0) ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( columnName, q) );			
+			return sb.toString();
+		}
+	}
 	
 	public static String getProductosWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
@@ -374,6 +382,7 @@ public class Util {
 			return sb.toString();
 		}
 	}
+	
 	public static String getAttachmentWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";

@@ -97,7 +97,14 @@
     <servlet-name>Inventarios</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Inventarios</servlet-class>
   </servlet>
-
+  <servlet>
+    <servlet-name>Precios</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Precios</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Clientes</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Clientes</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
@@ -175,7 +182,14 @@
     <servlet-name>Inventarios</servlet-name>
     <url-pattern>/bin/Inventarios</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+    <servlet-name>Precios</servlet-name>
+    <url-pattern>/bin/Precios</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Clientes</servlet-name>
+    <url-pattern>/bin/Clientes</url-pattern>
+  </servlet-mapping>
 
 
 
