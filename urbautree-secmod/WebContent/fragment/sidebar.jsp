@@ -1,11 +1,11 @@
 
 <ul class="sidebar-menu" id="nav-accordion">
               
-                  <p class="centered">
+                  <!--  p class="centered">
                   <a href="home.jsp">
                   <img src="https://scontent-mia.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10742_714103018653633_713490040812823849_n.png?oh=1e76af0ab2ff870bbeffd15cb90b57ff&oe=55CE1A43" class="img-circle" width="60">
                   </a></p>
-                  <h5 class="centered"><%= loggedUser.getNombre() %></h5>
+                  <h5 class="centered">the name</h5-->
                     
                   <li class="mt">
                       <a class="active" href="home.jsp">
@@ -28,6 +28,7 @@
                           <li><a  href="monedas.jsp">Monedas</a></li>
                           <li><a  href="paises.jsp">Paises</a></li>
                           <li><a  href="proveedores.jsp">Proveedores</a></li>
+                          <li><a  href="venta.jsp">VENTAS</a></li>
                       </ul>
                   </li> 
                   <li class="sub-menu" id="menu-seguridad">

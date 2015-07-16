@@ -111,9 +111,9 @@
                                   
                                   <th>Codigo</th>
                                   <th>Descripcion</th>
-                                  <th class="hidden-phone">Coeficient Unidad</th>
+                                  <th class="hidden-phone">Packing</th>
                                   <th class="hidden-phone">Proveedor</th>
-                                  <th>Precio</th>
+                                  <th>Costo</th>
                                   <th class="hidden-phone">Precio importaci&oacute;n</th>
                                   <th >Stock M&iacute;nimo</th>
                                   <th>Foto</th>

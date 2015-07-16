@@ -5,7 +5,7 @@
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+	<head> 
 	<%@include file="fragment/head.jsp"%>
 	<%
 		BancosMain um = new BancosMain();

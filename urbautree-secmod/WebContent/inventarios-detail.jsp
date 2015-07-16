@@ -1,8 +1,10 @@
+<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.InvetarioBean"%>
-<%@page import="com.urbau.feeders.InventariosMain"%>    
+<%@page import="com.urbau.feeders.InventariosMain"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>    
 <%				
-	
+	ProductosMain pm = new ProductosMain();
 	String idBodegaParameter = request.getParameter("bodega");
 	int idBodega  = -1;
 	try{
@@ -17,7 +19,8 @@
 		InventariosMain main = new InventariosMain();		
 		InvetarioBean bean = main.get( id, idBodega );		
 		
-		String mode = request.getParameter( "mode" );		
+		String mode = request.getParameter( "mode" );	
+		ArrayList<ProductoBean> list = pm.get(null, 0);
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -75,7 +78,7 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE MONEDA</h3>
+          	<h3><i class="fa fa-angle-right"></i> DETALLE INVENTARIO</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
@@ -89,16 +92,34 @@
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
                                                           		
                       	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Nombre</label>
-                          	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="name" id="name" value="">	                          	                                                                                                  
+                          	<label class="col-sm-2 col-sm-2 control-label">Producto</label>
+                          	<div class="col-sm-10">
+                          	<select id="product" name="product" class="form-control">
+                          	<%
+	                          	for( ProductoBean pb : list ){
+	                          	%>
+                          	 	<option value="<%= pb.getId() %>"><%= pb.getDescripcion() %></option>
+                          	 	<% } %>
+                          	</select>                          	            
+								<!--  input type="text" class="form-control" name="product" id="product" value="" -->	                          	                                                                                                  
                           	</div>
                       	</div>
                       	
                       	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Simbolo</label>
+                          	<label class="col-sm-2 col-sm-2 control-label">Unidades</label>
                           	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="symbol" id="symbol" value="">	                          	                                                                                                  
+								<input type="text" class="form-control" name="amount" id="amount" value="">	                          	                                                                                                  
+                          	</div>
+                      	</div>
+                      	<div class="form-group">                      	
+                          	<label class="col-sm-2 col-sm-2 control-label">Estado</label>
+                          	<div class="col-sm-10">                          	 
+                          		<select name="status" id="status" class="form-control">
+                          			<option>ACTIVO</option>
+                          			<option>INACTIVO</option>
+                          			<option>EN TRANSITO</option>
+                          		</select>           
+									                          	                                                                                                  
                           	</div>
                       	</div>
                           

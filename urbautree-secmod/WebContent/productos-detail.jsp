@@ -97,7 +97,7 @@
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Coeficiente de unidad</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Packing</label>
                               <div class="col-sm-10">                              		                          		
 	                          		<input type="text" class="form-control" name="coeficiente_unidad" id="coeficiente_unidad" value="<%= bean.getCoeficiente_unidad() %>">	                          	                          	                          	                                
                               </div>
@@ -120,14 +120,14 @@
                               </div>
                           </div>
                            <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Precio</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Costo</label>
                               <div class="col-sm-10">                              		                          			                          	
 	                          		<input type="text" class="form-control" name="precio" id="precio" value="<%= bean.getPrecio() %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Precio importaci&oacuten;</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Precio importaci&oacuten</label>
                               <div class="col-sm-10">                              		                          			                          	
 	                          		<input type="text" class="form-control" name="precio_importacion" id="precio_importacion" value="<%= bean.getPrecio_importacion() %>">	                          	                          	                          	                                  
                               </div>

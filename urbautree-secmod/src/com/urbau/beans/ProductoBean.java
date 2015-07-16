@@ -10,7 +10,10 @@ public class ProductoBean implements Bean {
 	private int coeficiente_unidad;
 	private int proveedor;
 	private double precio;
-	private double precio_importacion;
+	private double precio_1;
+	private double precio_2;
+	private double precio_3;
+	private double precio_4;
 	private String image_path;
 	private int stock_minimo;
 	
@@ -65,17 +68,35 @@ public class ProductoBean implements Bean {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	public double getPrecio_importacion() {
-		return precio_importacion;
-	}
-	public void setPrecio_importacion(double precio_importacion) {
-		this.precio_importacion = precio_importacion;
-	}
 	public String getImage_path() {
 		return image_path;
 	}
 	public void setImage_path(String image_path) {
 		this.image_path = image_path;
+	}
+	public double getPrecio_1() {
+		return precio_1;
+	}
+	public void setPrecio_1(double precio_1) {
+		this.precio_1 = precio_1;
+	}
+	public double getPrecio_2() {
+		return precio_2;
+	}
+	public void setPrecio_2(double precio_2) {
+		this.precio_2 = precio_2;
+	}
+	public double getPrecio_3() {
+		return precio_3;
+	}
+	public void setPrecio_3(double precio_3) {
+		this.precio_3 = precio_3;
+	}
+	public double getPrecio_4() {
+		return precio_4;
+	}
+	public void setPrecio_4(double precio_4) {
+		this.precio_4 = precio_4;
 	}
 	@Override
 	public int getProgramId() {
