@@ -33,7 +33,7 @@ public class AbstractBean {
 	
 	public String getClientShortDescription( int id ){
 		ClientesMain cm = new ClientesMain();
-		ClienteBean bean = cm.getCliente(id);
+		ClienteBean bean = cm.get(id);
 		String name = bean.getNombres() + " " + bean.getApellidos();
 		return name;
 	}

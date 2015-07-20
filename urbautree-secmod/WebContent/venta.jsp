@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.ClienteBean"%>
+<%@page import="com.urbau.feeders.ClientesMain"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>
@@ -13,6 +15,12 @@
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	<script>
+		function setClient(){
+			
+			
+		}
+	</script>
 	</head>
    
    <body>
@@ -60,7 +68,9 @@
               <div class="row">
                   <div class="col-lg-9  main-chart">
                       <div class="row mt">
-                      
+                      <div class="col-lg-12" onclick="chooseClient()">
+                      	Cliente: <b><span id="clientdisplay"></span></b>
+                      </div>
                       <div class="col-lg-12">
 		          		<form>
 			          		<div class="top-menu">
@@ -190,29 +200,67 @@
               </div><!--/row -->
           </section>
       </section>
+      	 
 					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-						<form id="modalform" name="modalform">
-						<input name="productid" type="hidden">
-						<input name="amount" type="hidden">
-						<input name="price"  type="hidden">
- 			              <div class="modal-dialog">
+						<form id="modalform" name="modalform" >
+						  <div class="modal-dialog">
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Agregar producto a orden...</h4>
+			                          <h4 class="modal-title">Seleccione un cliente...</h4>
 			                      </div>
 			                      <div class="modal-body">
-			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix">
+				                      <%
+											ClientesMain um = new ClientesMain();			
+											int from = 0;
+											if( request.getParameter( "from" ) != null ){
+												from = Integer.parseInt( request.getParameter( "from" ) );
+											}
+											
+											ArrayList<ClienteBean> list = um.get( request.getParameter("q"), from );
+											int total_regs = -1;
+											
+											if( list.size() > 0 ){
+												total_regs = ((ClienteBean)list.get( 0 )).getTotal_regs();
+											}
+										%>
+										 <table class="table table-striped table-advance table-hover">
+	                  	  	  <h4><i class="fa fa-angle-right"></i> CLIENTE </h4>
+	                  	  	  <hr>
+	                  	  	  <thead>
+                              <tr>
+                                  <th></th>
+                                  <th>Nit</th>                                  
+                                  <th>Nombres</th>
+                                  <th>Apellidos</th>                                                                    
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <%
+                              	for(ClienteBean bean: list ){
+                              %>
+                              <tr>
+                              	  <td><input type="radio" name="clienteid" value="<%= bean.getId() %>,<%= bean.getNombres() + " " + bean.getApellidos()  %>"></td>
+                                  <td><%= bean.getNit() %></td>                                  
+                                  <td><%= bean.getNombres() %></td>
+                                  <td><%= bean.getApellidos() %></td>         
+                                                                            
+                                  
+                              </tr>
+                              <% } %>
+                              
+                              </tbody>
+                          </table>
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addSale();">Enviar</button>
+			                          <button class="btn btn-theme" type="button" onclick="setClient();">Seleccionar</button>
 			                      </div>
 			                  </div>
 			              </div>
 		              </form>
 		          </div>
+		          
       <!--main content end-->
       <!--footer start-->
       <footer class="site-footer">
@@ -246,6 +294,9 @@
   
   
   <script type="text/javascript">
+  		  var selected_client_id;
+  		  var allowed_prices;
+  		  
 		  function parseSecond(val) {
 			    var result = "Not found",
 			        tmp = [];
@@ -257,10 +308,28 @@
 			    return result;
 			}
   
+		    function setClient(){
+		    	var value = $('input[name=clienteid]:checked').val();
+		    	var values = value.split(',');
+		    	console.log('cliente', values[0]);
+				$('#clientdisplay').html(value);
+		    	hideClient();
+		    }
   			function addSale(){
   				alert( parseSecond( 'productid' ));
   			}
+  			function chooseClient(){
+  				$('#myModal').modal('show');
+  			}
+  			function hideClient(){
+  				$('#myModal').modal('hide');
+  			}
 	</script>  
-
+	
+	<script type="text/javascript">
+	    $(window).load(function(){
+	        $('#myModal').modal('show');
+	    });
+	</script>
   </body>
 </html>

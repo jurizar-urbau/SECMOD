@@ -109,9 +109,10 @@
     <servlet-name>PreciosCliente</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PreciosCliente</servlet-class>
   </servlet>
-  
-  
-
+  <servlet> 
+    <servlet-name>ProductsFiltered</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ProductsFiltered</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -200,9 +201,9 @@
     <servlet-name>PreciosCliente</servlet-name>
     <url-pattern>/bin/PreciosCliente</url-pattern>
   </servlet-mapping>
-  
-  
-
+    <servlet-name>ProductsFiltered</servlet-name>
+    <url-pattern>/bin/ProductsFiltered</url-pattern>
+  </servlet-mapping>
 
 
 

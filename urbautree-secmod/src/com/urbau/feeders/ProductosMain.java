@@ -23,7 +23,10 @@ public class ProductosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			int total_regs = 0;
-			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
+			if( from == -1 ){
+				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS ORDER BY ID";
+				rs = stmt.executeQuery(  sql );
+			}else if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,STOCK_MINIMO,IMAGE_PATH FROM PRODUCTOS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery(  sql );
 				total_regs = Util.getTotalRegs( "PRODUCTOS", "" );

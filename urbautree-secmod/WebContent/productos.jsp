@@ -114,7 +114,10 @@
                                   <th class="hidden-phone">Packing</th>
                                   <th class="hidden-phone">Proveedor</th>
                                   <th>Costo</th>
-                                  <th class="hidden-phone">Precio importaci&oacute;n</th>
+                                  <th class="hidden-phone">Precio 1</th>
+                                  <th class="hidden-phone">Precio 2</th>
+                                  <th class="hidden-phone">Precio 3</th>
+                                  <th class="hidden-phone">Precio 4</th>
                                   <th >Stock M&iacute;nimo</th>
                                   <th>Foto</th>
                                   <th></th>
@@ -130,10 +133,13 @@
                                   <td><%= us.getCoeficiente_unidad() %></td>
                                   <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
                                   <td><%= us.getPrecio() %></td>
-                                  <td ><%= us.getPrecio_importacion() %></td>
-                                  <td ><%= us.getStock_minimo() %></td>
+                                  <td><%= us.getPrecio_1() %></td>
+                                  <td><%= us.getPrecio_2() %></td>
+                                  <td><%= us.getPrecio_3() %></td>
+                                  <td><%= us.getPrecio_4() %></td>
+                                  <td><%= us.getStock_minimo() %></td>
                                   <td>
-                                  	<img src="http://localhost:8080/urbautree-secmod/bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">
+                                  	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">
                                   </td>
                                   <td>
                                 	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_MODIFY)){ %>	                                     
@@ -145,6 +151,7 @@
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%} %>  
+                                    <button class="btn btn-success btn-xs" onclick="detail'<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                   </td>
                               </tr>
                               <% } %>

@@ -30,7 +30,11 @@ public class Productos extends Entity {
 	private String coeficiente_unidad ="";
 	private String proveedor = "";
 	private String precio ="";
-	private String precio_importacion="";
+	private String precio_1 ="";
+	private String precio_2 ="";
+	private String precio_3 ="";
+	private String precio_4 ="";
+	
 	private String image_path = "";
 	private String image_path_modified = "";
 	private String stock_minimo = "";
@@ -57,7 +61,10 @@ public class Productos extends Entity {
 				bean.setCoeficiente_unidad( Integer.valueOf( this.coeficiente_unidad ));
 				bean.setProveedor(Integer.valueOf( this.proveedor ));
 				bean.setPrecio( Double.valueOf( this.precio  ));
-				bean.setPrecio_importacion( Double.valueOf( this.precio_importacion  ));
+				bean.setPrecio_1(Double.valueOf( this.precio_1  ) );
+				bean.setPrecio_2(Double.valueOf( this.precio_2  ) );
+				bean.setPrecio_3(Double.valueOf( this.precio_3  ) );
+				bean.setPrecio_4(Double.valueOf( this.precio_4  ) );
 				bean.setStock_minimo(Integer.valueOf( this.stock_minimo ));
 				bean.setImage_path( this.image_path );
 								
@@ -169,8 +176,14 @@ public class Productos extends Entity {
 							this.proveedor = fi.getString();
 						}else if(fieldName.equals("precio")){
 							this.precio= fi.getString();
-						}else if(fieldName.equals("precio_importacion")){
-							this.precio_importacion= fi.getString();
+						}else if(fieldName.equals("precio_1")){
+							this.precio_1= fi.getString();
+						}else if(fieldName.equals("precio_2")){
+							this.precio_2= fi.getString();
+						}else if(fieldName.equals("precio_3")){
+							this.precio_3= fi.getString();
+						}else if(fieldName.equals("precio_4")){
+							this.precio_4= fi.getString();
 						}else if(fieldName.equals("imagePath")){
 							this.image_path_modified= fi.getString();
 						}else if(fieldName.equals("stock_minimo")){
