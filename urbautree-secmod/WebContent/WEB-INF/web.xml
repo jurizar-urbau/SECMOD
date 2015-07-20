@@ -13,15 +13,15 @@
     </init-param>
     <init-param>
       <param-name>dburl</param-name>
-      <param-value>jdbc:mysql://127.0.0.1/test</param-value>
+      <param-value>jdbc:mysql://127.0.0.1/urbausec</param-value>
     </init-param>
     <init-param>
       <param-name>dbuser</param-name>
-      <param-value>root</param-value>
+      <param-value>urbau</param-value>
     </init-param>
     <init-param>
       <param-name>dbpassword</param-name>
-      <param-value>H85737</param-value>
+      <param-value>secmod</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -209,9 +209,6 @@
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
-    <!--
-    <param-value>/home/juan/Pictures/</param-value>
-    -->
-    <param-value>/Users/xumakgt/Desktop/</param-value>
+    <param-value>/Users/xumakgt/imagespath/</param-value>
   </context-param>
 </web-app>

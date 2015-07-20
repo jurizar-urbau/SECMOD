@@ -1,11 +1,12 @@
+<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.InvetarioBean"%>
 <%@page import="com.urbau.feeders.InventariosMain"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>    
+<%@page import="com.urbau.beans.ProductoBean"%>     
 
-<%@page import="com.urbau.feeders.ProductosMain"%>
-<%@page import="com.urbau.beans.ProductoBean"%>    
 <%				
-	
+	ProductosMain pm = new ProductosMain();
 	String idBodegaParameter = request.getParameter("bodega");
 	int idBodega  = -1;
 	try{
@@ -24,6 +25,8 @@
 		ProductosMain productoMain = new ProductosMain();
 		String mode = request.getParameter( "mode" );				
 		
+		String mode = request.getParameter( "mode" );	
+		ArrayList<ProductoBean> list = pm.get(null, 0);
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -117,6 +120,16 @@
                           
                       	
                       	<div class="form-group">                      	
+                          	<label class="col-sm-2 col-sm-2 control-label">Producto</label>
+                          	<div class="col-sm-10">
+                          	<select id="product" name="product" class="form-control">
+                          	<%
+	                          	for( ProductoBean pb : list ){
+	                          	%>
+                          	 	<option value="<%= pb.getId() %>"><%= pb.getDescripcion() %></option>
+                          	 	<% } %>
+                          	</select>                          	            
+								<!--  input type="text" class="form-control" name="product" id="product" value="" -->	                          	                                                                                                  
                           	<label class="col-sm-2 col-sm-2 control-label">Estatus</label>
                           	<div class="col-sm-10">                          	            
 								<input type="text" class="form-control" name="estatus" id="estatus" value="<%=bean.getEstatus()%>">	                          	                                                                                                  
@@ -124,9 +137,24 @@
                       	</div>
                       	
                       	<div class="form-group">                      	
+                          	<label class="col-sm-2 col-sm-2 control-label">Unidades</label>
+                          	<div class="col-sm-10">                          	            
+								<input type="text" class="form-control" name="amount" id="amount" value="">	                          	                                                                                                  
+                          	</div>
+                      	</div>
+                      	<div class="form-group">                      	
+                          	<label class="col-sm-2 col-sm-2 control-label">Estado</label>
+                          	<div class="col-sm-10">                          	 
+                          		<select name="status" id="status" class="form-control">
+                          			<option>ACTIVO</option>
+                          			<option>INACTIVO</option>
+                          			<option>EN TRANSITO</option>
+                          		</select>           
+									                          	                                                                                                  
                           	<label class="col-sm-2 col-sm-2 control-label">Cantidad</label>
                           	<div class="col-sm-10">                          	            
 								<input type="text" class="form-control" name="cantidad" id="cantidad" value="<%=bean.getAmount()%>">	                          	                                                                                                  
+
                           	</div>
                       	</div>
                           

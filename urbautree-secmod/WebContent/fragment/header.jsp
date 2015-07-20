@@ -2,7 +2,7 @@
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Ocultar/Mostrar navegaci&oacute;n"></div>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>VOLCANCITO</b></a>
+            <a href="home.jsp" class="logo"><b><img src="assets/img/logoytel.png" width="50%"></b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->

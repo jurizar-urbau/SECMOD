@@ -11,7 +11,7 @@
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 	
 
-    <title>Inicio de sesi&oacute;n</title>
+    <title>Volcancito - Inicio de sesi&oacute;n</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -41,7 +41,7 @@
 	  	<div class="container">
 	  	
 		      <form class="form-login" action="bin/VerifyUser?path=../home.jsp" method="POST">
-		        <h2 class="form-login-heading">Inicio de sesi&oacute;n</h2>
+		        <h2 class="form-login-heading"><img src="assets/img/logoytel.png" width="50%"><br>Inicio de sesi&oacute;n</h2>
 		        <%
 		        	session.removeAttribute( "loggedUser" );
 		        	String[] messages = (String[])session.getAttribute( "messages" );
@@ -104,7 +104,8 @@
     <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
     <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
     <script>
-        $.backstretch("assets/img/login-wall.jpg", {speed: 500});
+        //$.backstretch("assets/img/login-wall.jpg", {speed: 500});
+        $.backstretch("assets/img/volcancitowall.jpg", {speed: 500});
     </script>
 
 

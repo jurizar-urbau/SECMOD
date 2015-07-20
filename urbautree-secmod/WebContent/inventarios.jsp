@@ -135,8 +135,10 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
+                          
 	                  	  	  <h4><i class="fa fa-angle-right"></i> INVENTARIO  DE <%= bodegaBean.getNombre()%> </h4>
 	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="bodegas.jsp">&nbsp;Regresar</a> </h4>
+
 	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
