@@ -306,7 +306,7 @@ public class Util {
 			sb.append( getFieldLikes( "CORREO", q) );
 			sb.append( " OR " ); 			
 			sb.append( getFieldLikes( "TELEFONO", q) );
-						
+					
 			return sb.toString();
 		}
 	}

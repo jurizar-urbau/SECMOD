@@ -36,6 +36,9 @@
 		function add(){
 			location.replace( "clientes-detail.jsp?mode=add" );
 		}
+		function clientePrecios( id ){
+			location.replace( "cliente_precios.jsp?cliente="+id );					
+		}
 	</script>
 	</head>
    
@@ -132,7 +135,8 @@
                                     <%//}%>  
 									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_VIEW)){ %>                                      
                                       <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%//}%>  
+                                    <%//}%>
+                                      <button class="btn btn-info btn-xs" onclick="clientePrecios('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>	  
                                   </td>
                               </tr>
                               <% } %>

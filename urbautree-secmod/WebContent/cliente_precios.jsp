@@ -11,10 +11,12 @@
 <%@page import="com.urbau.beans.PrecioBean"%>
 
 <%
-	
-	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
+		
 
 	String idClienteParameter = request.getParameter("cliente");
+	String qParameter = request.getParameter("q");
+	String fromParameter = request.getParameter( "from" );
+	
 	int idCliente  = -1;
 	try{
 		idCliente = Integer.parseInt(idClienteParameter);	
@@ -25,26 +27,27 @@
 	
 	if(idCliente >= 0){
 	
-		System.out.println("idBodega: " + idCliente);
+		System.out.println("ClienteXPrecios - idCliente: " + idCliente);
 		
 		PreciosClientesMain preciosClientes_main = new PreciosClientesMain();
 		
 		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
+		if( fromParameter != null ){
+			from = Integer.parseInt( fromParameter );
 		}				
 		
-		ArrayList<PreciosClienteBean> inventario_list = preciosClientes_main.get( request.getParameter("q"), from);
+		ArrayList<PreciosClienteBean> preciosClienteList = preciosClientes_main.get( qParameter, from);
+		
+		
 		int total_regs = -1;
 		
-		if( inventario_list.size() > 0 ){
-			total_regs = ((PreciosClienteBean)inventario_list.get( 0 )).getTotal_regs();
+		if( preciosClienteList.size() > 0 ){
+			total_regs = ((PreciosClienteBean)preciosClienteList.get( 0 )).getTotal_regs();
 		}
 		
-		PreciosMain precion_main = new PreciosMain();		
-		PrecioBean bodegaBean = precion_main.get(idCliente);
+				
 		
-		PreciosMain precios_main = new PreciosMain();
+				
 		
 				
 %>
@@ -57,21 +60,21 @@
 	<%@include file="fragment/head.jsp"%>
 
 	<script>
-		function edit( id ){		
+		function edit( id,idPrecio ){		
 			var cliente = <%=idCliente%>;
-			location.replace( "precios_cliente-detail.jsp?mode=edit&id="+id+"&cliente="+cliente);
+			location.replace( "cliente_precios-detail.jsp?mode=edit&id="+id+"&cliente="+cliente+"&precio="+idPrecio);
 		}
-		function removereg( id ){
+		function removereg( id,idPrecio ){
 			var cliente = <%=idCliente%>;
-			location.replace( "precios_cliente-detail.jsp?mode=remove&id="+id+"&cliente="+cliente);
+			location.replace( "cliente_precios-detail.jsp?mode=remove&id="+id+"&cliente="+cliente+"&precio="+idPrecio);
 		}
 		function view( id){	
 			var cliente = <%=idCliente%>;
-			location.replace( "precios_cliente-detail.jsp?mode=view&id="+id+"&cliente="+cliente);
+			location.replace( "cliente_precios-detail.jsp?mode=view&id="+id+"&cliente="+cliente);
 		} 
 		function add(){
 			var cliente = <%=idCliente%>;
-			location.replace( "precios_cliente-detail.jsp?mode=add&cliente="+cliente);
+			location.replace( "cliente_precios-detail.jsp?mode=add&cliente="+cliente);
 		}
 	</script>
 	</head>
@@ -117,7 +120,7 @@
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( qParameter != null && !"null".equals( qParameter )) ? qParameter : "" %>" ></li>
 			                    <li><button class="btn btn-primary">Buscar</button></li>
 			              </ul>
 		            </div>
@@ -150,25 +153,30 @@
                               </thead>
                               <tbody>
                               <%
-                              	for( PreciosClienteBean bean : inventario_list ){
-                              		PrecioBean precioBean = precios_main.get(bean.getIdCliente());
+                              PreciosMain precios_main = new PreciosMain();
+                              	for( PreciosClienteBean bean : preciosClienteList ){
+                              		if(idCliente == bean.getIdCliente()){
+                              			
+                              		
+                              		
+                              		PrecioBean precioBean = precios_main.get(bean.getIdPrecio());
                               %>
                               <tr>
-                                  <td><%= precioBean.getNombre() %></td>                                  
+                                  <td><%= precioBean.getNombre() %>  </td>                                  
                                   <td ><%= precioBean.getCoeficiente() %></td>
                                   <td>
                                   	                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>','<%= precioBean.getId()  %>');"><i class="fa fa-pencil"></i></button>
                         			  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getIdPrecio()  %>','<%= precioBean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                       
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= precioBean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
                                                                                                                                                                              
                                                                                                            
                                     
                                   </td>
                               </tr>
-                              <% } %>
+                              <% }} %>
                               
                               </tbody>
                           </table>

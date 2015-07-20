@@ -10,9 +10,7 @@
 <%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
 
-<%
-	
-	System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>< ");
+<%	
 
 	String idBodegaParameter = request.getParameter("bodega");
 	int idBodega  = -1;
@@ -25,7 +23,7 @@
 	
 	if(idBodega >= 0){
 	
-		System.out.println("idBodega: " + idBodega);
+		System.out.println("Inventarios - idBodega: " + idBodega);
 		
 		InventariosMain inventario_main = new InventariosMain();
 		
@@ -137,7 +135,9 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> INVENTARIO  DE <%= bodegaBean.getNombre()%></h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> INVENTARIO  DE <%= bodegaBean.getNombre()%> </h4>
+	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="bodegas.jsp">&nbsp;Regresar</a> </h4>
+	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

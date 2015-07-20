@@ -32,11 +32,16 @@ public class PreciosClientesMain extends AbstractMain {
 			stmt = con.createStatement();
 											
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" LIMIT " + from + "," + items );
+				String sql="SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" LIMIT " + from + "," + items;
+				System.out.println("1sql:"+sql);
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( TABLE_NAME, "" );
+				
 			} else {
 				String rem_where = Util.getMonedasWhere( q );
-				rs = stmt.executeQuery( "SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" " + rem_where + " LIMIT " + from + "," + items );
+				String sql="SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" " + rem_where + " LIMIT " + from + "," + items;
+				System.out.println("2sql:"+sql);
+				rs = stmt.executeQuery( sql);
 				total_regs = Util.getTotalRegs( TABLE_NAME, rem_where );
 			}
 			while( rs.next() ){
@@ -68,9 +73,9 @@ public class PreciosClientesMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			String query = "SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" WHERE ID_CLIENTE='"+idCliente+"'";
-			System.out.println("query:"+query);
-			rs = stmt.executeQuery( query);
+			String sql = "SELECT ID,ID_CLIENTE,ID_PRECIO FROM "+TABLE_NAME+" WHERE ID_CLIENTE='"+idCliente+"'";
+			System.out.println("sql:"+sql);
+			rs = stmt.executeQuery( sql);
 			while( rs.next() ){
 				bean = new PreciosClienteBean();
 				bean.setId( rs.getInt   ( 1  ));
@@ -127,8 +132,8 @@ public class PreciosClientesMain extends AbstractMain {
 			stmt= con.createStatement();
 			String sql = "UPDATE "+TABLE_NAME+" SET " +
 					"ID_CLIENTE = " + bean.getIdCliente() + " , " +
-					"ID_PRECIO = " + bean.getIdPrecio() + ", " +					
-					"WHERE ID_CLIENTE = " + bean.getIdCliente(); 					
+					"ID_PRECIO = " + bean.getIdPrecio() + " " +					
+					"WHERE ID = " + bean.getId(); 					
 					
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
@@ -150,7 +155,7 @@ public class PreciosClientesMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_CLIENTE = " + bean.getIdCliente();
+			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_CLIENTE = " + bean.getIdCliente() + " AND ID_PRECIO = " + bean.getIdPrecio();
 			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
@@ -165,7 +170,7 @@ public class PreciosClientesMain extends AbstractMain {
 	
 	public boolean duplicate( PreciosClienteBean bean ){
 		
-		if ( bean.getId() <= 0 || bean.getIdCliente()  <= 0||  bean.getIdPrecio() <= 0 ){
+		if ( bean.getIdCliente()  <= 0||  bean.getIdPrecio() <= 0 ){
 			return false;
 		}
 				
@@ -176,6 +181,7 @@ public class PreciosClientesMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();			
 			String sql = "SELECT * from "+TABLE_NAME+" where ID_CLIENTE = "+bean.getIdCliente()+" AND ID_PRECIO = '"+bean.getIdPrecio()+"'";
+			System.out.println("sql>" + sql);
 			rs = stmt.executeQuery(sql);			
 			rs.beforeFirst();
 			rs.last();

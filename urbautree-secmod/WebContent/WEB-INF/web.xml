@@ -105,6 +105,12 @@
     <servlet-name>Clientes</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Clientes</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PreciosCliente</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PreciosCliente</servlet-class>
+  </servlet>
+  
+  
 
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
@@ -190,6 +196,12 @@
     <servlet-name>Clientes</servlet-name>
     <url-pattern>/bin/Clientes</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PreciosCliente</servlet-name>
+    <url-pattern>/bin/PreciosCliente</url-pattern>
+  </servlet-mapping>
+  
+  
 
 
 
