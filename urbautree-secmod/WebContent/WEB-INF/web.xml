@@ -200,7 +200,9 @@
   <servlet-mapping>
     <servlet-name>PreciosCliente</servlet-name>
     <url-pattern>/bin/PreciosCliente</url-pattern>
+    
   </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>ProductsFiltered</servlet-name>
     <url-pattern>/bin/ProductsFiltered</url-pattern>
   </servlet-mapping>
