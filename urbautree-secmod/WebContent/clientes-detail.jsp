@@ -112,6 +112,15 @@
 	                          		<input type="text" class="form-control" name="correo" id="correo" value="<%= bean.getEmail() %>">	                          	                          	                                                           
                               </div>
                           </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Tipo De Cliente</label>
+                              <div class="col-sm-10">                              		                          			                          	
+	                          		<select class="form-control" name="tipodecliente" id="tipodecliente" value="<%= bean.getTipoDeCliente() %>">
+	                          			<option value="interno">Interno</option>
+	                          			<option value="interno">Externo</option>
+	                          		</select>	                          	                          	                                                           
+                              </div>
+                          </div>
                                                                               
                                                                                                                                                                                                                     
                           <div class="form-actions">
@@ -170,7 +179,10 @@
                 correo: {
                   required: true,
                   email: true
-                }                               
+                },
+                tipodecliente: {
+                    required: true                   
+                  }
                 
               },
               highlight: function(element) {
@@ -225,6 +237,7 @@
     			$("#direccion").attr('disabled','disabled');
     			$("#telefono").attr('disabled','disabled');
     			$("#correo").attr('disabled','disabled');    			
+    			$("#tipodecliente").attr('disabled','disabled');
     			
     			$("#savebutton").removeClass("btn btn-success");
     			$("#savebutton").addClass("btn btn-danger");
@@ -236,6 +249,7 @@
     			$("#direccion").attr('disabled','disabled');
     			$("#telefono").attr('disabled','disabled');
     			$("#correo").attr('disabled','disabled');
+    			$("#tipodecliente").attr('disabled','disabled');
     			    			
     			$("#activo").attr('disabled','disabled');
     			$("#savebutton").hide();    			    	    	

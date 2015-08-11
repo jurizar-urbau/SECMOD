@@ -16,6 +16,7 @@ public class ClienteBean implements Bean {
 	private String celular;
 	private Date   fecha_ingreso;
 	private String observaciones;
+	private String tipoDeCliente;
 	private int total_regs;
 	
 	public int getTotal_regs() {
@@ -80,6 +81,12 @@ public class ClienteBean implements Bean {
 	}
 	public String getObservaciones() {
 		return observaciones;
+	}
+	public void setTipoDeCliente(String tipoDeCliente) {
+		this.tipoDeCliente = tipoDeCliente;
+	}
+	public String getTipoDeCliente() {
+		return tipoDeCliente;
 	}
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;

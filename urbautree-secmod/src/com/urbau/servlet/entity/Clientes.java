@@ -34,7 +34,8 @@ public class Clientes extends Entity {
 					bean.setApellidos( request.getParameter( "apellidos" ));
 					bean.setDireccion( request.getParameter("direccion") );
 					bean.setTelefono( request.getParameter( "telefono" ));					
-					bean.setEmail( request.getParameter( "correo" ));												
+					bean.setEmail( request.getParameter( "correo" ));
+					bean.setTipoDeCliente(request.getParameter( "tipodecliente" ));
 																																													
 					if( !"add".equals( request.getParameter( "mode" ) ) ){
 						bean.setId( Integer.parseInt( request.getParameter( "id" )));

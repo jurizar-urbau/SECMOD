@@ -110,7 +110,8 @@
                                   <th class="hidden-phone">Apellidos</th>                                                                    
                                   <th class="hidden-phone">Direcci&oacute;n</th>
                                   <th>Telefono</th>
-                                  <th class="hidden-phone">Correo</th>                                                                    
+                                  <th class="hidden-phone">Correo</th>
+                                  <th class="hidden-phone">Tipo</th>                                                                    
                                   <th></th>
                               </tr>
                               </thead>
@@ -125,6 +126,7 @@
                                   <td><%= bean.getDireccion() %></td>
                                   <td class="hidden-phone" ><%= bean.getTelefono() %></td>                                                                                                                                                                         
                                   <td><%= bean.getEmail() %></td>
+                                  <td><%= bean.getTipoDeCliente() %></td>
                                                                     
                                   <td>
                                   	<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_MODIFY)){ %>                                     
