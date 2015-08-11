@@ -1,31 +1,30 @@
-<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.beans.InvetarioBean"%>
-<%@page import="com.urbau.feeders.InventariosMain"%>
-<%@page import="com.urbau.feeders.ProductosMain"%>    
-<%@page import="com.urbau.beans.ProductoBean"%>     
+<%@page import="com.urbau.beans.PreciosPuntoDeVentaBean"%>
+<%@page import="com.urbau.feeders.PreciosPuntosDeVentasMain"%>
 
+<%@page import="com.urbau.feeders.PreciosMain"%>
+<%@page import="com.urbau.beans.PrecioBean"%>    
 <%				
-	ProductosMain pm = new ProductosMain();
-	String idBodegaParameter = request.getParameter("bodega");
-	int idBodega  = -1;
+	
+	String puntoDeVenta = request.getParameter("puntoDeVenta");
+	int idPuntoDeVenta  = -1;
 	try{
-		idBodega = Integer.parseInt(idBodegaParameter);	
+		idPuntoDeVenta = Integer.parseInt(puntoDeVenta);	
 	}catch(NumberFormatException e){
-		System.out.print("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
+		System.out.print("Error to parse a string to int for cliente parameter : message : "+ e.getMessage());
 	}
 	
-	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" )) && idBodega >= 0 ){
+	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" )) && idPuntoDeVenta >= 0 ){
 
 		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-		String estatus = request.getParameter( "estatus" );
-		InventariosMain main = new InventariosMain();		
-		InvetarioBean bean = main.get( id, estatus, idBodega );		
 		
-		ProductosMain productoMain = new ProductosMain();
+		
+		PreciosPuntosDeVentasMain main = new PreciosPuntosDeVentasMain();		
+		PreciosPuntoDeVentaBean bean = main.get( idPuntoDeVenta );		
+		
+		PreciosMain preciosMain = new PreciosMain();
 		String mode = request.getParameter( "mode" );				
-				
-		ArrayList<ProductoBean> list = pm.get(null, 0);
+		
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -35,8 +34,8 @@
 		<%@include file="fragment/head.jsp"%>
 		<script>
 			function back(){
-				var bodega = <%=idBodega%>;
-				location.replace( "inventarios.jsp?bodega="+bodega);
+				var puntoDeVenta = <%=idPuntoDeVenta%>;
+				location.replace( "puntodeventa_precios.jsp?puntoDeVenta="+puntoDeVenta);
 			}			
 		</script>
 	</head>
@@ -83,31 +82,31 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE INVENTARIO</h3>
+          	<h3><i class="fa fa-angle-right"></i> PRECIOS</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
           			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="inventarios.jsp?bodega=<%=idBodega %>">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="puntodeventa_precios.jsp?puntoDeVenta=<%=puntoDeVenta %>">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horizontal style-form" method="POST" id="form" name="form">
                       	                      
                       	<input type="hidden" name="mode" value="<%= mode%>">
-                      	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">
-                      	<input type="hidden" name="bodega" value="<%= request.getParameter("bodega")%>">                      
-                      	<input type="hidden" name="estatusremove" value="<%= request.getParameter("estatus")%>">
+						<input type="hidden" name="id" value="<%= id%>">
+                      	<input type="hidden" name="puntoDeVenta" value="<%= puntoDeVenta%>">
+                      	<input type="hidden" name="idPrecioBorrar" value="<%= request.getParameter("precio")%>">                      	                                                                  	
                                                           		                      	
                       	<div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Producto</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Precio</label>
                               <div class="col-sm-10">
                               
-                              		<select class="form-control" name="producto" id="producto">
+                              		<select class="form-control" name="precio" id="precio">
 	                                  <%
-	                                  	ArrayList<ProductoBean> producto_list = productoMain.get(null, 0);
-	                                  	for( ProductoBean producto : producto_list ){
+	                                  	ArrayList<PrecioBean> precioList = preciosMain.get(null, 0);
+	                                  	for( PrecioBean precio : precioList ){
 	                                  %>
-	                                  	<option value="<%= producto.getId()%>"><%= producto.getDescripcion() %></option>
+	                                  	<option value="<%= precio.getId()%>"><%= precio.getNombre() %></option>
 	                                  <% } %>									  
 									  
 									</select>
@@ -117,46 +116,22 @@
                         </div>
                           
                           
-                      	
+                      	<!-- 
                       	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Producto</label>
-                          	<div class="col-sm-10">
-                          	<select id="product" name="product" class="form-control">
-                          	<%
-	                          	for( ProductoBean pb : list ){
-	                          	%>
-                          	 	<option value="<%= pb.getId() %>"><%= pb.getDescripcion() %></option>
-                          	 	<% } %>
-                          	</select>                          	            
-								<!--  input type="text" class="form-control" name="product" id="product" value="" -->	                          	                                                                                                  
                           	<label class="col-sm-2 col-sm-2 control-label">Estatus</label>
                           	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="estatus" id="estatus" value="<%=bean.getEstatus()%>">	                          	                                                                                                  
+								<input type="text" class="form-control" name="estatus" id="estatus" value="">	                          	                                                                                                  
                           	</div>
                       	</div>
                       	
                       	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Unidades</label>
-                          	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="amount" id="amount" value="">	                          	                                                                                                  
-                          	</div>
-                      	</div>
-                      	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Estado</label>
-                          	<div class="col-sm-10">                          	 
-                          		<select name="status" id="status" class="form-control">
-                          			<option>ACTIVO</option>
-                          			<option>INACTIVO</option>
-                          			<option>EN TRANSITO</option>
-                          		</select>           
-									                          	                                                                                                  
                           	<label class="col-sm-2 col-sm-2 control-label">Cantidad</label>
                           	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="cantidad" id="cantidad" value="<%=bean.getAmount()%>">	                          	                                                                                                  
-
+								<input type="text" class="form-control" name="cantidad" id="cantidad" value="">	                          	                                                                                                  
                           	</div>
                       	</div>
                           
+                           -->
                        <div class="form-actions">
        	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 			            	<button class="btn" onclick="back()">Cancelar</button>
@@ -185,15 +160,8 @@
 	    $(document).ready(function(){
 	    	
 	     	$('#form').validate({
-		      rules: {                        
-		        name: {
-		          minlength: 3,
-		          maxlength: 50,
-		          required: true
-		        },
-		        symbol: {
-			          minlength: 1,
-			          maxlength: 50,
+		      rules: {                        		  
+		        precio: {			    
 			          required: true
 			    }
 		      },
@@ -216,23 +184,23 @@
 			});
 			
 			$savebutton  = $("#savebutton");
-			$producto = $("#producto");
-			$estatus = $("#estatus");
-			$cantidad = $("#cantidad");
-			
+			$precio = $("#precio");
+						
 			$savebutton.click(function(){
 				
-				if($producto.val() && $estatus.val()){									
+				console.log("precio: ", $precio.val());
+				if($precio.val()){		
+					
 					var form =$('#form');					
 		     		$.ajax({
 			     		type:'POST',
-			 			url: './bin/Inventarios',
+			 			url: './bin/PreciosPuntosDeVentas',
 			 			data: form.serialize(),
 			 			dataType: "text",		 			
 				        success: function(msg){				        	
 				        	alert(msg);
-				        	var bodega = getUrlParameter('bodega');
-				            location.replace( "inventarios.jsp?bodega="+bodega );
+				        	var puntoDeVenta = getUrlParameter('puntoDeVenta');
+				            location.replace( "puntodeventa_precios.jsp?puntoDeVenta="+puntoDeVenta );
 				        },
 			 			error: function(jqXHR, textStatus, errorThrown){
 			 				console.log("ERROR srtatus: ", textStatus);
@@ -248,28 +216,27 @@
 		
 			var mode = getUrlParameter('mode');		
 			if(mode === "remove"){
-				$producto.attr('disabled','disabled');				
-				$estatus.attr('disabled','disabled');
-				$cantidad.attr('disabled','disabled');
-				$savebutton.removeClass("btn btn-success");
+				$precio.attr('disabled','disabled');		
+				
+				$savebutton.removeClass("btn btn-success");				
 				$savebutton.addClass("btn btn-danger");
 				$savebutton.html("Borrar");
 				
 			}else if(mode === "view"){				
-				$producto.attr('disabled','disabled');
-				$estatus.attr('disabled','disabled');
-				$cantidad.attr('disabled','disabled');
+				$precio.attr('disabled','disabled');
+								
 				$savebutton.hide();
 			}			
 			
 			
 			
 			// select option by id 
-    		var id = getUrlParameter('id');    		
-			console.log("id:" + id);
-    		if(id){
-    			$("#producto option[value="+id+"]").attr('selected','selected');    			
+    		var idPrecio = getUrlParameter('precio');
+			console.log("idPrecio: " ,idPrecio);
+    		if(idPrecio){
+    			$("#precio option[value="+idPrecio+"]").attr('selected','selected');    			
     		}
+    		
 		});
 		 
 		 

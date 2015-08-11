@@ -113,6 +113,14 @@
     <servlet-name>ProductsFiltered</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ProductsFiltered</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PuntosDeVentas</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PuntosDeVentas</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PreciosPuntosDeVentas</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PreciosPuntosDeVentas</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -199,13 +207,21 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PreciosCliente</servlet-name>
-    <url-pattern>/bin/PreciosCliente</url-pattern>
-    
+    <url-pattern>/bin/PreciosCliente</url-pattern>    
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ProductsFiltered</servlet-name>
     <url-pattern>/bin/ProductsFiltered</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PuntosDeVentas</servlet-name>
+    <url-pattern>/bin/PuntosDeVentas</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PreciosPuntosDeVentas</servlet-name>
+    <url-pattern>/bin/PreciosPuntosDeVentas</url-pattern>
+  </servlet-mapping>
+  
 
 
 

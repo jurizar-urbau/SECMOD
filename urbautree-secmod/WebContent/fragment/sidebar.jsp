@@ -31,6 +31,7 @@
                           <li><a  href="venta.jsp">VENTAS</a></li>
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
+                          <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
                       </ul>
                   </li> 
                   <li class="sub-menu" id="menu-seguridad">
