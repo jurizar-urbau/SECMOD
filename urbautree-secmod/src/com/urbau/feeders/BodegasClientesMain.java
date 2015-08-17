@@ -155,7 +155,7 @@ public class BodegasClientesMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_CLIENTE = " + bean.getIdCliente() + " AND ID_BODEGAS = " + bean.getIdBodega();
+			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_CLIENTE = " + bean.getIdCliente() + " AND ID_BODEGA = " + bean.getIdBodega();
 			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;

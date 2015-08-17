@@ -22,7 +22,7 @@ public class Bodegas extends Entity {
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			String mode = request.getParameter( "mode" );
-			System.out.println( "mode: " + mode );
+			System.out.println( "mode> " + mode );
 			
 			
 			String message = "";
@@ -33,7 +33,14 @@ public class Bodegas extends Entity {
 					rm.setDireccion( request.getParameter("direccion") );
 					rm.setTelefono( request.getParameter( "telefono" ));					
 					
-												
+					System.out.println("Parameter Pricipal> " + request.getParameter( "principal" ));	
+					
+					if(null == request.getParameter( "principal" )){
+						rm.setEstado(false);
+					}else{
+						rm.setEstado(true);
+					}
+					
 					if( !"add".equals( request.getParameter( "mode" ) ) ){
 						rm.setId( Integer.parseInt( request.getParameter( "id" )));
 					}

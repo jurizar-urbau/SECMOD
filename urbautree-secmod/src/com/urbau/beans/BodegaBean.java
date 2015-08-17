@@ -9,6 +9,9 @@ public class BodegaBean implements Bean {
 	private String nombre;
 	private String direccion;
 	private String telefono;
+	private Boolean estado;
+	private Boolean existeBodegaPrincipal;
+	private Boolean estadoEsEditable;
 	
 	
 	private int total_regs;
@@ -43,6 +46,25 @@ public class BodegaBean implements Bean {
 	}
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+	public Boolean getEstado() {
+		return estado;
+	}
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+	public Boolean getExisteBodegaPrincipal() {
+		return existeBodegaPrincipal;
+	}
+	public void setExisteBodegaPrincipal(Boolean existeBodegaPrincipal) {
+		this.existeBodegaPrincipal = existeBodegaPrincipal;
+	}
+		
+	public Boolean getEstadoEsEditable() {
+		return estadoEsEditable;
+	}
+	public void setEstadoEsEditable(Boolean estadoEsEditable) {
+		this.estadoEsEditable = estadoEsEditable;
 	}
 	@Override
 	public int getProgramId() {

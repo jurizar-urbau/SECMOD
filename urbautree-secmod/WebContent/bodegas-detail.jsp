@@ -2,14 +2,14 @@
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.feeders.BodegasMain"%>
       
-<%
-	
+<%	
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
 			BodegasMain rm = new BodegasMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 			BodegaBean bean = rm.getBodega( id );						
-			String mode = request.getParameter( "mode" );									
+			String mode = request.getParameter( "mode" );
+			Boolean estado = bean.getEstado();
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -103,9 +103,25 @@
 	                          	<%}%>
                                   
                               </div>
+                          </div>                                                
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Principal</label>
+                              <%if( !bean.getExisteBodegaPrincipal() ){%>
+                              <div class="col-sm-10">
+	                              <div class="col-sm-6 text-left">
+			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
+			                      </div>
+		                      </div>
+		                      <%}else if(bean.getEstadoEsEditable()){%>
+		                      <div class="col-sm-10">
+	                              <div class="col-sm-6 text-left">
+			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
+			                      </div>
+		                      </div>
+		                      	
+		                      <%}%>
                           </div>
-                          
-                          
+                                                                           
                           </div>
                           
                            <div class="form-actions">
@@ -200,6 +216,12 @@
     	     	return false;
     	 	});
     				 
+    		
+    		var estado  = <%= estado%>;    		    	    
+    		if(estado){    			
+    			$("#principal").prop('checked', true);
+    		}
+    		
     		
     		var mode = getUrlParameter('mode');    		
     		if(mode === "remove"){
