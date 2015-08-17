@@ -121,6 +121,10 @@
     <servlet-name>PreciosPuntosDeVentas</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PreciosPuntosDeVentas</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>BodegasClientes</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.BodegasClientes</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>
     <url-pattern>/config/UrbauConfig</url-pattern>
@@ -220,6 +224,10 @@
   <servlet-mapping>
     <servlet-name>PreciosPuntosDeVentas</servlet-name>
     <url-pattern>/bin/PreciosPuntosDeVentas</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>BodegasClientes</servlet-name>
+    <url-pattern>/bin/BodegasClientes</url-pattern>
   </servlet-mapping>
   
 

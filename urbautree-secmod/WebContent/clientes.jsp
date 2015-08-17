@@ -39,6 +39,9 @@
 		function clientePrecios( id ){
 			location.replace( "cliente_precios.jsp?cliente="+id );					
 		}
+		function bodegaCliente( id ){
+			location.replace( "bodega_cliente.jsp?cliente="+id );					
+		}
 	</script>
 	</head>
    
@@ -139,6 +142,7 @@
                                       <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%//}%>
                                       <button class="btn btn-info btn-xs" onclick="clientePrecios('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>	  
+                                      <button class="btn btn-info btn-xs" onclick="bodegaCliente('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>
                                   </td>
                               </tr>
                               <% } %>

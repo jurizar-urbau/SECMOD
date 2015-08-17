@@ -348,6 +348,18 @@ public class Util {
 			return sb.toString();
 		}
 	}
+	public static String getBodegaPorClienteWhere(String q) {
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( "NOMBRE", q) );
+			sb.append( " OR " );
+			sb.append( getFieldLikes( "SIMBOLO", q) );
+			return sb.toString();
+		}
+	}
 	
 	public static String getPaisesWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
