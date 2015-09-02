@@ -1,0 +1,62 @@
+ <div class="col-lg-6"> 
+           
+          </div>
+          <div class="col-lg-6">
+          		<form>
+	          		<div class="top-menu">
+			              <ul class="nav pull-right top-menu">
+			              		<li><input type="text" class="form-control" id="search-query-3" name="q"  ></li>
+			                    <li><button class="btn btn-primary">Buscar</button></li>
+			              </ul>
+		            </div>
+			    </form>
+			  </div>
+			  <br/>
+			  
+          	
+          	<div class="row mt">
+          		<div class="col-lg-12">
+          		<div class="content-panel" ng-controller="clientLisController as cl" >
+  <span class="pull-right">
+          				 
+          				  <button class="btn btn-success" ng-click="go('/clients/detail/add')">+</button>&nbsp;&nbsp;&nbsp;
+          				 
+          				  </span>
+          				
+<table class="table table-striped table-advance table-hover" >
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Clientes </h4>
+	                  	  	  <hr>
+	                  	  	  <thead>
+                              <tr>
+                          <th  class="hidden-phone" >Razon Social</th>
+                                  <th>Cliente/Empresa</th>
+                                  <th>Telefono </th>
+                                  <th  class="hidden-phone">Fax</th>
+                                  <th>Email </th>
+                                  <th  class="hidden-phone">Vendedor </th>
+                                  </tr>
+                              </thead>
+    <tbody>
+        <tr ng-repeat="client in data" >
+            <td  class="hidden-phone"> {{client.rzsocial}}</td>
+            <td> {{client.client }}</td>
+            <td> {{client.tel}}</td>
+            <td  class="hidden-phone"> {{client.fax}}</td>
+            <td> {{client.email}}</td>
+            <td class="hidden-phone" > {{client.sellerObj.name}}. {{client.sellerObj.surName}}</td>
+						<td>
+								<button class="btn btn-primary btn-xs" ng-click="go('/clients/detail/edit/',client.id)"><i class="fa fa-pencil"></i></button>
+	              <button class="btn btn-danger btn-xs" ng-click="go('/clients/detail/remove/',client.id)"><i class="fa fa-trash-o "></i></button>
+	              <button class="btn btn-success btn-xs"  ng-click="go('/clients/detail/detail/',client.id)"><i class="fa fa-check"></i></button>
+	          </td>
+		</tr>
+
+    </tbody>
+</table>
+
+</div>
+                     
+		             
+          		</div>
+          	</div>
+			

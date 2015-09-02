@@ -50,11 +50,17 @@ public class ClientBean  implements Bean {
 					)
 	private CountryBean country;
 	
-	@DatabaseField(columnName = "TIPO_CLIENTE")
-	private int tipo_cliente;
+	@DatabaseField(columnName = "TIPO_CLIENTE",
+					foreign = true,
+					foreignAutoRefresh = true
+					)
+	private ClientTypeBean tipo_cliente;
 	
-	@DatabaseField(columnName = "SELLER")
-	private int seller;
+	@DatabaseField(
+			columnName = "SELLER",
+			foreign = true,
+			foreignAutoRefresh = true)
+	private SellerBean seller;
 	
 	
 
@@ -151,21 +157,22 @@ public class ClientBean  implements Bean {
 	public void setCountry(CountryBean country) {
 		this.country = country;
 	}
-	public int getTipo_cliente() {
+	public ClientTypeBean getTipo_cliente() {
 		return tipo_cliente;
 	}
-	public void setTipo_cliente(int tipo_cliente) {
+	public void setTipo_cliente(ClientTypeBean tipo_cliente) {
 		this.tipo_cliente = tipo_cliente;
 	}
-	public int getSeller() {
+	public SellerBean getSeller() {
 		return seller;
 	}
-	public void setSeller(int seller) {
+	public void setSeller(SellerBean seller) {
 		this.seller = seller;
 	}
 	public JsonObject getJsonBean() {
 		
 		JsonObject jo  = new JsonObject();
+		jo.add("id", this.getId());
 		jo.add("rzsocial", 	this.getRzsocial());
 		jo.add("client",	this.getClient());
 		jo.add("fax", 		this.getFax());
@@ -176,10 +183,21 @@ public class ClientBean  implements Bean {
 		jo.add("addrfiscal", this.getAddrfiscal());
 		jo.add("email", this.getEmail());
 		jo.add("rating", this.getRating());
-		jo.add("addrship", this.getAddrfiscal());
-		jo.add("country",this.getCountry().getJsonBean());
-		jo.add("tipoClient", this.getTipo_cliente());
-		jo.add("seller", this.getTipo_cliente());
+		jo.add("addrship", this.getAddrship());
+		jo.add("country", this.getCountry().getId());
+		jo.add("countryObj", this.getCountry().getJsonBean());
+
+		if(this.getTipo_cliente() != null) {
+			jo.add("tipoCliente", this.getTipo_cliente().getId());
+			jo.add("tipoClientObj", this.getTipo_cliente().getJsonBean());
+			
+		}
+		
+		if(this.getSeller() != null) {
+			jo.add("seller", this.getSeller().getId());
+			jo.add("sellerObj", this.getSeller().getJsonBean());
+			
+		}
 		
 		
 		

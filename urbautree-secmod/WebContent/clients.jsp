@@ -8,6 +8,8 @@
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	<%@include file="fragment/angDepends.jsp"%>
+	<%@include file="fragment/appDepends.jsp"%>
 	<%
 		ClientMain vm = new ClientMain();
 		RolesMain roles_main = new RolesMain();
@@ -72,128 +74,11 @@
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height">
-          <br/>
-          <div class="col-lg-6"> 
-           
-          </div>
-          <div class="col-lg-6">
-          		<form>
-	          		<div class="top-menu">
-			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-			                    <li><button class="btn btn-primary">Buscar</button></li>
-			              </ul>
-		            </div>
-			    </form>
-			  </div>
-			  <br/>
-			  
-          	
-          	<div class="row mt">
-          		<div class="col-lg-12">
-          		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
-          				  </span>
-                          <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Clientes </h4>
-	                  	  	  <hr>
-	                  	  	  <thead>
-                              <tr>
-                                  <th class="hidden-phone">Razon Social</th>
-                                  <th>Client</th>
-                                  <th>Telefono </th>
-                                  <th>Fax</th>
-                                  <th>Telefono Alt.</th>
-                                  <th>Fax Alt. </th>
-                                  <th>No. Fiscal </th>
-                                  <th>Direccion fiscal </th>
-                                  <th>Email </th>
-                                  <th>Rating </th>
-                                  <th>Direccion </th>
-                                  <th>Pais </th>
-                                  <th>Tipo Cliente </th>
-                                  <th>Vendedor </th>
-                                  
-                                  <th></th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              <%
-                              	for( ClientBean us : list ){
-                              %>
-                              <tr>
-                                  <td class="hidden-phone"><%= us.getRzsocial() %></td>
-                                  <td class="hidden-phone"><%= us.getClient() %></td>
-                                  <td class="hidden-phone"><%= us.getTel()%></td>
-                                  <td class="hidden-phone"><%= us.getFax()%></td>
-                                  <td class="hidden-phone"><%= us.getTelalt()%></td>
-                                  <td class="hidden-phone"><%= us.getFaxalt()%></td>
-                                  <td class="hidden-phone"><%= us.getNumfiscal()%></td>
-                                  <td class="hidden-phone"><%= us.getAddrfiscal()%></td>
-                                  <td class="hidden-phone"><%= us.getEmail()%></td>
-                                  <td class="hidden-phone"><%= us.getRating()%></td>
-                                  <td class="hidden-phone"><%= us.getAddrship()%></td>
-                                  <td class="hidden-phone"><%= us.getCountry()%></td>
-                                  <td class="hidden-phone"><%= us.getTipo_cliente()%></td>
-                                  <td class="hidden-phone"><%= us.getSeller()%></td>
-                                  
-                                  
-                                  <td>
-                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                  </td>
-                              </tr>
-                              <% } %>
-                              
-                              </tbody>
-                          </table>
-                         
-                      </div>
-                      <%
-			int init = from + 1;
-			
-			int end  = (from + Constants.ITEMS_PER_PAGE  ) >= total_regs ? total_regs : (from + Constants.ITEMS_PER_PAGE  );
-			
-			boolean backButton = true;
-			boolean forwardButton = true;
-			if( from <= 0 ){ 
-				backButton = false;
-			}
-			if( end >= total_regs ){
-				forwardButton = false;
-			}
-		%>
-		              <nav>
-					  <ul class="pager">
-					  <% if( backButton ) {%>
-					  <li class="previous">
-					    		<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
-					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
-					  <% } else { %>
-					  <li class="previous disabled">
-					    		<a href="javascript: return null">
-					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
-					  <% } %>
-					    <% if( forwardButton ){  %>
-					    <li class="next">
-					    	<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
-					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
-					    <% } else { %>
-					    <li class="next disabled">
-					    	<a href="javascript: return null">
-					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
-					    <% } %>
-					    
-					  </ul>
-					</nav>
-          		</div>
-          	</div>
-			
+          <section class="wrapper site-min-height" ng-app="formsApp">
+            		
+          				  <div ng-view></div>
+                      
+                      
 		</section><! --/wrapper -->
       </section><!-- /MAIN CONTENT -->
 

@@ -7,7 +7,7 @@
    
    <body>
    
-<div id="fb-root"></div>
+
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -276,7 +276,7 @@
       *********************************************************************************************************************************************************** -->                  
                   
                   <div class="col-lg-3 ds">
-                    <div class="fb-page" data-href="https://www.facebook.com/naturaloilgt" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"></div>
+                    <div class="fb-page" data-href="https://www.facebook.com/FESGT" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"></div>
                     <!--COMPLETED ACTIONS DONUTS CHART-->
             <h3>NOTIFICATIONS</h3>
                                         

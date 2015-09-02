@@ -33,10 +33,10 @@
 	
 	<!--custom checkbox & radio-->
 	<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
-	<script type="text/javascript" src="assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!-- 	<script type="text/javascript" src="assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap-daterangepicker/date.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap-daterangepicker/daterangepicker.js"></script>
-	
+ -->	
 	<script type="text/javascript" src="assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
 	<script src="assets/js/flat-ui.min.js"></script>
 	<script src="assets/js/jquery.validate.min.js"></script>

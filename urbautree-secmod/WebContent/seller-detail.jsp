@@ -11,7 +11,7 @@
 			RolesMain roles_main = new RolesMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			SellerBean bean = rm.getSeller(id);
+			SellerBean bean = rm.getItem(id);
 			String cmd = "Nuevo "+field;
 			String mode = request.getParameter( "mode" );
 			String keyReadOnly = "readonly=\"readonly\"";
@@ -113,7 +113,7 @@
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Usuario</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="user" id="user" value="<%= bean.getUser()%>">
+                                  <input type="number" class="form-control" name="user" id="user" value="<%= bean.getUser()%>">
                               </div>
                           </div>
                         

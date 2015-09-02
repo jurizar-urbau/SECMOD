@@ -3,7 +3,7 @@
               
                   <p class="centered">
                   <a href="profile.html">
-                  <img src="https://scontent-mia.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10742_714103018653633_713490040812823849_n.png?oh=1e76af0ab2ff870bbeffd15cb90b57ff&oe=55CE1A43" class="img-circle" width="60">
+                  <img src="assets/img/logo.png" class="img-circle" width="60">
                   </a></p>
                   <h5 class="centered"><%= loggedUser.getNombre() %></h5>
                     
@@ -19,7 +19,9 @@
                           <span>Ventas</span>
                       </a>
                       <ul class="sub">
+                          <li><a  href="clients.jsp#/clients">Clientes</a></li>
                           <li><a  href="sellers.jsp">Vendedores</a></li>
+                          <li><a  href="country.jsp">Paises</a></li>
                           <li><a  href="clientType.jsp">Tipos de Clientes</a></li>
                           
                       </ul>

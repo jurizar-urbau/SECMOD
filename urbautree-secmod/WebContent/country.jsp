@@ -1,30 +1,30 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.SellerBean"%>
+<%@page import="com.urbau.beans.CountryBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.SellerMain"%>
+<%@page import="com.urbau.feeders.CountryMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-		SellerMain vm = new SellerMain();
+	CountryMain vm = new CountryMain();
 		RolesMain roles_main = new RolesMain();
 		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
-		ArrayList<SellerBean> list = vm.getItems();
+		ArrayList<CountryBean> list = vm.getItems();
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){
-			total_regs = ((SellerBean)list.get( 0 )).getTotal_regs();
+			total_regs = ((CountryBean)list.get( 0 )).getTotal_regs();
 		}
 	%>
 	<script>
-		var table = "seller";
+		var table = "country";
 		function edit( id ){
 			location.replace( table+"-detail.jsp?mode=edit&id="+id);
 		}
@@ -104,18 +104,16 @@
                               <tr>
                                   <th class="hidden-phone">Nombre</th>
                                   <th>Apellido</th>
-                                  <th class="hidden-phone">Usuario</th>
+                         
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( SellerBean us : list ){
+                              	for( CountryBean us : list ){
                               %>
                               <tr>
-                                  <td class="hidden-phone"><%= us.getName() %></td>
-                                  <td><%= us.getSurname()%></td>
-                                  <td class="hidden-phone"><%= us.getUser() %></td>
+                                  <td class="hidden-phone"><%= us.getCountry() %></td>
                                   <td>
                                       
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>

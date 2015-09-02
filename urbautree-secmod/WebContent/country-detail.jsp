@@ -1,18 +1,17 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.beans.ClientTypeBean	"%>
-<%@page import="com.urbau.feeders.ClientTypeMain"%>
+<%@page import="com.urbau.beans.CountryBean"%>
+<%@page import="com.urbau.feeders.CountryMain"%>
 <%@page import="com.urbau.feeders.RolesMain"%>
       
 <%
-		String field = "Tipo de Cliente";
-		String returnAddress = "clientType.jsp";
+		String field = "Paises";
+
 		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-			ClientTypeMain rm = new ClientTypeMain();
+			CountryMain rm = new CountryMain();
 			RolesMain roles_main = new RolesMain();
 			
 			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			ClientTypeBean bean = rm.getItem(id);
-		System.out.print("here");
+			CountryBean bean = rm.getItem(id);
 			String cmd = "Nuevo "+field;
 			String mode = request.getParameter( "mode" );
 			String keyReadOnly = "readonly=\"readonly\"";
@@ -89,26 +88,25 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE TIPO DE CLIENTE</h3>
+          	<h3><i class="fa fa-angle-right"></i> DETALLE PAIS</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
           			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="<%= returnAddress %>">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="country.jsp">&nbsp;Regresar</a> </h4>
                       <form class="form-horizontal style-form" method="POST" id="form" name="form" action="">
                       <input type="hidden" name="mode" value="<%= request.getParameter("mode")%>">
                       <input type="hidden" name="id" value="<%= request.getParameter("id")%>">
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Tipo</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Pais</label>
                               <div class="col-sm-10">
-                                  <input type="text" class="form-control" name="type" id="name" value="<%= bean.getType() %>">
+                                  <input type="text" class="form-control" name="countryName" id=countryName value="<%= bean.getCountry() %>">
                               </div>
                           </div>
-                         
-                           <div class="form-actions">
+                            <div class="form-actions">
                            	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-					            <button class="btn" onclick="location.replace('<%= returnAddress %>')">Cancelar</button>
+					            <button class="btn" onclick="location.replace('country.jsp')">Cancelar</button>
 					        </div>  
                           
                          
@@ -174,11 +172,11 @@
 		 $("#savebutton").click(function(){
 		         $.ajax({
 		     type: "POST",
-		 url: "./bin/clienttype",
+		 url: "./bin/countries",
 		 data: $('#form').serialize(),
 		         success: function(msg){
-		                  alert("Operacion exitosa");
-		                  location.replace( "<%= returnAddress %>" );
+		                  alert("Operacion Exitosa");
+		                  location.replace( "country.jsp" );
 		         },
 		 error: function(){
 		 alert("failure");

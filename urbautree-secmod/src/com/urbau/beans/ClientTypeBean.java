@@ -1,7 +1,10 @@
 package com.urbau.beans;
 
+import com.eclipsesource.json.JsonObject;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.urbau.beans._interface.Bean;
-
+@DatabaseTable(tableName = "TIPO_CLIENTES")
 public class ClientTypeBean  implements Bean {
 
 	public static final String TYPE_TAG = "{type}";
@@ -12,8 +15,11 @@ public class ClientTypeBean  implements Bean {
 	
 	
 private int total_regs;
-	private String type; 
+    @DatabaseField(generatedId = true)
 	private int id;
+    
+    @DatabaseField(columnName = "TIPO")
+	private String type; 
 	
 	public int getTotal_regs() {
 		return this.total_regs;
@@ -41,5 +47,11 @@ private int total_regs;
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+	public JsonObject  getJsonBean(){
+		JsonObject jo = new JsonObject();
+		jo.add("id", this.getId());
+		jo.add("tipoCliente",this.getType());
+		
+		return jo;
+	}
 }

@@ -71,7 +71,7 @@
   </servlet>
   <servlet>
     <servlet-name>ClientType</servlet-name>
-    <servlet-class>com.urbau.servlet.entity.ClientType</servlet-class>
+    <servlet-class>com.urbau.servlet.entity.ClientTypes</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>Countries</servlet-name>
@@ -105,8 +105,6 @@
     <servlet-name>Programs</servlet-name>
     <url-pattern>/bin/Programs</url-pattern>
   </servlet-mapping>
-    
-
   <servlet-mapping>
     <servlet-name>Vehicles</servlet-name>
     <url-pattern>/bin/vehicles</url-pattern>
@@ -130,7 +128,7 @@
   
   <servlet-mapping>
     <servlet-name>ClientType</servlet-name>
-    <url-pattern>/bin/clientType</url-pattern>
+    <url-pattern>/bin/clienttype</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

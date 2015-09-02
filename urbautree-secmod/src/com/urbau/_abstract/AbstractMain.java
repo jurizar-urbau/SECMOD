@@ -4,7 +4,9 @@
 package com.urbau._abstract;
 
 
+import com.j256.ormlite.support.ConnectionSource;
 import com.urbau.db.ConnectionManager;
+import com.urbau.db.ORMConnectionManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,7 +18,8 @@ import java.util.ArrayList;
  *
  */
 public abstract class AbstractMain {
-
+	protected ConnectionSource conSource = null ; 
+	
 	public ArrayList<String[]> getComboItems( String table ){
         ArrayList<String[]> list = new ArrayList<String[]>();
 		Connection con = null;
@@ -42,5 +45,9 @@ public abstract class AbstractMain {
 	
 	public String getProgramName(){
 		return this.getClass().getName();
+	}
+	
+	protected void closeCon() {
+		ORMConnectionManager.close(conSource);
 	}
 }

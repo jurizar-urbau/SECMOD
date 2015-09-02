@@ -120,7 +120,8 @@ public class CountryMain  extends AbstractMain {
 		}
 		return result;
 	}
-	private void closeCon() {
+	
+	protected void closeCon() {
 		ORMConnectionManager.close(conSource);
 	}
 

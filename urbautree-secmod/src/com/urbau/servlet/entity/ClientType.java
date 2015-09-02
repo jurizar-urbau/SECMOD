@@ -26,11 +26,11 @@ public class ClientType extends Entity {
 	private static final String MESSAGE_DEL_ERROR = "No se pudo eliminar el "+ITEM;
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
+//		try{
 			System.out.println( "message recieved: " + request.getQueryString() );
 			
 			HttpSession session = request.getSession();
-			validateRequest( session );
+			//validateRequest( session );
 			String mode = request.getParameter( "mode" );
 			System.out.println( "mode: " + mode );
 			System.out.println( "id: " + request.getParameter( "id") );
@@ -69,13 +69,13 @@ public class ClientType extends Entity {
 					response.getOutputStream().close();
 				}
 			
-		} catch( UserNotAuthenticatedException exception ){
-			System.out.println( "Error: " + exception.getMessage() );
-			exception.printStackTrace();
-			response.getOutputStream().write( exception.getMessage().getBytes() );
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
-		}
+//		} catch( UserNotAuthenticatedException exception ){
+//			System.out.println( "Error: " + exception.getMessage() );
+//			exception.printStackTrace();
+//			response.getOutputStream().write( exception.getMessage().getBytes() );
+//			response.getOutputStream().flush();
+//			response.getOutputStream().close();
+//		}
 	}
 	
 }

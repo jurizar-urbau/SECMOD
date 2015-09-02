@@ -8,21 +8,20 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.eclipsesource.json.JsonObject;
-import com.urbau._abstract.entity.Entity;
-import com.urbau.beans.SellerBean;
+import com.urbau.beans.ClientTypeBean;
 import com.urbau.beans._interface.Bean;
-import com.urbau.feeders.SellerMain;
+import com.urbau.feeders.ClientTypeMain;;
+@WebServlet("/clienttype")
+public class ClientTypes extends GenericEntity {
 
-
-@WebServlet("/sellers")
-public class Sellers extends GenericEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5085293567931702126L;
 	
-	private static final String FIELD_NAME = "name" ;
-	private static final String FIELD_SURNAME = "surname" ;
-	private static final String FIELD_USER = "user" ;
+	private static final String CLIENT_TYPE_FIELD = "type" ;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     		throws ServletException, IOException {
@@ -36,7 +35,7 @@ public class Sellers extends GenericEntity {
 			
 			if(ADD_MODE.equals( mode )) {
 				System.out.println("add mode");
-				SellerBean bean = (SellerBean) populateBean(request);
+				ClientTypeBean bean = (ClientTypeBean) populateBean(request);
 				status = addItem(bean);
 				
 			}else if(DEL_MODE.equals(mode)) {
@@ -67,12 +66,12 @@ public class Sellers extends GenericEntity {
 
 
   private JsonObject getListBeans() {
-	  SellerMain fieldMain = new SellerMain(); 
-	  ArrayList<SellerBean> tcb = fieldMain.getItems();
+	  ClientTypeMain fieldMain = new ClientTypeMain(); 
+	  ArrayList<ClientTypeBean> tcb = fieldMain.getItems();
 	JsonObject jsonBeans  = new JsonObject();
-	Iterator<SellerBean> iTcb = tcb.iterator();
+	Iterator<ClientTypeBean> iTcb = tcb.iterator();
 	while(iTcb.hasNext()) {
-			SellerBean itBean = iTcb.next();
+			ClientTypeBean itBean = iTcb.next();
 			jsonBeans.add(String.valueOf(itBean.getId()), itBean.getJsonBean());
 			
 		}
@@ -81,7 +80,7 @@ public class Sellers extends GenericEntity {
 
 
 private boolean delItem(HttpServletRequest request) {
-	  SellerMain fieldMain = new SellerMain(); 
+	  ClientTypeMain fieldMain = new ClientTypeMain(); 
 	  Integer id = Integer.valueOf(   request.getParameter("id") );
 	  return  fieldMain.delItemById(id);
 		 
@@ -89,30 +88,23 @@ private boolean delItem(HttpServletRequest request) {
 
 
 private Boolean addItem(Bean bean ) {
-      SellerMain fieldMain = new SellerMain(); 
-	  return fieldMain.addItem((SellerBean) bean);
+      ClientTypeMain fieldMain = new ClientTypeMain(); 
+	  return fieldMain.addItem((ClientTypeBean) bean);
   }
 
   private Bean populateBean( HttpServletRequest request ) {
-	  SellerBean bean = new SellerBean();
-	  
-	  bean.setName( request.getParameter(FIELD_NAME));
-	  bean.setSurname( request.getParameter(FIELD_SURNAME));
-	  bean.setUser( request.getParameter(FIELD_USER));
-	  
+	  ClientTypeBean bean = new ClientTypeBean();
+	  bean.setType( request.getParameter(CLIENT_TYPE_FIELD));
 	  return bean;
   }
 
 	private boolean editRegister(HttpServletRequest request) {
-		 SellerMain fieldMain = new SellerMain(); 
+		 ClientTypeMain fieldMain = new ClientTypeMain(); 
 		Integer id = Integer.valueOf(   request.getParameter("id") );
-		SellerBean editBean = fieldMain.getItem(id);
+		ClientTypeBean editBean = fieldMain.getItem(id);
 		if(editBean != null ) {
-			editBean.setName( request.getParameter(FIELD_NAME));
-			editBean.setSurname( request.getParameter(FIELD_SURNAME));
-			editBean.setUser( request.getParameter(FIELD_USER));
-			  
-			  return fieldMain.modItem(editBean);
+			editBean.setType(	request.getParameter(CLIENT_TYPE_FIELD));
+			return fieldMain.modItem(editBean);
 						
 		}else {
 			return false;
@@ -122,8 +114,5 @@ private Boolean addItem(Bean bean ) {
 		
 		
 	}
+	
 }
-				
-				
-				
-

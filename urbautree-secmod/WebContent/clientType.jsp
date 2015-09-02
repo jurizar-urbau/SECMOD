@@ -16,7 +16,7 @@
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
-		ArrayList<ClientTypeBean> list = vm.getItems( request.getParameter("q"), from );
+		ArrayList<ClientTypeBean> list = vm.getItems();
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){

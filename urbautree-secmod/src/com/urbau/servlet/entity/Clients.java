@@ -12,9 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.eclipsesource.json.JsonObject;
 import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.ClientBean;
+import com.urbau.beans.ClientTypeBean;
 import com.urbau.beans.CountryBean;
+import com.urbau.beans.SellerBean;
 import com.urbau.feeders.ClientMain;
+import com.urbau.feeders.ClientTypeMain;
 import com.urbau.feeders.CountryMain;
+import com.urbau.feeders.SellerMain;
 
 
 @WebServlet("/clients")
@@ -22,6 +26,9 @@ public class Clients extends Entity {
 	private static final long serialVersionUID = 1L;
 	private static final String MODE = "mode";
 	private static final String TYPE_FIELD = "type" ;
+	private static final String SELLER_FIELD = "seller";
+	private static final String CLIENT_TYPE_FIELD = "tipoCliente";
+	private static final String COUNTRY_FIELD = "country";
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -54,10 +61,14 @@ public class Clients extends Entity {
 				
 				bean.setAddrship(	request.getParameter("addrship"));
 				CountryMain countryMain = new  CountryMain(); 
-				CountryBean cbBean = countryMain.getItem(getIntParameter(request,"country" ));
+				CountryBean cbBean = countryMain.getItem(getIntParameter(request,COUNTRY_FIELD ));
 				bean.setCountry( 	cbBean);
-				bean.setTipo_cliente( getIntParameter(request,"tipocliente" ));
-				bean.setSeller( getIntParameter(request,"seller" ));
+				ClientTypeMain ctMain = new ClientTypeMain();
+				ClientTypeBean ctBean = ctMain.getItem(getIntParameter(request, CLIENT_TYPE_FIELD ));
+				bean.setTipo_cliente(ctBean);
+				SellerMain sellerMain = new SellerMain();
+				SellerBean sellerBean = sellerMain.getItem(getIntParameter(request, SELLER_FIELD));
+				bean.setSeller(sellerBean);
 					
 			status = fieldMain.addItem(bean);
 				
@@ -138,7 +149,7 @@ public class Clients extends Entity {
 	private int getIntParameter(HttpServletRequest request, String parameter) {
 		String strParam = request.getParameter(parameter);
 		if(strParam != null && !strParam.isEmpty()){
-			return Integer.valueOf(request.getParameter("rating"));
+			return Integer.valueOf(strParam);
 		}else {
 			return 0;
 		}
@@ -183,6 +194,8 @@ public class Clients extends Entity {
 			
 			editBean.setRzsocial( request.getParameter("rzsocial") );
 			editBean.setClient(	request.getParameter("client"));
+			editBean.setTel( request.getParameter("tel"));
+			editBean.setTelalt( request.getParameter("telalt"));
 			editBean.setFax(		request.getParameter("fax"));
 			editBean.setFaxalt(	request.getParameter("faxalt"));
 			editBean.setNumfiscal(request.getParameter("numfiscal"));
@@ -190,10 +203,15 @@ public class Clients extends Entity {
 			editBean.setEmail(	request.getParameter("email"));
 			editBean.setRating( 	Integer.valueOf(request.getParameter("rating")) );
 			editBean.setAddrship(	request.getParameter("addrship"));
-//			editBean.setCountry( 	Integer.valueOf(request.getParameter("country")));
-			editBean.setTipo_cliente( Integer.valueOf(request.getParameter("tipocliente")));
-			editBean.setSeller(	Integer.valueOf(request.getParameter("seller")));
-			
+			CountryMain countryMain = new  CountryMain(); 
+			CountryBean cbBean = countryMain.getItem(getIntParameter(request,COUNTRY_FIELD ));
+			editBean.setCountry( 	cbBean);
+			ClientTypeMain ctMain = new ClientTypeMain();
+			ClientTypeBean ctBean = ctMain.getItem(getIntParameter(request, CLIENT_TYPE_FIELD ));
+			editBean.setTipo_cliente(ctBean);
+			SellerMain sellerMain = new SellerMain();
+			SellerBean sellerBean = sellerMain.getItem(getIntParameter(request, SELLER_FIELD));
+			editBean.setSeller(sellerBean);
 			return beanMain.modItem(editBean);
 			
 			
