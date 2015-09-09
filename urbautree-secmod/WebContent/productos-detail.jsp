@@ -119,7 +119,7 @@
                                   
                               </div>
                           </div>
-                           <div class="form-group">
+                          <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Costo</label>
                               <div class="col-sm-10">                              		                          			                          	
 	                          		<input type="text" class="form-control" name="precio" id="precio" value="<%= bean.getPrecio() %>">	                          	                          	                         
@@ -127,11 +127,33 @@
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Precio importaci&oacuten</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Precio 1</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_importacion" id="precio_importacion" value="<%= bean.getPrecio_importacion() %>">	                          	                          	                          	                                  
+	                          		<input type="text" class="form-control" name="precio_1" id="precio_1" value="<%= bean.getPrecio_1() %>">	                          	                          	                         
+                                  
                               </div>
                           </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Precio 2</label>
+                              <div class="col-sm-10">                              		                          			                          	
+	                          		<input type="text" class="form-control" name="precio_2" id="precio_2" value="<%= bean.getPrecio_2() %>">	                          	                          	                         
+                                  
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Precio 3</label>
+                              <div class="col-sm-10">                              		                          			                          	
+	                          		<input type="text" class="form-control" name="precio_3" id="precio_3" value="<%= bean.getPrecio_3() %>">	                          	                          	                         
+                                  
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Precio 4</label>
+                              <div class="col-sm-10">                              		                          			                          	
+	                          		<input type="text" class="form-control" name="precio_4" id="precio_4" value="<%= bean.getPrecio_4() %>">	                          	                          	                         
+                                  
+                              </div>
+                          </div>                          
                                                     
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Stock Minimo</label>
@@ -264,7 +286,12 @@
     			$("#coeficiente_unidad").attr('disabled','disabled');
     			$("#proveedor").attr('disabled','disabled');
     			$("#precio").attr('disabled','disabled');
-    			$("#precio_importacion").attr('disabled','disabled');
+    			$("#precio_1").attr('disabled','disabled');
+    			$("#precio_2").attr('disabled','disabled');
+    			$("#precio_3").attr('disabled','disabled');
+    			$("#precio_4").attr('disabled','disabled');
+    			
+    			
     			$("#image_path").attr('disabled','disabled');
     			$("#stock_minimo").attr('disabled','disabled');
     			
@@ -278,7 +305,11 @@
     			$("#coeficiente_unidad").attr('disabled','disabled');
     			$("#proveedor").attr('disabled','disabled');
     			$("#precio").attr('disabled','disabled');
-    			$("#precio_importacion").attr('disabled','disabled');
+    			$("#precio_1").attr('disabled','disabled');
+    			$("#precio_2").attr('disabled','disabled');
+    			$("#precio_3").attr('disabled','disabled');
+    			$("#precio_4").attr('disabled','disabled');
+    			
     			$("#image_path").attr('disabled','disabled');
     			$("#stock_minimo").attr('disabled','disabled');
     			    		

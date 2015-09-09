@@ -1,44 +1,72 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.UsuarioBean"%>
+<%@page import="com.urbau.beans.BodegaUsuarioBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.UsuariosMain"%>
-<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.feeders.BodegasMain"%>
+
+
+<%
+		
+
+	String idUsuarioParameter = request.getParameter("usuario");
+	String qParameter = request.getParameter("q");
+	String fromParameter = request.getParameter( "from" );
+	
+	int idUsuario  = -1;
+	try{
+		idUsuario = Integer.parseInt(idUsuarioParameter);	
+	}catch(NumberFormatException e){
+		System.out.println("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
+	}	
+	
+	
+	if(idUsuario >= 0){
+	
+		System.out.println("BodegasXUsuario- idUsuario: " + idUsuario);
+		
+		BodegasUsuariosMain preciosClientes_main = new BodegasUsuariosMain();
+		
+		int from = 0;
+		if( fromParameter != null ){
+			from = Integer.parseInt( fromParameter );
+		}				
+		
+		ArrayList<BodegaUsuarioBean> bodegaUsuarioList = preciosClientes_main.get( qParameter, from);
+		
+		
+		int total_regs = -1;
+		
+		if( bodegaUsuarioList.size() > 0 ){
+			total_regs = ((BodegaUsuarioBean)bodegaUsuarioList.get( 0 )).getTotal_regs();
+		}
+				
+%>
+
+
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%
-		UsuariosMain um = new UsuariosMain();
-		RolesMain roles_main = new RolesMain();
-		
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}
-		ArrayList<UsuarioBean> list = um.get( request.getParameter("q"), from );
-		int total_regs = -1;
-		
-		if( list.size() > 0 ){
-			total_regs = ((UsuarioBean)list.get( 0 )).getTotal_regs();
-		}
-	%>
+
 	<script>
-		function edit( id ){
-			location.replace( "users-detail.jsp?mode=edit&id="+id);
+		function edit( id,idBodega ){		
+			var usuario = <%=idUsuario%>;
+			location.replace( "bodega_usuario-detail.jsp?mode=edit&id="+id+"&usuario="+usuario+"&bodega="+idBodega);
 		}
-		function removereg( id ){
-			location.replace( "users-detail.jsp?mode=remove&id="+id);
+		function removereg( id,idBodega ){
+			var usuario = <%=idUsuario%>;
+			location.replace( "bodega_usuario-detail.jsp?mode=remove&id="+id+"&usuario="+usuario+"&bodega="+idBodega);
 		}
-		function view( id ){
-			location.replace( "users-detail.jsp?mode=view&id="+id);
-		}
+		function view( id){	
+			var usuario = <%=idUsuario%>;
+			location.replace( "bodega_usuario-detail.jsp?mode=view&id="+id+"&usuario="+usuario);
+		} 
 		function add(){
-			location.replace( "users-detail.jsp?mode=add" );
-		}
-		function bodegaUsuario( id ){
-			location.replace( "bodega_usuario.jsp?usuario="+id );					
+			var usuario = <%=idUsuario%>;
+			location.replace( "bodega_usuario-detail.jsp?mode=add&usuario="+usuario);
 		}
 	</script>
 	</head>
@@ -84,7 +112,7 @@
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( qParameter != null && !"null".equals( qParameter )) ? qParameter : "" %>" ></li>
 			                    <li><button class="btn btn-primary">Buscar</button></li>
 			              </ul>
 		            </div>
@@ -96,60 +124,49 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_ADD)){ %>          				
+          		
+          				
           				  <span class="pull-right">
           				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
-          				<%}%>  
+          				
+          				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> USUARIOS </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> BODEGAS DE USUARIO</h4>
+	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="users.jsp">&nbsp;Regresar</a> </h4>
+	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
-                              <tr>
-                                  <th class="hidden-phone">Usuario</th>
-                                  <th>Nombre</th>
-                                  <th class="hidden-phone">Correo</th>
+                              <tr>                                                                                                    
+                                  <th>Nombre</th>                                  
+                                  <th>Direccion</th>
                                   <th>Telefono</th>
-                                  <th>Rol</th>
-                                  <th>Estado</th>
-                                  
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( UsuarioBean us : list ){
+                              BodegasMain bodegas_main = new BodegasMain();
+                              	for( BodegaUsuarioBean bean : bodegaUsuarioList ){
+                              		if(idUsuario == bean.getIdUsuario()){                              			                              	
+                              		
+                              		BodegaBean bodegaBean = bodegas_main.getBodega(bean.getIdBodega());
                               %>
                               <tr>
-                                  <td class="hidden-phone"><%= us.getUsuario() %></td>
-                                  <td><%= us.getNombre() %></td>
-                                  <td class="hidden-phone"><%= us.getEmail() %></td>
-                                  <td><%= us.getTelefono() %></td>
-                                  <td><%= roles_main.get( us.getRol() ).getDescription() %></td>
+                                  <td><%= bodegaBean.getNombre() %>  </td>                                  
+                                  <td ><%= bodegaBean.getDireccion() %></td>
+                                  <td ><%= bodegaBean.getTelefono() %></td>
                                   <td>
-                                  
-                                  <% if( us.isEstado()){ %>
-                                  	<span class="label label-success label-mini">&nbsp;Activo&nbsp;</span>
-                                  	<% } else { %>
-                                  	<span class="label label-danger label-mini">Inactivo</span>
-                                  	<% } %>
-                                  </td>
-                                  
-                                  <td>
-                                  	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_MODIFY)){ %>                                     
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                    <%}%>  
-                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_DELETE)){ %>  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                    <%}%>  
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%}%>  
-                                    
-                                    <button class="btn btn-info btn-xs" onclick="bodegaUsuario('<%= us.getId()  %>');"><i class="fa fa-file-o"></i></button>
+                                  	                                      
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>','<%= bodegaBean.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                        			  
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getIdBodega()  %>','<%= bodegaBean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bodegaBean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
+                                                                                                                                                                                                                                                                                                                          
                                   </td>
                               </tr>
-                              <% } %>
+                              <% }} %>
                               
                               </tbody>
                           </table>
@@ -173,7 +190,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -182,7 +199,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="users.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="bodegas.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -208,3 +225,11 @@
 	<%@include file="fragment/footerscripts.jsp"%>
   </body>
 </html>
+
+<% 		
+} else {
+%>
+		<p>La bodega NO EXISTE</p>
+<%
+ } 
+%>
