@@ -37,7 +37,10 @@
 		}
 		function view( id ){
 			location.replace( "productos-detail.jsp?mode=view&id="+id);
-		} 
+		}
+		function alias( id ){
+			location.replace( "alias.jsp?id="+id);
+		}
 		function add(){
 			location.replace( "productos-detail.jsp?mode=add" );
 		}
@@ -151,7 +154,8 @@
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%} %>  
-                                    <button class="btn btn-success btn-xs" onclick="detail'<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                    <button class="btn btn-success btn-xs" onclick="alias('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button>
+                                    <button class="btn btn-success btn-xs" onclick="detail('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button>
                                   </td>
                               </tr>
                               <% } %>

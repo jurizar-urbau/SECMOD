@@ -24,6 +24,7 @@ public class Clientes extends Entity {
 			String mode = request.getParameter( "mode" );
 			System.out.println( "mode: " + mode );
 			
+			boolean isModal = request.getParameter( "modal" ) != null ? "true".equals( request.getParameter( "modal" ) ) : false; 
 			
 			String message = "";
 			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
@@ -45,7 +46,16 @@ public class Clientes extends Entity {
 					
 					if( "add".equals( mode )){
 						if ( main.add( bean ) ){
-							message = "Registro creado con exito.";
+							if( isModal ){
+								ClienteBean beanb = main.getByNit(bean.getNit());
+								if( beanb != null ){
+									message = "clientid: " + String.valueOf( beanb.getId() ) + "," + bean.getNombres() + " " + bean.getApellidos();
+								} else {
+									message = "Registro no guardado ";
+								}
+							} else {
+								message = "Registro creado con exito.";
+							}
 						} else {
 							showMessage( "No se pudo crear el registro" , response );
 						}

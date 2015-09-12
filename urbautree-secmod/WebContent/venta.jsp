@@ -20,7 +20,56 @@
 			
 			
 		}
+		
+		function clickon( id ){
+			var ele = $( "#product-" + id );
+			ele.trigger('click');
+			console.log( 'clicking:', ele );
+		
+		} 
+		function searchProducts( q ){
+			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
+			console.log( "looking for products with [" + q + "]");
+			$( "#product-container" ).html("");
+			 $.get( "./bin/searchp?q=" + q, null, function(response){
+                 $.each(response, function(i, v) {
+                	 console.log( i, v );
+                	 
+                	 var rootele;
+                	 
+                	 var htmltoadd = 
+              "<a  href=\"javascript: clickon('" + v.id + "');\">" + 
+                     "<div class=\"col-md-3 col-sm-3 mb\">" +
+                       "<div class=\"white-panel pn\">" +
+                         "<div class=\"white-header\">" +
+                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
+                         "</div>" +
+             "<div class=\"row\">" +
+               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
+                 "<p><i class=\"fa fa-heart\"></i>" + v.codigo +"</p>" +
+               "</div>" +
+               "<div class=\"col-sm-6 col-xs-6\"></div>" +
+                         "</div>" +
+                         "<div class=\"centered\">" +
+                         
+                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
+                 "<p style=\"color:red\">"+ v.precio_1 +"</p>" +
+                  "       </div>" +
+                  "     </div>" +
+                  "   </div>" +
+         "</a>";
+         			$( "#product-container" ).append( htmltoadd );
+                	
+                	 
+                 });
+              });
+		}
 	</script>
+	<style>
+		div.separator {
+		    margin-top: 30px;
+		}
+	</style>
 	</head>
    
    <body>
@@ -83,32 +132,18 @@
 					  </div>
 					  <br/><br/><br/>
                       <!-- SERVER STATUS PANELS -->
-                        
+                     
                         <%
                         	ArrayList<ProductoBean> plist = pm.get(null, 0 );
+                        for( ProductoBean pbean: plist ){
+                            %>
+    			<a data-toggle="modal" href="venta.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
+    			<% } 
+                        %>    	
+                        <%
                         	for( ProductoBean pbean: plist ){
                         %>
-						<a data-toggle="modal" href="venta.jsp#myModal<%= pbean.getId() %>"> 
-
-                        <div class="col-md-3 col-sm-3 mb">
-                          <div class="white-panel pn">
-                            <div class="white-header">
-                    <h5 style="color:red"><%= pbean.getDescripcion() %></h5>
-                            </div>
-                <div class="row">
-                  <div class="col-sm-6 col-xs-6 goleft">
-                    <p><i class="fa fa-heart"></i> <%= pbean.getCodigo() %></p>
-                  </div>
-                  <div class="col-sm-6 col-xs-6"></div>
-                            </div>
-                            <div class="centered">
-                            
-                    <img src="./bin/RenderImage?imagePath=<%= pbean.getImage_path() %>" width="90">
-                    <p style="color:red"><%= pbean.getPrecio() %></p>
-                            </div>
-                          </div>
-                        </div><!-- /col-md-4 -->
-             </a>  
+						
              <div aria-hidden="true" aria-labelledby="myModalLabel<%= pbean.getId() %>" role="dialog" tabindex="-1" id="myModal<%= pbean.getId() %>" class="modal fade">
 						<form id="modalform" name="modalform">
 						<input name="productid" type="hidden" value="<%= pbean.getId() %>">
@@ -131,19 +166,32 @@
 			                          </br>
 			                          <p>Precio unitario:</p>
 			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
+			                          </br>
+			                          <p>Precio 1:</p>
+			                          <input type="text" name="precio1" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio_1() %>">
+			                          </br>
+			                          <p>Precio 2:</p>
+			                          <input type="text" name="precio2" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio_2() %>">
+			                          </br>
+			                          <p>Precio 3:</p>
+			                          <input type="text" name="precio3" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio_3() %>">
+			                          </br>
+			                          <p>Precio 4:</p>
+			                          <input type="text" name="precio4" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio_4() %>">
 			                          </div>
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addSale();">Agregar</button>
+			                          <button class="btn btn-theme" type="button" onclick="addSale('<%= pbean.getId() %>','<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>','<%= pbean.getPrecio() %>','1');">Agregar</button>
 			                      </div>
 			                  </div>
 			              </div>
 		              </form>
 		          </div>         
             <% } %>
+            <div id="product-container" class="separator">
                         
-
+					</div> <!--  content -->
                     </div><!-- /row -->
                      	
                             
@@ -159,32 +207,7 @@
       *********************************************************************************************************************************************************** -->                  
                   <div class="col-lg-3 ds">
                    <h3>ORDEN ACTUAL</h3>
-                                        
-                      <!-- First Action -->
-                      <div class="desc">
-                        <div style="float:left">
-                          <img width="70" src="./bin/RenderImage?imagePath=/Users/xumakgt/imagespath/hqdefault.jpg">
-                        </div>
-                        <div class="details">
-                          <p style="color:black; font-size:12pt">
-                             <span style="color:red; font-size:20pt">3</span> Ametralladora 2mt <br/> Q100.00
-                          </p>
-                        </div>
-                      </div>
-                      
-                      
-                      <div class="desc">
-                        <div style="float:left">
-                          <img width="70" src="./bin/RenderImage?imagePath=/Users/xumakgt/imagespath/cat-2-pack.jpg">
-                        </div>
-                        <div class="details">
-                          <p style="color:black; font-size:12pt">
-                             <span style="color:red; font-size:20pt">1</span> Bateria #5 <br/> Q80.00
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div class="desc">
+                   <div class="desc">
                         <div style="float:left">
                           Total:
                         </div>
@@ -193,10 +216,13 @@
                              Q 180.00
                           </p>
                         </div>
-                      </div>
+                      </div>  
+                   <div id="sale-container">
+                                      
+                      
                       
                   </div>
-                  
+                  </div>
               </div><!--/row -->
           </section>
       </section>
@@ -208,6 +234,10 @@
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			                          <h4 class="modal-title">Seleccione un cliente...</h4>
+			                          <span class="pull-right">
+			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
+			          				  </span>
+			                          
 			                      </div>
 			                      <div class="modal-body">
 				                      <%
@@ -225,8 +255,7 @@
 											}
 										%>
 										 <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> CLIENTE </h4>
-	                  	  	  <hr>
+	                  	  	  
 	                  	  	  <thead>
                               <tr>
                                   <th></th>
@@ -256,6 +285,70 @@
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
 			                          <button class="btn btn-theme" type="button" onclick="setClient();">Seleccionar</button>
 			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>
+		          
+		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModalNewClient" class="modal fade">
+						<form id="modalformnewclient" name="modalformnewclient" >
+						<input type="hidden" name="mode" id="mode"value="add">
+						<input type="hidden" name="id" id="id" value="-1">
+						<input type="hidden" name="modal" id="modal" value="true">
+						  <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Crear cliente...</h4>
+			                      </div>
+			                      <div class="modal-body">
+			                      
+			                  <table class="table table-striped table-advance table-hover">
+	                  	  	  <tbody>
+                                  <tr>
+	                                  <td>Nit</td>
+	                                  <td><input type="text" class="form-control" name="nit" id="nit" value=""></td>                                  
+	                              </tr>
+	                               <tr>
+	                                  <td>Nombres</td>
+	                                  <td><input type="text" class="form-control" name="nombres" id="nombres" value=""></td>                                  
+	                               </tr>
+	                               <tr>
+	                                  <td>Apellidos</td>
+	                                  <td><input type="text" class="form-control" name="apellidos" id="apellidos" value=""></td>                                  
+	                               </tr>
+	                               <tr>
+	                                  <td>Direcci&oacute;n</td>
+	                                  <td><input type="text" class="form-control" name="direccion" id="direccion" value=""></td>                                  
+	                               </tr>
+	                               <tr>
+	                                  <td>Tel&eacute;fono</td>
+	                                  <td><input type="text" class="form-control" name="telefono" id="telefono" value=""></td>                                  
+	                               </tr>
+	                               <tr>
+	                                  <td>Correo Electr&oacute;nico</td>
+	                                  <td><input type="text" class="form-control" name="correo" id="correo" value=""></td>                                  
+	                               </tr>
+	                               <tr>
+	                                  <td>Tipo De Cliente</td>
+	                                  <td><select class="form-control" name="tipodecliente" id="tipodecliente" >
+	                          			<option value="interno">Interno</option>
+	                          			<option value="interno">Externo</option>
+	                          		</select></td>                                  
+	                               </tr>
+                              </tbody>
+                          </table>
+			               
+                                          </div>                                                                                                                                                                          
+                         <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" id="saveclientbutton">Guardar</button>
+			                      </div>
+                                                                                                                           
+                      
+				                      
+			                      
+			                      
 			                  </div>
 			              </div>
 		              </form>
@@ -315,20 +408,82 @@
 				$('#clientdisplay').html(value);
 		    	hideClient();
 		    }
-  			function addSale(){
-  				alert( parseSecond( 'productid' ));
+  			function addSale( productid, imagepath, productname, price, amount ){
+  				var htmltoadd =
+  					  "<div class=\"desc\">" +
+		              "  <div style=\"float:left\">" +
+		              "    <img width=\"70\" src=\"./bin/RenderImage?imagePath=" + imagepath + "\">" +
+		              "  </div>" +
+		              "  <div class=\"details\">" +
+		              "    <p style=\"color:black; font-size:12pt\">" +
+		              "       <span style=\"color:red; font-size:20pt\">" + amount + "</span>" + productname + "<br/> Q" + price + " " +
+		              "    </p>" +
+		              "  </div>" +
+		              "</div>";
+  				$( "#sale-container" ).append( htmltoadd );
+  				hideModal('#myModal' + productid );
   			}
   			function chooseClient(){
   				$('#myModal').modal('show');
   			}
+  			function hideModal( id ){
+  				$(id).modal('hide');
+  			}
   			function hideClient(){
   				$('#myModal').modal('hide');
+  			}
+  			function hideNewClient(){
+  				$('#myModalNewClient').modal('hide');
+  			}
+  			$("#saveclientbutton").click(function(){
+				
+    			var form =$('#modalformnewclient');
+    	     	$.ajax({
+    	     		type:'POST',
+    	     		dataType: "text",
+    	 			url: './bin/Clientes',
+    	 			data: form.serialize(),
+    	 			
+    		        success: function(msg){		      
+    		        	
+    		        	if( msg.startsWith('clientid') ){
+    		        		alert( "Cliente creado con exito." );
+    		        		var ci = msg.substring( 10 );
+    		        		var values = ci.split(',');
+    				    	$('#clientdisplay').html(ci);
+    				    	hideClient();
+    				    	hideNewClient();
+    		        		
+    		        	}
+    		            //location.replace( "clientes.jsp" );
+    		        },
+    	 			error: function(jqXHR, textStatus, errorThrown){
+    	 				console.log("ERROR srtatus: ", textStatus);
+    	 				console.log("ERROR errorThrown: ", errorThrown);
+    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 			}
+    		            		        
+    	       });
+    	     	
+    	     	return false;
+    	 	});
+  			if (typeof String.prototype.startsWith != 'function') {
+  			  // see below for better implementation!
+  			  String.prototype.startsWith = function (str){
+  			    return this.indexOf(str) === 0;
+  			  };
   			}
 	</script>  
 	
 	<script type="text/javascript">
 	    $(window).load(function(){
 	        $('#myModal').modal('show');
+	        
+	        $( "#search-query-3" ).keyup(function() {
+	        	var value = $( "#search-query-3" ).val();
+	        	console.log( "value", value );
+	        	searchProducts( value );
+			});
 	    });
 	</script>
   </body>

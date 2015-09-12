@@ -89,6 +89,37 @@ public class ClientesMain {
 		return bean;
 	}
 	
+	public ClienteBean getByNit( String nit ){
+		if( nit == null ){
+			return null;
+		}
+		ClienteBean bean = null;
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE FROM CLIENTES WHERE NIT='" + nit + "'" );
+			while( rs.next() ){
+				bean = new ClienteBean();
+				bean.setId(  rs.getInt   ( 1  ));
+				bean.setNit( Util.trimString( rs.getString( 2 )));
+				bean.setNombres(  Util.trimString( rs.getString( 3 )));
+				bean.setApellidos( Util.trimString( rs.getString( 4 )));
+				bean.setDireccion( Util.trimString( rs.getString( 5 )) );
+				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
+				bean.setEmail( Util.trimString( rs.getString( 7 )));
+				bean.setTipoDeCliente( Util.trimString( rs.getString( 8 )));
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return bean;
+	}
+	
 	public ClienteBean getBlankBean(){
 		ClienteBean bean = new ClienteBean();
 		bean.setNit(  "" );

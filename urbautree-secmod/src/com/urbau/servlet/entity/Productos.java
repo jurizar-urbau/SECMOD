@@ -61,11 +61,12 @@ public class Productos extends Entity {
 				bean.setCoeficiente_unidad( Integer.valueOf( this.coeficiente_unidad ));
 				bean.setProveedor(Integer.valueOf( this.proveedor ));
 				bean.setPrecio( Double.valueOf( this.precio  ));
-				bean.setPrecio_1(Double.valueOf( this.precio_1  ) );
+				/*bean.setPrecio_1(Double.valueOf( this.precio_1  ) );
 				bean.setPrecio_2(Double.valueOf( this.precio_2  ) );
 				bean.setPrecio_3(Double.valueOf( this.precio_3  ) );
 				bean.setPrecio_4(Double.valueOf( this.precio_4  ) );
-				bean.setStock_minimo(Integer.valueOf( this.stock_minimo ));
+				*/
+				bean.setStock_minimo(Integer.valueOf( 0 ));
 				bean.setImage_path( this.image_path );
 								
 											
