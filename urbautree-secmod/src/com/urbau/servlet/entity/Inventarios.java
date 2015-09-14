@@ -27,7 +27,7 @@ public class Inventarios extends Entity {
 			String id = request.getParameter( "id" );
 			String idBodega = request.getParameter( "bodega" );
 			String producto = request.getParameter( "producto" );
-			String estatus = request.getParameter( "status" );
+			String estatus = request.getParameter( "estatus" );
 			String estatusremove = request.getParameter( "estatusremove" );
 			String cantidad = request.getParameter( "cantidad" );
 			
