@@ -17,32 +17,43 @@
     <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
     <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
 
+	
     <!--script for this page-->
-    <script src="assets/js/sparkline-chart.js"></script>    
-  <script src="assets/js/zabuto_calendar.js"></script>  
+    <!-- 
+    <script src="assets/js/sparkline-chart.js"></script>
+     -->    
+  	<script src="assets/js/zabuto_calendar.js"></script>  
   
-  <!-- starts custom -->
-  <!--script for this page-->
+  	<!-- starts custom -->
+  	<!--script for this page-->
+  	 
     <script src="assets/js/jquery-ui-1.9.2.custom.min.js"></script>
-
-	<!--custom switch-->
+ 	
+	<!--custom switch-->	
 	<script src="assets/js/bootstrap-switch.js"></script>
 	
 	<!--custom tagsinput-->
+	<!-- 
 	<script src="assets/js/jquery.tagsinput.js"></script>
-	
+	 -->
 	<!--custom checkbox & radio-->
+	<!-- 
 	<script type="text/javascript" src="assets/js/bootstrap-colorpicker.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	 
 	<script type="text/javascript" src="assets/js/bootstrap-daterangepicker/date.js"></script>
 	<script type="text/javascript" src="assets/js/bootstrap-daterangepicker/daterangepicker.js"></script>
 	
+	
 	<script type="text/javascript" src="assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
 	<script src="assets/js/flat-ui.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
+	
+	 
 	 
 	<script src="assets/js/form-component.js"></script>
 	
+	 -->
+	<script src="assets/js/jquery.validate.min.js"></script>
 	
 	   
   <!--  ends custom -->  
