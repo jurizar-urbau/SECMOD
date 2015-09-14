@@ -3,11 +3,24 @@
 <%@page import="com.urbau.beans.InvetarioBean"%>
 <%@page import="com.urbau.feeders.InventariosMain"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>    
+<%@page import="com.urbau.feeders.BodegasMain"%>
 <%@page import="com.urbau.beans.ProductoBean"%>     
+<%@page import="com.urbau.beans.BodegaBean"%>
 
 <%				
 	ProductosMain pm = new ProductosMain();
+	
+	String mode = request.getParameter( "mode" );
 	String idBodegaParameter = request.getParameter("bodega");
+	
+	Boolean fromInventario = true;
+	String fromInventarioParameter = request.getParameter("fromInventario");
+	if(null != fromInventarioParameter){
+		fromInventario = false;	
+	}
+	
+	String idParameter = request.getParameter( "id" );
+	
 	int idBodega  = -1;
 	try{
 		idBodega = Integer.parseInt(idBodegaParameter);	
@@ -15,15 +28,21 @@
 		System.out.print("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
 	}
 	
-	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" )) && idBodega >= 0 ){
+	if((idParameter != null || "add".equals( mode) || "addModal".equals(mode) && idBodega >= 0) || !fromInventario  ){
 
-		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-		String estatus = request.getParameter( "estatus" );
+		int id = -1;
+		if(null != idParameter){
+			id = Integer.valueOf( idParameter );
+		}
+					
+		String estatus = request.getParameter( "status" );
+		
 		InventariosMain main = new InventariosMain();		
 		InvetarioBean bean = main.get( id, estatus, idBodega );		
-		
+	
+		BodegasMain bodegaMain = new BodegasMain();
 		ProductosMain productoMain = new ProductosMain();
-		String mode = request.getParameter( "mode" );				
+						
 				
 		ArrayList<ProductoBean> list = pm.get(null, 0);
 %>  
@@ -36,7 +55,13 @@
 		<script>
 			function back(){
 				var bodega = <%=idBodega%>;
-				location.replace( "inventarios.jsp?bodega="+bodega);
+				var fromInventario = <%= fromInventario  %>;
+
+				if(fromInventario){
+					location.replace( "inventarios.jsp?bodega="+bodega);	
+				}else{
+					location.replace("home.jsp");					
+				}				
 			}			
 		</script>
 	</head>
@@ -81,91 +106,48 @@
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height">
-          
+          <section class="wrapper site-min-height">          
           	<h3><i class="fa fa-angle-right"></i> DETALLE INVENTARIO</h3>
           	<div class="row mt">
-          		<div class="col-lg-12">
-          			
-          			    <div class="form-panel">
-          			   
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="inventarios.jsp?bodega=<%=idBodega %>">&nbsp;Regresar</a> </h4>
+          		<div class="col-lg-12">          			          			
+					<div class="form-panel">         
+						<%if(fromInventario ){ %> 			   
+                  			<h4 class="mb"><i class="fa fa-angle-left"></i><a href="inventarios.jsp?bodega=<%=idBodega %>">&nbsp;Regresar</a> </h4>
+                  		<%}%>	
                   	  
-                      <form class="form-horizontal style-form" method="POST" id="form" name="form">
+                      	<form class="form-horizontal style-form" method="POST" id="form" name="form">
                       	                      
-                      	<input type="hidden" name="mode" value="<%= mode%>">
-                      	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">
-                      	<input type="hidden" name="bodega" value="<%= request.getParameter("bodega")%>">                      
-                      	<input type="hidden" name="estatusremove" value="<%= request.getParameter("estatus")%>">
-                                                          		                      	
-                      	<div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Producto</label>
-                              <div class="col-sm-10">
-                              
-                              		<select class="form-control" name="producto" id="producto">
-	                                  <%
-	                                  	ArrayList<ProductoBean> producto_list = productoMain.get(null, 0);
-	                                  	for( ProductoBean producto : producto_list ){
-	                                  %>
-	                                  	<option value="<%= producto.getId()%>"><%= producto.getDescripcion() %></option>
-	                                  <% } %>									  
-									  
-									</select>
-                              	
-                                  
-                              </div>
-                        </div>
-                          
-                          
-                      	
-                      	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Producto</label>
-                          	<div class="col-sm-10">
-                          	<select id="product" name="product" class="form-control">
-                          	<%
-	                          	for( ProductoBean pb : list ){
-	                          	%>
-                          	 	<option value="<%= pb.getId() %>"><%= pb.getDescripcion() %></option>
-                          	 	<% } %>
-                          	</select>                          	            
-								<!--  input type="text" class="form-control" name="product" id="product" value="" -->	                          	                                                                                                  
-                          	<label class="col-sm-2 col-sm-2 control-label">Estatus</label>
-                          	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="estatus" id="estatus" value="<%=bean.getEstatus()%>">	                          	                                                                                                  
-                          	</div>
-                      	</div>
-                      	
-                      	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Unidades</label>
-                          	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="amount" id="amount" value="">	                          	                                                                                                  
-                          	</div>
-                      	</div>
-                      	<div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Estado</label>
-                          	<div class="col-sm-10">                          	 
-                          		<select name="status" id="status" class="form-control">
-                          			<option>ACTIVO</option>
-                          			<option>INACTIVO</option>
-                          			<option>EN TRANSITO</option>
-                          		</select>           
-									                          	                                                                                                  
-                          	<label class="col-sm-2 col-sm-2 control-label">Cantidad</label>
-                          	<div class="col-sm-10">                          	            
-								<input type="text" class="form-control" name="cantidad" id="cantidad" value="<%=bean.getAmount()%>">	                          	                                                                                                  
-
-                          	</div>
-                      	</div>
-                          
-                       <div class="form-actions">
-       	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-			            	<button class="btn" onclick="back()">Cancelar</button>
-			        	</div>                           
+	                      	<input type="hidden" name="mode" value="<%= mode%>">
+	                      	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">	                      	                     
+	                      	<input type="hidden" name="estatusremove" value="<%= request.getParameter("estatus")%>">
+                                                    
+							<%if(fromInventario ){ %>
+							<input type="hidden" name="bodega" value="<%= request.getParameter("bodega")%>">							
+							<%}else{%>
+							<div class="form-group">                      	
+                          		<label class="col-sm-2 col-sm-2 control-label">Bodega</label>
+	                          	<div class="col-sm-10">
+									<select class="form-control" name="bodega" id="bodega">
+									<option value=""></option>
+									  <%
+									  	ArrayList<BodegaBean> bodegaList = bodegaMain.getBodega(null, 0);
+									  	for( BodegaBean bodega : bodegaList ){
+									  %>
+								  		<option value="<%= bodega.getId()%>"><%= bodega.getNombre() %></option>
+								  	  <% } %>									  							  	  												 
+								 	</select>
+								</div>
+                      		</div>
+                      		<%}%>							      		             														      		           
+							      		                      	                          	                       
                       </form>
                       
-                  </div>
-
-                     
+                      
+					<div id="product-container" class="separator">
+                        
+					</div> <!--  content -->
+                  
+                  </div>                    
           		</div>
           	</div>
 			
@@ -210,17 +192,91 @@
 	
 		$(function() {
 		//twitter bootstrap script
+			
+		
+			$bodega = $("#bodega");		
+			$bodega.click(function(){
+				var bodegaSelected = $bodega.val();				
+				if(bodegaSelected){
+					console.log("BodegaSelected: " , bodegaSelected);
 					
+					$.ajax({
+			     		type:'POST',
+			 			url: './bin/ProductosPorBodega',
+			 			data: { 
+					        'q': null, 
+					        'from': null,
+					        'bodega':bodegaSelected
+					    },			 				 		
+			 			success: function(data, textStatus, jqXHR){		        	
+        	 		        
+				        	$('#product-container > tr:gt(0)').remove();
+				        					        	
+				        	var trHTML="";
+				        	
+				        	
+				        	if(data instanceof Array){
+				        		console.log("data::::  ", data);					        					        		
+				        		for(var i=0; i<data.length; i++){
+				        			
+				        			
+				        			trHTML += "<div class='col-md-4 col-sm-4 mb'>";
+				        			trHTML += "	<div class='white-panel pn'>";
+				        			trHTML += "		<div class='white-header'>";
+				        			trHTML += "			<h5>"+data[i].prodDescripcion+"</h5>";    
+				        			trHTML += "		</div>";		
+				        			trHTML += "		<div class='row'>";    
+				        			trHTML += "			<div class='col-sm-6 col-xs-6 goleft'>";				        			
+			        				trHTML += "				<p><i class='fa fa-heart'></i> 122</p>";
+				        			trHTML += "			</div>";
+				        			trHTML += "			<div class='col-sm-6 col-xs-6'></div>";		        
+				        			trHTML += "		</div>";
+				        			trHTML += "		<div class='centered'>";
+				        			trHTML += "			<img src=./bin/RenderImage?imagePath="+data[i].prodImagePath+" width='120'>";
+				        			trHTML += "		</div>";			                            			                    						                          			                         
+		                            trHTML += "	</div>";
+			                        trHTML += "</div>";
+			                        			                        
+			                        			                            			                            			                					                  
+			                				        			
+	//trHTML += '<div class="form-actions"><button type="submit" class="btn btn-danger" onClick="removeItem('+data[i].id+')"  idRol="'+data[i].idRol+'" >&nbsp;Borrar&nbsp;</button></div>';	
+				        			
+				        			
+				        			
+				        			                                 	                    		                    	
+				        		}
+				        	}
+				            
+				        	$('#product-container').append(trHTML);
+				        	
+				        	
+				        },
+			 			error: function(jqXHR, textStatus, errorThrown){
+			 				console.log("ERROR srtatus: ", textStatus);
+			 				console.log("ERROR errorThrown: ", errorThrown);
+			 				alert("Se prudujo un error al hacer la operaciòn");	
+			 			}
+		       		});
+					
+					
+				}
+			});
+			
+			
+		
 			$('#form').submit(function(e){
 				e.preventDefault();
 			});
 			
-			$savebutton  = $("#savebutton");
+			$savebutton  = $("#savebutton");			
 			$producto = $("#producto");
-			$estatus = $("#estatus");
+			$estatus = $("#status");
 			$cantidad = $("#cantidad");
 			
 			$savebutton.click(function(){
+				
+				console.log("producto: " , $producto.val() );
+				console.log("estatus: " ,$estatus.val());
 				
 				if($producto.val() && $estatus.val()){									
 					var form =$('#form');					
@@ -232,7 +288,11 @@
 				        success: function(msg){				        	
 				        	alert(msg);
 				        	var bodega = getUrlParameter('bodega');
-				            location.replace( "inventarios.jsp?bodega="+bodega );
+				        	if(bodega){
+				        		location.replace( "inventarios.jsp?bodega="+bodega );	
+				        	}else{
+				        		location.replace( "inventarios-detail.jsp?mode=add&fromInventario=false" );
+				        	}				        					           
 				        },
 			 			error: function(jqXHR, textStatus, errorThrown){
 			 				console.log("ERROR srtatus: ", textStatus);

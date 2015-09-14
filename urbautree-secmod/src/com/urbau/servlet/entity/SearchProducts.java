@@ -40,12 +40,11 @@ public class SearchProducts extends Entity {
 						"DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD," +
 						"PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,IMAGE_PATH,ID " +
 						"from " +
-						"productos " +
+						"PRODUCTOS " +
 						"where " +
-						"descripcion like '%" + q + "%'" +
-						" or codigo like'%" + q + "%'" +
-						" or ID in " +
-						"(select id_producto from Alias where descripcion like '%" + q + "%')" );
+						"DESCRIPCION like '%" + q + "%'" +
+						" or CODIGO like'%" + q + "%'");
+						
 				while( rs.next() ){
 					JSONObject jsonObject = new JSONObject();				
 					jsonObject.put("descripcion", rs.getString( 1 ));

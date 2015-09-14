@@ -36,13 +36,22 @@ public class InventariosMain extends AbstractMain {
 			InventarioHelper invHelper = new InventarioHelper();
 			invHelper.addBodega( idBodega );
 			
+			String bodegaTabla = TABLE_NAME+idBodega;
 			
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" LIMIT " + from + "," + items );
+				String sql = "SELECT "+ bodegaTabla+".ID_PRODUCT,"+bodegaTabla+".ESTATUS,"+bodegaTabla+".AMOUNT,PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.IMAGE_PATH,PROD.STOCK_MINIMO FROM "+bodegaTabla+" INNER JOIN PRODUCTOS AS PROD ON "+ bodegaTabla+".ID_PRODUCT=PROD.ID  LIMIT " + from + "," + items;
+				
+				System.out.println("sql: "+sql);
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( TABLE_NAME+idBodega, "" );
 			} else {
 				String rem_where = Util.getMonedasWhere( q );
-				rs = stmt.executeQuery( "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" " + rem_where + " LIMIT " + from + "," + items );
+				//String sql = "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" " + rem_where + " LIMIT " + from + "," + items;
+				String sql = "SELECT "+ bodegaTabla+".ID_PRODUCT,"+bodegaTabla+".ESTATUS,"+bodegaTabla+".AMOUNT," +
+						"PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.IMAGE_PATH,PROD.STOCK_MINIMO " +
+						"FROM "+bodegaTabla+" INNER JOIN PRODUCTOS AS PROD ON "+ bodegaTabla+".ID_PRODUCT=PROD.ID  LIMIT " + from + "," + items;
+				System.out.println("sql: "+sql);
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( TABLE_NAME+idBodega, rem_where );
 			}
 			while( rs.next() ){
@@ -50,6 +59,19 @@ public class InventariosMain extends AbstractMain {
 				bean.setId_product( rs.getInt   ( 1  ));
 				bean.setEstatus( Util.trimString( rs.getString( 2  )));
 				bean.setAmount( rs.getInt( 3 ));
+				
+				bean.setProdCodigo(Util.trimString(rs.getString(4)));
+				bean.setProdDescripcion(Util.trimString(rs.getString(5)));
+				bean.setProdCoeficienteUnidad(rs.getInt( 6 ));
+				bean.setProdProveedor(rs.getInt( 7 ));
+				bean.setProdPrecio(rs.getDouble(8));
+				bean.setProdPrecio1(rs.getDouble(9));
+				bean.setProdPrecio2(rs.getDouble(10));
+				bean.setProdPrecio3(rs.getDouble(11));
+				bean.setProdPrecio4(rs.getDouble(12));
+				bean.setProdImagePath(Util.trimString(rs.getString(13)));
+				bean.setProdStockMinimo(rs.getInt( 14 ));
+								
 				bean.setTotal_regs( total_regs );
 				list.add( bean );
 			}

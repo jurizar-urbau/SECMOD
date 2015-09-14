@@ -129,6 +129,10 @@
     <servlet-name>SearchProducts</servlet-name>
     <servlet-class>com.urbau.servlet.entity.SearchProducts</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ProductosPorBodega</servlet-name>
+    <servlet-class>com.urbau.json.service.ProductosPorBodega</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>SearchProducts</servlet-name>
     <url-pattern>/bin/searchp</url-pattern>
@@ -237,7 +241,10 @@
     <servlet-name>BodegasClientes</servlet-name>
     <url-pattern>/bin/BodegasClientes</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+    <servlet-name>ProductosPorBodega</servlet-name>
+    <url-pattern>/bin/ProductosPorBodega</url-pattern>
+  </servlet-mapping>
 
 
 

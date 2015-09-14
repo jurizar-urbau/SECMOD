@@ -133,16 +133,16 @@
                         <div class="col-md-4 col-sm-4 mb">
                           <div class="white-panel pn">
                             <div class="white-header">
-                    <h5>PRODUCTO ESTRELLA</h5>
+                    			<h5>PRODUCTO ESTRELLA</h5>
                             </div>
-                <div class="row">
-                  <div class="col-sm-6 col-xs-6 goleft">
-                    <p><i class="fa fa-heart"></i> 122</p>
-                  </div>
-                  <div class="col-sm-6 col-xs-6"></div>
+                			<div class="row">
+			                  <div class="col-sm-6 col-xs-6 goleft">
+			                    <p><i class="fa fa-heart"></i> 122</p>
+			                  </div>
+                  				<div class="col-sm-6 col-xs-6"></div>
                             </div>
                             <div class="centered">
-                    <img src="assets/img/product.png" width="120">
+                    			<img src="assets/img/product.png" width="120">
                             </div>
                           </div>
                         </div><!-- /col-md-4 -->

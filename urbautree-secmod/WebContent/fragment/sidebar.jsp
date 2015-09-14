@@ -32,7 +32,7 @@
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
-                          <li><a  href="ingreso_productos.jsp">Ingreso De Productos</a></li>
+                          <li><a  href="inventarios-detail.jsp?mode=add&fromInventario=false">Ingreso De Productos</a></li>
                       </ul>
                   </li> 
                   <li class="sub-menu" id="menu-seguridad">
