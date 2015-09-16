@@ -10,13 +10,21 @@
 	<%@include file="fragment/head.jsp"%>
 	<%		
 		AliasMain options_main = new AliasMain();
+		String idproducto = request.getParameter( "idproducto" );
+		int idprod;
+		if( idproducto != null ){
+			idprod = Integer.valueOf( idproducto );
+		} else {
+			idprod = -1;
+		}
+	
 		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
 				
-		ArrayList<AliasBean> list = options_main.get(  request.getParameter("q"), from );
+		ArrayList<AliasBean> list = options_main.get(  request.getParameter("q"), from, idprod );
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){
@@ -25,16 +33,16 @@
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "alias-detail.jsp?mode=edit&id="+id);
+			location.replace( "alias-detail.jsp?idproducto=<%= idproducto %>&mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "alias-detail.jsp?mode=remove&id="+id);
+			location.replace( "alias-detail.jsp?idproducto=<%= idproducto %>&mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "alias-detail.jsp?mode=view&id="+id);
+			location.replace( "alias-detail.jsp?idproducto=<%= idproducto %>&mode=view&id="+id);
 		}
 		function add(){
-			location.replace( "alias-detail.jsp?mode=add" );
+			location.replace( "alias-detail.jsp?idproducto=<%= idproducto %>&mode=add" );
 		}
 	</script>
 	</head>
@@ -98,7 +106,8 @@
           				  </span>
           				<%} %>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> ALIAS DE PRODUCTO</h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="productos.jsp">&nbsp;Regresar</a></i> ALIAS DE PRODUCTO</h4>
+	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

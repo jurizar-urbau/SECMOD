@@ -164,9 +164,9 @@
 			                          <p>Cantidad</p>
 			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          </br>
-			                          <p>Precio unitario:</p>
+			                          <!--p>Precio unitario:</p>
 			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
-			                          </br>
+			                          </br>  -->
 			                          <p>Precio 1:</p>
 			                          <input type="text" name="precio1" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio_1() %>">
 			                          </br>

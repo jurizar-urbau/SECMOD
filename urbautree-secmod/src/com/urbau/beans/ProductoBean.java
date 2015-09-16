@@ -75,25 +75,29 @@ public class ProductoBean implements Bean {
 		this.image_path = image_path;
 	}
 	public double getPrecio_1() {
-		return precio_1;
+		return precio / .9;
+		//return precio_1;
 	}
 	public void setPrecio_1(double precio_1) {
 		this.precio_1 = precio_1;
 	}
 	public double getPrecio_2() {
-		return precio_2;
+		return precio / .8;
+		//return precio_2;
 	}
 	public void setPrecio_2(double precio_2) {
 		this.precio_2 = precio_2;
 	}
 	public double getPrecio_3() {
-		return precio_3;
+		return precio / .7;
+		//return precio_3;
 	}
 	public void setPrecio_3(double precio_3) {
 		this.precio_3 = precio_3;
 	}
 	public double getPrecio_4() {
-		return precio_4;
+		return precio / .6;
+		//return precio_4;
 	}
 	public void setPrecio_4(double precio_4) {
 		this.precio_4 = precio_4;

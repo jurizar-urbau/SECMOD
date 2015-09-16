@@ -71,13 +71,18 @@ public class BodegasMain extends AbstractMain {
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS WHERE ID=" + id );
-			while( rs.next() ){
+			if( rs.next() ){
 				bean = new BodegaBean();
 			    bean.setId(  rs.getInt   ( 1  ));
 			    bean.setNombre(  Util.trimString( rs.getString( 2 )));
 				bean.setDireccion( Util.trimString( rs.getString( 3 )));
 				bean.setTelefono( Util.trimString( rs.getString( 4 )));
-				bean.setEstado( rs.getBoolean( 5 ));			
+				bean.setEstado( rs.getBoolean( 5 ));
+				if( bean.getEstado() ){
+					bean.setEstadoEsEditable(true);
+				}else{
+					bean.setEstadoEsEditable(false);
+				}
 			}
 							
 			verificarSiEsBodegaPrincipal(bean);
@@ -96,37 +101,22 @@ public class BodegasMain extends AbstractMain {
 		Connection con = null;
 		Statement  stmt= null;
 		ResultSet  rs   = null;
+		String sql = "SELECT COUNT(*) from BODEGAS where ESTADO = '"+1+"'";
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();			
-			String sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO from BODEGAS where ESTADO = '"+1+"'";
-							
-			PreparedStatement statement = con.prepareStatement(sql); 
-			statement.setMaxRows(1); 
-			rs = statement.executeQuery();
-					
-			int idPrincipal = 0;			
-			while( rs.next() ){
-				idPrincipal = rs.getInt   ( 1  );
-			}			
-						
-			if(idPrincipal == bean.getId()){
-				bean.setEstadoEsEditable(true);
-			}else{
-				bean.setEstadoEsEditable(false);
-			}
+			rs = stmt.executeQuery( sql );
 			
-			rs.beforeFirst();
-			rs.last();
-			int total = rs.getRow();					
-			if(total == 1){
-				bean.setExisteBodegaPrincipal(true);
-								
-			}else if(total <= 0){
-				bean.setExisteBodegaPrincipal(false);				
+			if( rs.next() ){
+				if( rs.getInt( 1 ) >= 1 ){
+					bean.setExisteBodegaPrincipal(true);
+				} else {
+					bean.setExisteBodegaPrincipal(false);
+				}
 			}
 								
 		} catch (Exception e) {
+			System.out.println(sql);
 			e.printStackTrace();
 			
 		} finally {
@@ -157,7 +147,7 @@ public class BodegasMain extends AbstractMain {
 			System.out.println("sql: " + sql);
 			int total = stmt.executeUpdate( sql );
 			
-			verificarSiEsBodegaPrincipal(bean);
+			//verificarSiEsBodegaPrincipal(bean);
 			return total>0;
 			
 		} catch (Exception e) {

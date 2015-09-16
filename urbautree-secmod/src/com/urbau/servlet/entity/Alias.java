@@ -31,6 +31,7 @@ public class Alias extends Entity {
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
+			String idproducto = request.getParameter( "idproducto" );
 			String message = "";					
 										
 			if( idParameter != null){
@@ -38,7 +39,7 @@ public class Alias extends Entity {
 								
 				String name = request.getParameter(NAME_PARAMETER);
 				bean.setDescription(name);													
-					
+				bean.setIdproducto( Integer.valueOf( idproducto ));	
 				if( !ADD.equals( modeParameter ) ){
 					bean.setId( Integer.parseInt( idParameter));
 				}															

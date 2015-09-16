@@ -6,8 +6,16 @@ public class AliasBean implements Bean {
 
 	private int id;
 	private String description;
+	private int idproducto;
+	
 	int total_regs;
 		
+	public int getIdproducto() {
+		return idproducto;
+	}
+	public void setIdproducto(int idproducto) {
+		this.idproducto = idproducto;
+	}
 	public int getId() {
 		return id;
 	}

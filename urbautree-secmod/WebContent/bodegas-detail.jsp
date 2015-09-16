@@ -70,7 +70,9 @@
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="bodegas.jsp">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horizontal style-form" id="form" name="form">
-                      <input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>">
+                      
+                      
+                      <input type="hidden" name="mode" id="mode" value="<%= request.getParameter( "mode" )%>"> 
                       <input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>">
                       
                           <div class="form-group">
@@ -106,7 +108,7 @@
                           </div>                                                
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Principal</label>
-                              <%if( !bean.getExisteBodegaPrincipal() ){%>
+                              <%if( !bean.getExisteBodegaPrincipal() && !bean.getEstadoEsEditable() ){%>
                               <div class="col-sm-10">
 	                              <div class="col-sm-6 text-left">
 			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />

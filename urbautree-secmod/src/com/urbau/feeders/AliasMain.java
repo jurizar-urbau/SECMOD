@@ -12,11 +12,11 @@ import com.urbau.misc.Util;
 
 public class AliasMain {
 	
-	public ArrayList<AliasBean> get( String q, int from ){
-		return get( q, from, -1 );
+	public ArrayList<AliasBean> get( String q, int from, int idproducto ){
+		return get( q, from, -1, idproducto );
 	}
 	
-	public ArrayList<AliasBean> get( String q, int from, int limit ){
+	public ArrayList<AliasBean> get( String q, int from, int limit, int idproducto ){
 		
 		int items = limit > 0 ? limit : Constants.ITEMS_PER_PAGE;
 		ArrayList<AliasBean> list = new ArrayList<AliasBean>();
@@ -28,17 +28,18 @@ public class AliasMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM ALIAS LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,ID_PRODUCTO FROM ALIAS WHERE ID_PRODUCTO=" + idproducto + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
 				total_regs = Util.getTotalRegs( "ALIAS", "" );
 			} else {
 				String rem_where = Util.getRolesWhere( q );
-				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM ALIAS " + Util.getDescriptionWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,ID_PRODUCTO FROM ALIAS  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
 				total_regs = Util.getTotalRegs( "ALIAS", rem_where );
-			}
+			} 
 			while( rs.next() ){
 				AliasBean bean = new AliasBean();
 				bean.setId( 						   rs.getInt   ( 1  ));
-				bean.setDescription(  Util.trimString( rs.getString( 2  )));				
+				bean.setDescription(  Util.trimString( rs.getString( 2  )));
+				bean.setIdproducto( rs.getInt( 3 ));
 				bean.setTotal_regs( total_regs );
 				list.add( bean );
 			}
@@ -61,23 +62,25 @@ public class AliasMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM ALIAS WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,ID_PRODUCTO FROM ALIAS WHERE ID=" + id );
 			while( rs.next() ){
 				bean = new AliasBean();
 			    bean.setId(  rs.getInt   ( 1  ));
 				bean.setDescription( Util.trimString( rs.getString( 2 )));
+				bean.setIdproducto( rs.getInt(3 ));
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
 		} finally {
 			ConnectionManager.close( con, stmt, rs );
-		}
+		} 
 		return bean;
 	}
 	
 	public AliasBean getBlankBean(){
 		AliasBean bean = new AliasBean();
 		bean.setDescription( "" );
+		bean.setIdproducto(0);
 		return bean;
 	}
 	public boolean add( AliasBean bean ){
@@ -87,9 +90,10 @@ public class AliasMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO ALIAS " +
-					"(DESCRIPCION) " +
+					"(DESCRIPCION,ID_PRODUCTO) " +
 						"VALUES " +
-					"('"+ bean.getDescription()+"')";
+					"('"+ bean.getDescription()+"',"+bean.getIdproducto()+")";
+			System.out.println( "insert alias" + sql );	
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -110,7 +114,7 @@ public class AliasMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "UPDATE ALIAS SET " +
-					"DESCRIPCION = " + Util.vs( bean.getDescription() ) + " " +
+					"DESCRIPCION = " + Util.vs( bean.getDescription() ) + ", ID_PRODUCTO="+bean.getIdproducto()+" " +
 					"WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
 			return total>0;

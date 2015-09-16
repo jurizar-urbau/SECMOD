@@ -7,6 +7,13 @@
 		
 		AliasMain options_main = new AliasMain();		
 		AliasBean bean = options_main.get( id );
+		
+		String idproducto = request.getParameter( "idproducto" );
+		if( idproducto ==  null || "null".equals( idproducto )){
+			
+		} else {
+			bean.setIdproducto( Integer.valueOf( idproducto ));
+		}
 		String mode = request.getParameter( "mode" );		
 %>   
 
@@ -75,6 +82,7 @@
                       <form class="form-horizontal style-form" id="form" name="form">
                       	                      
                       	<input type="hidden" name="mode" value="<%= mode%>">
+                      	<input type="hidden" name="idproducto" value="<%= idproducto %>">
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
                                                           		
                       	<div class="form-group">                      	
@@ -153,7 +161,7 @@
         	 			dataType: "text",
         		        success: function(msg){		        	
         		        	alert(msg);
-        		            location.replace( "alias.jsp" );
+        		            location.replace( "alias.jsp?idproducto=<%= idproducto %>" );
         		        },
         	 			error: function(jqXHR, textStatus, errorThrown){
         	 				console.log("ERROR srtatus: ", textStatus);
