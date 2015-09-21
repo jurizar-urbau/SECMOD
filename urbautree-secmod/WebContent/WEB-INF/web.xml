@@ -108,8 +108,7 @@
   <servlet>
     <servlet-name>Alias</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Alias</servlet-class>
-  </servlet>
-  
+  </servlet>  
   <servlet>
     <servlet-name>PreciosCliente</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PreciosCliente</servlet-class>
@@ -138,6 +137,10 @@
     <servlet-name>ProductosPorBodega</servlet-name>
     <servlet-class>com.urbau.json.service.ProductosPorBodega</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>TiposDeMovimientos</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
+  </servlet>  
   <servlet-mapping>
     <servlet-name>SearchProducts</servlet-name>
     <url-pattern>/bin/searchp</url-pattern>
@@ -253,6 +256,10 @@
   <servlet-mapping>
     <servlet-name>ProductosPorBodega</servlet-name>
     <url-pattern>/bin/ProductosPorBodega</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TiposDeMovimientos</servlet-name>
+    <url-pattern>/bin/TiposDeMovimientos</url-pattern>
   </servlet-mapping>
 
 
