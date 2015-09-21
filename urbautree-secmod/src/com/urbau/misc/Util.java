@@ -336,6 +336,30 @@ public class Util {
 			return sb.toString();
 		}
 	}
+	public static String getBancosMovimientosWhere(String q) {
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( "DESCRIPCION", q) );
+			sb.append( " OR " );
+			sb.append( getFieldLikes( "MONTO", q) );
+			return sb.toString();
+		}
+	}
+	public static String getBancosMovimientosWithPrefixWhere(String q) {
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( "BM.DESCRIPCION", q) );
+			sb.append( " OR " );
+			sb.append( getFieldLikes( "BM.MONTO", q) );
+			return sb.toString();
+		}
+	}
 	public static String getMonedasWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";

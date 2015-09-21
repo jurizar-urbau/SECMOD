@@ -34,6 +34,9 @@
 		function add(){
 			location.replace( "bancos-detail.jsp?mode=add" );
 		}
+		function tipoMovimiento( id ){
+			location.replace( "banco-tiposmovimientos.jsp?banco="+id );					
+		}
 	</script>
 	</head>
    
@@ -106,15 +109,16 @@
                               </thead>
                               <tbody>
                               <%
-                              	for( BancoBean us : list ){
+                              	for( BancoBean bean : list ){
                               %>
                               <tr>
-                                  <td><%= us.getNombre() %></td>                                                                   
+                                  <td><%= bean.getNombre() %></td>                                                                   
                                   <td>
                                       
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-info btn-xs" onclick="tipoMovimiento('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>
                                   </td>
                               </tr>
                               <% } %>

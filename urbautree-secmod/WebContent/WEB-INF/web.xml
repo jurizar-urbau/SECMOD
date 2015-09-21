@@ -141,6 +141,15 @@
     <servlet-name>TiposDeMovimientos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
   </servlet>  
+  <servlet>
+    <servlet-name>TiposDeMovimientos</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
+  </servlet>  
+  <servlet>
+    <servlet-name>TiposDeMovimientosBanco</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TiposDeMovimientosBanco</servlet-class>
+  </servlet>  
+
   <servlet-mapping>
     <servlet-name>SearchProducts</servlet-name>
     <url-pattern>/bin/searchp</url-pattern>
@@ -260,6 +269,10 @@
   <servlet-mapping>
     <servlet-name>TiposDeMovimientos</servlet-name>
     <url-pattern>/bin/TiposDeMovimientos</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TiposDeMovimientosBanco</servlet-name>
+    <url-pattern>/bin/TiposDeMovimientosBanco</url-pattern>
   </servlet-mapping>
 
 
