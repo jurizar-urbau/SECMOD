@@ -2,8 +2,7 @@
 <%@page import="com.urbau.beans.BancoMovimientoBean"%>
 <%@page import="com.urbau.feeders.BancosMovimientosMain"%>
 <%@page import="com.urbau.feeders.TiposDeMovimientosMain"%>
-<%@page import="com.urbau.beans.TipoMovimientoBean"%>
-    
+<%@page import="com.urbau.beans.TipoMovimientoBean"%>    
 <%				
 	
 	String bancoParamenter = request.getParameter("banco");
@@ -18,13 +17,11 @@
 
 		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 				
+		TiposDeMovimientosMain tiposMovimientosMain = new TiposDeMovimientosMain();
 		BancosMovimientosMain main = new BancosMovimientosMain();		
 		BancoMovimientoBean bean = main.get( id );		
 			
-		String mode = request.getParameter( "mode" );
-		
-		TiposDeMovimientosMain tiposMovimientosMain = new TiposDeMovimientosMain();
-		
+		String mode = request.getParameter( "mode" );					
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -86,16 +83,13 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           			
-          			    <div class="form-panel">
-          			   
+        			<div class="form-panel">          			  
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="banco-tiposmovimientos.jsp?banco=<%=idBanco %>">&nbsp;Regresar</a> </h4>
                   	  
-                      <form class="form-horizontal style-form" method="POST" id="form" name="form">
-                      	                      
+                      <form class="form-horizontal style-form" method="POST" id="form" name="form">                                            	                    
                       	<input type="hidden" name="mode" value="<%= mode%>">
 						<input type="hidden" name="id" value="<%= id%>">
-                      	<input type="hidden" name="banco" value="<%= idBanco%>">
-                      	<input type="hidden" name="idPrecioBorrar" value="<%= request.getParameter("precio")%>">                      	                                                                  	
+                      	<input type="hidden" name="banco" value="<%= idBanco%>">                      	                      	                                                                  
                               
 						<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Fecha</label>
@@ -136,10 +130,8 @@
        	    				<button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
 			            	<button class="btn" onclick="back()">Cancelar</button>
 			        	</div>                           
-                      </form>
-                      
+                      </form>                      
                   </div>
-
                      
           		</div>
           	</div>
@@ -183,14 +175,13 @@
 				e.preventDefault();
 			});
 			
-			$savebutton  = $("#savebutton");
-			$tipomovimiento = $("#tipomovimiento");
+			$savebutton  = $("#savebutton");						
 			$fecha = $("#fecha");
-			
-						
-			$savebutton.click(function(){
-				
-				
+			$tipomovimiento = $("#tipomovimiento");
+			$descripcion = $("#descripcion");
+			$monto = $("#monto");
+									
+			$savebutton.click(function(){					
 				if($tipomovimiento.val() && $fecha.val()){		
 					
 					var form =$('#form');					
@@ -218,26 +209,24 @@
 		
 			var mode = getUrlParameter('mode');		
 			if(mode === "remove"){
-				$precio.attr('disabled','disabled');		
+				$fecha.attr('disabled','disabled');		
+				$tipomovimiento.attr('disabled','disabled');
+				$descripcion.attr('disabled','disabled');
+				$monto.attr('disabled','disabled');
 				
 				$savebutton.removeClass("btn btn-success");				
 				$savebutton.addClass("btn btn-danger");
 				$savebutton.html("Borrar");
 				
 			}else if(mode === "view"){				
-				$precio.attr('disabled','disabled');
+				$fecha.attr('disabled','disabled');		
+				$tipomovimiento.attr('disabled','disabled');
+				$descripcion.attr('disabled','disabled');
+				$monto.attr('disabled','disabled');
 								
 				$savebutton.hide();
 			}			
-			
-			
-			
-			// select option by id 
-    		var idPrecio = getUrlParameter('precio');
-			console.log("idPrecio: " ,idPrecio);
-    		if(idPrecio){
-    			$("#precio option[value="+idPrecio+"]").attr('selected','selected');    			
-    		}
+										
     		
 		});
 		 

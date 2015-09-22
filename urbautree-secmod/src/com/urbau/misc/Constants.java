@@ -29,6 +29,7 @@ public class Constants {
 	public static final String NAME_BODEGAS = "com.urbau.feeders.BodegasMain";
 	public static final String NAME_PRECIOS = "com.urbau.feeders.PreciosMain";
 	public static final String NAME_TIPOSDEMOVIMIENTOS = "com.urbau.feeders.TiposDeMovimientosMain";
+	public static final String NAME_BANCOSMOVIMIENTOS = "com.urbau.feeders.BancosMovimientosMain";
 	
 	public static final String ACCOUNTS_ADDS = "H";
 	public static final String ACCOUNTS_SUBSTRACT = "D";

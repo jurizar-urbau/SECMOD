@@ -2,40 +2,13 @@
 <%@page import="com.urbau.beans.BancoBean"%>
 <%@page import="com.urbau.feeders.BancosMain"%>
       
-<%
-	
-		if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-			BancosMain rm = new BancosMain();
-			
-			int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-			BancoBean bean = rm.get( id );
-			String mode = request.getParameter( "mode" );
-			
-			/*
-			String cmd = "Nueva bodega";					
-			String keyReadOnly = "readonly=\"readonly\"";
-			String optionalReadOnly = "";
-			String mandatoryReadOnly = "";
-			String jsFunction = "save();";
-			String validateUser = "";
-			if( "edit".equals( mode ) ){
-				cmd = "Editar bodega " + id;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "edit();";
-			} else if( "view".equals( mode )){
-				cmd = "Ver bodega " + id;
-				mandatoryReadOnly = keyReadOnly;
-				optionalReadOnly = keyReadOnly;
-			} else if( "remove".equals(mode) ){
-				cmd = "Eliminar bodega " + id;
-				optionalReadOnly = keyReadOnly;
-				mandatoryReadOnly = keyReadOnly;
-				jsFunction = "deleteReg();";
-			} else {
-				validateUser = "onchange=\"validateUser(this.value)\"";
-			}
-			*/
-			
+<%	
+	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
+		
+		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+		BancosMain rm = new BancosMain();
+		BancoBean bean = rm.get( id );
+		String mode = request.getParameter( "mode" );						
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -87,7 +60,7 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> DETALLE BANCO</h3>
+          	<h3><i class="fa fa-angle-right"></i> AGREGAR BANCO</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
@@ -109,9 +82,7 @@
 	                          	<%}%>   	                                  
                               </div>
                           </div>
-                                                                             
-                          
-                          
+                                                                                                                                 
                           </div>
                           
                            <div class="form-actions">

@@ -1,8 +1,12 @@
 <%@page import="com.urbau.feeders.RolesMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.BancoMovimientoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.BancosMovimientosMain"%>
+<%@page import="com.urbau.beans.BancoMovimientoBean"%>
+<%@page import="com.urbau.feeders.BancosMain"%>
+<%@page import="com.urbau.beans.BancoBean"%>
+<%@page import="com.urbau.security.Authorization"%>
+
 <%
 		
 	String idBancoParameter = request.getParameter("banco");
@@ -15,11 +19,8 @@
 	}catch(NumberFormatException e){
 		System.out.println("Error to parse a string to int for bodega parameter : message : "+ e.getMessage());
 	}	
-	
-	
+		
 	if(idBanco >= 0){
-	
-		System.out.println("Banco X Tipos De Movimientos - idBanco: " + idBanco);
 		
 		BancosMovimientosMain bancosMovimientos_main = new BancosMovimientosMain();
 		
@@ -28,8 +29,7 @@
 			from = Integer.parseInt( fromParameter );
 		}				
 		
-		ArrayList<BancoMovimientoBean> bancoMovimientosList = bancosMovimientos_main.get( qParameter, from);
-		
+		ArrayList<BancoMovimientoBean> bancoMovimientosList = bancosMovimientos_main.get( qParameter, from);	
 		
 		int total_regs = -1;
 		
@@ -37,11 +37,9 @@
 			total_regs = ((BancoMovimientoBean)bancoMovimientosList.get( 0 )).getTotal_regs();
 		}
 		
-				
-		
-				
-		
-				
+		BancosMain bancoMain = new BancosMain();		
+		BancoBean bancoBean = bancoMain.get( idBanco );
+						
 %>
 
 
@@ -52,17 +50,17 @@
 	<%@include file="fragment/head.jsp"%>
 
 	<script>
-		function edit( id,idPrecio ){		
+		function edit( id ){		
 			var banco = <%=idBanco%>;
 			location.replace( "banco-tiposmovimientos-detail.jsp?mode=edit&id="+id+"&banco="+banco);
 		}
-		function removereg( id,idPrecio ){
+		function removereg( id ){
 			var banco = <%=idBanco%>;
-			location.replace( "cliente_precios-detail.jsp?mode=remove&id="+id+"&cliente="+banco+"&precio="+idPrecio);
+			location.replace( "banco-tiposmovimientos-detail.jsp?mode=remove&id="+id+"&banco="+banco);
 		}
 		function view( id){	
 			var banco = <%=idBanco%>;
-			location.replace( "cliente_precios-detail.jsp?mode=view&id="+id+"&cliente="+banco);
+			location.replace( "banco-tiposmovimientos-detail.jsp?mode=view&id="+id+"&banco="+banco);
 		} 
 		function add(){
 			var banco = <%=idBanco%>;
@@ -125,14 +123,15 @@
           		<div class="col-lg-12">
           		<div class="content-panel">
           		
-          				
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BANCOSMOVIMIENTOS, Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
           				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+        				<%} %>
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> MOVIMIENTOS DE BANCO</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> MOVIMIENTOS - <%=bancoBean.getNombre() %></h4>
 	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="bancos.jsp">&nbsp;Regresar</a> </h4>
 	                  	  	  
 	                  	  	  <hr>
@@ -156,14 +155,17 @@
                                   <td ><%= bean.getDescripcion() %></td>
                                   <td ><%= bean.getMonto() %></td>
                                   <td>
-                                  	<button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>','<%= bean.getIdBanco()  %>');"><i class="fa fa-pencil"></i></button>
-                        			  
-                                    <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>','<%= bean.getIdBanco()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      
-                                    <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                                                                                                                       	
-                                                                                                           
                                     
+                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BANCOSMOVIMIENTOS, Constants.OPTIONS_MODIFY)){ %>
+										<button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>');"><i class="fa fa-pencil"></i></button>
+									<%}%>	
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BANCOSMOVIMIENTOS, Constants.OPTIONS_DELETE)){ %>
+										<button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+									<%}%>	
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BANCOSMOVIMIENTOS, Constants.OPTIONS_VIEW)){ %>
+										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<%}%>                                                                                                                                  	
+                                                                                                                                               
                                   </td>
                               </tr>
                               <% }} %>

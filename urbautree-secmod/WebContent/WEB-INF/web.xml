@@ -140,11 +140,7 @@
   <servlet>
     <servlet-name>TiposDeMovimientos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
-  </servlet>  
-  <servlet>
-    <servlet-name>TiposDeMovimientos</servlet-name>
-    <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
-  </servlet>  
+  </servlet>     
   <servlet>
     <servlet-name>TiposDeMovimientosBanco</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientosBanco</servlet-class>

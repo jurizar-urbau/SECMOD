@@ -3,6 +3,7 @@ package com.urbau.feeders;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.urbau._abstract.AbstractMain;
@@ -77,7 +78,7 @@ public class BancosMovimientosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			String sql = "SELECT BM.ID,BM.ID_BANCO,BM.FECHA,BM.TIPO_MOVIMIENTO,BM.DESCRIPCION,BM.MONTO,TM.DESCRIPCION FROM "+TABLE_NAME+" AS BM INNER JOIN TIPO_MOVIMIENTO AS TM ON BM.TIPO_MOVIMIENTO=TM.ID WHERE BM.ID_BANCO='"+id+"'";
+			String sql = "SELECT BM.ID,BM.ID_BANCO,BM.FECHA,BM.TIPO_MOVIMIENTO,BM.DESCRIPCION,BM.MONTO,TM.DESCRIPCION FROM "+TABLE_NAME+" AS BM INNER JOIN TIPO_MOVIMIENTO AS TM ON BM.TIPO_MOVIMIENTO=TM.ID WHERE BM.ID="+id+"";
 			System.out.println("sql:"+sql);
 			rs = stmt.executeQuery( sql);
 			while( rs.next() ){
@@ -114,12 +115,13 @@ public class BancosMovimientosMain extends AbstractMain {
 		Connection con = null;
 		Statement  stmt= null;
 		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO "+TABLE_NAME+
 					" (ID_BANCO,FECHA,TIPO_MOVIMIENTO,DESCRIPCION,MONTO) " +
 						"VALUES " +
-					"("+ bean.getIdBanco()+","+bean.getFecha()+","+bean.getIdTipoMovimiento()+",'"+bean.getDescripcion()+"',"+bean.getMonto()+")";
+					"("+ bean.getIdBanco()+",'"+formatter.format(bean.getFecha())+"',"+bean.getIdTipoMovimiento()+",'"+bean.getDescripcion()+"',"+bean.getMonto()+")";
 			
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
@@ -140,13 +142,15 @@ public class BancosMovimientosMain extends AbstractMain {
 		Connection con = null;
 		Statement  stmt= null;
 		try {			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "UPDATE "+TABLE_NAME+" SET " +
 					"ID_BANCO = " + bean.getIdBanco() + " , " +
-					"FECHA = " + bean.getFecha() + " , " +
+					"FECHA = '" + formatter.format(bean.getFecha()) + "' , " +
 					"TIPO_MOVIMIENTO= " + bean.getIdTipoMovimiento() + " , " +
-					"DESCRIPCION= " + bean.getDescripcion() + " , " +
+					"DESCRIPCION= '" + bean.getDescripcion() + "' , " +
 					"MONTO = " + bean.getMonto() + " " +					
 					"WHERE ID = " + bean.getId(); 					
 					
@@ -170,7 +174,7 @@ public class BancosMovimientosMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_BANCO = " + bean.getIdBanco() + " AND TIPO_MOVIMIENTO = " + bean.getIdTipoMovimiento();
+			String sql = "DELETE FROM "+TABLE_NAME+" WHERE ID_BANCO = " + bean.getIdBanco() + " AND ID = " + bean.getId();
 			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
