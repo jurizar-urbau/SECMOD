@@ -279,8 +279,7 @@ public class Util {
 		}
 	
 	}
-
-	public static String getDescriptionWhere(String q) {
+		public static String getDescriptionWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";
 		} else {

@@ -145,6 +145,12 @@
     <servlet-name>TiposDeMovimientosBanco</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientosBanco</servlet-class>
   </servlet>  
+  <servlet>
+    <servlet-name>TiposRubros</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TiposRubros</servlet-class>
+  </servlet> 
+
+
 
   <servlet-mapping>
     <servlet-name>SearchProducts</servlet-name>
@@ -270,7 +276,10 @@
     <servlet-name>TiposDeMovimientosBanco</servlet-name>
     <url-pattern>/bin/TiposDeMovimientosBanco</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+    <servlet-name>TiposRubros</servlet-name>
+    <url-pattern>/bin/TiposRubros</url-pattern>
+  </servlet-mapping>
 
 
   <context-param>

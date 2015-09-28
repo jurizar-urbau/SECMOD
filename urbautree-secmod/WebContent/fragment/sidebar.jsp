@@ -32,6 +32,7 @@
                           <li><a  href="venta.jsp">VENTAS</a></li>
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
+                          <li><a  href="tiposrubros.jsp">Rubros</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
                           <li><a  href="ingreso_productos.jsp?mode=add&fromInventario=false">Ingreso De Productos</a></li>
                       </ul>
