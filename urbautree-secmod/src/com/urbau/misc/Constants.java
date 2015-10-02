@@ -1,8 +1,10 @@
 package com.urbau.misc;
 
 public class Constants {
-	public static final int ITEMS_PER_PAGE = 20;
 	
+	public static final String[] MESES ={"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+	
+	public static final int ITEMS_PER_PAGE = 20;	
 	public static final int OPTIONS_ADD = 1;
 	public static final int OPTIONS_MODIFY = 2;
 	public static final int OPTIONS_DELETE = 3;
@@ -31,6 +33,8 @@ public class Constants {
 	public static final String NAME_TIPOSDEMOVIMIENTOS = "com.urbau.feeders.TiposDeMovimientosMain";
 	public static final String NAME_BANCOSMOVIMIENTOS = "com.urbau.feeders.BancosMovimientosMain";
 	public static final String NAME_TIPOSRUBROS = "com.urbau.feeders.TiposRubrosMain";
+	public static final String NAME_PRESUPUESTO	 = "com.urbau.feeders.PresupuestoMain";
+	public static final String NAME_PRESUPUESTOS_PROYECCIONES	 = "com.urbau.feeders.PresupuestosProyeccionesMain";
 	
 	public static final String ACCOUNTS_ADDS = "H";
 	public static final String ACCOUNTS_SUBSTRACT = "D";
@@ -46,6 +50,11 @@ public class Constants {
 	public static final String ROL_NAME_PARAMETER = "rolname";
 	public static final String NAME_PARAMETER = "name";
 	public static final String DESCRIPCION_PARAMETER = "descripcion";
+	public static final String ANIO_PARAMETER = "anio";
+	public static final String MES_PARAMETER = "mes";
+	public static final String TIPO_RUBRO_PARAMETER ="tiporubro";
+	public static final String MONTO_PARAMETER = "monto";
+	
 	
 	public static final String PROGRAM_DESCRIPTION_PARAMETER = "programdesc";
 	public static final String PROGRAM_NAME_PARAMETER = "programname";

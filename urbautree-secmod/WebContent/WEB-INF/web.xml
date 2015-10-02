@@ -149,6 +149,15 @@
     <servlet-name>TiposRubros</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposRubros</servlet-class>
   </servlet> 
+  <servlet>
+    <servlet-name>Presupuestos</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Presupuestos</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PresupuestosProyecciones</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PresupuestosProyecciones</servlet-class>
+  </servlet>  
+
 
 
 
@@ -279,6 +288,14 @@
   <servlet-mapping>
     <servlet-name>TiposRubros</servlet-name>
     <url-pattern>/bin/TiposRubros</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Presupuestos</servlet-name>
+    <url-pattern>/bin/Presupuestos</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PresupuestosProyecciones</servlet-name>
+    <url-pattern>/bin/PresupuestosProyecciones</url-pattern>
   </servlet-mapping>
 
 

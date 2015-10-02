@@ -279,13 +279,25 @@ public class Util {
 		}
 	
 	}
-		public static String getDescriptionWhere(String q) {
+	public static String getDescriptionWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";
 		} else {
 			return " WHERE DESCRIPCION LIKE '%" + q + "%' ";
 		}
 	
+	}
+	public static String getPresupuestoWhere(String q) {
+		if ( q == null || q.trim().length() == 0 ){ 
+			return "";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( " WHERE " );
+			sb.append( getFieldLikes( "ANIO", q) );
+			sb.append( " OR " );
+			sb.append( getFieldLikes( "MES", q) );											
+			return sb.toString();
+		}
 	}
 
 	public static String getClientesWhere(String q) {
