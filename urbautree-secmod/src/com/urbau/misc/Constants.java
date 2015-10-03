@@ -35,6 +35,7 @@ public class Constants {
 	public static final String NAME_TIPOSRUBROS = "com.urbau.feeders.TiposRubrosMain";
 	public static final String NAME_PRESUPUESTO	 = "com.urbau.feeders.PresupuestoMain";
 	public static final String NAME_PRESUPUESTOS_PROYECCIONES	 = "com.urbau.feeders.PresupuestosProyeccionesMain";
+	public static final String NAME_PRESUPUESTOS_EJECUCIONES	 = "com.urbau.feeders.PresupuestosEjecucionesMain";
 	
 	public static final String ACCOUNTS_ADDS = "H";
 	public static final String ACCOUNTS_SUBSTRACT = "D";

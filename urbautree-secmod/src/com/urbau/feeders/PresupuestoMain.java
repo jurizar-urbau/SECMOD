@@ -107,7 +107,7 @@ public class PresupuestoMain extends AbstractMain {
 					"(ANIO,MES,PROYECTADO,EJECUTADO,FECHA) " +
 						"VALUES " +
 					"("+ bean.getAnio()+","+bean.getMes()+","+bean.getProyectado()+","+bean.getEjecutado()+","+bean.getFecha()+")";
-			int total = stmt.executeUpdate( sql );
+			int total = stmt.executeUpdate( sql );					
 			return total>0;
 			 
 		} catch (Exception e) {
@@ -130,6 +130,7 @@ public class PresupuestoMain extends AbstractMain {
 					"ANIO = " + bean.getAnio() + " " +
 					"MES = " + bean.getMes() + " " +
 					"WHERE ID = " + bean.getId();
+					
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -150,7 +151,7 @@ public class PresupuestoMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "DELETE FROM PRESUPUESTO WHERE ID = " + bean.getId();
-			int total = stmt.executeUpdate( sql );
+			int total = stmt.executeUpdate( sql );					
 			return total>0;
 		} catch (Exception e) {
 			e.printStackTrace();

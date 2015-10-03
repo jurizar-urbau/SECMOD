@@ -17,6 +17,7 @@
 
 		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 				
+		System.out.println("ID: "+id);
 		TiposDeMovimientosMain tiposMovimientosMain = new TiposDeMovimientosMain();
 		BancosMovimientosMain main = new BancosMovimientosMain();		
 		BancoMovimientoBean bean = main.get( id );		

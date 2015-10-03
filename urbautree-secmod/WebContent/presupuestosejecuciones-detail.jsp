@@ -1,7 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 
-<%@page import="com.urbau.feeders.PresupuestosProyeccionesMain"%>
-<%@page import="com.urbau.beans.PresupuestoProyeccionBean"%>        
+<%@page import="com.urbau.feeders.PresupuestosEjecucionesMain"%>
+<%@page import="com.urbau.beans.PresupuestoEjecucionBean"%>        
 <%@page import="com.urbau.beans.TipoRubroBean"%>
 <%@page import="com.urbau.feeders.TiposRubrosMain"%>
 <%				
@@ -29,9 +29,9 @@
 					
 		TiposRubrosMain tiposRubrosMain = new TiposRubrosMain();								
 	
-		PresupuestosProyeccionesMain ppMain = new PresupuestosProyeccionesMain();
-		PresupuestoProyeccionBean ppBean = ppMain.get(id);
-		int tipo_rubro = ppBean.getTipoRublo();
+		PresupuestosEjecucionesMain peMain = new PresupuestosEjecucionesMain();
+		PresupuestoEjecucionBean peBean = peMain.get(id);
+		int tipo_rubro = peBean.getTipoRublo();
 		
 		
 %>  
@@ -44,7 +44,7 @@
 		<script>
 			function back(){
 				var presupuesto = <%=idPresupuesto%>;
-				location.replace( "presupuestosproyecciones.jsp?presupuesto="+presupuesto);
+				location.replace( "presupuestosejecuciones.jsp?presupuesto="+presupuesto);
 			}			
 		</script>
 	</head>
@@ -96,7 +96,7 @@
           		<div class="col-lg-12">
           			
         			<div class="form-panel">          			  
-                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="presupuestosproyecciones.jsp?presupuesto=<%=idPresupuesto %>">&nbsp;Regresar</a> </h4>
+                  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="presupuestosejecuciones.jsp?presupuesto=<%=idPresupuesto %>">&nbsp;Regresar</a> </h4>
                   	  
                       <form class="form-horiz
                       
@@ -107,9 +107,7 @@
 						<input type="hidden" name="anio" value="<%= anio%>">
 						<input type="hidden" name="mes" value="<%= mes%>">
                       	<input type="hidden" name="presupuesto" value="<%= idPresupuesto%>">                      	                      	                                                                  
-                              
-						
-                      	                                                          		                      		
+                              					                      	                                                          		                    
                       	<div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Rubro</label>
                               <div class="col-sm-10">
@@ -127,7 +125,7 @@
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
                           	<div class="col-sm-10">                          	            
-								<input type="number" class="form-control" name="monto" id="monto" value="<%=ppBean.getMonto() %>">	                          	                                                                                                  
+								<input type="number" class="form-control" name="monto" id="monto" value="<%=peBean.getMonto() %>">	                          	                                                                                                  
                           	</div>
                       	</div>
                           
@@ -192,13 +190,13 @@
 					var form =$('#form');					
 		     		$.ajax({
 			     		type:'POST',
-			 			url: './bin/PresupuestosProyecciones',
+			 			url: './bin/PresupuestosEjecuciones',
 			 			data: form.serialize(),
 			 			dataType: "text",		 			
 				        success: function(msg){				        	
 				        	alert(msg);
 				        	var presupuesto = getUrlParameter('presupuesto');
-				            location.replace( "presupuestosproyecciones.jsp?presupuesto="+presupuesto );
+				            location.replace( "presupuestosejecuciones.jsp?presupuesto="+presupuesto );
 				        },
 			 			error: function(jqXHR, textStatus, errorThrown){
 			 				console.log("ERROR srtatus: ", textStatus);

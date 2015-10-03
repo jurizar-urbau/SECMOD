@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
-import com.urbau.beans.PresupuestoProyeccionBean;
-import com.urbau.feeders.PresupuestosProyeccionesMain;
+import com.urbau.beans.PresupuestoEjecucionBean;
+import com.urbau.feeders.PresupuestosEjecucionesMain;
 
 import static com.urbau.misc.Constants.ADD;
 import static com.urbau.misc.Constants.EDIT;
@@ -20,8 +20,8 @@ import static com.urbau.misc.Constants.ANIO_PARAMETER;
 import static com.urbau.misc.Constants.MES_PARAMETER;
 
 
-@WebServlet("/PresupuestosProyecciones")
-public class PresupuestosProyecciones extends Entity {
+@WebServlet("/PresupuestosEjecuciones")
+public class PresupuestosEjecuciones extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,10 +46,8 @@ public class PresupuestosProyecciones extends Entity {
 			System.out.println("mes: " + mes);
 			System.out.println("rubro: " + rubroParameter);
 			System.out.println("monto: " + montoParameter);
-										
-			
-			
-			PresupuestoProyeccionBean bean = new PresupuestoProyeccionBean();
+																
+			PresupuestoEjecucionBean bean = new PresupuestoEjecucionBean();
 							
 			if(null != idParameter){
 				bean.setId( Integer.parseInt( idParameter));	
@@ -74,7 +72,7 @@ public class PresupuestosProyecciones extends Entity {
 			
 			if(null != anio && null !=  mes){
 																
-				PresupuestosProyeccionesMain main = new PresupuestosProyeccionesMain();
+				PresupuestosEjecucionesMain main = new PresupuestosEjecucionesMain();
 				
 				if( ADD.equals( modeParameter )){					
 					

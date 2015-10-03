@@ -157,6 +157,10 @@
     <servlet-name>PresupuestosProyecciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosProyecciones</servlet-class>
   </servlet>  
+  <servlet>
+    <servlet-name>PresupuestosEjecuciones</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PresupuestosEjecuciones</servlet-class>
+  </servlet>  
 
 
 
@@ -296,6 +300,10 @@
   <servlet-mapping>
     <servlet-name>PresupuestosProyecciones</servlet-name>
     <url-pattern>/bin/PresupuestosProyecciones</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PresupuestosEjecuciones</servlet-name>
+    <url-pattern>/bin/PresupuestosEjecuciones</url-pattern>
   </servlet-mapping>
 
 

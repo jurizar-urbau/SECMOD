@@ -1,5 +1,5 @@
-<%@page import="com.urbau.beans.PresupuestoProyeccionBean"%>
-<%@page import="com.urbau.feeders.PresupuestosProyeccionesMain"%>
+<%@page import="com.urbau.beans.PresupuestoEjecucionBean"%>
+<%@page import="com.urbau.feeders.PresupuestosEjecucionesMain"%>
 <%@page import="com.urbau.feeders.PresupuestoMain"%>
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="java.util.ArrayList"%>
@@ -18,23 +18,22 @@
 	}catch(NumberFormatException e){
 		System.out.println("Error to parse a string to int for presupuesto parameter : message : "+ e.getMessage());
 	}	
-		
-		
+				
 	if(idPresupuesto >= 0){
 		
-		PresupuestosProyeccionesMain main = new PresupuestosProyeccionesMain();
+		PresupuestosEjecucionesMain main = new PresupuestosEjecucionesMain();
 		
 		int from = 0;
 		if( fromParameter != null ){
 			from = Integer.parseInt( fromParameter );
 		}				
 		
-		ArrayList<PresupuestoProyeccionBean> itemList = main.get( qParameter, from, idPresupuesto);	
+		ArrayList<PresupuestoEjecucionBean> itemList = main.get( qParameter, from, idPresupuesto);	
 		
 		int total_regs = -1;
 		
 		if( itemList.size() > 0 ){
-			total_regs = ((PresupuestoProyeccionBean)itemList.get( 0 )).getTotal_regs();
+			total_regs = ((PresupuestoEjecucionBean)itemList.get( 0 )).getTotal_regs();
 		}
 		
 		PresupuestoMain presupuestoMain = new PresupuestoMain();
@@ -53,21 +52,21 @@
 	<script>
 		function edit( id ){		
 			var presupuesto = <%=idPresupuesto%>;
-			location.replace( "presupuestosproyecciones-detail.jsp?mode=edit&id="+id+"&presupuesto="+presupuesto+"&anio="+<%=anio%>+"&mes="+<%=mes%>);
+			location.replace( "presupuestosejecuciones-detail.jsp?mode=edit&id="+id+"&presupuesto="+presupuesto+"&anio="+<%=anio%>+"&mes="+<%=mes%>);
 		}
 		function removereg( id ){
 			var presupuesto = <%=idPresupuesto%>;
-			location.replace( "presupuestosproyecciones-detail.jsp?mode=remove&id="+id+"&presupuesto="+presupuesto);
+			location.replace( "presupuestosejecuciones-detail.jsp?mode=remove&id="+id+"&presupuesto="+presupuesto);
 		}
 		function view( id){	
 			var presupuesto = <%=idPresupuesto%>;
-			location.replace( "presupuestosproyecciones-detail.jsp?mode=view&id="+id+"&presupuesto="+presupuesto);
+			location.replace( "presupuestosejecuciones-detail.jsp?mode=view&id="+id+"&presupuesto="+presupuesto);
 		} 
 		function add(){
 			var presupuesto = <%=idPresupuesto%>;
 			var anio = <%=anio%>;
 			var mes = <%=mes%>;
-			location.replace( "presupuestosproyecciones-detail.jsp?mode=add&presupuesto="+presupuesto+"&anio="+anio+"&mes="+mes);
+			location.replace( "presupuestosejecuciones-detail.jsp?mode=add&presupuesto="+presupuesto+"&anio="+anio+"&mes="+mes);
 		}
 	</script>
 	</head>
@@ -126,7 +125,7 @@
           		<div class="col-lg-12">
           		<div class="content-panel">
           		
-          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_PROYECCIONES, Constants.OPTIONS_ADD)){ %>
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_EJECUCIONES, Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
           				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
@@ -147,7 +146,7 @@
                               </thead>
                               <tbody>
                               <%                              	                              
-                              	for( PresupuestoProyeccionBean bean : itemList ){
+                              	for( PresupuestoEjecucionBean bean : itemList ){
                               		                            			                              			                                                           	
                               %>
                               <tr>                                                
@@ -155,13 +154,13 @@
                                   <td ><%= bean.getMonto() %></td>
                                   <td>
                                     
-                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_PROYECCIONES, Constants.OPTIONS_MODIFY)){ %>
+                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_EJECUCIONES, Constants.OPTIONS_MODIFY)){ %>
 										<button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>');"><i class="fa fa-pencil"></i></button>
 									<%}%>	
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_PROYECCIONES, Constants.OPTIONS_DELETE)){ %>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_EJECUCIONES, Constants.OPTIONS_DELETE)){ %>
 										<button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
 									<%}%>	
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_PROYECCIONES, Constants.OPTIONS_VIEW)){ %>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTOS_EJECUCIONES, Constants.OPTIONS_VIEW)){ %>
 										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%}%>                                                                                                                                  	
                                                                                                                                                

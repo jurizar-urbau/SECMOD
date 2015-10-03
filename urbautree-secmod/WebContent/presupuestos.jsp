@@ -39,7 +39,10 @@
 			location.replace( "presupuestos-detail.jsp?mode=add" );
 		}
 		function proyeccion(id,anio,mes){
-			location.replace( "presupuestosproyecciones.jsp?presupuesto="+id+"&anio="+anio+"&mes"+mes );
+			location.replace( "presupuestosproyecciones.jsp?presupuesto="+id );
+		}
+		function ejecucion(id,anio,mes){
+			location.replace( "presupuestosejecuciones.jsp?presupuesto="+id );
 		}
 	</script>
 	</head>
@@ -135,7 +138,8 @@
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTO, Constants.OPTIONS_VIEW)){ %>
 										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%}%>
-									<button class="btn btn-info btn-xs" onclick="proyeccion('<%= bean.getId() %>','<%= bean.getAnio()%>','<%= bean.getMes()%>');"><i class="fa fa-file-o"></i></button>
+									<button class="btn btn-info btn-xs" onclick="proyeccion('<%= bean.getId() %>');"><i class="fa fa-file-o"></i></button>
+									<button class="btn btn-info btn-xs" onclick="ejecucion('<%= bean.getId() %>');"><i class="fa fa-file-o"></i></button>
 								</td>
 							   </tr>
                               <% } %>

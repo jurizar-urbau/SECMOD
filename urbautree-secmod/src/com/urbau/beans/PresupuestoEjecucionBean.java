@@ -2,7 +2,7 @@ package com.urbau.beans;
 
 import com.urbau.beans._interface.Bean;
 
-public class PresupuestoProyeccionBean implements Bean {
+public class PresupuestoEjecucionBean implements Bean {
 
 	private int id;
 	private int idPresupuesto;	

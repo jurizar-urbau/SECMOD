@@ -6,25 +6,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.urbau._abstract.AbstractMain;
-import com.urbau.beans.PresupuestoProyeccionBean;
+import com.urbau.beans.PresupuestoEjecucionBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
 
-public class PresupuestosProyeccionesMain extends AbstractMain {
+public class PresupuestosEjecucionesMain extends AbstractMain {
 		
 	private String allColumnNames = " PP.ID, PP.ID_PRESUPUESTO, PP.ANIO, PP.MES, PP.TIPO_RUBRO, PP.MONTO, TR.DESCRIPCION ";
 	public static int getProgramId(){
 		return -2;
 	}
-	public ArrayList<PresupuestoProyeccionBean> get( String q, int from, int idPresupuesto ){
+	public ArrayList<PresupuestoEjecucionBean> get( String q, int from, int idPresupuesto ){
 		return get( q, from, -1 , idPresupuesto);
 	}
 	
-	public ArrayList<PresupuestoProyeccionBean> get( String q, int from, int limit,int idPresupuesto ){
+	public ArrayList<PresupuestoEjecucionBean> get( String q, int from, int limit,int idPresupuesto ){
 		
 		int items = limit > 0 ? limit : Constants.ITEMS_PER_PAGE;
-		ArrayList<PresupuestoProyeccionBean> list = new ArrayList<PresupuestoProyeccionBean>();
+		ArrayList<PresupuestoEjecucionBean> list = new ArrayList<PresupuestoEjecucionBean>();
 		Connection con  = null;
 		Statement  stmt = null;
 		ResultSet  rs   = null;
@@ -33,20 +33,20 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				String sql = "SELECT " +allColumnNames+" FROM PRESUPUESTO_PROYECCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID  WHERE PP.ID_PRESUPUESTO='"+idPresupuesto+"' LIMIT " + from + "," + items;
+				String sql = "SELECT " +allColumnNames+" FROM PRESUPUESTO_EJECUCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID  WHERE PP.ID_PRESUPUESTO='"+idPresupuesto+"' LIMIT " + from + "," + items;
 				System.out.println("sql: " + sql);
 				rs = stmt.executeQuery( sql );
-				total_regs = Util.getTotalRegs( "PRESUPUESTO_PROYECCION", "" );
+				total_regs = Util.getTotalRegs( "PRESUPUESTO_EJECUCION", "" );
 			} else {
 				String rem_where = Util.getPresupuestoWhere( q );
 				String sql =  "SELECT "+allColumnNames+
-						" FROM PRESUPUESTO_PROYECCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID LIMIT " + rem_where  + from + "," + items ;
+						" FROM PRESUPUESTO_EJECUCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID LIMIT " + rem_where  + from + "," + items ;
 				System.out.println("sql: " + sql);
 				rs = stmt.executeQuery(sql);
-				total_regs = Util.getTotalRegs( "PRESUPUESTO_PROYECCION", rem_where );
+				total_regs = Util.getTotalRegs( "PRESUPUESTO_EJECUCION", rem_where );
 			}
 			while( rs.next() ){
-				PresupuestoProyeccionBean bean = new PresupuestoProyeccionBean();
+				PresupuestoEjecucionBean bean = new PresupuestoEjecucionBean();
 				bean.setId( rs.getInt( 1  ));
 				bean.setIdPresupuesto( rs.getInt( 2  ));
 				bean.setAnio(rs.getInt(3));
@@ -65,22 +65,22 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		return list;
 	}
 		
-	public PresupuestoProyeccionBean get( int id ){
+	public PresupuestoEjecucionBean get( int id ){
 		if( id < 0 ){
 			return getBlankBean();
 		}
-		PresupuestoProyeccionBean bean = null;
+		PresupuestoEjecucionBean bean = null;
 		Connection con  = null;
 		Statement  stmt = null;
 		ResultSet  rs   = null;
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			String sql = "SELECT "+allColumnNames+" FROM PRESUPUESTO_PROYECCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID WHERE PP.ID=" + id ;
+			String sql = "SELECT "+allColumnNames+" FROM PRESUPUESTO_EJECUCION AS PP INNER JOIN TIPOS_RUBRO AS TR ON PP.TIPO_RUBRO=TR.ID WHERE PP.ID=" + id ;
 			System.out.println("sql: "+ sql);
 			rs = stmt.executeQuery( sql);
 			while( rs.next() ){
-			    bean = new PresupuestoProyeccionBean();
+			    bean = new PresupuestoEjecucionBean();
 			    bean.setId( rs.getInt( 1  ));
 				bean.setIdPresupuesto( rs.getInt( 2  ));
 				bean.setAnio(rs.getInt(3));
@@ -96,8 +96,8 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		}
 		return bean;
 	}
-	public PresupuestoProyeccionBean getBlankBean(){
-		PresupuestoProyeccionBean bean = new PresupuestoProyeccionBean();
+	public PresupuestoEjecucionBean getBlankBean(){
+		PresupuestoEjecucionBean bean = new PresupuestoEjecucionBean();
 		bean.setId(-1);
 		bean.setIdPresupuesto(-1);
 		bean.setAnio(-1);
@@ -107,19 +107,19 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		bean.setRubloDescripcion( "");		
 		return bean;
 	}
-	public boolean add( PresupuestoProyeccionBean bean ){
+	public boolean add( PresupuestoEjecucionBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "INSERT INTO PRESUPUESTO_PROYECCION " +
+			String sql = "INSERT INTO PRESUPUESTO_EJECUCION " +
 					"(ID_PRESUPUESTO,ANIO,MES,TIPO_RUBRO,MONTO) " +
 						"VALUES " +
 					"("+ bean.getIdPresupuesto()+","+bean.getAnio()+","+bean.getMes()+","+bean.getTipoRublo()+","+bean.getMonto()+")";
 			int total = stmt.executeUpdate( sql );
 			
-			String sqlProyectado = "UPDATE PRESUPUESTO SET PROYECTADO = (SELECT SUM(MONTO) from PRESUPUESTO_PROYECCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto()+"";	
+			String sqlProyectado = "UPDATE PRESUPUESTO SET EJECUTADO = (SELECT SUM(MONTO) from PRESUPUESTO_EJECUCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto()+"";	
 			stmt.executeUpdate( sqlProyectado );
 			
 			return total>0;
@@ -131,7 +131,7 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
-	public boolean mod( PresupuestoProyeccionBean bean ){
+	public boolean mod( PresupuestoEjecucionBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -140,7 +140,7 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "UPDATE PRESUPUESTO_PROYECCION SET " +
+			String sql = "UPDATE PRESUPUESTO_EJECUCION SET " +
 					"ID_PRESUPUESTO = " + bean.getIdPresupuesto() + ", " +
 					"ANIO = " + bean.getAnio() + ", " +
 					"MES = " + bean.getMes() + ", " +
@@ -150,7 +150,7 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 			System.out.println("sql[" + sql+"]");
 			int total = stmt.executeUpdate( sql );
 			
-			String sqlProyectado = "UPDATE PRESUPUESTO SET PROYECTADO = (SELECT SUM(MONTO) from PRESUPUESTO_PROYECCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto();			
+			String sqlProyectado = "UPDATE PRESUPUESTO SET EJECUTADO = (SELECT SUM(MONTO) from PRESUPUESTO_EJECUCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto();			
 			stmt.executeUpdate( sqlProyectado );
 			
 			return total>0;
@@ -162,7 +162,7 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		}
 	}
 	
-	public boolean del( PresupuestoProyeccionBean bean ){
+	public boolean del( PresupuestoEjecucionBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;
 		}
@@ -171,10 +171,10 @@ public class PresupuestosProyeccionesMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM PRESUPUESTO_PROYECCION WHERE ID = " + bean.getId();
+			String sql = "DELETE FROM PRESUPUESTO_EJECUCION WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
 			
-			String sqlProyectado = "UPDATE PRESUPUESTO SET PROYECTADO = (SELECT SUM(MONTO) from PRESUPUESTO_PROYECCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto();			
+			String sqlProyectado = "UPDATE PRESUPUESTO SET EJECUTADO = (SELECT SUM(MONTO) from PRESUPUESTO_EJECUCION WHERE ID_PRESUPUESTO="+bean.getIdPresupuesto()+") WHERE ID="+bean.getIdPresupuesto();			
 			stmt.executeUpdate( sqlProyectado );
 			
 			return total>0;
