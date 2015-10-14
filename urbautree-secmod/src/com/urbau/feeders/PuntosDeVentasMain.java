@@ -54,6 +54,35 @@ public class PuntosDeVentasMain {
 		return list;
 	}
 	
+	public ArrayList<PuntoDeVentaBean> getAll(  ){
+		
+		ArrayList<PuntoDeVentaBean> list = new ArrayList<PuntoDeVentaBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			
+			String sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM PUNTOSDEVENTAS";
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				PuntoDeVentaBean bean = new PuntoDeVentaBean();
+				bean.setId(  rs.getInt   ( 1  ));				
+				bean.setNombre(  Util.trimString( rs.getString( 2 )));				
+				bean.setDireccion( Util.trimString( rs.getString( 3 )) );
+				bean.setTelefono( Util.trimString( rs.getString( 4 )) );									
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
 	public PuntoDeVentaBean get( int id ){
 		if( id < 0 ){
 			return getBlankBean();

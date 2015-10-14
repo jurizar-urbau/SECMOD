@@ -84,6 +84,22 @@
 								<input type="text" class="form-control" name="descripcion" id="descripcion" value="<%= bean.getDescripcion() %>">	                          	                                                                    
                               
                           	</div>
+                          	
+                          	<label class="col-sm-2 col-sm-2 control-label">Tipo</label>
+                          	<div class="col-sm-10">
+                          	    <select class="form-control" name="tipo">
+                          	    	<option value="F">Fijo</option>
+                          	    	<option value="V">Variable</option>
+                          	    </select>       
+                          	</div>
+                          	
+                          	<label class="col-sm-2 col-sm-2 control-label">Clasificacion</label>
+                          	<div class="col-sm-10">
+                          	            
+								<input type="text" class="form-control" name="clasificacion" id="clasificacion" value="<%= bean.getTipo_clasificacion() %>">	                          	                                                                    
+                              
+                          	</div>
+                          	
                       	</div>
                           
                        <div class="form-actions">

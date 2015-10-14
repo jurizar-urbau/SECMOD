@@ -3,6 +3,7 @@ package com.urbau.misc;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -279,6 +280,7 @@ public class Util {
 		}
 	
 	}
+
 	public static String getDescriptionWhere(String q) {
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";
@@ -286,18 +288,6 @@ public class Util {
 			return " WHERE DESCRIPCION LIKE '%" + q + "%' ";
 		}
 	
-	}
-	public static String getPresupuestoWhere(String q) {
-		if ( q == null || q.trim().length() == 0 ){ 
-			return "";
-		} else {
-			StringBuffer sb = new StringBuffer();
-			sb.append( " WHERE " );
-			sb.append( getFieldLikes( "ANIO", q) );
-			sb.append( " OR " );
-			sb.append( getFieldLikes( "MES", q) );											
-			return sb.toString();
-		}
 	}
 
 	public static String getClientesWhere(String q) {
@@ -344,30 +334,6 @@ public class Util {
 			StringBuffer sb = new StringBuffer();
 			sb.append( " WHERE " );
 			sb.append( getFieldLikes( "NOMBRE", q) );											
-			return sb.toString();
-		}
-	}
-	public static String getBancosMovimientosWhere(String q) {
-		if ( q == null || q.trim().length() == 0 ){ 
-			return "";
-		} else {
-			StringBuffer sb = new StringBuffer();
-			sb.append( " WHERE " );
-			sb.append( getFieldLikes( "DESCRIPCION", q) );
-			sb.append( " OR " );
-			sb.append( getFieldLikes( "MONTO", q) );
-			return sb.toString();
-		}
-	}
-	public static String getBancosMovimientosWithPrefixWhere(String q) {
-		if ( q == null || q.trim().length() == 0 ){ 
-			return "";
-		} else {
-			StringBuffer sb = new StringBuffer();
-			sb.append( " WHERE " );
-			sb.append( getFieldLikes( "BM.DESCRIPCION", q) );
-			sb.append( " OR " );
-			sb.append( getFieldLikes( "BM.MONTO", q) );
 			return sb.toString();
 		}
 	}
@@ -468,7 +434,15 @@ public class Util {
 	}
 	public static String getDateStringMDY( Date date ){
 		Calendar cal = Calendar.getInstance();
+		cal.setTime( date );
 		String str = ( cal.get( Calendar.MONTH ) + 1 ) + "/" + cal.get( Calendar.DAY_OF_MONTH ) + "/" + cal.get(Calendar.YEAR );
+		return str;
+	}
+	public static String getDateStringDMYHM( Date date ){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( date );
+		String str = ns( cal.get( Calendar.DAY_OF_MONTH )) + "/" + ns(( cal.get( Calendar.MONTH ) + 1 ) ) + "/" + cal.get(Calendar.YEAR ) + " "
+				+ ns( cal.get( Calendar.HOUR_OF_DAY)) + ":" + ns( cal.get( Calendar.MINUTE ));
 		return str;
 	}
 	public static String ns( int n ){
@@ -485,4 +459,67 @@ public class Util {
 		}	
 	}
 	
+	public static String formatCurrency( double value ){
+		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
+		return formatter.format( applyRoundRules ( value ) );
+	}
+	public static String formatCurrencyWithoutSymbol( double value ){
+		
+		DecimalFormat formatter = new DecimalFormat("0.00");     
+		return formatter.format( applyRoundRules ( value ) );
+	}
+	public static double applyRoundRules( Double value ){
+		double ee = value.longValue();
+		double fv = value - ee;
+		double returnValue = ee;
+		System.out.println( "float value of "+ value + "=" + fv );
+		if( fv > 0 && fv <= .25 ){
+			returnValue += .25;
+		} else if( fv > 0 &&  fv <= .5 ){
+			returnValue += .5;
+		} else if( fv > 0 &&  fv <= .75 ){
+			returnValue += .75;
+		} else if( fv > 0 &&  fv <= .99 ){
+			returnValue += 1;
+		}
+		return returnValue;
+	}
+
+ 	public static String getPresupuestoWhere(String q) {
+ 		if ( q == null || q.trim().length() == 0 ){ 
+ 			return "";
+ 		} else {
+ 			StringBuffer sb = new StringBuffer();
+ 			sb.append( " WHERE " );
+ 			sb.append( getFieldLikes( "ANIO", q) );
+ 			sb.append( " OR " );
+ 			sb.append( getFieldLikes( "MES", q) );											
+ 			return sb.toString();
+ 		}
+ 	}
+ 	public static String getBancosMovimientosWhere(String q) {
+ 		if ( q == null || q.trim().length() == 0 ){ 
+ 			return "";
+ 		} else {
+ 			StringBuffer sb = new StringBuffer();
+ 			sb.append( " WHERE " );
+ 			sb.append( getFieldLikes( "DESCRIPCION", q) );
+ 			sb.append( " OR " );
+ 			sb.append( getFieldLikes( "MONTO", q) );
+ 			return sb.toString();
+ 		}
+ 	}
+ 	public static String getBancosMovimientosWithPrefixWhere(String q) {
+ 		if ( q == null || q.trim().length() == 0 ){ 
+ 			return "";
+ 		} else {
+ 			StringBuffer sb = new StringBuffer();
+ 			sb.append( " WHERE " );
+ 			sb.append( getFieldLikes( "BM.DESCRIPCION", q) );
+ 			sb.append( " OR " );
+ 			sb.append( getFieldLikes( "BM.MONTO", q) );
+ 			return sb.toString();
+ 		}
+ 	}
+
 }

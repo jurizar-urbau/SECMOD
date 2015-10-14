@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.OptionBean;
+import com.urbau.beans.UsuarioBean;
 import com.urbau.feeders.OptionsMain;
 
 import static com.urbau.misc.Constants.ADD;
@@ -27,6 +28,7 @@ public class Options extends Entity {
 		try{
 												
 			HttpSession session = request.getSession();
+			
 			validateRequest( session );
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );

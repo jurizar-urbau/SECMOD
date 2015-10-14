@@ -124,16 +124,16 @@
             	                             
                 nombre: {
                     minlength: 3,
-                    maxlength: 50,
+                    maxlength: 255,
                     required: true
                   },                                                     
                 direccion: {
                     minlength: 3,
-                    maxlength: 50                    
+                    maxlength: 255                    
                   },     
                 telefono: {
                     minlength: 3,
-                    maxlength: 20                    
+                    maxlength: 30                    
                   }                                             
               },
               highlight: function(element) {

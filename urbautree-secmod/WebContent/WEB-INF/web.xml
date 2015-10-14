@@ -134,6 +134,10 @@
     <servlet-class>com.urbau.servlet.entity.SearchProducts</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SearchClients</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SearchClients</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ProductosPorBodega</servlet-name>
     <servlet-class>com.urbau.json.service.ProductosPorBodega</servlet-class>
   </servlet>
@@ -148,6 +152,10 @@
   <servlet>
     <servlet-name>TiposRubros</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposRubros</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Ordenes</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Ordenes</servlet-class>
   </servlet> 
   <servlet>
     <servlet-name>Presupuestos</servlet-name>
@@ -161,13 +169,28 @@
     <servlet-name>PresupuestosEjecuciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosEjecuciones</servlet-class>
   </servlet>  
-
+  <servlet>
+    <servlet-name>BodegasUsuarios</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.BodegasUsuarios</servlet-class>
+  </servlet>  
 
 
 
   <servlet-mapping>
+    <servlet-name>BodegasUsuarios</servlet-name>
+    <url-pattern>/bin/BodegasUsuarios</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>SearchProducts</servlet-name>
     <url-pattern>/bin/searchp</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchClients</servlet-name>
+    <url-pattern>/bin/searchc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Ordenes</servlet-name>
+    <url-pattern>/bin/Ordenes</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UrbauConfig</servlet-name>

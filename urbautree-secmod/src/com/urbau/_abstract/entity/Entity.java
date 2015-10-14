@@ -22,6 +22,11 @@ public class Entity extends HttpServlet {
 			throw new UserNotAuthenticatedException( "No hay ningun usuario logeado" );
 		}
 	}
+	public UsuarioBean getLoggedUser(HttpSession session ) {
+		UsuarioBean loggedUser = (UsuarioBean) session.getAttribute( "loggedUser" );
+		
+		return loggedUser;
+	}
 	public void showMessage( String message, HttpServletResponse response ) {
 		try{
 			response.getOutputStream().write( message.getBytes() );

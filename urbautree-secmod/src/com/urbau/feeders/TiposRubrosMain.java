@@ -32,17 +32,19 @@ public class TiposRubrosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM TIPOS_RUBRO LIMIT " + from + "," + items );
+				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,TIPO,ID_CLASIFICACION FROM TIPOS_RUBRO LIMIT " + from + "," + items );
 				total_regs = Util.getTotalRegs( "ROLES", "" );
 			} else {
 				String rem_where = Util.getRolesWhere( q );
-				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM TIPOS_RUBRO " + rem_where + " LIMIT " + from + "," + items );
+				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,TIPO,ID_CLASIFICACION FROM TIPOS_RUBRO " + rem_where + " LIMIT " + from + "," + items );
 				total_regs = Util.getTotalRegs( "TIPOS_RUBRO", rem_where );
 			}
 			while( rs.next() ){
 				TipoRubroBean bean = new TipoRubroBean();
 				bean.setId( 						   rs.getInt   ( 1  ));
 				bean.setDescripcion(  Util.trimString( rs.getString( 2  )));
+				bean.setTipo( rs.getString( 3 ));
+				bean.setTipo_clasificacion( rs.getInt( 4 ));
 				bean.setTotal_regs( total_regs );
 				list.add( bean );
 			}
@@ -65,11 +67,13 @@ public class TiposRubrosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT DESCRIPCION FROM TIPOS_RUBRO WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT DESCRIPCION,TIPO,ID_CLASIFICACION FROM TIPOS_RUBRO WHERE ID=" + id );
 			while( rs.next() ){
 			    bean = new TipoRubroBean();
 			    bean.setId( id );
 				bean.setDescripcion( Util.trimString( rs.getString( 1  )));
+				bean.setTipo( rs.getString( 2 ));
+				bean.setTipo_clasificacion( rs.getInt( 3 ));
 				
 			}
 		} catch( Exception e ){
@@ -82,6 +86,8 @@ public class TiposRubrosMain extends AbstractMain {
 	public TipoRubroBean getBlankBean(){
 		TipoRubroBean bean = new TipoRubroBean();
 		bean.setDescripcion("");
+		bean.setTipo("");
+		bean.setTipo_clasificacion( 0 );
 		return bean;
 	}
 	public boolean add( TipoRubroBean bean ){
@@ -91,9 +97,9 @@ public class TiposRubrosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO TIPOS_RUBRO " +
-					"(DESCRIPCION) " +
+					"(DESCRIPCION,TIPO,ID_CLASIFICACION) " +
 						"VALUES " +
-					"('"+ bean.getDescripcion()+"')";
+					"('"+ bean.getDescripcion()+"','" + bean.getTipo() + "'," + bean.getTipo_clasificacion() + ")";
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -114,7 +120,9 @@ public class TiposRubrosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "UPDATE TIPOS_RUBRO SET " + 
-					"DESCRIPCION = " + Util.vs( bean.getDescripcion()  ) + " " +
+					"DESCRIPCION = " + Util.vs( bean.getDescripcion()  ) + ", " +
+					"TIPO = " + Util.vs( bean.getTipo()  ) + ", " +
+					"ID_CLASIFICACION = " + bean.getTipo_clasificacion() + " " +
 					"WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
 			return total>0;

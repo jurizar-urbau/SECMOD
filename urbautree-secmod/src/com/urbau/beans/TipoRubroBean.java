@@ -6,8 +6,24 @@ public class TipoRubroBean implements Bean {
 
 	private int id;
 	private String descripcion;
+	private String tipo;
+	private int tipo_clasificacion;
+	
+	
 	int total_regs;
 		
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public int getTipo_clasificacion() {
+		return tipo_clasificacion;
+	}
+	public void setTipo_clasificacion(int tipo_clasificacion) {
+		this.tipo_clasificacion = tipo_clasificacion;
+	}
 	public int getId() {
 		return id;
 	}

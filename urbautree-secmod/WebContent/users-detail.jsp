@@ -190,7 +190,7 @@
               rules: {
                 loginid: {
                   minlength: 2,
-                  maxlength: 10,
+                  maxlength: 50,
                   required: true
                 },
                 email: {
@@ -199,7 +199,7 @@
                 },
                 nombresapellidos: {
                   minlength: 3,
-                  maxlength: 50,
+                  maxlength: 100,
                   required: true
                 }
               },

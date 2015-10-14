@@ -7,7 +7,9 @@ public class InvetarioBean implements Bean {
 	private int idBodega;
 	private int id_product;
 	private String estatus;	
-	private int amount;		
+	private int amount;
+	private int id_orden;
+	
 	int total_regs;
 	
 	private String prodCodigo;
@@ -122,6 +124,12 @@ public class InvetarioBean implements Bean {
 	}
 	
 	
+	public int getId_orden() {
+		return id_orden;
+	}
+	public void setId_orden(int id_orden) {
+		this.id_orden = id_orden;
+	}
 	@Override
 	public int getProgramId() {
 		return 1;

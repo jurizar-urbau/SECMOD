@@ -85,8 +85,8 @@ public class InventariosMain extends AbstractMain {
 	
 	
 	
-	public InvetarioBean get( int id, String estatus, int idBodega ){
-		if( id < 0  || null == estatus){
+	public InvetarioBean get( int product_id, String estatus, int idBodega ){
+		if( product_id < 0  || null == estatus){
 			return getBlankBean();
 		}
 		InvetarioBean bean = null;
@@ -96,7 +96,7 @@ public class InventariosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + id +" AND ESTATUS='"+estatus+"'";
+			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + product_id +" AND ESTATUS='"+estatus+"'";
 			System.out.println("query:"+query);
 			rs = stmt.executeQuery( query);
 			while( rs.next() ){
@@ -104,6 +104,7 @@ public class InventariosMain extends AbstractMain {
 			    bean.setId_product(  rs.getInt   ( 1  ));
 			    bean.setEstatus(  Util.trimString( rs.getString( 2 )));												
 			    bean.setAmount(  rs.getInt( 3 ));
+			    bean.setId_orden( rs.getInt( 4 ));
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -118,7 +119,8 @@ public class InventariosMain extends AbstractMain {
 		InvetarioBean bean = new InvetarioBean();
 		bean.setId_product(-1);
 		bean.setEstatus("");
-		bean.setAmount(0);		
+		bean.setAmount(0);	
+		bean.setId_orden(0);	
 		return bean;
 	}
 	
@@ -129,9 +131,9 @@ public class InventariosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO "+TABLE_NAME+bean.getIdBodega()+
-					" (ID_PRODUCT,ESTATUS,AMOUNT) " +
+					" (ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN) " +
 						"VALUES " +
-					"("+ bean.getId_product()+",'"+bean.getEstatus()+"',"+bean.getAmount()+")";
+					"("+ bean.getId_product()+",'"+bean.getEstatus()+"',"+bean.getAmount()+"," + bean.getId_orden() + ")";
 			
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
@@ -156,6 +158,7 @@ public class InventariosMain extends AbstractMain {
 			String sql = "UPDATE "+TABLE_NAME+bean.getIdBodega()+" SET " +
 					"ID_PRODUCT = " + bean.getId_product() + " , " +
 					"ESTATUS = " + Util.vs( bean.getEstatus() ) + ", " +
+					"ID_ORDEN = " +bean.getId_orden()  + ", " +
 					"AMOUNT = " + bean.getAmount() + " " +
 					"WHERE ID_PRODUCT = " + bean.getId_product() + " " + 
 					"AND ESTATUS = " + Util.vs( bean.getEstatus() );
@@ -180,7 +183,7 @@ public class InventariosMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "DELETE FROM "+TABLE_NAME+bean.getIdBodega()+" WHERE ID_PRODUCT = " + bean.getId_product() + " AND ESTATUS = '"+bean.getEstatus()+"'";
+			String sql = "DELETE FROM "+TABLE_NAME+bean.getIdBodega()+" WHERE ID_PRODUCT = " + bean.getId_product() + " AND ESTATUS = '"+bean.getEstatus()+"' AND ID_ORDEN=" + bean.getId_orden();
 			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;

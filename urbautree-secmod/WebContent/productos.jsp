@@ -135,11 +135,11 @@
                                   <td><%= us.getDescripcion() %></td>
                                   <td><%= us.getCoeficiente_unidad() %></td>
                                   <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
-                                  <td><%= us.getPrecio() %></td>
-                                  <td><%= us.getPrecio_1() %></td>
-                                  <td><%= us.getPrecio_2() %></td>
-                                  <td><%= us.getPrecio_3() %></td>
-                                  <td><%= us.getPrecio_4() %></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio() ) %></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_1()) %></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_2() ) %></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_3()) %></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_4()) %></td>
                                   <td><%= us.getStock_minimo() %></td>
                                   <td>
                                   	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">

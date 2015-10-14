@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.reports.StatusPresupuesto"%>
+<%@page import="com.urbau.beans.reports.beans.PresupuestoReportBean"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page pageEncoding="utf-8" %>
 <%@page import="com.urbau.feeders.BodegasMain"%>
@@ -59,15 +61,39 @@
                   <div class="col-lg-9 main-chart">
                   
                     <div class="row mtbox">
+                     
                       <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                        <div class="box1">
-                        <a href="bodegas.jsp">
-                  <span class="li_data"></span>
-                  <h3>BODEGAS</h3>
-                        </div>
-                  <p><%= total_productos %> Productos en <%= total_bodegas %> Bodegas</p>
+                        	<div class="box1">
+                        		<a href="venta.jsp">
+                  					<span class="li_shop"></span>
+                  					<h3>Pedido</h3>
+                  				</a>
+                        	</div>
+                  			<p>Ingresar un nuevo pedido.</p>
                       </div>
-                      </a>
+                      
+                      
+                      <div class="col-md-2 col-sm-2 box0">
+                        <div class="box1">
+                        	<a href="ordenes-caja.jsp">
+			                  <span class="li_stack"></span>
+			                  <h3>Cobro</h3>
+			                </a>
+		                </div>
+		                <p>Cobrar un pedido.</p>
+                      </div>
+                     
+                      <div class="col-md-2 col-sm-2  box0">
+                      	<div class="box1">
+                        	<a href="carga-bodega.jsp">
+                  				<span class="li_data"></span>
+                  				<h3>BODEGA</h3>
+                  	        </a>
+                        </div>
+                  		<p>Cargar productos a Bodega.</p>
+                      </div>
+                      
+                     
                       <div class="col-md-2 col-sm-2 box0">
                         <div class="box1">
                   <span class="li_cloud"></span>
@@ -75,13 +101,7 @@
                         </div>
                   <p>1,148 Productos activos en inventario</p>
                       </div>
-                      <div class="col-md-2 col-sm-2 box0">
-                        <div class="box1">
-                  <span class="li_stack"></span>
-                  <h3>23</h3>
-                        </div>
-                  <p>You have 23 unread messages in your inbox.</p>
-                      </div>
+                      
                       <div class="col-md-2 col-sm-2 box0">
                         <div class="box1">
                   <span class="li_news"></span>
@@ -89,14 +109,7 @@
                         </div>
                   <p>More than 10 news were added in your reader.</p>
                       </div>
-                      <div class="col-md-2 col-sm-2 box0">
-                        <div class="box1">
-                  <span class="li_data"></span>
-                  <h3>OK!</h3>
-                        </div>
-                  <p>Tu servidor esta trabajando perfecto, relajate y disfruta.</p>
-                      </div>
-                    
+                      
                     </div><!-- /row mt -->  
                   
                       
@@ -105,26 +118,32 @@
                       
                       
                       <div class="row mt">
+                      <%
+		                StatusPresupuesto statusPresupuesto = new StatusPresupuesto();
+		                PresupuestoReportBean prb = statusPresupuesto.get();
+		                %>
                       <!-- SERVER STATUS PANELS -->
                         <div class="col-md-4 col-sm-4 mb">
                           <div class="white-panel pn donut-chart">
                             <div class="white-header">
-                    <h5>USO DE PRESUPUESTO</h5>
+                    <h5>USO DE PRESUPUESTO <%= prb.getMes( 1 )  %></h5>
+                    
                             </div>
                 <div class="row">
                   <div class="col-sm-6 col-xs-6 goleft">
-                    <p><i class="fa fa-database"></i> 70%</p>
+                    <p><i class="fa fa-database"></i> <%= prb.getPercentage().longValue() %>%</p>
                   </div>
                             </div>
                 <canvas id="serverstatus01" height="120" width="120"></canvas>
                 <script>
+                
                   var doughnutData = [
                       {
-                        value: 70,
+                        value: <%= prb.getEjecutado().longValue() %>,
                         color:"#C70D0D"
                       },
                       {
-                        value : 30,
+                        value : <%= prb.getProyectado().longValue() - prb.getEjecutado().longValue() %>,
                         color : "#424a5d"
                       }
                     ];
@@ -133,6 +152,43 @@
                           </div><! --/grey-panel -->
                         </div><!-- /col-md-4-->
                         
+                        <div class="col-lg-12">
+                          <div class="content-panel">
+							  <h5><i class="fa fa-angle-right"></i> Presupuesto</h5>
+                              <div class="panel-body text-center">
+                                  <canvas id="line" height="300" width="700"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                        
+			<script>
+			var lineChartData = {
+			        labels : ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
+			        datasets : [
+			            {
+			                fillColor : "rgba(220,220,220,0.5)",
+			                strokeColor : "rgba(220,220,220,1)",
+			                pointColor : "rgba(220,220,220,1)",
+			                pointStrokeColor : "#fff",
+			                data : [65,59,50,81,56,55,40,90,81,56,55,40]
+			            },
+			            {
+			                fillColor : "rgba(151,187,205,0.5)",
+			                strokeColor : "rgba(151,187,205,1)",
+			                pointColor : "rgba(151,187,205,1)",
+			                pointStrokeColor : "#fff",
+			                data : [28,48,40,19,96,27,100,28,48,40,11,23]
+			            }
+			        ]
+
+			    };
+		    new Chart(document.getElementById("line").getContext("2d")).Line(lineChartData);
+
+			</script>
+
+					  
+
+
 
                         <div class="col-md-4 col-sm-4 mb">
                           <div class="white-panel pn">

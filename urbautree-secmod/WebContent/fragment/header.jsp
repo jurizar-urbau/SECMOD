@@ -18,7 +18,7 @@
             </div>
             <div class="top-menu">
               <ul class="nav pull-right top-menu">
-              		<li><a class="profile" href="profile.jsp">Jose Alejandro Urizar</a></li>
+              		<li><a class="profile" href="#">[ <%= loggedUser.getNombre() %> ]@[ <%= loggedUser.getNombre_punto_venta() %> ] </a></li>
                     <li><a class="logout" href="bin/Logout">Salir</a></li>
               </ul>
             </div>

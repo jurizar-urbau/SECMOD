@@ -1,5 +1,7 @@
 <%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.beans.ClienteBean"%>
+<%@page import="com.urbau.feeders.ClientesMain"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>
@@ -28,9 +30,10 @@
 		
 		} 
 		function searchProducts( q ){
+			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
 			console.log( "looking for products with [" + q + "]");
 			$( "#product-container" ).html("");
-			 $.get( "./bin/searchp?q=" + q + "&bodega=" + selected_bodega_id + "&cliente=" + selected_client_id, null, function(response){
+			 $.get( "./bin/searchp?q=" + q , null, function(response){
                  $.each(response, function(i, v) {
                 	 console.log( i, v );
                 	 
@@ -61,28 +64,6 @@
                   "   </div>" +
          "</a>";
          			$( "#product-container" ).append( htmltoadd );
-                	
-                	 
-                 });
-              });
-		}
-		function searchClients( q ){
-			console.log( "looking for clients with [" + q + "]");
-			$( "#client-container" ).html("");
-			 $.get( "./bin/searchc?q=" + q, null, function(response){
-                 $.each(response, function(i, v) {
-                	 console.log( i, v );
-                	 
-                	 var rootele;
-                	 
-                	 var htmltoadd =
-                		"<tr>" +
-                 	  	"<td><input type='radio' name='clienteid' value='" + v.id + "," + v.nombres + " " + v.apellidos + "'></td>" +
-                     	"<td>"+v.nit+"</td>" +                                  
-                     	"<td>"+v.nombres+"</td>" +
-                     	"<td>"+v.apellidos+"</td>" +         
-	                 	"</tr>";
-         			$( "#client-container" ).append( htmltoadd );
                 	
                 	 
                  });
@@ -141,9 +122,9 @@
               <div class="row">
                   <div class="col-lg-9  main-chart">
                       <div class="row mt">
-                      <div class="col-lg-12" onclick="chooseClient()">
+                      <!--  div class="col-lg-12" onclick="chooseClient()">
                       	Cliente: <b><span id="clientdisplay"></span></b>
-                      </div>
+                      </div-->
                       <div class="col-lg-12" onclick="chooseStore()">
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
@@ -164,7 +145,7 @@
                         	ArrayList<ProductoBean> plist = pm.get(null, 0 );
                         for( ProductoBean pbean: plist ){
                             %>
-    			<a data-toggle="modal" href="venta.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
+    			<a data-toggle="modal" href="carga-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
     			<% } 
                         %>    	
                         <%
@@ -179,7 +160,7 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Agregar a orden...</h4>
+			                          <h4 class="modal-title">Agregar a bodega...</h4>
 			                      </div>
 			                      <div class="modal-body col-lg-12">
 			                      <div class="col-sm-6">
@@ -198,11 +179,6 @@
 			                          <!--p>Precio unitario:</p>
 			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
 			                          </br>  -->
-			                          <p>Precio:</p>
-			                          (1)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_1()) %>" > <%=  Util.formatCurrency(pbean.compiled_1()) %><br/>
-			                          (2)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_2()) %>" > <%=  Util.formatCurrency(pbean.compiled_2()) %><br/>
-			                          (3)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_3()) %>" > <%=  Util.formatCurrency(pbean.compiled_3()) %><br/>
-			                          (4)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_4()) %>" > <%=  Util.formatCurrency(pbean.compiled_4()) %><br/>
 			                          
 			                          </div>
 			                      </div>
@@ -247,6 +223,9 @@
                            <input type='hidden' name='clientid' id='clientid' value=''>
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
 		                   <div id="sale-container">
+		                                      
+		                      
+		                      
 		                  </div>
 		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar</button>
                   	</form>
@@ -331,18 +310,26 @@
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			                          <h4 class="modal-title">Seleccione un cliente...</h4>
 			                          <span class="pull-right">
-			                          	
 			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
 			          				  </span>
-			          				  
-			          				  	<label>Buscar: <input type="text" class="form-control" id="search-client" name="q"></label> 
-			          				  
-			          				  
 			                          
 			                      </div>
 			                      <div class="modal-body">
-				                      
-						 <table class="table table-striped table-advance table-hover">
+				                      <%
+											ClientesMain um = new ClientesMain();			
+											int from = 0;
+											if( request.getParameter( "from" ) != null ){
+												from = Integer.parseInt( request.getParameter( "from" ) );
+											}
+											
+											ArrayList<ClienteBean> list = um.get( request.getParameter("q"), from );
+											int total_regs = -1;
+											
+											if( list.size() > 0 ){
+												total_regs = ((ClienteBean)list.get( 0 )).getTotal_regs();
+											}
+										%>
+										 <table class="table table-striped table-advance table-hover">
 	                  	  	  
 	                  	  	  <thead>
                               <tr>
@@ -352,7 +339,20 @@
                                   <th>Apellidos</th>                                                                    
                               </tr>
                               </thead>
-                              <tbody id="client-container">
+                              <tbody>
+                              <%
+                              	for(ClienteBean bean: list ){
+                              %>
+                              <tr>
+                              	  <td><input type="radio" name="clienteid" value="<%= bean.getId() %>,<%= bean.getNombres() + " " + bean.getApellidos()  %>"></td>
+                                  <td><%= bean.getNit() %></td>                                  
+                                  <td><%= bean.getNombres() %></td>
+                                  <td><%= bean.getApellidos() %></td>         
+                                                                            
+                                  
+                              </tr>
+                              <% } %>
+                              
                               </tbody>
                           </table>
 			                      </div>
@@ -503,10 +503,7 @@
   				
   			}
   			function chooseClient(){
-  				
   				$('#myModal').modal('show');
-  				$('#search-client').focus();
-  				
   			}
   			function chooseStore(){
   				$('#myStores').modal('show');
@@ -540,6 +537,7 @@
     		        		alert( "Cliente creado con exito." );
     		        		var ci = msg.substring( 10 );
     		        		var values = ci.split(',');
+    		        		console.log( values );
     				    	$('#clientdisplay').html(ci);
     				    	$('#clientid').val( values[ 0 ] );
     				    	hideClient();
@@ -570,7 +568,7 @@
     	 			
     		        success: function(msg){		      
     		        	alert( msg );
-    		        	if( !msg.startsWith('error') && !msg.startsWith('No ') ){
+    		        	if( !msg.startsWith('error') ){
     		        		location.reload();	
     		        	}
     		            //location.replace( "clientes.jsp" );
@@ -613,27 +611,19 @@
   			for (i = 0; i < ventasList.length; i++) { 
   				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].price );
 				var htmltoadd =
-					"<div class='desc'>" +
-					" 	<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
-					" 	<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
-					" 	<input type='hidden' name='price' value='" + ventasList[ i ].price + "'>" +
-					" 	<div style='float:left'>" +    
-					" 		<img width='70' src='./bin/RenderImage?imagePath=" + ventasList[ i ].imagepath + "'>" +  
-					" 	</div>" +
-					"	<div class='details'>" +
-					"		<p style='color:black; font-size:12pt'>" +
-					"			&nbsp;&nbsp;&nbsp;" + ventasList[ i ].description + "<br>" +
-					"			&nbsp;&nbsp;" +
-					"			&nbsp;" +
-					"			<span style='color:red; font-size:10pt'>" + ventasList[ i ].amount + "</span>" +
-					"			<span style='color:black; font-size:10pt'>X</span>" +
-					"			<span style='color:blue; font-size:10pt'>Q "+ventasList[ i ].price+" </span>" +
-					"			<span style='color:black; font-size:10pt'>=</span>" +
-					"			<span style='color:blue; font-size:10pt'>Q " + ( ventasList[ i ].amount * ventasList[ i ].price ).toFixed(2) + "</span>" +
-					"		</p>" +  
-					"	</div>" +
-					"</div>" ;
-					  
+					  "<div class=\"desc\">" +
+					  "<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
+					  "<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
+					  "<input type='hidden' name='price' value='" + ventasList[ i ].price + "'>" +
+					  "  <div style=\"float:left\">" +
+		              "    <img width=\"70\" src=\"./bin/RenderImage?imagePath=" + ventasList[ i ].imagepath + "\">" +
+		              "  </div>" +
+		              "  <div class=\"details\">" +
+		              "    <p style=\"color:black; font-size:12pt\">" +
+		              "       <span style=\"color:red; font-size:20pt\">" + ventasList[ i ].amount + "</span>" + ventasList[ i ].description + "<br/>Q " + ( ventasList[ i ].amount * ventasList[ i ].price ).toFixed(2) + " " +
+		              "    </p>" +
+		              "  </div>" +
+		              "</div>";
 				$( "#sale-container" ).append( htmltoadd );
 				
 			}
@@ -646,7 +636,6 @@
 	
 	<script type="text/javascript">
 	    $(window).load(function(){
-	    	$('#search-client').focus();
 	        $('#myModal').modal('show');
 	        
 	        $( "#search-query-3" ).keyup(function() {
@@ -654,14 +643,7 @@
 	        	console.log( "value", value );
 	        	searchProducts( value );
 			});
-	        $( "#search-client" ).keyup(function() {
-	        	var value = $( "#search-client" ).val();
-	        	console.log( "value", value );
-	        	searchClients( value );
-			});
-	        
 	    });
-	    
 	    setStore();
 	</script>
   </body>

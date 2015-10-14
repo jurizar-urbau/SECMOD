@@ -134,7 +134,7 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> MOVIMIENTOS -</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Presupuesto  <i class="fa fa-angle-right"></i>  Proyecci&oacute;n</h4>
 	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="presupuestos.jsp">&nbsp;Regresar</a> </h4>
 	                  	  	  
 	                  	  	  <hr>

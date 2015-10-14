@@ -31,10 +31,11 @@ public class ProductsFiltered extends Entity {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	response.setContentType("application/json");
+    	System.out.println("looking for products and prices... ");
     	
     	String clientid = request.getParameter( "client_id");
     	ClienteBean cliente = null;
-    	PreciosMain precios = new PreciosMain();
+    	//PreciosMain precios = new PreciosMain();
     	if( !Util.isEmpty( clientid ) ) {
     		ClientesMain cm = new ClientesMain();
     		cliente = cm.get(Integer.valueOf( clientid ));
@@ -53,17 +54,25 @@ public class ProductsFiltered extends Entity {
 				jsonObject.put( "codigo", producto.getCodigo() );
 				jsonObject.put( "descripcion", producto.getDescripcion() );
 				jsonObject.put( "image_path", producto.getImage_path() );
-				jsonObject.put( "precio", producto.getPrecio() );
-				fillPrices(jsonObject, producto, cliente);
-//				jsonObject.put( "precio_1", pb.getPrecio_1() );
-//				jsonObject.put( "precio_2", pb.getPrecio_2() );
-//				jsonObject.put( "precio_3", pb.getPrecio_3() );
-//				jsonObject.put( "precio_4", pb.getPrecio_4() );
-				jsonArray.add(jsonObject);
+				jsonObject.put( "precio", "el prcio " );
+				//fillPrices(jsonObject, producto, cliente);
+				jsonObject.put( "precio_1", "el precio" );
+//				jsonObject.put( "precio_1", producto.compiled_1() );
+//				jsonObject.put( "precio_2", producto.compiled_2() );
+//				jsonObject.put( "precio_3", producto.compiled_3() );
+//				jsonObject.put( "precio_4", producto.compiled_4() );
+				printPrices( producto );
+				jsonArray.add(jsonObject); 
 			}
 		PrintWriter out = response.getWriter();
 		out.print(jsonArray);			
 			
+	}
+	private void printPrices( ProductoBean bean ){
+		System.out.println( "p1:" + bean.compiled_1() );
+		System.out.println( "p1:" + bean.compiled_2() );
+		System.out.println( "p1:" + bean.compiled_3() );
+		System.out.println( "p1:" + bean.compiled_4() );
 	}
     private void fillPrices(JSONObject jsonObject, ProductoBean producto, ClienteBean cliente){
     	double precio_1 = producto.getPrecio_1();

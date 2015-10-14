@@ -35,7 +35,7 @@ public class InventarioHelper {
 						
 			if(recheckIfTableExistResult == 0){
 				String sql = "CREATE TABLE INV"+id_bodega+" ( ID_PRODUCT NUMERIC(11) NOT NULL, ESTATUS VARCHAR(1) NOT NULL, " +
-						"AMOUNT NUMERIC(12), CONSTRAINT PK_INVID PRIMARY KEY (ID_PRODUCT,ESTATUS))";
+						"ID_ORDEN NUMERIC(11),AMOUNT NUMERIC(12), CONSTRAINT PK_INVID PRIMARY KEY (ID_PRODUCT,ESTATUS,ID_ORDEN))";
 
 				System.out.println( sql );
 				total = stmt.executeUpdate( sql )+1;

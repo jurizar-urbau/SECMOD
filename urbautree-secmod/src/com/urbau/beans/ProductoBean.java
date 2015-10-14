@@ -63,9 +63,11 @@ public class ProductoBean implements Bean {
 		this.proveedor = proveedor;
 	}
 	public double getPrecio() {
+		System.out.println( "returning precio: " + precio );
 		return precio;
 	}
 	public void setPrecio(double precio) {
+		System.out.println( "setting precio: " + precio );
 		this.precio = precio;
 	}
 	public String getImage_path() {
@@ -74,30 +76,54 @@ public class ProductoBean implements Bean {
 	public void setImage_path(String image_path) {
 		this.image_path = image_path;
 	}
-	public double getPrecio_1() {
+	
+	public double compiled_1(){
+		System.out.println( "compiled 1 precio_1: " + precio_1 );
+		if( this.precio_1 > 0 ){
+			return getPrecio_1();
+		}
+		return precio / .6;
+	}
+	public double compiled_2(){
+		if( this.precio_2 > 0 ){
+			return getPrecio_2();
+		}
+		return precio / .7;
+	}
+	public double compiled_3(){
+		if( this.precio_3 > 0 ){
+			return getPrecio_3();
+		}
+		return precio / .8;
+	}
+	public double compiled_4(){
+		if( this.precio_4 > 0 ){
+			return getPrecio_4();
+		}
 		return precio / .9;
-		//return precio_1;
+	}
+	
+	public double getPrecio_1() {
+		System.out.println( "returning precio_1: " + precio_1 );
+		return this.precio_1;
 	}
 	public void setPrecio_1(double precio_1) {
 		this.precio_1 = precio_1;
 	}
 	public double getPrecio_2() {
-		return precio / .8;
-		//return precio_2;
+		return precio_2;
 	}
 	public void setPrecio_2(double precio_2) {
 		this.precio_2 = precio_2;
 	}
 	public double getPrecio_3() {
-		return precio / .7;
-		//return precio_3;
+		return precio_3;
 	}
 	public void setPrecio_3(double precio_3) {
 		this.precio_3 = precio_3;
 	}
 	public double getPrecio_4() {
-		return precio / .6;
-		//return precio_4;
+		return precio_4;
 	}
 	public void setPrecio_4(double precio_4) {
 		this.precio_4 = precio_4;

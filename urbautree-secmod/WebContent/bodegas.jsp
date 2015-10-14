@@ -107,7 +107,7 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  
+                                  <th>Id</th>
                                   <th>Nombre</th>
                                   <th class="hidden-phone">Direcci&oacute;n</th>
                                   <th>Telefono</th>
@@ -120,6 +120,7 @@
                               	for( BodegaBean bodega : list ){
                               %>
                               <tr>
+                              	  <td><%= bodega.getId() %></td>
                                   <td><%= bodega.getNombre() %></td>
                                   <td class="hidden-phone"><%= bodega.getDireccion() %></td>
                                   <td ><%= bodega.getTelefono() %></td>

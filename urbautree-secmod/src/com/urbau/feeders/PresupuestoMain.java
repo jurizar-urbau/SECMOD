@@ -38,7 +38,7 @@ public class PresupuestoMain extends AbstractMain {
 			} else {
 				String rem_where = Util.getPresupuestoWhere( q );
 				rs = stmt.executeQuery( "SELECT "+allColumnNames+" FROM PRESUPUESTO " + rem_where + " LIMIT " + from + "," + items );
-				total_regs = Util.getTotalRegs( "ROLES", rem_where );
+				total_regs = Util.getTotalRegs( "PRESUPUESTO", rem_where );
 			}
 			while( rs.next() ){
 				PresupuestoBean bean = new PresupuestoBean();

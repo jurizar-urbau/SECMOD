@@ -1,3 +1,6 @@
+<%@page import="com.urbau.beans.PuntoDeVentaBean"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.PuntosDeVentasMain"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -53,13 +56,28 @@
 		        		}
 		        	}
 		        	session.removeAttribute( "messages" );
+		        	PuntosDeVentasMain pdvm = new PuntosDeVentasMain();
+		        	ArrayList<PuntoDeVentaBean> pdvList = pdvm.getAll();
 		        %>
 		          
 		        <div class="login-wrap">
 		        
+		        	
+		        	<select class="form-control" name="punto_de_venta">
+		        		<%
+		        			for( PuntoDeVentaBean pdv : pdvList ){
+		        		%>
+		        			<option value="<%= pdv.getId() %>"><%= pdv.getNombre() %></option>
+		        		<%
+		        		}
+		        		%>
+		        	</select>
+		        	<br>
 		            <input type="text" class="form-control" name="user" placeholder="Usuario" autofocus>
 		            <br>
 		            <input type="password" class="form-control" placeholder="Clave" name="password">
+		            
+		            
 		            <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal"> Olvidó su clave?</a>
@@ -104,8 +122,8 @@
     <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
     <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
     <script>
-        //$.backstretch("assets/img/login-wall.jpg", {speed: 500});
-        $.backstretch("assets/img/volcancitowall.jpg", {speed: 500});
+        $.backstretch("https://upload.wikimedia.org/wikipedia/commons/0/0b/Sparklers_moving_slow_shutter_speed.jpg", {speed: 500});
+        //$.backstretch("assets/img/volcancitowall.jpg", {speed: 500});
     </script>
 
 

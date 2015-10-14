@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.urbau._abstract.AbstractMain;
+import com.urbau.beans.BodegaBean;
 import com.urbau.beans.BodegaUsuarioBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
@@ -50,6 +51,35 @@ public class BodegasUsuariosMain extends AbstractMain {
 				bean.setIdBodega(rs.getInt( 2  ));				
 				bean.setIdUsuario(rs.getInt( 3  ));
 				bean.setTotal_regs( total_regs );
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
+	public ArrayList<BodegaBean> getForUser(  int user_id ){
+		
+		ArrayList<BodegaBean> list = new ArrayList<BodegaBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+											
+			
+			String sql="SELECT BU.ID_BODEGA, BO.NOMBRE FROM BODEGAS_USUARIOS BU, BODEGAS BO WHERE BU.ID_BODEGA = BO.ID AND BU.ID_USUARIO = " + user_id;
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				BodegaBean bean = new BodegaBean();
+				bean.setId( rs.getInt( 1 ));
+				bean.setNombre( rs.getString( 2 ));
 				list.add( bean );
 			}
 		} catch( Exception e ){

@@ -12,7 +12,21 @@ public class UsuarioBean implements Bean {
 	private boolean estado;
 	private String email;
 	private String telefono; 
+	private int punto_de_venta;
+	private String nombre_punto_venta;
 	
+	public String getNombre_punto_venta() {
+		return nombre_punto_venta;
+	}
+	public void setNombre_punto_venta(String nombre_punto_venta) {
+		this.nombre_punto_venta = nombre_punto_venta;
+	}
+	public int getPunto_de_venta() {
+		return punto_de_venta;
+	}
+	public void setPunto_de_venta(int punto_de_venta) {
+		this.punto_de_venta = punto_de_venta;
+	}
 	private int total_regs;
 	
 	public int getTotal_regs() {

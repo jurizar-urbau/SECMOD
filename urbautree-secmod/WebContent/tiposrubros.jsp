@@ -106,7 +106,9 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th class="hidden-phone">Rubro</th>                                                                    
+                                  <th>Rubro</th>
+                                  <th>Tipo Rubro</th>
+                                  <th>Clasificacion</th>                                                                    
                                   <th></th>
                               </tr>
                               </thead>
@@ -116,6 +118,8 @@
                               %>
                               <tr>
 							  	<td><%= bean.getDescripcion() %></td>
+							  	<td><%= bean.getTipo() %></td>
+							  	<td><%= bean.getTipo_clasificacion() %></td>
 								<td>
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_TIPOSRUBROS, Constants.OPTIONS_MODIFY)){ %>
 										<button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>');"><i class="fa fa-pencil"></i></button>

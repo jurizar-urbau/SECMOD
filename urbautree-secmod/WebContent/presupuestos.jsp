@@ -138,8 +138,8 @@
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTO, Constants.OPTIONS_VIEW)){ %>
 										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%}%>
-									<button class="btn btn-info btn-xs" onclick="proyeccion('<%= bean.getId() %>');"><i class="fa fa-file-o"></i></button>
-									<button class="btn btn-info btn-xs" onclick="ejecucion('<%= bean.getId() %>');"><i class="fa fa-file-o"></i></button>
+									<button class="btn btn-success btn-xs" onclick="proyeccion('<%= bean.getId() %>');"><i class="fa fa-leaf"></i></button>
+									<button class="btn btn-info btn-xs" onclick="ejecucion('<%= bean.getId() %>');"><i class="fa fa-stack-overflow"></i></button>
 								</td>
 							   </tr>
                               <% } %>

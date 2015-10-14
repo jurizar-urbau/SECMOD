@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.urbau.beans.PuntoDeVentaBean;
 import com.urbau.beans.UsuarioBean;
+import com.urbau.feeders.PuntosDeVentasMain;
 import com.urbau.feeders.UsuariosMain;
 
 /**
@@ -32,12 +34,18 @@ public class VerifyUser extends HttpServlet {
 		System.out.println("path:" + request.getParameter("path") );
 		String user = request.getParameter( "user" );
 		String pass = request.getParameter( "password" );
+		String punto_de_venta = request.getParameter( "punto_de_venta" );
 		System.out.println("loggin in [" + user + "]");
 		UsuariosMain usuarios = new UsuariosMain();
-		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass);
+		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass); //TODO validate punto de venta
 		if( usuario != null ){
 			System.out.println("user exists.");
 			usuario.setLogged( true );
+			
+			PuntoDeVentaBean pv = new PuntosDeVentasMain().get( Integer.valueOf( punto_de_venta ) );
+			usuario.setPunto_de_venta( pv.getId() );
+			usuario.setNombre_punto_venta( pv.getNombre() );
+			
 			request.getSession().setAttribute( "loggedUser",  usuario );
 			response.sendRedirect( request.getParameter( "path" ));
 		} else {

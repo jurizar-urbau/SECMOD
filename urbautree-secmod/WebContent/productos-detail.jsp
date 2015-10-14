@@ -129,28 +129,28 @@
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 1</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_1" id="precio_1" value="<%= bean.getPrecio_1() %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_1" id="precio_1" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_1()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 2</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_2" id="precio_2" value="<%= bean.getPrecio_2() %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_2" id="precio_2" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_2()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 3</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_3" id="precio_3" value="<%= bean.getPrecio_3() %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_3" id="precio_3" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_3()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 4</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_4" id="precio_4" value="<%= bean.getPrecio_4() %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_4" id="precio_4" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_4()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>                          

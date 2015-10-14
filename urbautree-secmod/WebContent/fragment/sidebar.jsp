@@ -1,4 +1,5 @@
 
+<%@page import="com.urbau.security.Authorization"%>
 <ul class="sidebar-menu" id="nav-accordion">
               
                   <!--  p class="centered">
@@ -22,33 +23,75 @@
                           <span>Operaciones</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="bodegas.jsp">Bodegas</a></li>
-                          <li><a  href="productos.jsp">Productos</a></li>
-                          <li><a  href="bancos.jsp">Bancos</a></li>
-                          <li><a  href="tipo_movimiento.jsp">Tipos de Movimientos</a></li>
-                          <li><a  href="monedas.jsp">Monedas</a></li>
-                          <li><a  href="paises.jsp">Paises</a></li>
-                          <li><a  href="proveedores.jsp">Proveedores</a></li>
                           <li><a  href="venta.jsp">VENTAS</a></li>
+                          <li><a  href="ordenes-caja.jsp">CAJA</a></li>
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
-                          <li><a  href="tiposrubros.jsp">Rubros</a></li>
-                          <li><a  href="presupuestos.jsp">Presupuesto</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
                           <li><a  href="ingreso_productos.jsp?mode=add&fromInventario=false">Ingreso De Productos</a></li>
                       </ul>
                   </li> 
+                  <li class="sub-menu" id="menu-presupuesto">
+                  	<a href="javascript:;" >
+                          <i class="fa fa-money"></i>
+                          <span>Presupuesto</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="presupuestos.jsp">Presupuesto</a></li>
+                          <li><a  href="tiposrubros.jsp">Rubros</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu" id="menu-configuracion">
+                  	<a href="javascript:;" >
+                          <i class="fa fa-cogs"></i>
+                          <span>Configuraci&oacute;n</span>
+                      </a>
+                      <ul class="sub">
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
+                          <li><a  href="bodegas.jsp">Bodegas</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProductosMain")) { %>
+                          <li><a  href="productos.jsp">Productos</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BancosMain")) { %>
+                          <li><a  href="bancos.jsp">Bancos</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.TiposDeMovimientosMain")) { %>
+                          <li><a  href="tipo_movimiento.jsp">Tipos de Movimientos</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.MonedasMain")) { %>
+                          <li><a  href="monedas.jsp">Monedas</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.PaisesMain")) { %>
+                          <li><a  href="paises.jsp">Paises</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProveedoresMain")) { %>
+                          <li><a  href="proveedores.jsp">Proveedores</a></li>
+                      <% } %>
+                          
+                      </ul>
+                  </li>
                   <li class="sub-menu" id="menu-seguridad">
                       <a href="javascript:;" >
-                          <i class="fa fa-cogs"></i>
+                          <i class="fa fa-lock"></i>
                           <span>Seguridad</span>
                       </a>
                       <ul class="sub">
+                      	<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.UsuariosMain")) { %>
                       	  <li><a  href="users.jsp">Usuarios</a></li>
+                      	<% } %>
+                      	<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.RolesMain")) { %>
                           <li><a  href="rols.jsp">Roles</a></li>
+                        <% } %>
+                        <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProgramsMain")) { %>
                           <li><a  href="programs.jsp">Programas</a></li>
+                        <% } %>
+                        <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.OptionsMain")) { %>
                           <li><a  href="options.jsp">Opciones</a></li>
+                        <% } %>
+                        <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.OptionsByProgramMain")) { %>
                           <li><a  href="optionsprogram.jsp">Opciones/Programa *</a></li>
+                        <% } %>
                       </ul>
                   </li>
                   
