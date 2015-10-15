@@ -39,6 +39,7 @@
                       <ul class="sub">
                           <li><a  href="presupuestos.jsp">Presupuesto</a></li>
                           <li><a  href="tiposrubros.jsp">Rubros</a></li>
+                          <li><a  href="clasificacion_rubros.jsp">Clasificacion Rubros</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu" id="menu-configuracion">

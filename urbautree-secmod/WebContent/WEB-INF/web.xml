@@ -173,7 +173,10 @@
     <servlet-name>BodegasUsuarios</servlet-name>
     <servlet-class>com.urbau.servlet.entity.BodegasUsuarios</servlet-class>
   </servlet>  
-
+  <servlet>
+    <servlet-name>ClasificacionRubros</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ClasificacionRubros</servlet-class>
+  </servlet>  
 
 
   <servlet-mapping>
@@ -328,6 +331,11 @@
     <servlet-name>PresupuestosEjecuciones</servlet-name>
     <url-pattern>/bin/PresupuestosEjecuciones</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ClasificacionRubros</servlet-name>
+    <url-pattern>/bin/ClasificacionRubros</url-pattern>
+  </servlet-mapping>
+  
 
 
   <context-param>
