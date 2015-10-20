@@ -31,7 +31,7 @@ public class RenderImage extends HttpServlet {
 		
 		String imagePath = request.getParameter("imagePath");
 		
-		System.out.println("Render Image imagePath:: "+ imagePath);		
+		System.out.println("Rendering the  image path: "+ imagePath);		
 		
 		if(null != imagePath && !imagePath.isEmpty()){
 			
@@ -42,7 +42,7 @@ public class RenderImage extends HttpServlet {
 				
 			}catch(FileNotFoundException e){
 				
-				System.out.println("Error in File Inpur Stream for a image :: "+ e);
+				System.out.println("Error in File Inpur Stream for a image : "+ e.getMessage());
 				FileInputStream is = new FileInputStream(request.getSession().getServletContext().getRealPath("/assets/img/placeholder_default.png"));
 				bytesData = IOUtils.toByteArray(is);
 			}

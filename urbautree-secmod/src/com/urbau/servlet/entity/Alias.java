@@ -17,6 +17,7 @@ import static com.urbau.misc.Constants.REMOVE;
 import static com.urbau.misc.Constants.MODE_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
 import static com.urbau.misc.Constants.NAME_PARAMETER;
+import static com.urbau.misc.Constants.ID_PRODUCTO_PARAMETER;
 
 
 @WebServlet("/Alias")
@@ -31,7 +32,7 @@ public class Alias extends Entity {
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
-			String idproducto = request.getParameter( "idproducto" );
+			String idproducto = request.getParameter( ID_PRODUCTO_PARAMETER );
 			String message = "";					
 										
 			if( idParameter != null){

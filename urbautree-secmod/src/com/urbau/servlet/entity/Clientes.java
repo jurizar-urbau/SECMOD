@@ -11,40 +11,55 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.ClienteBean;
 import com.urbau.feeders.ClientesMain;
 
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.MODAL_PARAMETER;
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.TRUE_STRING;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.NIT_PARAMETER;
+import static com.urbau.misc.Constants.NOMBRES_PARAMETER;
+import static com.urbau.misc.Constants.APELLIDOS_PARAMETER;
+import static com.urbau.misc.Constants.DIRRECCION_PARAMETER;
+import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
+import static com.urbau.misc.Constants.CORREO_PARAMETER;
+import static com.urbau.misc.Constants.TIPO_DE_CLIENTE_PARAMETER;
+
+
+
+
 @WebServlet("/Clientes")
 public class Clientes extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{			
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			System.out.println( "mode: " + mode );
-			
-			boolean isModal = request.getParameter( "modal" ) != null ? "true".equals( request.getParameter( "modal" ) ) : false; 
+			String mode = request.getParameter( MODE_PARAMETER );
+						
+			boolean isModal = request.getParameter( MODAL_PARAMETER ) != null ? TRUE_STRING.equals( request.getParameter( MODAL_PARAMETER ) ) : false; 
 			
 			String message = "";
-			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
+			if( request.getParameter( ID_PARAMETER ) != null || ADD.equals( request.getParameter( MODE_PARAMETER ))  ){
 				ClienteBean bean = new ClienteBean();
 					
-					bean.setNit( request.getParameter("nit") );					
-					bean.setNombres( request.getParameter("nombres") );
-					bean.setApellidos( request.getParameter( "apellidos" ));
-					bean.setDireccion( request.getParameter("direccion") );
-					bean.setTelefono( request.getParameter( "telefono" ));					
-					bean.setEmail( request.getParameter( "correo" ));
-					bean.setTipoDeCliente(request.getParameter( "tipodecliente" ));
+					bean.setNit( request.getParameter(NIT_PARAMETER) );					
+					bean.setNombres( request.getParameter(NOMBRES_PARAMETER) );
+					bean.setApellidos( request.getParameter( APELLIDOS_PARAMETER ));
+					bean.setDireccion( request.getParameter(DIRRECCION_PARAMETER) );
+					bean.setTelefono( request.getParameter( TELEFONO_PARAMETER ));					
+					bean.setEmail( request.getParameter( CORREO_PARAMETER ));
+					bean.setTipoDeCliente(request.getParameter( TIPO_DE_CLIENTE_PARAMETER ));
 																																													
-					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						bean.setId( Integer.parseInt( request.getParameter( "id" )));
+					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
+						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 					}
 					
 					ClientesMain main = new ClientesMain();
 					
-					if( "add".equals( mode )){
+					if( ADD.equals( mode )){
 						if ( main.add( bean ) ){
 							if( isModal ){
 								ClienteBean beanb = main.getByNit(bean.getNit());
@@ -59,13 +74,13 @@ public class Clientes extends Entity {
 						} else {
 							showMessage( "No se pudo crear el registro" , response );
 						}
-					} else if( "edit".equals( mode )){
+					} else if( EDIT.equals( mode )){
 						if ( main.mod( bean ) ){
 							message = "Registro modificado con exito.";
 						} else {
 							showMessage( "No se pudo modificar el registro", response  );
 						}
-					} else if( "remove".equals( mode )){
+					} else if( REMOVE.equals( mode )){
 						if ( main.del( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {

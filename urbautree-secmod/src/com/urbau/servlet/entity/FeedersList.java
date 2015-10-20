@@ -14,6 +14,8 @@ import com.urbau._abstract.entity.Entity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import static com.urbau.misc.Constants.PACKAGE_NAME_PARAMETER;
+
 @WebServlet("/FeedersList")
 public class FeedersList extends Entity {
 	
@@ -28,7 +30,7 @@ public class FeedersList extends Entity {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	response.setContentType("application/json");
     	
-		String packageName = request.getParameter("packageName");	
+		String packageName = request.getParameter(PACKAGE_NAME_PARAMETER);	
 		JSONArray jsonArray = new JSONArray();
 		
 		if(null != packageName){
@@ -44,7 +46,7 @@ public class FeedersList extends Entity {
 	        final String[] files = scannedDir.list();
 	        for (final String file : files) {
 	        	
-	        	 if (file.endsWith(".class")) {	        		 
+	        	 if (file.endsWith(CLASS_SUFFIX)) {	        		 
 	        		 String name = packageName + '.'+ file.substring(0, file.length() - 6);
 	        		 
 	        		 JSONObject jsonObject = new JSONObject();				

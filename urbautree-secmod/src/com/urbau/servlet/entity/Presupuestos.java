@@ -19,8 +19,6 @@ import static com.urbau.misc.Constants.ID_PARAMETER;
 import static com.urbau.misc.Constants.ANIO_PARAMETER;
 import static com.urbau.misc.Constants.MES_PARAMETER;
 
-
-
 @WebServlet("/Presupuestos")
 public class Presupuestos extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -35,12 +33,9 @@ public class Presupuestos extends Entity {
 			String idParameter = request.getParameter( ID_PARAMETER );
 			String anio = request.getParameter(ANIO_PARAMETER);
 			String mes = request.getParameter(MES_PARAMETER);
-			String message = "";					
 			
-			System.out.println("Id: " + idParameter);
-			System.out.println("anio" + anio);
-			System.out.println("mes: " + mes);
-										
+			String message = "";					
+								
 			if( idParameter != null){
 				PresupuestoBean bean = new PresupuestoBean();
 								

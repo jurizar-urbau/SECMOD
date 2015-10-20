@@ -18,7 +18,9 @@ import static com.urbau.misc.Constants.MODE_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
 import static com.urbau.misc.Constants.ANIO_PARAMETER;
 import static com.urbau.misc.Constants.MES_PARAMETER;
-
+import static com.urbau.misc.Constants.PRESUPUESTO_PARAMETER;
+import static com.urbau.misc.Constants.RUBRO_PARAMETER;
+import static com.urbau.misc.Constants.MONTO_PARAMETER;
 
 @WebServlet("/PresupuestosProyecciones")
 public class PresupuestosProyecciones extends Entity {
@@ -32,23 +34,14 @@ public class PresupuestosProyecciones extends Entity {
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
-			String idPresupuestoParameter = request.getParameter( "presupuesto" );
+			String idPresupuestoParameter = request.getParameter( PRESUPUESTO_PARAMETER );
 			String anio = request.getParameter(ANIO_PARAMETER);
 			String mes = request.getParameter(MES_PARAMETER);
-			String rubroParameter = request.getParameter("rubro");
-			String montoParameter = request.getParameter("monto");
+			String rubroParameter = request.getParameter( RUBRO_PARAMETER);
+			String montoParameter = request.getParameter( MONTO_PARAMETER );
 			
 			String message = "";					
-			
-			System.out.println("Id: " + idParameter);
-			System.out.println("Idpresupuesto: " + idPresupuestoParameter);
-			System.out.println("anio:" + anio);
-			System.out.println("mes: " + mes);
-			System.out.println("rubro: " + rubroParameter);
-			System.out.println("monto: " + montoParameter);
-										
-			
-			
+						
 			PresupuestoProyeccionBean bean = new PresupuestoProyeccionBean();
 							
 			if(null != idParameter){
@@ -100,8 +93,7 @@ public class PresupuestosProyecciones extends Entity {
 															
 				response.getOutputStream().write( message.getBytes() );
 				response.getOutputStream().flush();
-				response.getOutputStream().close();
-				
+				response.getOutputStream().close();				
 			}			
 			
 		} catch( Exception exception ){

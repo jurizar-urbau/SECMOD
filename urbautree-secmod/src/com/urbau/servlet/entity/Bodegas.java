@@ -11,55 +11,60 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.BodegaBean;
 import com.urbau.feeders.BodegasMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.NOMBRE_PARAMETER;
+import static com.urbau.misc.Constants.DIRRECCION_PARAMETER;
+import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
+import static com.urbau.misc.Constants.PRINCIPAL_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+
 @WebServlet("/Bodegas")
 public class Bodegas extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+						
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			System.out.println( "mode> " + mode );
-			
-			
+			String mode = request.getParameter( MODE_PARAMETER );			
+						
 			String message = "";
-			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
-					BodegaBean rm = new BodegaBean();
+			if( request.getParameter( ID_PARAMETER ) != null || ADD.equals( request.getParameter( MODE_PARAMETER ))  ){
+					BodegaBean bean = new BodegaBean();
 					
-					rm.setNombre( request.getParameter("nombre") );
-					rm.setDireccion( request.getParameter("direccion") );
-					rm.setTelefono( request.getParameter( "telefono" ));					
-					
-					System.out.println("Parameter Pricipal> " + request.getParameter( "principal" ));	
-					
-					if(null == request.getParameter( "principal" )){
-						rm.setEstado(false);
+					bean.setNombre( request.getParameter(NOMBRE_PARAMETER) );
+					bean.setDireccion( request.getParameter(DIRRECCION_PARAMETER) );
+					bean.setTelefono( request.getParameter( TELEFONO_PARAMETER ));					
+															
+					if(null == request.getParameter( PRINCIPAL_PARAMETER )){
+						bean.setEstado(false);
 					}else{
-						rm.setEstado(true);
+						bean.setEstado(true);
 					}
 					
-					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						rm.setId( Integer.parseInt( request.getParameter( "id" )));
+					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
+						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 					}
-					BodegasMain rmain = new BodegasMain();
+					BodegasMain beanain = new BodegasMain();
 					
-					if( "add".equals( mode )){
-						if ( rmain.addBodega( rm ) ){
+					if( ADD.equals( mode )){
+						if ( beanain.addBodega( bean ) ){
 							message = "Registro creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el registro" , response );
 						}
-					} else if( "edit".equals( mode )){
-						if ( rmain.modBodega( rm ) ){
+					} else if( EDIT.equals( mode )){
+						if ( beanain.modBodega( bean ) ){
 							message = "Registro modificada con exito.";
 						} else {
 							showMessage( "No se pudo modificar el registro", response  );
 						}
-					} else if( "remove".equals( mode )){
-						if ( rmain.delBodega( rm ) ){
+					} else if( REMOVE.equals( mode )){
+						if ( beanain.delBodega( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {
 							showMessage( "No se pudo eliminar el registro" , response );

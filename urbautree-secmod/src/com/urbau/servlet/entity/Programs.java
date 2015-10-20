@@ -79,12 +79,10 @@ public class Programs extends Entity {
 						showMessage( "No se pudo eliminar el Registro" , response );
 					}
 				}
-											
-				
+															
 				response.getOutputStream().write( message.getBytes() );
 				response.getOutputStream().flush();
-				response.getOutputStream().close();
-				
+				response.getOutputStream().close();				
 			}
 			
 		} catch( Exception exception ){

@@ -15,6 +15,8 @@ import com.urbau.feeders.OptionsByProgramMain;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import static com.urbau.misc.Constants.ID_ROL_PARAMETER;
+
 @WebServlet("/OptionsByProgramsList")
 public class OptionsByProgramsList extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -23,7 +25,7 @@ public class OptionsByProgramsList extends Entity {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	response.setContentType("application/json");
     	
-		String rolId = request.getParameter("idRol");	
+		String rolId = request.getParameter(ID_ROL_PARAMETER);	
 		JSONArray jsonArray = new JSONArray();
 		
 		if(null != rolId){
@@ -43,11 +45,9 @@ public class OptionsByProgramsList extends Entity {
 				jsonArray.add(jsonObject);			
 			}
 		}
-		
-				
+					
 		PrintWriter out = response.getWriter();
-		out.print(jsonArray);			
-			
+		out.print(jsonArray);				
 	}
 	
 }

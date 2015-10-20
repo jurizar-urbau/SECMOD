@@ -11,34 +11,33 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.InvetarioBean;
 import com.urbau.feeders.InventariosMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.BODEGA_PARAMETER;
+import static com.urbau.misc.Constants.PRODUCTO_PARAMETER;
+import static com.urbau.misc.Constants.ESTATUS_PARAMETER;
+import static com.urbau.misc.Constants.CANTIDAD_PARAMETER;
+import static com.urbau.misc.Constants.ESTATUS_REMOVE_PARAMETER;
+
 @WebServlet("/Inventarios")
 public class Inventarios extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println("\n\n\n INVENTARIO ***** " );
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{				
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
-			String mode = request.getParameter( "mode" );						
-			String id = request.getParameter( "id" );
-			String idBodega = request.getParameter( "bodega" );
-			String producto = request.getParameter( "producto" );
-			String estatus = request.getParameter( "estatus" );
-			String estatusremove = request.getParameter( "estatusremove" );
-			String cantidad = request.getParameter( "cantidad" );
-			
-			
-			System.out.println("Mode: " +  mode);
-			System.out.println("Id: " + id);
-			System.out.println("Bodega: " + idBodega);
-			System.out.println("producto: " + producto);
-			System.out.println("Estatus: " + estatus);
-			System.out.println("estatusremove: " + estatusremove);
-			System.out.println("cantidad: " + cantidad);
+			String mode = request.getParameter( MODE_PARAMETER );						
+			String id = request.getParameter( ID_PARAMETER );
+			String idBodega = request.getParameter( BODEGA_PARAMETER );
+			String producto = request.getParameter( PRODUCTO_PARAMETER );
+			String estatus = request.getParameter( ESTATUS_PARAMETER );
+			String estatusremove = request.getParameter( ESTATUS_REMOVE_PARAMETER );
+			String cantidad = request.getParameter( CANTIDAD_PARAMETER );					
 			
 			String message = "";
 			
@@ -48,7 +47,7 @@ public class Inventarios extends Entity {
 				bean.setIdBodega(Integer.parseInt(idBodega));
 			}
 			
-			if("add".equals(mode)){
+			if(ADD.equals(mode)){
 				if( null != producto){
 					bean.setId_product(Integer.parseInt(producto));
 				}
@@ -59,7 +58,7 @@ public class Inventarios extends Entity {
 			}
 			
 			
-			if("remove".equals(mode)){				
+			if(REMOVE.equals(mode)){				
 				if( null != estatusremove){
 					bean.setEstatus(estatusremove);
 				}
@@ -75,11 +74,10 @@ public class Inventarios extends Entity {
 			
 			
 			if( bean.getIdBodega() > 0  && null != bean.getEstatus()){
-				
-																							
+																								
 					InventariosMain main = new InventariosMain();
 					
-					if( "add".equals( mode )){
+					if( ADD.equals( mode )){
 						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
 						}else{
@@ -89,7 +87,7 @@ public class Inventarios extends Entity {
 								showMessage( "No se pudo crear el registro" , response );
 							}
 						}
-					} else if( "edit".equals( mode )){						
+					} else if( EDIT.equals( mode )){						
 						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
 						}else{
@@ -99,7 +97,7 @@ public class Inventarios extends Entity {
 								showMessage( "No se pudo modificar el registro" , response );
 							}
 						}																		
-					} else if( "remove".equals( mode )){
+					} else if( REMOVE.equals( mode )){
 						if ( main.del( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {

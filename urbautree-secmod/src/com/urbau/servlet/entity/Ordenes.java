@@ -1,7 +1,6 @@
 package com.urbau.servlet.entity;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -15,17 +14,21 @@ import com.urbau.beans.InvetarioBean;
 import com.urbau.beans.OrdenBean;
 import com.urbau.beans.OrdenDetailBean;
 import com.urbau.beans.UsuarioBean;
-import com.urbau.beans._interface.Bean;
 import com.urbau.feeders.InventariosMain;
 import com.urbau.feeders.OrdenesDetalleMain;
 import com.urbau.feeders.OrdenesMain;
 
+import static com.urbau.misc.Constants.ESTADO_INGRESADO;
+import static com.urbau.misc.Constants.CLIENT_ID_PARAMETER;
+import static com.urbau.misc.Constants.BODEGA_ID_PARAMETER;
+import static com.urbau.misc.Constants.PRODUCT_ID_PARAMETER;
+import static com.urbau.misc.Constants.AMOUNT_PARAMETER;
+import static com.urbau.misc.Constants.PRICE_PARAMETER;
+
 @WebServlet("/bin/Ordenes")
 public class Ordenes extends Entity {
 	private static final long serialVersionUID = 1L;
-	public static final String ESTADO_INGRESADO = "I";
-	public static final String ESTADO_CANCELADO = "C";
-	public static final String ESTADO_DESPACHADO = "D";
+
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
@@ -34,11 +37,11 @@ public class Ordenes extends Entity {
 			UsuarioBean loggedUser = getLoggedUser( session );
 			validateRequest( session );
 			
-			String clientidStr = request.getParameter( "clientid" );
-			String bodegaidStr = request.getParameter( "bodegaid" );
-			String productidStr[] = request.getParameterValues( "productid" );
-			String amountStr[] = request.getParameterValues( "amount" );
-			String priceStr[] = request.getParameterValues( "price" );
+			String clientidStr = request.getParameter( CLIENT_ID_PARAMETER );
+			String bodegaidStr = request.getParameter( BODEGA_ID_PARAMETER );
+			String productidStr[] = request.getParameterValues( PRODUCT_ID_PARAMETER  );
+			String amountStr[] = request.getParameterValues( AMOUNT_PARAMETER );
+			String priceStr[] = request.getParameterValues( PRICE_PARAMETER );
 			
 			String message = validateParameters( clientidStr, bodegaidStr, productidStr, amountStr, priceStr );
 			
@@ -69,10 +72,10 @@ public class Ordenes extends Entity {
 			ordenBean.setMonto(monto);
 			
 			OrdenesMain om = new  OrdenesMain();
-			boolean added = om.add( ordenBean );
+			//boolean added = om.add( ordenBean );
 			ordenBean  =  om.get( ordenBean.getUid() );
 			
-			ArrayList<OrdenDetailBean> details = new ArrayList<>();
+			//ArrayList<OrdenDetailBean> details = new ArrayList<>();
 			
 			OrdenesDetalleMain odm = new OrdenesDetalleMain();
 			InventariosMain im = new InventariosMain();
@@ -114,10 +117,7 @@ public class Ordenes extends Entity {
 					
 				} else {
 					System.out.println( "No se pudo agregar detalle..." );
-				}
-				
-				
-				
+				}					
 			}
 			
 			response.getOutputStream().write( message.getBytes() );

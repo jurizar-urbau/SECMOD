@@ -18,76 +18,76 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.ProductoBean;
+import com.urbau.beans.ProductoHelperBean;
+
 import com.urbau.feeders.ProductosMain;
+
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.DESCRIPCION_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_PARAMETER;
+import static com.urbau.misc.Constants.PROVEEDOR_PARAMETER;
+import static com.urbau.misc.Constants.COEFICIENTE_UNIDAD_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_1_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_2_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_3_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_4_PARAMETER;
+import static com.urbau.misc.Constants.IMAGE_PATH_PARAMETER;
+import static com.urbau.misc.Constants.STOCK_MINIMO_PARAMETER;
+import static com.urbau.misc.Constants.CODIGO_PARAMETER;
 
 @WebServlet("/Productos")
 public class Productos extends Entity {
+	
 	private static final long serialVersionUID = 1L;
-	private String mode="";
-	private String id = "";
-	private String codigo = "";
-	private String descripcion = "";
-	private String coeficiente_unidad ="";
-	private String proveedor = "";
-	private String precio ="";
-	private String precio_1 ="";
-	private String precio_2 ="";
-	private String precio_3 ="";
-	private String precio_4 ="";
-	
-	private String image_path = "";
-	private String image_path_modified = "";
-	private String stock_minimo = "";
-	
-       	
+	       
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	    	
     	//get all parameters from form
-    	getFormParameters(request);										
+    	ProductoHelperBean productoHelperBean = getFormParameters(request);										
     	
-		try{
-						
+		try{					
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			String message = "";
-			
-			System.out.println( "mode: " + this.mode );			
-						
-			if( !this.mode.isEmpty() || !this.mode.equals("cancel")  ){
+													
+			if( null != productoHelperBean && (!productoHelperBean.getMode().isEmpty() || !productoHelperBean.getMode().equals("cancel"))  ){
 				
-				ProductoBean bean = new ProductoBean();				
-				bean.setCodigo( this.codigo );
-				bean.setDescripcion( this.descripcion );
-				bean.setCoeficiente_unidad( Integer.valueOf( this.coeficiente_unidad ));
-				bean.setProveedor(Integer.valueOf( this.proveedor ));
-				bean.setPrecio( Double.valueOf( this.precio  ));
-				bean.setPrecio_1(Double.valueOf( this.precio_1  ) );
-				bean.setPrecio_2(Double.valueOf( this.precio_2  ) );
-				bean.setPrecio_3(Double.valueOf( this.precio_3  ) );
-				bean.setPrecio_4(Double.valueOf( this.precio_4  ) );
-				
-				bean.setStock_minimo(Integer.valueOf( 0 ));
-				bean.setImage_path( this.image_path );
+				ProductoBean bean = new ProductoBean();
 								
-											
-				if( !"add".equals( this.mode ) ){
-					bean.setId( Integer.parseInt( this.id));
+				bean.setCodigo( productoHelperBean.getCodigo() );
+				bean.setDescripcion( productoHelperBean.getDescripcion());
+				bean.setCoeficiente_unidad( Integer.valueOf( productoHelperBean.getCoeficiente_unidad() ));
+				bean.setProveedor(Integer.valueOf( productoHelperBean.getProveedor() ));
+				bean.setPrecio( Double.valueOf( productoHelperBean.getPrecio()  ));
+				bean.setPrecio_1(Double.valueOf( productoHelperBean.getPrecio_1()  ) );
+				bean.setPrecio_2(Double.valueOf( productoHelperBean.getPrecio_2()  ) );
+				bean.setPrecio_3(Double.valueOf( productoHelperBean.getPrecio_3()  ) );
+				bean.setPrecio_4(Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
+				bean.setStock_minimo(Integer.valueOf( 0 ));
+				bean.setImage_path( productoHelperBean.getImage_path() );
+																			
+				if( !ADD.equals( productoHelperBean.getMode()) ){
+					bean.setId( Integer.parseInt( productoHelperBean.getIdString()));
 				}
 				ProductosMain rmain = new ProductosMain();
 				
-				if( "add".equals( this.mode )){
+				if( ADD.equals( productoHelperBean.getMode() )){
 					if ( rmain.add( bean ) ){
 						message = "Registro creado con exito.";
 					} else {
 						showMessage( "No se pudo crear el registro " , response );
 					}
-				} else if( "edit".equals( this.mode )){
+				} else if( EDIT.equals( productoHelperBean.getMode() )){
 					if ( rmain.mod( bean ) ){
 						message = "Registro modificado con exito.";
 					} else {
 						showMessage( "No se pudo modificar el registro ", response  );
 					}
-				} else if( "remove".equals( this.mode )){
+				} else if( REMOVE.equals( productoHelperBean.getMode() )){
 					if ( rmain.del( bean ) ){
 						message = "Registro eliminado con exito.";
 					} else {
@@ -109,9 +109,10 @@ public class Productos extends Entity {
 	}
     
     
-    public String getFormParameters(HttpServletRequest request){
+    @SuppressWarnings("rawtypes")
+	public ProductoHelperBean getFormParameters(HttpServletRequest request){
     	
-		String imagePath="";		
+    	ProductoHelperBean phBean = new ProductoHelperBean();			
 		File file ;
 		
 		int maxFileSize = 35000 * 1024;
@@ -158,52 +159,71 @@ public class Productos extends Entity {
 					            file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
 				            }				            			            				            	
 				            fi.write( file ) ;
-				            
-				            this.image_path= file.toString();				            
-				            
+				            				            
+				            phBean.setImage_path(file.toString());				            
 						}			           
-					}else{										
-						if(fieldName.equals("mode")){
-							this.mode = fi.getString();
-						}else if(fieldName.equals("id")){
-							this.id = fi.getString();
-						}else if(fieldName.equals("codigo")){
-							this.codigo = fi.getString();
-						}else if(fieldName.equals("descripcion")){
-							this.descripcion = fi.getString();
-						}else if(fieldName.equals("coeficiente_unidad")){
-							this.coeficiente_unidad = fi.getString();
-						}else if(fieldName.equals("proveedor")){
-							this.proveedor = fi.getString();
-						}else if(fieldName.equals("precio")){
-							this.precio= fi.getString();
-						}else if(fieldName.equals("precio_1")){
-							this.precio_1= fi.getString();
-						}else if(fieldName.equals("precio_2")){
-							this.precio_2= fi.getString();
-						}else if(fieldName.equals("precio_3")){
-							this.precio_3= fi.getString();
-						}else if(fieldName.equals("precio_4")){
-							this.precio_4= fi.getString();
-						}else if(fieldName.equals("imagePath")){
-							this.image_path_modified= fi.getString();
-						}else if(fieldName.equals("stock_minimo")){
-							this.stock_minimo= fi.getString();
+					}else{									
+						if(fieldName.equals( MODE_PARAMETER )){
+							phBean.setMode(fi.getString());							
+						}else if(fieldName.equals( ID_PARAMETER )){							
+							phBean.setIdString(fi.getString());
+						}else if(fieldName.equals(CODIGO_PARAMETER)){
+							phBean.setCodigo(fi.getString());							
+						}else if(fieldName.equals(DESCRIPCION_PARAMETER)){
+							phBean.setDescripcion(fi.getString());							
+						}else if(fieldName.equals(COEFICIENTE_UNIDAD_PARAMETER)){
+							phBean.setCoeficiente_unidad(fi.getString());							
+						}else if(fieldName.equals(PROVEEDOR_PARAMETER)){							
+							phBean.setProveedor(fi.getString());
+						}else if(fieldName.equals(PRECIO_PARAMETER)){
+							if(fi.getString().isEmpty()){
+								phBean.setPrecio("0.0");
+							}else{
+								phBean.setPrecio(fi.getString());
+							}							
+						}else if(fieldName.equals(PRECIO_1_PARAMETER)){
+							if(fi.getString().isEmpty()){
+								phBean.setPrecio_1("0.0");
+							}else{
+								phBean.setPrecio_1(fi.getString());
+							}							
+						}else if(fieldName.equals(PRECIO_2_PARAMETER)){
+							if(fi.getString().isEmpty()){
+								phBean.setPrecio_2("0.0");
+							}else{
+								phBean.setPrecio_2(fi.getString());
+							}							
+						}else if(fieldName.equals(PRECIO_3_PARAMETER)){
+							if(fi.getString().isEmpty()){
+								phBean.setPrecio_3("0.0");
+							}else{
+								phBean.setPrecio_3(fi.getString());
+							}							
+						}else if(fieldName.equals(PRECIO_4_PARAMETER)){
+							if(fi.getString().isEmpty()){
+								phBean.setPrecio_4("0.0");
+							}else{
+								phBean.setPrecio_4(fi.getString());
+							}							
+						}else if(fieldName.equals(IMAGE_PATH_PARAMETER)){							
+							phBean.setImage_path_modified(fi.getString());							
+						}else if(fieldName.equals(STOCK_MINIMO_PARAMETER)){
+							phBean.setStock_minimo(fi.getString());
 						}															
 					}
 				}  	         
 	      }catch(Exception ex) {
 	    	  	    	  
-	    	  if(this.mode.equals("edit")){
-	    		  this.image_path= this.image_path_modified;
-	    	  }else{
-	    		  this.image_path= request.getSession().getServletContext().getRealPath("/assets/img/placeholder_default.png");
+	    	  if(phBean.getMode().equals(EDIT)){
+	    		  phBean.setImage_path(phBean.getImage_path_modified());	    		  
+	    	  }else{	    		  
+	    		  phBean.setImage_path(request.getSession().getServletContext().getRealPath("/assets/img/placeholder_default.png"));
 	    	  }
 	    	  
 	    	  System.out.println("ERROR to upload image, using the placeholder_default.png - message: " + ex.getMessage());
 	      }   	      	    
 	   } 		
-		return imagePath;
+		return phBean;
 	}
 	
 }

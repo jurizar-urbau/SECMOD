@@ -11,6 +11,14 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.OptionsByProgramBean;
 import com.urbau.feeders.OptionsByProgramMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.ID_PROGRAM_PARAMETER;
+import static com.urbau.misc.Constants.ID_OPTION_PARAMETER;
+import static com.urbau.misc.Constants.ID_ROL_PARAMETER;
+
 @WebServlet("/OptionsByPrograms")
 public class OptionsByPrograms extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -20,11 +28,11 @@ public class OptionsByPrograms extends Entity {
 			
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			String idProgram =request.getParameter("idProgram");
-			String idOption =request.getParameter("idOption");
-			String idRol = request.getParameter( "idRol" );
-			String id = request.getParameter( "id" );
+			String mode = request.getParameter( MODE_PARAMETER );
+			String idProgram =request.getParameter( ID_PROGRAM_PARAMETER );
+			String idOption =request.getParameter( ID_OPTION_PARAMETER );
+			String idRol = request.getParameter( ID_ROL_PARAMETER );
+			String id = request.getParameter( ID_PARAMETER );
 														
 			if( null != mode ){
 								
@@ -44,7 +52,7 @@ public class OptionsByPrograms extends Entity {
 																																																	
 					OptionsByProgramMain main = new OptionsByProgramMain();
 					
-					if( "add".equals( mode )){
+					if( ADD.equals( mode )){
 					
 						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
@@ -56,7 +64,7 @@ public class OptionsByPrograms extends Entity {
 							}
 						}
 						
-					} else if( "remove".equals( mode )){
+					} else if( REMOVE.equals( mode )){
 						
 						try{
 							bean.setId( Integer.parseInt( id));

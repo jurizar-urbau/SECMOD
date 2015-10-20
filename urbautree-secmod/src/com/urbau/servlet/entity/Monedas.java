@@ -11,31 +11,37 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.MonedaBean;
 import com.urbau.feeders.MonedasMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.NAME_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.SYMBOL_PARAMETER;
+
 @WebServlet("/Monedas")
 public class Monedas extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{					
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );						
+			String mode = request.getParameter( MODE_PARAMETER );						
 			
 			String message = "";
-			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
+			if( request.getParameter( ID_PARAMETER ) != null || ADD.equals( request.getParameter( MODE_PARAMETER ))  ){
 					MonedaBean bean = new MonedaBean();
 					
-					bean.setNombre( request.getParameter("name") );					
-					bean.setSimbolo( request.getParameter("symbol") );
+					bean.setNombre( request.getParameter( NAME_PARAMETER) );					
+					bean.setSimbolo( request.getParameter( SYMBOL_PARAMETER) );
 												
-					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						bean.setId( Integer.parseInt( request.getParameter( "id" )));
+					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
+						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 					}
 					MonedasMain main = new MonedasMain();
 					
-					if( "add".equals( mode )){
+					if( ADD.equals( mode )){
 						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
 						}else{
@@ -45,7 +51,7 @@ public class Monedas extends Entity {
 								showMessage( "No se pudo crear el registro" , response );
 							}
 						}
-					} else if( "edit".equals( mode )){						
+					} else if( EDIT.equals( mode )){						
 						if(main.duplicate(bean)){
 							message = "Registro ya existe!";
 						}else{
@@ -55,7 +61,7 @@ public class Monedas extends Entity {
 								showMessage( "No se pudo modificar el registro" , response );
 							}
 						}																		
-					} else if( "remove".equals( mode )){
+					} else if( REMOVE.equals( mode )){
 						if ( main.del( bean ) ){
 							message = "Registro eliminado con exito.";
 						} else {

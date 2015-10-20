@@ -11,29 +11,29 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.PreciosClienteBean;
 import com.urbau.feeders.PreciosClientesMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.CLIENTE_PARAMETER;
+import static com.urbau.misc.Constants.PRECIO_PARAMETER;
+import static com.urbau.misc.Constants.ID_PRECIO_BORRAR_PARAMETER;
+
 @WebServlet("/PreciosCliente")
 public class PreciosCliente extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println("****** PRECIOS_CLIENTE ***** " );
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{				
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
-			String mode = request.getParameter( "mode" );
-			String id = request.getParameter( "id" );
-			String idCliente = request.getParameter( "cliente" );
-			String idPrecio = request.getParameter( "precio" );
-			String idPrecioBorrar = request.getParameter( "idPrecioBorrar" );
-			
-			
-			System.out.println("mode: " + mode);
-			System.out.println("id: " + id);
-			System.out.println("idCliente: " + idCliente);
-			System.out.println("idPrecio: " + idPrecio);
+			String mode = request.getParameter( MODE_PARAMETER );
+			String id = request.getParameter( ID_PARAMETER );
+			String idCliente = request.getParameter( CLIENTE_PARAMETER );
+			String idPrecio = request.getParameter( PRECIO_PARAMETER );
+			String idPrecioBorrar = request.getParameter( ID_PRECIO_BORRAR_PARAMETER );						
 			
 			String message = "";
 			
@@ -50,21 +50,15 @@ public class PreciosCliente extends Entity {
 			if( null != idPrecio){				
 				bean.setIdPrecio(Integer.parseInt(idPrecio));
 			}else{
-				if(mode.equals("remove")){
+				if(mode.equals(REMOVE)){
 					bean.setIdPrecio(Integer.parseInt(idPrecioBorrar));
 					
 				}
 			}
-			
-				
-			
-									
-			
-							
 																							
 			PreciosClientesMain main = new PreciosClientesMain();
 					
-			if( "add".equals( mode )){
+			if( ADD.equals( mode )){
 				if(main.duplicate(bean)){
 					message = "Registro ya existe!";
 				}else{
@@ -74,7 +68,7 @@ public class PreciosCliente extends Entity {
 						showMessage( "No se pudo crear el registro" , response );
 					}
 				}
-			} else if( "edit".equals( mode )){						
+			} else if( EDIT.equals( mode )){						
 				if(main.duplicate(bean)){
 					message = "Registro ya existe!";
 				}else{
@@ -84,7 +78,7 @@ public class PreciosCliente extends Entity {
 						showMessage( "No se pudo modificar el registro" , response );
 					}
 				}																		
-			} else if( "remove".equals( mode )){						
+			} else if( REMOVE.equals( mode )){						
 				
 				if ( main.del( bean ) ){
 					message = "Registro eliminado con exito.";
@@ -94,9 +88,7 @@ public class PreciosCliente extends Entity {
 			}
 			response.getOutputStream().write( message.getBytes() );
 			response.getOutputStream().flush();
-			response.getOutputStream().close();
-			
-
+			response.getOutputStream().close();	
 			
 		} catch( UserNotAuthenticatedException exception ){
 			System.out.println( "Error: " + exception.getMessage() );
