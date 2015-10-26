@@ -11,57 +11,63 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.PuntoDeVentaBean;
 import com.urbau.feeders.PuntosDeVentasMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.NOMBRE_PARAMETER;
+import static com.urbau.misc.Constants.DIRECCION_PARAMETER;
+import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
+
 @WebServlet("/PuntosDeVentas")
 public class PuntosDeVentas extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{					
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			System.out.println( "mode: " + mode );
-			
-			
+			String mode = request.getParameter( MODE_PARAMETER );
+							
 			String message = "";
-			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
+			if( request.getParameter( ID_PARAMETER ) != null || ADD.equals( request.getParameter( MODE_PARAMETER ))  ){
+				
 				PuntoDeVentaBean bean = new PuntoDeVentaBean();
 														
-					bean.setNombre( request.getParameter("nombre") );					
-					bean.setDireccion( request.getParameter("direccion") );
-					bean.setTelefono( request.getParameter( "telefono" ));					
+				bean.setNombre( request.getParameter( NOMBRE_PARAMETER ) );					
+				bean.setDireccion( request.getParameter( DIRECCION_PARAMETER ) );
+				bean.setTelefono( request.getParameter( TELEFONO_PARAMETER ));					
 																																																													
-					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						bean.setId( Integer.parseInt( request.getParameter( "id" )));
-					}
-					
-					PuntosDeVentasMain main = new PuntosDeVentasMain();
-					
-					if( "add".equals( mode )){
-						if ( main.add( bean ) ){
-							message = "Registro creado con exito.";
-						} else {
-							showMessage( "No se pudo crear el registro" , response );
-						}
-					} else if( "edit".equals( mode )){
-						if ( main.mod( bean ) ){
-							message = "Registro modificado con exito.";
-						} else {
-							showMessage( "No se pudo modificar el registro", response  );
-						}
-					} else if( "remove".equals( mode )){
-						if ( main.del( bean ) ){
-							message = "Registro eliminado con exito.";
-						} else {
-							showMessage( "No se pudo eliminar el registro" , response );
-						}
-					}
-					response.getOutputStream().write( message.getBytes() );
-					response.getOutputStream().flush();
-					response.getOutputStream().close();
+				if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
+					bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 				}
+					
+				PuntosDeVentasMain main = new PuntosDeVentasMain();
+				
+				if( ADD.equals( mode )){
+					if ( main.add( bean ) ){
+						message = "Registro creado con exito.";
+					} else {
+						showMessage( "No se pudo crear el registro" , response );
+					}
+				} else if( EDIT.equals( mode )){
+					if ( main.mod( bean ) ){
+						message = "Registro modificado con exito.";
+					} else {
+						showMessage( "No se pudo modificar el registro", response  );
+					}
+				} else if( REMOVE.equals( mode )){
+					if ( main.del( bean ) ){
+						message = "Registro eliminado con exito.";
+					} else {
+						showMessage( "No se pudo eliminar el registro" , response );
+					}
+				}
+				response.getOutputStream().write( message.getBytes() );
+				response.getOutputStream().flush();
+				response.getOutputStream().close();
+			}
 			
 		} catch( UserNotAuthenticatedException exception ){
 			System.out.println( "Error: " + exception.getMessage() );

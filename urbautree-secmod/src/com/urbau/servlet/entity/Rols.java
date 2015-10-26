@@ -31,12 +31,13 @@ public class Rols extends Entity {
 			
 			String modeParameter = request.getParameter( MODE_PARAMETER );
 			String idParameter = request.getParameter( ID_PARAMETER );
+			String rolName = request.getParameter(ROL_NAME_PARAMETER);
+			
 			String message = "";					
 										
 			if( idParameter != null){
-				RolBean bean = new RolBean();
-								
-				String rolName = request.getParameter(ROL_NAME_PARAMETER);
+				
+				RolBean bean = new RolBean();										
 				bean.setDescription(rolName);													
 					
 				if( !ADD.equals( modeParameter ) ){

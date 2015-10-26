@@ -13,36 +13,49 @@ import com.urbau.beans.ProveedorBean;
 import com.urbau.feeders.ProveedoresMain;
 import com.urbau.feeders.PaisesMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.NIT_PARAMETER;
+import static com.urbau.misc.Constants.CODIGO_PARAMETER;
+import static com.urbau.misc.Constants.NOMBRE_PARAMETER;
+import static com.urbau.misc.Constants.RAZON_SOCIAL_PARAMETER;
+import static com.urbau.misc.Constants.CONTACTO_PARAMETER;
+import static com.urbau.misc.Constants.DIRECCION_PARAMETER;
+import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
+import static com.urbau.misc.Constants.CORREO_PARAMETER;
+import static com.urbau.misc.Constants.PAIS_PARAMETER;
+import static com.urbau.misc.Constants.LIMITE_CREDITO_PARAMETER;
+import static com.urbau.misc.Constants.SALDO_PARAMETER;
+
 @WebServlet("/Proveedores")
 public class Proveedores extends Entity {
 	private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			System.out.println( "message recieved: " + request.getQueryString() );
-			
+		try{					
 			HttpSession session = request.getSession();
 			validateRequest( session );
-			String mode = request.getParameter( "mode" );
-			System.out.println( "mode: " + mode );
 			
-			
+			String mode = request.getParameter( MODE_PARAMETER );						
 			String message = "";
-			if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" ))  ){
+			if( request.getParameter( ID_PARAMETER ) != null || ADD.equals( request.getParameter( MODE_PARAMETER ))  ){
 				ProveedorBean bean = new ProveedorBean();
 					
-					bean.setNit( request.getParameter("nit") );
-					bean.setCodigo( request.getParameter("codigo") );
-					bean.setNombre( request.getParameter("nombre") );
-					bean.setRazonSocial( request.getParameter( "razonsocial" ));
-					bean.setContacto( request.getParameter("contacto") );
-					bean.setDireccion( request.getParameter( "direccion" ));
-					bean.setTelefono( request.getParameter( "telefono" ));
-					bean.setEmail( request.getParameter( "correo" ));
+					bean.setNit( request.getParameter( NIT_PARAMETER) );
+					bean.setCodigo( request.getParameter( CODIGO_PARAMETER ) );
+					bean.setNombre( request.getParameter( NOMBRE_PARAMETER) );
+					bean.setRazonSocial( request.getParameter( RAZON_SOCIAL_PARAMETER ));
+					bean.setContacto( request.getParameter( CONTACTO_PARAMETER ) );
+					bean.setDireccion( request.getParameter( DIRECCION_PARAMETER ));
+					bean.setTelefono( request.getParameter( TELEFONO_PARAMETER ));
+					bean.setEmail( request.getParameter( CORREO_PARAMETER ));
 					
-					String pais =request.getParameter( "pais" );					
-					String limiteCredito =request.getParameter( "limitecredito" );
-					String saldo =request.getParameter( "saldo" );
+					String pais =request.getParameter( PAIS_PARAMETER );					
+					String limiteCredito =request.getParameter( LIMITE_CREDITO_PARAMETER );
+					String saldo =request.getParameter( SALDO_PARAMETER );
 					
 					
 					if(pais != null){
@@ -62,25 +75,25 @@ public class Proveedores extends Entity {
 						bean.setSaldo( Double.parseDouble(saldo));	
 					}																	
 												
-					if( !"add".equals( request.getParameter( "mode" ) ) ){
-						bean.setId( Integer.parseInt( request.getParameter( "id" )));
+					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
+						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 					}
 					
 					ProveedoresMain main = new ProveedoresMain();
 					
-					if( "add".equals( mode )){
+					if( ADD.equals( mode )){
 						if ( main.add( bean ) ){
 							message = "Usuario creado con exito.";
 						} else {
 							showMessage( "No se pudo crear el usuario" , response );
 						}
-					} else if( "edit".equals( mode )){
+					} else if( EDIT.equals( mode )){
 						if ( main.mod( bean ) ){
 							message = "Usuario modificado con exito.";
 						} else {
 							showMessage( "No se pudo modificar el usuario", response  );
 						}
-					} else if( "remove".equals( mode )){
+					} else if( REMOVE.equals( mode )){
 						if ( main.del( bean ) ){
 							message = "Usuario eliminado con exito.";
 						} else {

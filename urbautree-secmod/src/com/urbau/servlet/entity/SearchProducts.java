@@ -19,6 +19,10 @@ import com.urbau.misc.Util;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import static com.urbau.misc.Constants.Q_PARAMETER;
+import static com.urbau.misc.Constants.CLIENTE_PARAMETER;
+import static com.urbau.misc.Constants.BODEGA_PARAMETER;
+
 @WebServlet("/bin/searchp")
 public class SearchProducts extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -27,13 +31,14 @@ public class SearchProducts extends Entity {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	response.setContentType("application/json");
     	
-		String q = request.getParameter("q");
-		String cliente = request.getParameter( "cliente" );
-		String bodega = request.getParameter( "bodega" );
+		String q = request.getParameter( Q_PARAMETER );
+		String cliente = request.getParameter( CLIENTE_PARAMETER );
+		String bodega = request.getParameter( BODEGA_PARAMETER );
+		
 		JSONArray jsonArray = new JSONArray();
 		System.out.println(  "cliente: " + cliente + ", bodega: " + bodega );
-		if(null != q){
-			
+		
+		if(null != q){		
 			Connection con  = null;
 			Statement  stmt = null;
 			ResultSet  rs   = null;
@@ -67,9 +72,7 @@ public class SearchProducts extends Entity {
 					while( rs.next() ){
 						
 						ProductoBean bean = new ProductoBean();
-						
-						
-						
+															
 						bean.setDescripcion( Util.trimString( rs.getString( 1 )) );
 						bean.setCodigo( Util.trimString( rs.getString( 2 )) );
 						bean.setCoeficiente_unidad( rs.getInt( 3 ));

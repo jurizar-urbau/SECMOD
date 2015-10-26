@@ -15,6 +15,17 @@ import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.BancoMovimientoBean;
 import com.urbau.feeders.BancosMovimientosMain;
 
+import static com.urbau.misc.Constants.ADD;
+import static com.urbau.misc.Constants.EDIT;
+import static com.urbau.misc.Constants.REMOVE;
+import static com.urbau.misc.Constants.MODE_PARAMETER;
+import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.BANCO_PARAMETER;
+import static com.urbau.misc.Constants.FECHA_PARAMETER;
+import static com.urbau.misc.Constants.TIPO_MOVIMIENTO_PARAMETER;
+import static com.urbau.misc.Constants.DESCRIPCION_PARAMETER;
+import static com.urbau.misc.Constants.MONTO_PARAMETER;
+
 @WebServlet("/TiposDeMovimientosBanco")
 public class TiposDeMovimientosBanco extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -24,13 +35,13 @@ public class TiposDeMovimientosBanco extends Entity {
 			HttpSession session = request.getSession();
 			validateRequest( session );
 			
-			String mode = request.getParameter( "mode" );
-			String id = request.getParameter( "id" );
-			String idBanco = request.getParameter( "banco" );
-			String fecha = request.getParameter( "fecha" );
-			String idTipoMovimiento = request.getParameter( "tipomovimiento" );
-			String descripcion = request.getParameter( "descripcion" );
-			String monto = request.getParameter( "monto" );
+			String mode = request.getParameter( MODE_PARAMETER );
+			String id = request.getParameter( ID_PARAMETER );
+			String idBanco = request.getParameter( BANCO_PARAMETER );
+			String fecha = request.getParameter( FECHA_PARAMETER );
+			String idTipoMovimiento = request.getParameter( TIPO_MOVIMIENTO_PARAMETER );
+			String descripcion = request.getParameter( DESCRIPCION_PARAMETER );
+			String monto = request.getParameter( MONTO_PARAMETER );
 																
 			String message = "";
 			
@@ -57,11 +68,10 @@ public class TiposDeMovimientosBanco extends Entity {
 			if( null != monto){
 				bean.setMonto((Double.parseDouble(monto)));
 			}
-			
-																											
+																													
 			BancosMovimientosMain main = new BancosMovimientosMain();
 					
-			if( "add".equals( mode )){
+			if( ADD.equals( mode )){
 				if(main.duplicate(bean)){
 					message = "Registro ya existe!";
 				}else{
@@ -71,13 +81,13 @@ public class TiposDeMovimientosBanco extends Entity {
 						showMessage( "No se pudo crear el registro" , response );
 					}
 				}
-			} else if( "edit".equals( mode )){										
+			} else if( EDIT.equals( mode )){										
 				if ( main.mod( bean ) ){
 					message = "Registro modificado con exito.";
 				} else {
 					showMessage( "No se pudo modificar el registro" , response );
 				}																					
-			} else if( "remove".equals( mode )){										
+			} else if( REMOVE.equals( mode )){										
 				if ( main.del( bean ) ){
 					message = "Registro eliminado con exito.";
 				} else {

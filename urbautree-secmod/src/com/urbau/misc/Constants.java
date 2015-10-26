@@ -50,8 +50,9 @@ public class Constants {
 	public static final String NAME_PRESUPUESTOS_EJECUCIONES	 = "com.urbau.feeders.PresupuestosEjecucionesMain";
 		
 	//parameters
-	public static final String MODE_PARAMETER = "mode";
+	public static final String Q_PARAMETER = "q";
 	public static final String ID_PARAMETER = "id";
+	public static final String MODE_PARAMETER = "mode";	
 	public static final String ROL_NAME_PARAMETER = "rolname";
 	public static final String NAME_PARAMETER = "name";	
 	public static final String DESCRIPCION_PARAMETER = "descripcion";
@@ -107,13 +108,21 @@ public class Constants {
 	public static final String COEFICIENTE_UNIDAD_PARAMETER = "coeficiente_unidad";
 	public static final String CODIGO_PARAMETER = "codigo";
 	public static final String PROVEEDOR_PARAMETER = "proveedor";
-	
-	
-	
-	
-	
+	public static final String RAZON_SOCIAL_PARAMETER = "razonsocial";
+	public static final String CONTACTO_PARAMETER = "contacto";
+	public static final String DIRECCION_PARAMETER = "direccion";
+	public static final String PAIS_PARAMETER = "pais";
+	public static final String LIMITE_CREDITO_PARAMETER = "limitecredito";
+	public static final String SALDO_PARAMETER = "saldo";
+	public static final String BANCO_PARAMETER = "banco";
+	public static final String FECHA_PARAMETER = "fecha";
+	public static final String TIPO_MOVIMIENTO_PARAMETER = "tipomovimiento";
+	public static final String LOGIN_ID_PARAMETER = "loginid";
+	public static final String NOMBRES_APELLIDOS_PARAMETER = "nombresapellidos";
+	public static final String CLAVE_PARAMETER = "clave";
+	public static final String EMAIL_PARAMETER = "email";
+	public static final String ACTIVO_PARAMETER = "activo";
+	public static final String ROL_PARAMETER = "rol";	
 
-	
-	
 }
 

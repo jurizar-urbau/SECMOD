@@ -17,6 +17,8 @@ import com.urbau.db.ConnectionManager;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
+import static com.urbau.misc.Constants.Q_PARAMETER;
+
 @WebServlet("/bin/searchc")
 public class SearchClients extends Entity {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +27,7 @@ public class SearchClients extends Entity {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
     	response.setContentType("application/json");
     	
-		String q = request.getParameter("q");
+		String q = request.getParameter( Q_PARAMETER );
 		JSONArray jsonArray = new JSONArray();
 		System.out.println(  "q: " + q );
 		if(null != q){

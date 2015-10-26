@@ -18,7 +18,6 @@ import static com.urbau.misc.Constants.MODE_PARAMETER;
 import static com.urbau.misc.Constants.NAME_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
 
-
 @WebServlet("/Bancos")
 public class Bancos extends Entity {
 	private static final long serialVersionUID = 1L;
