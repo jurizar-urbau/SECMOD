@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.ClasificacionRubroBean"%>
+<%@page import="com.urbau.feeders.ClasificacionRubrosMain"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.TipoRubroBean"%>
 <%@page import="com.urbau.feeders.TiposRubrosMain"%>    
@@ -88,16 +90,25 @@
                           	<label class="col-sm-2 col-sm-2 control-label">Tipo</label>
                           	<div class="col-sm-10">
                           	    <select class="form-control" name="tipo">
-                          	    	<option value="F">Fijo</option>
-                          	    	<option value="V">Variable</option>
+                          	    	<option value="F" <%=  "F".equals( bean.getTipo() ) ? "SELECTED":"" %>>Fijo</option>
+                          	    	<option value="V" <%=  "V".equals( bean.getTipo() ) ? "SELECTED":"" %>>Variable</option>
                           	    </select>       
                           	</div>
                           	
                           	<label class="col-sm-2 col-sm-2 control-label">Clasificacion</label>
                           	<div class="col-sm-10">
-                          	            
-								<input type="text" class="form-control" name="clasificacion" id="clasificacion" value="<%= bean.getTipo_clasificacion() %>">	                          	                                                                    
-                              
+                          	     <%
+                          	     	ClasificacionRubrosMain crm = new ClasificacionRubrosMain();
+                          	     	ArrayList<ClasificacionRubroBean> list = crm.getForCombo();
+                          	     %>       
+                          	     <select class="form-control"  name="clasificacion" id="clasificacion">
+                          	     	<%
+                          	     		for( ClasificacionRubroBean b: list) {
+                          	     	%>
+                          	     		<option value="<%= b.getId()  %>" <%= ( bean.getTipo_clasificacion() == b.getId() ) ? "SELECTED":"" %>><%= b.getDescription() %></option>
+                          	     	<% } %>
+                          	     </select>
+                          	  
                           	</div>
                           	
                       	</div>

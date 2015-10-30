@@ -111,7 +111,7 @@
 													<select class="form-control" name="idProgram" id="idProgram">
 														<option value=""> </option>
 													  <%
-													  	ArrayList<ProgramBean> programs_list = programs_main.get(null, 0);
+													  	ArrayList<ProgramBean> programs_list = programs_main.getForCombo();
 													  	for( ProgramBean program : programs_list ){
 													  %>
 												  		<option value="<%= program.getId()%>"><%= program.getDescription() %></option>

@@ -141,10 +141,12 @@
               <div class="row">
                   <div class="col-lg-9  main-chart">
                       <div class="row mt">
-                      <div class="col-lg-12" onclick="chooseClient()">
+                      <div class="col-lg-12">
+                      <i class="fa fa-cogs" onclick="chooseClient()"></i>
                       	Cliente: <b><span id="clientdisplay"></span></b>
                       </div>
-                      <div class="col-lg-12" onclick="chooseStore()">
+                      <div class="col-lg-12">
+                      <i class="fa fa-cogs" onclick="chooseStore()"></i>
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
                       <div class="col-lg-12">
@@ -248,7 +250,7 @@
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
 		                   <div id="sale-container">
 		                  </div>
-		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar</button>
+		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar Pedido</button>
                   	</form>
                   </div>
               </div><!--/row -->

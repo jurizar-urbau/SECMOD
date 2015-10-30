@@ -27,7 +27,7 @@ public class ProgramsMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,PROGRAM_NAME FROM PROGRAMAS LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,PROGRAM_NAME FROM PROGRAMAS LIMIT " + from + "," + items );
 				total_regs = Util.getTotalRegs( "PROGRAMAS", "" );
 			} else {
 				String rem_where = Util.getRolesWhere( q );
@@ -40,6 +40,32 @@ public class ProgramsMain {
 				bean.setDescription(  Util.trimString( rs.getString( 2  )));
 				bean.setProgram_name( Util.trimString( rs.getString( 3 )));
 				bean.setTotal_regs( total_regs );
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+		
+	public ArrayList<ProgramBean> getForCombo(){
+		
+		ArrayList<ProgramBean> list = new ArrayList<ProgramBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,PROGRAM_NAME FROM PROGRAMAS ORDER BY DESCRIPCION ASC" );
+			while( rs.next() ){
+				ProgramBean bean = new ProgramBean();
+				bean.setId( 						   rs.getInt   ( 1  ));
+				bean.setDescription(  Util.trimString( rs.getString( 2  )));
+				bean.setProgram_name( Util.trimString( rs.getString( 3 )));
 				list.add( bean );
 			}
 		} catch( Exception e ){

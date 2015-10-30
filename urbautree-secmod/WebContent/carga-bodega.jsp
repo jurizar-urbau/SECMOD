@@ -1,7 +1,7 @@
+<%@page import="com.urbau.beans.PackingBean"%>
+<%@page import="com.urbau.feeders.PackingMain"%>
 <%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
-<%@page import="com.urbau.beans.ClienteBean"%>
-<%@page import="com.urbau.feeders.ClientesMain"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.ProductosMain"%>
@@ -10,6 +10,7 @@
 <% 
 	BodegasUsuariosMain bm = new BodegasUsuariosMain();
     ProductosMain pm = new ProductosMain();
+    PackingMain packmain = new PackingMain();
 	//long total_bodegas = bm.count();
 	long total_productos = pm.count();
 %>
@@ -18,10 +19,6 @@
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<script>
-		function setClient(){
-			
-			
-		}
 		
 		function clickon( id ){
 			var ele = $( "#product-" + id );
@@ -33,7 +30,8 @@
 			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
 			console.log( "looking for products with [" + q + "]");
 			$( "#product-container" ).html("");
-			 $.get( "./bin/searchp?q=" + q , null, function(response){
+			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+			
                  $.each(response, function(i, v) {
                 	 console.log( i, v );
                 	 
@@ -120,11 +118,10 @@
           <section class="wrapper">
 
               <div class="row">
+              	<h1></h1>
                   <div class="col-lg-9  main-chart">
                       <div class="row mt">
-                      <!--  div class="col-lg-12" onclick="chooseClient()">
-                      	Cliente: <b><span id="clientdisplay"></span></b>
-                      </div-->
+                      
                       <div class="col-lg-12" onclick="chooseStore()">
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
@@ -155,7 +152,7 @@
              <div aria-hidden="true" aria-labelledby="myModalLabel<%= pbean.getId() %>" role="dialog" tabindex="-1" id="myModal<%= pbean.getId() %>" class="modal fade">
 						<form id="modalform<%= pbean.getId() %>" name="modalform<%= pbean.getId() %>">
 						<input name="productid" type="hidden" value="<%= pbean.getId() %>">
-						<input name="price"  type="hidden" value="<%= pbean.getPrecio() %>">
+						
  			              <div class="modal-dialog">
 			                  <div class="modal-content">
 				                  <div class="modal-header">
@@ -171,9 +168,14 @@
 			                      	
 			                          <p>Cantidad</p>
 			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
-			                          Fardo <input type="radio" name="packing" value="F" >
-			                          Caja <input type="radio" name="packing" value="C">
-			                          Unidad <input type="radio" name="packing" value="U">
+			                          
+			                          <%
+			                          	ArrayList<PackingBean> packlist = packmain.getAll( pbean.getId() );
+			                          	for( PackingBean pb : packlist ){
+			                          %>
+			                          	<%= pb.getNombre() %> <input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" >
+			                          <% } %>
+			                          
 			                          </br>
 			                          </br>
 			                          <!--p>Precio unitario:</p>
@@ -184,7 +186,7 @@
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addSale(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.precio.value,document.modalform<%= pbean.getId() %>.cantidad.value);">Agregar</button>
+			                          <button class="btn btn-theme" type="button" onclick="addToStore(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.packing.value,document.modalform<%= pbean.getId() %>.cantidad.value);">Agregar</button>
 			                      </div>
 			                  </div>
 			              </div>
@@ -208,10 +210,10 @@
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
                   <div class="col-lg-3 ds">
-                   <h3>ORDEN ACTUAL</h3>
+                   <h3>INGRESO ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">
-                          Total:
+                          Total Productos:
                         </div>
                         <div class="details">
                           <p style="color:blue; font-size:18pt; text-align: right;" id="totalOrden">
@@ -220,7 +222,6 @@
                         </div>
                       </div>  
                       <form name="saleform" id="saleform" method="POST">
-                           <input type='hidden' name='clientid' id='clientid' value=''>
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
 		                   <div id="sale-container">
 		                                      
@@ -300,134 +301,6 @@
 		              </form>
 		          </div>
       <!-- stores modal ends -->
-      <!-- clients modal -->
-      	 
-					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-						<form id="modalform" name="modalform" >
-						  <div class="modal-dialog">
-			                  <div class="modal-content">
-				                  <div class="modal-header">
-			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Seleccione un cliente...</h4>
-			                          <span class="pull-right">
-			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
-			          				  </span>
-			                          
-			                      </div>
-			                      <div class="modal-body">
-				                      <%
-											ClientesMain um = new ClientesMain();			
-											int from = 0;
-											if( request.getParameter( "from" ) != null ){
-												from = Integer.parseInt( request.getParameter( "from" ) );
-											}
-											
-											ArrayList<ClienteBean> list = um.get( request.getParameter("q"), from );
-											int total_regs = -1;
-											
-											if( list.size() > 0 ){
-												total_regs = ((ClienteBean)list.get( 0 )).getTotal_regs();
-											}
-										%>
-										 <table class="table table-striped table-advance table-hover">
-	                  	  	  
-	                  	  	  <thead>
-                              <tr>
-                                  <th></th>
-                                  <th>Nit</th>                                  
-                                  <th>Nombres</th>
-                                  <th>Apellidos</th>                                                                    
-                              </tr>
-                              </thead>
-                              <tbody>
-                              <%
-                              	for(ClienteBean bean: list ){
-                              %>
-                              <tr>
-                              	  <td><input type="radio" name="clienteid" value="<%= bean.getId() %>,<%= bean.getNombres() + " " + bean.getApellidos()  %>"></td>
-                                  <td><%= bean.getNit() %></td>                                  
-                                  <td><%= bean.getNombres() %></td>
-                                  <td><%= bean.getApellidos() %></td>         
-                                                                            
-                                  
-                              </tr>
-                              <% } %>
-                              
-                              </tbody>
-                          </table>
-			                      </div>
-			                      <div class="modal-footer">
-			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="setClient();">Seleccionar</button>
-			                      </div>
-			                  </div>
-			              </div>
-		              </form>
-		          </div>
-		          
-		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModalNewClient" class="modal fade">
-						<form id="modalformnewclient" name="modalformnewclient" >
-						<input type="hidden" name="mode" id="mode"value="add">
-						<input type="hidden" name="id" id="id" value="-1">
-						<input type="hidden" name="modal" id="modal" value="true">
-						  <div class="modal-dialog">
-			                  <div class="modal-content">
-				                  <div class="modal-header">
-			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Crear cliente...</h4>
-			                      </div>
-			                      <div class="modal-body">
-			                      
-			                  <table class="table table-striped table-advance table-hover">
-	                  	  	  <tbody>
-                                  <tr>
-	                                  <td>Nit</td>
-	                                  <td><input type="text" class="form-control" name="nit" id="nit" value=""></td>                                  
-	                              </tr>
-	                               <tr>
-	                                  <td>Nombres</td>
-	                                  <td><input type="text" class="form-control" name="nombres" id="nombres" value=""></td>                                  
-	                               </tr>
-	                               <tr>
-	                                  <td>Apellidos</td>
-	                                  <td><input type="text" class="form-control" name="apellidos" id="apellidos" value=""></td>                                  
-	                               </tr>
-	                               <tr>
-	                                  <td>Direcci&oacute;n</td>
-	                                  <td><input type="text" class="form-control" name="direccion" id="direccion" value=""></td>                                  
-	                               </tr>
-	                               <tr>
-	                                  <td>Tel&eacute;fono</td>
-	                                  <td><input type="text" class="form-control" name="telefono" id="telefono" value=""></td>                                  
-	                               </tr>
-	                               <tr>
-	                                  <td>Correo Electr&oacute;nico</td>
-	                                  <td><input type="text" class="form-control" name="correo" id="correo" value=""></td>                                  
-	                               </tr>
-	                               <tr>
-	                                  <td>Tipo De Cliente</td>
-	                                  <td><select class="form-control" name="tipodecliente" id="tipodecliente" >
-	                          			<option value="interno">Interno</option>
-	                          			<option value="interno">Externo</option>
-	                          		</select></td>                                  
-	                               </tr>
-                              </tbody>
-                          </table>
-			               
-                                          </div>                                                                                                                                                                          
-                         <div class="modal-footer">
-			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" id="saveclientbutton">Guardar</button>
-			                      </div>
-                                                                                                                           
-                      
-				                      
-			                      
-			                      
-			                  </div>
-			              </div>
-		              </form>
-		          </div>
 		          
       <!--main content end-->
       <!--footer start-->
@@ -462,7 +335,7 @@
   
   
   <script type="text/javascript">
-  		  var selected_client_id;
+  		  
   		  var selected_bodega_id;
   		  var allowed_prices;
   		  
@@ -477,15 +350,7 @@
 			    return result;
 			}
   
-		    function setClient(){
-		    	var value = $('input[name=clienteid]:checked').val();
-		    	var values = value.split(',');
-		    	selected_client_id = values[0];
-		    	console.log('cliente', values[0]);
-				$('#clientdisplay').html(value);
-				$('#clientid').val( selected_client_id );
-		    	hideClient();
-		    }
+		    
 		    function setStore(){
 		    	var value = $('input[name=bodegaid]:checked').val();
 		    	var values = value.split(',');
@@ -495,67 +360,26 @@
 				$('#bodegaid').val( selected_bodega_id );
 		    	hideStore();
 		    }
-  			function addSale( productid, imagepath, productname, price, amount ){
-  				console.log( "adding sale id: " + productid  + ", price: " + price + ", amount: " + amount );
-  				addS( amount, price, productname, imagepath,productid );
+  			function addToStore( productid, imagepath, productname, amount, packvalue ){
+  				addS( amount, packvalue, productname, imagepath,productid );
   				hideModal('#myModal' + productid );
   				renderVentasList();
   				
   			}
-  			function chooseClient(){
-  				$('#myModal').modal('show');
-  			}
+  			
   			function chooseStore(){
   				$('#myStores').modal('show');
   			}
   			function hideModal( id ){
   				$(id).modal('hide');
   			}
-  			function hideClient(){
-  				$('#myModal').modal('hide');
-  			}
+  			
   			
   			function hideStore(){
   				$('#myStores').modal('hide');
   			}
   			
-  			function hideNewClient(){
-  				$('#myModalNewClient').modal('hide');
-  			}
-  			$("#saveclientbutton").click(function(){
-				
-    			var form =$('#modalformnewclient');
-    	     	$.ajax({
-    	     		type:'POST',
-    	     		dataType: "text",
-    	 			url: './bin/Clientes',
-    	 			data: form.serialize(),
-    	 			
-    		        success: function(msg){		      
-    		        	
-    		        	if( msg.startsWith('clientid') ){
-    		        		alert( "Cliente creado con exito." );
-    		        		var ci = msg.substring( 10 );
-    		        		var values = ci.split(',');
-    		        		console.log( values );
-    				    	$('#clientdisplay').html(ci);
-    				    	$('#clientid').val( values[ 0 ] );
-    				    	hideClient();
-    				    	hideNewClient();
-    		        		
-    		        	}
-    		            //location.replace( "clientes.jsp" );
-    		        },
-    	 			error: function(jqXHR, textStatus, errorThrown){
-    	 				console.log("ERROR srtatus: ", textStatus);
-    	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
-    	 			}
-    		            		        
-    	       });
-    	     	
-    	     	return false;
-    	 	});
+  			
   			
 			$("#savesalebutton").click(function(){
 				
@@ -563,7 +387,7 @@
     	     	$.ajax({
     	     		type:'POST',
     	     		dataType: "text",
-    	 			url: './bin/Ordenes',
+    	 			url: './bin/IngresoBodega',
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		      
@@ -571,7 +395,7 @@
     		        	if( !msg.startsWith('error') ){
     		        		location.reload();	
     		        	}
-    		            //location.replace( "clientes.jsp" );
+    		            
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
@@ -594,11 +418,11 @@
   			
   			
   		    var ventasList = [];
-  		    function addS( amount, price, description, imagepath,productid ){
-  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", price:" + price );
+  		    function addS( amount, packval, description, imagepath,productid ){
+  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", packval:" + packval );
   		    	var o = {};
   			    o.amount = amount;
-  			    o.price = price;
+  			    o.pack = packval;
   			    o.description = description;
   			    o.imagepath = imagepath;
   			    o.id = productid;
@@ -609,26 +433,25 @@
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
   			for (i = 0; i < ventasList.length; i++) { 
-  				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].price );
+  				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].pack );
 				var htmltoadd =
 					  "<div class=\"desc\">" +
 					  "<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
 					  "<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
-					  "<input type='hidden' name='price' value='" + ventasList[ i ].price + "'>" +
+					  "<input type='hidden' name='pack' value='" + ventasList[ i ].pack + "'>" +
 					  "  <div style=\"float:left\">" +
 		              "    <img width=\"70\" src=\"./bin/RenderImage?imagePath=" + ventasList[ i ].imagepath + "\">" +
 		              "  </div>" +
 		              "  <div class=\"details\">" +
 		              "    <p style=\"color:black; font-size:12pt\">" +
-		              "       <span style=\"color:red; font-size:20pt\">" + ventasList[ i ].amount + "</span>" + ventasList[ i ].description + "<br/>Q " + ( ventasList[ i ].amount * ventasList[ i ].price ).toFixed(2) + " " +
+		              "       <span style=\"color:red; font-size:20pt\">" +( ventasList[ i ].amount * ventasList[ i ].pack ) + "</span>" + ventasList[ i ].description + "<br/>" +
 		              "    </p>" +
 		              "  </div>" +
 		              "</div>";
 				$( "#sale-container" ).append( htmltoadd );
 				
 			}
-  			$( "#totalOrden" ).html("Q " + totalOrden.toFixed(2)
-  					);
+  			$( "#totalOrden" ).html( totalOrden);
   		  }
   		    
   			
@@ -636,8 +459,6 @@
 	
 	<script type="text/javascript">
 	    $(window).load(function(){
-	        $('#myModal').modal('show');
-	        
 	        $( "#search-query-3" ).keyup(function() {
 	        	var value = $( "#search-query-3" ).val();
 	        	console.log( "value", value );

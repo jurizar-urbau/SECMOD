@@ -124,6 +124,7 @@ public class InventariosMain extends AbstractMain {
 		return bean;
 	}
 	
+	
 	public boolean add( InvetarioBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
@@ -226,7 +227,7 @@ public class InventariosMain extends AbstractMain {
 				
 		Connection con = null;
 		Statement  stmt= null;
-		ResultSet  rs   = null;
+		ResultSet  rs   = null; 
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();			

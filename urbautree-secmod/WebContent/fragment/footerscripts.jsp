@@ -59,7 +59,7 @@
   <!--  ends custom -->  
   <% if( session.getAttribute("messageshowed") == null ){ %>
   <script type="text/javascript">
-        $(document).ready(function () {
+        /* $(document).ready(function () {
         var unique_id = $.gritter.add({
             // (string | mandatory) the heading of the notification
             title: 'Bienvenido Alejandro!',
@@ -76,7 +76,7 @@
         });
 
         return false;
-        });
+        }); */
   </script>
  <% 
  	session.setAttribute("messageshowed", "true");

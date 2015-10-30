@@ -16,6 +16,34 @@ public class ClasificacionRubrosMain {
 		return get( q, from, -1 );
 	}
 	
+	
+	
+	public ArrayList<ClasificacionRubroBean> getForCombo(){
+		
+		ArrayList<ClasificacionRubroBean> list = new ArrayList<ClasificacionRubroBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION FROM CLASIFICACION_RUBROS ORDER BY DESCRIPCION ASC" );
+			
+			while( rs.next() ){
+				ClasificacionRubroBean bean = new ClasificacionRubroBean();
+				bean.setId( 						   rs.getInt   ( 1  ));
+				bean.setDescription(  Util.trimString( rs.getString( 2  )));				
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
 	public ArrayList<ClasificacionRubroBean> get( String q, int from, int limit ){
 				
 		ArrayList<ClasificacionRubroBean> list = new ArrayList<ClasificacionRubroBean>();

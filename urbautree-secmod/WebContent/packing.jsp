@@ -1,51 +1,48 @@
-<%@page import="com.urbau.feeders.RolesMain"%>
+<%@page import="com.urbau.feeders.PackingMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.ProductoBean"%>
+<%@page import="com.urbau.beans.PackingBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.ProductosMain"%>
-<%@page import="com.urbau.feeders.ProveedoresMain"%>
 <%@page import="com.urbau.security.Authorization"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%    
-		ProductosMain productos_main = new ProductosMain();
-		ProveedoresMain proveedores_main = new ProveedoresMain();
-					
+	<%		
+		PackingMain options_main = new PackingMain();
+		String idproducto = request.getParameter( "idproducto" );
+		int idprod;
+		if( idproducto != null ){
+			idprod = Integer.valueOf( idproducto );
+		} else {
+			idprod = -1;
+		}
+	
+		
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
 		}
-		ArrayList<ProductoBean> list = productos_main.get( request.getParameter("q"), from );
+				
+		ArrayList<PackingBean> list = options_main.get(  request.getParameter("q"), from, idprod );
 		int total_regs = -1;
 		
 		if( list.size() > 0 ){
-			total_regs = ((ProductoBean)list.get( 0 )).getTotal_regs();
+			total_regs = ((PackingBean)list.get( 0 )).getTotal_regs();
 		}
-		
-		
-		//System.out.println("host>>:: " + pageContext.getRequest().getServerName());
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "productos-detail.jsp?mode=edit&id="+id);
+			location.replace( "packing-detail.jsp?idproducto=<%= idproducto %>&mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "productos-detail.jsp?mode=remove&id="+id);
+			location.replace( "packing-detail.jsp?idproducto=<%= idproducto %>&mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "productos-detail.jsp?mode=view&id="+id);
-		}
-		function alias( id ){
-			location.replace( "alias.jsp?idproducto="+id);
-		}
-		function packings( id ){
-			location.replace( "packing.jsp?idproducto="+id);
+			location.replace( "packing-detail.jsp?idproducto=<%= idproducto %>&mode=view&id="+id);
 		}
 		function add(){
-			location.replace( "productos-detail.jsp?mode=add" );
+			location.replace( "packing-detail.jsp?idproducto=<%= idproducto %>&mode=add" );
 		}
 	</script>
 	</head>
@@ -82,7 +79,7 @@
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height">
+          <section class="wrapper site-min-height">          
           <br/>
           <div class="col-lg-6"> 
            
@@ -103,65 +100,41 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PACKING, Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_ADD)){ %>
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  <%} %>
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+          				<%} %>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PRODUCTOS </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="productos.jsp">&nbsp;Regresar</a></i> PACKING DE PRODUCTO</h4>
+	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  
-                                  <th>Codigo</th>
-                                  <th>Descripcion</th>
-                                  <th class="hidden-phone">Packing</th>
-                                  <th class="hidden-phone">Proveedor</th>
-                                  <th>Costo</th>
-                                  <th class="hidden-phone">Precio 1</th>
-                                  <th class="hidden-phone">Precio 2</th>
-                                  <th class="hidden-phone">Precio 3</th>
-                                  <th class="hidden-phone">Precio 4</th>
-                                  <th >Stock M&iacute;nimo</th>
-                                  <th>Foto</th>
+                                  <th>Nombre</th>
+                                  <th>Coeficiente</th>                                                                    
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( ProductoBean us : list ){
+                              	for( PackingBean option : list ){
                               %>
                               <tr>
-                                  <td><%= us.getCodigo() %></td>
-                                  <td><%= us.getDescripcion() %></td>
-                                  <td><%= us.getCoeficiente_unidad() %></td>
-                                  <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio() ) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_1()) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_2() ) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_3()) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_4()) %></td>
-                                  <td><%= us.getStock_minimo() %></td>
-                                  <td>
-                                  	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">
-                                  </td>
-                                  <td>
-                                	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_MODIFY)){ %>	                                     
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                    <%} %>  
-                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_DELETE)){ %>  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                    <%} %>  
-                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%} %>  
-                                    <button class="btn btn-success btn-xs" onclick="alias('<%= us.getId()  %>');"><i class="fa fa-tags"></i></button>
-                                    <button class="btn btn-success btn-xs" onclick="packings('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button>
-                                    <!-- button class="btn btn-success btn-xs" onclick="detail('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button -->
-                                  </td>
-                              </tr>
+							  	<td><%= option.getNombre() %></td>
+							  	<td><%= option.getMultiplicador() %></td>
+								<td>
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PACKING,  Constants.OPTIONS_MODIFY)){ %>
+									<button class="btn btn-primary btn-xs" onclick="edit('<%= option.getId() %>');"><i class="fa fa-pencil"></i></button>
+								<%}%>	
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PACKING, Constants.OPTIONS_DELETE)){ %>
+									<button class="btn btn-danger btn-xs" onclick="removereg('<%= option.getId() %>');"><i class="fa fa-trash-o "></i></button>
+								<%}%>	
+								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PACKING, Constants.OPTIONS_VIEW)){ %>
+									<button class="btn btn-success btn-xs" onclick="view('<%= option.getId() %>');"><i class="fa fa-check"></i></button>
+								<%}%>	
+								</td>
+							   </tr>
                               <% } %>
                               
                               </tbody>
@@ -186,7 +159,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="productos.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="alias.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -195,7 +168,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="productos.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="alias.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">

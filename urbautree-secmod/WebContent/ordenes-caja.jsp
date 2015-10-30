@@ -127,7 +127,7 @@
                                   <td><%= Util.formatCurrency( bean.getMonto() )%></td>                                                                                                                                                                         
                                                                     
                                   <td>
-                                  	<a href="javascript: chargeOrder('<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>)">Pagar</a>
+                                  	<a href="javascript: chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>)">Pagar</a>
                                   </td>
                               </tr>
                               <% } %>
@@ -156,6 +156,7 @@
 			                          <h4 class="modal-title">PAGAR</h4>
 			                      </div>
 			                      <div class="modal-body">
+			                      	<input type="hidden" name="formid" id="formid" value="">
 			                      	  <label>Fecha: <b id="formfecha"></b></label>
 			                      	  <label>Nit: <b id="formnit"></b></label><br/>
 			                      	  <label>Cliente: <b id="formnombres"></b> <b id="formapellidos"></b></label><br/>
@@ -169,13 +170,14 @@
 				                      </label><br/>
 				                      <label>No. Autorizaci&oacute;n: <input type="text" class="form-control" name="autorizacion"></label>
 				                      <label>Efectivo: <input type="text" class="form-control" name="efectivo"></label>
-				                      <label>Cr&eacute;dito: <input type="text" class="form-control" name="efectivo"></label>
+				                      <label>Cr&eacute;dito: <input type="text" class="form-control" name="credito"></label>
+				                      <label>Cheque: <input type="text" class="form-control" name="nocheque"></label>
 				                      
 						 
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="setClient();">Pagar</button>
+			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
 			                          <button class="btn btn-theme" type="button" onclick="printBill('elcontenido');">Imprimir</button>
 			                          
 			                      </div>
@@ -193,7 +195,8 @@
 	<%@include file="fragment/footerscripts.jsp"%>
 	<script>
 		
-		function chargeOrder( fecha,nit,nombres,apellidos,monto ){
+		function chargeOrder( id, fecha,nit,nombres,apellidos,monto ){
+			$('#formid').val( id );
 			$('#formfecha').html(fecha);
 			$('#formnit').html(nit);
 			$('#formnombres').html(nombres);
@@ -216,6 +219,33 @@
 		 top.consoleRef.document.close()
 		 top.consoleRef.print()
 		}
+		
+		$("#savebutton").click(function(){
+			
+			var form =$('#saleform');
+	     	$.ajax({
+	     		type:'POST',
+	     		dataType: "text",
+	 			url: './bin/SavePayment',
+	 			data: form.serialize(),
+	 			
+		        success: function(msg){		      
+		        	alert( msg );
+		        	if( !msg.startsWith('error') ){
+		        		location.reload();	
+		        	}
+		            
+		        },
+	 			error: function(jqXHR, textStatus, errorThrown){
+	 				console.log("ERROR srtatus: ", textStatus);
+	 				console.log("ERROR errorThrown: ", errorThrown);
+	 				alert("Se prudujo un error al hacer la operaciòn");	
+	 			}
+		            		        
+	       });
+	     	
+	     	return false;
+	 	});
 	    </script>
   </body>
 </html>
