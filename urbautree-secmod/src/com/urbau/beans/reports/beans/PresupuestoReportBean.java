@@ -4,8 +4,8 @@ public class PresupuestoReportBean {
 
 	int mes;
 	int anio;
-	double proyectado;
-	double ejecutado;
+	double proyectado = 0;
+	double ejecutado = 0;
 	
 	public Double getProyectado() {
 		return proyectado;

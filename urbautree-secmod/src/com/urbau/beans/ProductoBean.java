@@ -16,6 +16,7 @@ public class ProductoBean implements Bean {
 	private double precio_4;
 	private String image_path;
 	private int stock_minimo;
+	private int familia;
 	
 	private int total_regs;
 	
@@ -127,6 +128,13 @@ public class ProductoBean implements Bean {
 	}
 	public void setPrecio_4(double precio_4) {
 		this.precio_4 = precio_4;
+	}
+	
+	public int getFamilia() {
+		return familia;
+	}
+	public void setFamilia(int familia) {
+		this.familia = familia;
 	}
 	@Override
 	public int getProgramId() {

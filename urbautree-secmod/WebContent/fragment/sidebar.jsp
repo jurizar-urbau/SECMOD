@@ -28,7 +28,7 @@
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
-                          <li><a  href="ingreso_productos.jsp?mode=add&fromInventario=false">Ingreso De Productos</a></li>
+                          <li><a  href="carga-bodega.jsp">Carga De Productos</a></li>
                       </ul>
                   </li> 
                   <li class="sub-menu" id="menu-presupuesto">
@@ -53,6 +53,9 @@
                       <% } %>
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProductosMain")) { %>
                           <li><a  href="productos.jsp">Productos</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.FamiliasMain")) { %>
+                          <li><a  href="familias.jsp">Familias</a></li>
                       <% } %>
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BancosMain")) { %>
                           <li><a  href="bancos.jsp">Bancos</a></li>

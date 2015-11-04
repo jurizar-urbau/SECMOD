@@ -19,6 +19,7 @@ public class ProductoHelperBean implements Bean {
 	private String image_path;
 	private String image_path_modified;
 	private String stock_minimo;
+	private int familia;
 	
 	private int total_regs;
 	
@@ -118,6 +119,13 @@ public class ProductoHelperBean implements Bean {
 	}
 	public void setPrecio_4(String precio_4) {
 		this.precio_4 = precio_4;
+	}
+	
+	public int getFamilia() {
+		return familia;
+	}
+	public void setFamilia(int familia) {
+		this.familia = familia;
 	}
 	@Override
 	public int getProgramId() {

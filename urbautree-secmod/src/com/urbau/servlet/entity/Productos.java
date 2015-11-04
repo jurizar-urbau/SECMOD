@@ -38,8 +38,9 @@ import static com.urbau.misc.Constants.PRECIO_4_PARAMETER;
 import static com.urbau.misc.Constants.IMAGE_PATH_PARAMETER;
 import static com.urbau.misc.Constants.STOCK_MINIMO_PARAMETER;
 import static com.urbau.misc.Constants.CODIGO_PARAMETER;
+import static com.urbau.misc.Constants.FAMILIA;
 
-@WebServlet("/Productos")
+@WebServlet("/bin/Productos")
 public class Productos extends Entity {
 	
 	private static final long serialVersionUID = 1L;
@@ -60,15 +61,15 @@ public class Productos extends Entity {
 								
 				bean.setCodigo( productoHelperBean.getCodigo() );
 				bean.setDescripcion( productoHelperBean.getDescripcion());
-				bean.setCoeficiente_unidad( Integer.valueOf( productoHelperBean.getCoeficiente_unidad() ));
 				bean.setProveedor(Integer.valueOf( productoHelperBean.getProveedor() ));
 				bean.setPrecio( Double.valueOf( productoHelperBean.getPrecio()  ));
 				bean.setPrecio_1(Double.valueOf( productoHelperBean.getPrecio_1()  ) );
 				bean.setPrecio_2(Double.valueOf( productoHelperBean.getPrecio_2()  ) );
 				bean.setPrecio_3(Double.valueOf( productoHelperBean.getPrecio_3()  ) );
 				bean.setPrecio_4(Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
-				bean.setStock_minimo(Integer.valueOf( 0 ));
+				
 				bean.setImage_path( productoHelperBean.getImage_path() );
+				bean.setFamilia( productoHelperBean.getFamilia() );
 																			
 				if( !ADD.equals( productoHelperBean.getMode()) ){
 					bean.setId( Integer.parseInt( productoHelperBean.getIdString()));
@@ -162,7 +163,8 @@ public class Productos extends Entity {
 				            				            
 				            phBean.setImage_path(file.toString());				            
 						}			           
-					}else{									
+					}else{		
+						System.out.println("checking value of: " + fieldName );
 						if(fieldName.equals( MODE_PARAMETER )){
 							phBean.setMode(fi.getString());							
 						}else if(fieldName.equals( ID_PARAMETER )){							
@@ -171,8 +173,6 @@ public class Productos extends Entity {
 							phBean.setCodigo(fi.getString());							
 						}else if(fieldName.equals(DESCRIPCION_PARAMETER)){
 							phBean.setDescripcion(fi.getString());							
-						}else if(fieldName.equals(COEFICIENTE_UNIDAD_PARAMETER)){
-							phBean.setCoeficiente_unidad(fi.getString());							
 						}else if(fieldName.equals(PROVEEDOR_PARAMETER)){							
 							phBean.setProveedor(fi.getString());
 						}else if(fieldName.equals(PRECIO_PARAMETER)){
@@ -207,9 +207,9 @@ public class Productos extends Entity {
 							}							
 						}else if(fieldName.equals(IMAGE_PATH_PARAMETER)){							
 							phBean.setImage_path_modified(fi.getString());							
-						}else if(fieldName.equals(STOCK_MINIMO_PARAMETER)){
-							phBean.setStock_minimo(fi.getString());
-						}															
+						}else if(fieldName.equals(FAMILIA)){
+							phBean.setFamilia( Integer.valueOf( fi.getString() ));
+						}
 					}
 				}  	         
 	      }catch(Exception ex) {

@@ -22,8 +22,8 @@ public class StatusPresupuesto {
 	}
 	
 	public PresupuestoReportBean get( int mes, int anio ){
-		if( mes <= 0 || anio <= 0 ){
-			return null;
+		if( mes < 0 || anio <= 0 ){
+			return blankBean(anio, mes);
 		}
 		PresupuestoReportBean bean = new PresupuestoReportBean();
 		Connection con  = null;
@@ -39,6 +39,8 @@ public class StatusPresupuesto {
 				bean.setAnio(anio);
 			    bean.setProyectado( rs.getDouble( 1 ));
 			    bean.setEjecutado ( rs.getDouble( 2 ));
+			} else {
+				return blankBean(anio,mes);
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -48,5 +50,13 @@ public class StatusPresupuesto {
 		return bean;
 	}
 	
+	private PresupuestoReportBean blankBean( int anio, int mes){
+		PresupuestoReportBean b = new PresupuestoReportBean();
+		b.setAnio( anio );
+		b.setMes( mes );
+		b.setEjecutado( 0.00 );
+		b.setProyectado( 0.00 );
+		return b;
+	}
 	
 }

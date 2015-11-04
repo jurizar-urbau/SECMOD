@@ -13,7 +13,8 @@
     </init-param>
     <init-param>
       <param-name>dburl</param-name>
-      <param-value>jdbc:mysql://127.0.0.1/volcan</param-value>
+      <param-value>jdbc:mysql://127.0.0.1/urbausec</param-value>
+      <!--param-value>jdbc:mysql://127.0.0.1/volcan</param-value-->
     </init-param>
     <init-param>
       <param-name>dbuser</param-name>
@@ -65,6 +66,10 @@
   <servlet>
     <servlet-name>Bancos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Bancos</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Familias</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.Familias</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>OptionsByPrograms</servlet-name>
@@ -258,6 +263,10 @@
     <url-pattern>/bin/Bancos</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>Familias</servlet-name>
+    <url-pattern>/bin/Familias</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>OptionsByPrograms</servlet-name>
     <url-pattern>/bin/OptionsByPrograms</url-pattern>
   </servlet-mapping>
@@ -367,6 +376,7 @@
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
-    <param-value>/Users/xumakgt/imagespath/</param-value>
+    <!-- param-value>/srv/volcancito/</param-value> -->
+   <param-value>/Users/xumakgt/imagespath/</param-value>
   </context-param>
 </web-app>

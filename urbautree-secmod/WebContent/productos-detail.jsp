@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.FamiliaBean"%>
+<%@page import="com.urbau.feeders.FamiliasMain"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="com.urbau.beans.ProveedorBean"%>
@@ -15,7 +17,10 @@
 			
 			int idProveedor = proveedores_main.get(bean.getProveedor()).getId();			
 			String mode = request.getParameter( "mode" );												
-			String imagePath = bean.getImage_path();			
+			String imagePath = bean.getImage_path();	
+			
+			FamiliasMain fm = new FamiliasMain();
+			ArrayList<FamiliaBean> familias_list = fm.getForCombo();
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -97,9 +102,19 @@
                               </div>
                           </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Packing</label>
-                              <div class="col-sm-10">                              		                          		
-	                          		<input type="text" class="form-control" name="coeficiente_unidad" id="coeficiente_unidad" value="<%= bean.getCoeficiente_unidad() %>">	                          	                          	                          	                                
+                              <label class="col-sm-2 col-sm-2 control-label">Familia</label>
+                              <div class="col-sm-10">     
+                             
+                              	    <select class="form-control" name="familia" id="familia">
+	                                  <%
+	                                  	
+	                                  	for( FamiliaBean familia : familias_list ){
+	                                  %>
+	                                  	<option value="<%= familia.getId()%>" <%=  familia.getId() == bean.getFamilia() ? "SELECTED" : "" %> ><%= familia.getNombre() %></option>
+	                                  <% } %>									  
+									  
+									</select>                     		                          			                          	
+	                          			                          	                          	                          	                                  
                               </div>
                           </div>
                           <div class="form-group">
@@ -154,13 +169,7 @@
                                   
                               </div>
                           </div>                          
-                                                    
-                          <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Stock Minimo</label>
-                              <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="number" class="form-control" name="stock_minimo" id="stock_minimo" value="<%= bean.getStock_minimo() %>">	                          	                          	                          	                                  
-                              </div>
-                          </div>
+                          
                           
                           <div class="form-group">
                           	

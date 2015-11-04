@@ -72,7 +72,7 @@ public class Ordenes extends Entity {
 			ordenBean.setMonto(monto);
 			
 			OrdenesMain om = new  OrdenesMain();
-			//boolean added = om.add( ordenBean );
+			boolean added = om.add( ordenBean );
 			ordenBean  =  om.get( ordenBean.getUid() );
 			
 			//ArrayList<OrdenDetailBean> details = new ArrayList<>();

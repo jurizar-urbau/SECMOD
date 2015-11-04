@@ -1,3 +1,5 @@
+<%@page import="com.urbau.feeders.PackingMain"%>
+<%@page import="com.urbau.beans.PackingBean"%>
 <%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.beans.ProductoBean"%>
@@ -8,6 +10,7 @@
 <% 
 	BodegasUsuariosMain bm = new BodegasUsuariosMain();
     ProductosMain pm = new ProductosMain();
+    PackingMain packmain = new PackingMain();
 	//long total_bodegas = bm.count();
 	long total_productos = pm.count();
 %>
@@ -192,9 +195,13 @@
 			                      	
 			                          <p>Cantidad</p>
 			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
-			                          Fardo <input type="radio" name="packing" value="F" >
-			                          Caja <input type="radio" name="packing" value="C">
-			                          Unidad <input type="radio" name="packing" value="U">
+			                          <%
+			                          	ArrayList<PackingBean> packlist = packmain.getAll( pbean.getId() );
+			                          	for( PackingBean pb : packlist ){
+			                          %>
+			                          	<%= pb.getNombre() %> <input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" >
+			                          <% } %>
+			                          
 			                          </br>
 			                          </br>
 			                          <!--p>Precio unitario:</p>

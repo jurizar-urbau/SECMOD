@@ -102,7 +102,8 @@ public class Constants {
 	public static final String PRECIO_3_PARAMETER = "precio_3";
 	public static final String PRECIO_4_PARAMETER = "precio_4";
 	public static final String IMAGE_PATH_PARAMETER = "imagePath";	
-	public static final String STOCK_MINIMO_PARAMETER = "stock_minimo";	
+	public static final String STOCK_MINIMO_PARAMETER = "stock_minimo";
+	public static final String FAMILIA = "familia";
 	public static final String ID_PRECIO_BORRAR_PARAMETER = "idPrecioBorrar";
 	public static final String PUNTO_DE_VENTA_PARAMETER = "puntoDeVenta";
 	public static final String PRESUPUESTO_PARAMETER = "presupuesto";
