@@ -8,7 +8,6 @@
 <%@page import="com.urbau.security.Authorization"%>
 
 <%
-		
 	String idBancoParameter = request.getParameter("banco");
 	String qParameter = request.getParameter("q");
 	String fromParameter = request.getParameter( "from" );
@@ -26,7 +25,7 @@
 		
 		int from = 0;
 		if( fromParameter != null ){
-			from = Integer.parseInt( fromParameter );
+	from = Integer.parseInt( fromParameter );
 		}				
 		
 		ArrayList<BancoMovimientoBean> bancoMovimientosList = bancosMovimientos_main.get( qParameter, from);	
@@ -34,12 +33,11 @@
 		int total_regs = -1;
 		
 		if( bancoMovimientosList.size() > 0 ){
-			total_regs = ((BancoMovimientoBean)bancoMovimientosList.get( 0 )).getTotal_regs();
+	total_regs = ((BancoMovimientoBean)bancoMovimientosList.get( 0 )).getTotal_regs();
 		}
 		
 		BancosMain bancoMain = new BancosMain();		
 		BancoBean bancoBean = bancoMain.get( idBanco );
-						
 %>
 
 

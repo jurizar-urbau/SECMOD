@@ -1,6 +1,6 @@
 
 <%@page import="com.urbau.security.Authorization"%>
-<ul class="sidebar-menu" id="nav-accordion">
+<ul class="sidebar-menu no-print" id="nav-accordion">
               
                   <!--  p class="centered">
                   <a href="home.jsp">
@@ -25,6 +25,7 @@
                       <ul class="sub">
                           <li><a  href="venta.jsp">VENTAS</a></li>
                           <li><a  href="ordenes-caja.jsp">CAJA</a></li>
+                          <li><a  href="eliminar-ordenes-caja.jsp">Eliminar orden</a></li>
                           <li><a  href="precios.jsp">Precios</a></li>
                           <li><a  href="clientes.jsp">Clientes</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>

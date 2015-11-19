@@ -1,74 +1,11 @@
-<%@page import="com.urbau.feeders.PackingMain"%>
-<%@page import="com.urbau.beans.PackingBean"%>
-<%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
-<%@page import="com.urbau.beans.BodegaBean"%>
-<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page pageEncoding="utf-8" %>
-<%@page import="com.urbau.feeders.BodegasMain"%>
-<% 
-	BodegasUsuariosMain bm = new BodegasUsuariosMain();
-    ProductosMain pm = new ProductosMain();
-    PackingMain packmain = new PackingMain();
-	//long total_bodegas = bm.count();
-	long total_productos = pm.count();
-%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<script>
-		function setClient(){
-			
-			
-		}
 		
-		function clickon( id ){
-			var ele = $( "#product-" + id );
-			ele.trigger('click');
-			console.log( 'clicking:', ele );
-		
-		} 
-		function searchProducts( q ){
-			console.log( "looking for products with [" + q + "]");
-			$( "#product-container" ).html("");
-			 $.get( "./bin/searchp?q=" + q + "&bodega=" + selected_bodega_id + "&cliente=" + selected_client_id, null, function(response){
-                 $.each(response, function(i, v) {
-                	 console.log( i, v );
-                	 
-                	 var rootele;
-                	 
-                	 var htmltoadd = 
-              "<a  href=\"javascript: clickon('" + v.id + "');\">" + 
-                     "<div class=\"col-md-3 col-sm-3 mb\">" +
-                       "<div class=\"white-panel pn\">" +
-                         "<div class=\"white-header\">" +
-                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
-                         "</div>" +
-             "<div class=\"row\">" +
-               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
-                 "<p>" + v.codigo +"</p>" +
-               "</div>" +
-               "<div class=\"col-sm-6 col-xs-6 goright\">" +
-               "<p>" + v.stock +"&nbsp;&nbsp;&nbsp;</p>" +
-             "</div>" +
-               "<div class=\"col-sm-6 col-xs-6\"></div>" +
-                         "</div>" +
-                         "<div class=\"centered\">" +
-                         
-                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-                 "<p style=\"color:red\">"+ v.precio_1 +"</p>" +
-                  "       </div>" +
-                  "     </div>" +
-                  "   </div>" +
-         "</a>";
-         			$( "#product-container" ).append( htmltoadd );
-                	
-                	 
-                 });
-              });
-		}
 		function searchClients( q ){
 			console.log( "looking for clients with [" + q + "]");
 			$( "#client-container" ).html("");
@@ -616,10 +553,6 @@
   	  		    ventasList.push( o );  	
   		    }
   		    
-  		  function removeItem( index ){
-  			  	ventasList.splice( index, 1 );
-  				renderVentasList();
-  		  }
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
@@ -627,7 +560,6 @@
   				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].price );
 				var htmltoadd =
 					"<div class='desc'>" +
-					"<button type='button' class='close' aria-hidden='true' onclick='removeItem(\"" + i + "\")'>×</button>" +
 					" 	<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
 					" 	<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
 					" 	<input type='hidden' name='price' value='" + ventasList[ i ].price + "'>" +

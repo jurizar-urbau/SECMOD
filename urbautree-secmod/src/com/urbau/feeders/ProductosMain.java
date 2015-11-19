@@ -32,7 +32,7 @@ public class ProductosMain extends AbstractMain {
 				total_regs = Util.getTotalRegs( "PRODUCTOS", "" );
 				 
 			} else {
-				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,STOCK_MINIMO,IMAGE_PATH,FAMILIA FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
+				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,STOCK_MINIMO,IMAGE_PATH,FAMILIA FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "PRODUCTOS", Util.getProductosWhere( q ) );
 			}

@@ -19,6 +19,7 @@ public class Constants {
 	public static final String ESTADO_INGRESADO = "I";
 	public static final String ESTADO_CANCELADO = "C";
 	public static final String ESTADO_DESPACHADO = "D";
+	public static final String ESTADO_PAGADO = "P";
 	
 	public static final String ADD ="add";
 	public static final String REMOVE = "remove";

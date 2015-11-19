@@ -2,14 +2,14 @@
 <%@page import="com.urbau.beans.BancoBean"%>
 <%@page import="com.urbau.feeders.BancosMain"%>
       
-<%	
-	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-		
-		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-		BancosMain rm = new BancosMain();
-		BancoBean bean = rm.get( id );
-		String mode = request.getParameter( "mode" );						
-%>  
+<%
+      	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
+            		
+            		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
+            		BancosMain rm = new BancosMain();
+            		BancoBean bean = rm.get( id );
+            		String mode = request.getParameter( "mode" );
+      %>  
 
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>

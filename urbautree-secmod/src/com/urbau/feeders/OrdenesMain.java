@@ -190,6 +190,30 @@ public class OrdenesMain extends AbstractMain {
 		}
 	}
 	
+	public boolean changeStatus( int order_id, String new_status, int id_usuario ){
+		if ( order_id <= 0 ){
+			return false;
+		}
+		Connection con = null;
+		Statement  stmt= null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String sql = "UPDATE ORDENES SET " +
+					" ULTIMA_MODIFICACION=NOW()," +
+					" ID_USUARIO="+id_usuario+", " +
+					" ESTADO='"+new_status+"' " +
+					" WHERE ID = " + order_id;
+			int total = stmt.executeUpdate( sql );
+			return total>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
 	public boolean del( OrdenBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;

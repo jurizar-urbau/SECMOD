@@ -1,0 +1,226 @@
+package com.urbau.feeders;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.urbau._abstract.AbstractMain;
+import com.urbau.beans.ExtendedFieldsBean;
+import com.urbau.db.ConnectionManager;
+import com.urbau.misc.Constants;
+import com.urbau.misc.Util;
+
+public class ExtendedFieldsBaseMain extends AbstractMain {
+		
+	private String tablename;
+	private String[] field_names;
+	private int[] data_types;
+	private String raw_fields;
+	private String raw_fields_without_id;
+	
+	public ExtendedFieldsBaseMain( String tablename, String[] field_names, int[] data_types ){
+		this.tablename   = tablename;
+		this.field_names = field_names;
+		this.data_types  = data_types;
+		this.raw_fields  = getFieldNamesWithId();
+		this.raw_fields_without_id = getFieldNames();
+	}
+	
+	private String getFieldNamesWithId(){
+		StringBuffer sb = new StringBuffer();
+		sb.append( "ID" );
+		for( String s : field_names ){
+			sb.append( "," ).append( s );
+		}
+		return sb.toString();
+	}
+	
+	private String getFieldNames(){
+		StringBuffer sb = new StringBuffer();
+		for( String s : field_names ){
+			sb.append( "," ).append(  s );
+		}
+		return sb.toString().substring( 1 );
+	}
+	
+	public ArrayList<ExtendedFieldsBean> get( String q, int from ){
+		ArrayList<ExtendedFieldsBean> list  = new ArrayList<ExtendedFieldsBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "";
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			int total_regs = 0;
+			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
+				sql = "SELECT " + raw_fields + " FROM " + tablename + " ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( sql);
+				total_regs = Util.getTotalRegs(tablename, "" );
+				 
+			} else {
+				//TODO implement 'getWhere' first just for String, later for any type or on demand types...
+				sql = "SELECT " + raw_fields + " FROM "+tablename +" " + Util.getDescriptionWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( sql);
+				total_regs = Util.getTotalRegs( tablename, Util.getDescriptionWhere( q ) );
+			}
+			while( rs.next() ){
+				
+				ExtendedFieldsBean bean = new ExtendedFieldsBean();
+
+				bean.setId        ( rs.getInt( 1 ));
+				bean.setTotal_regs( total_regs    );
+				for( String field : field_names ){
+					bean.putValue( field, Util.trimString( rs.getString( field )));
+				}
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			System.out.println( "sql: [" + sql + "]");
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
+	public ExtendedFieldsBean get( int id ){
+		if( id < 0 ){
+			return getBlankBean();
+		}
+		ExtendedFieldsBean bean = getBlankBean();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT " + raw_fields + " FROM " + tablename + " WHERE ID=" + id ;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				bean.setTotal_regs( 1 );
+				bean.setId( rs.getInt( 1 ));
+				for( String field : field_names ){
+					bean.putValue( field, Util.trimString( rs.getString( field )));
+				}												
+			}
+		} catch( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return bean;
+	}
+	
+	public ExtendedFieldsBean getBlankBean(){
+		ExtendedFieldsBean bean = new ExtendedFieldsBean();
+		bean.setId         ( -1 );
+		bean.setTotal_regs ( 0 );
+		bean.setValues     ( new HashMap<String,String>());
+		return bean;
+	}
+	
+	public boolean add( ExtendedFieldsBean bean ){
+		Connection con = null;
+		Statement  stmt= null;
+		String sql = "NOT SET";
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			sql = "INSERT INTO "+tablename+
+					" (" + raw_fields_without_id + ") " +
+						"VALUES " +
+					"(" + getQuotedValues( bean ) + ")";
+			int total = stmt.executeUpdate( sql );
+			return total>0;
+			
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
+	public boolean mod( ExtendedFieldsBean bean ){
+		if ( bean.getId() <= 0 ){
+			return false;
+		}
+		Connection con = null;
+		Statement  stmt= null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String sql = "UPDATE "+tablename+" SET " +
+					getFieldNamesWithValues( bean ) + " " +
+					"WHERE ID = " + bean.getId();
+			int total = stmt.executeUpdate( sql );
+			return total>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
+	public boolean del( ExtendedFieldsBean bean ){
+		if ( bean.getId() <= 0 ){
+			return false;
+		}
+		Connection con = null;
+		Statement  stmt= null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String sql = "DELETE FROM " + tablename + " WHERE ID = " + bean.getId();
+			int total = stmt.executeUpdate( sql );
+			return total>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
+	private String getQuotedValues( ExtendedFieldsBean bean ){
+		StringBuffer sb = new StringBuffer();
+		
+		for( String field_name : field_names ){
+			sb.append( "," ).append( getQuotedValue( bean.getValue( field_name ), data_types[ Util.getIndexOf( field_name, field_names ) ]));
+		}
+		
+		return sb.toString().substring( 1 );
+	}
+	
+	private String getQuotedValue( String value, int extended_type ){
+		switch (extended_type) {
+		case Constants.EXTENDED_TYPE_STRING:
+			return "'" + value + "'";
+		case Constants.EXTENDED_TYPE_BOOLEAN:
+			return  value;
+		case Constants.EXTENDED_TYPE_INTEGER:
+			return value;
+		case Constants.EXTENDED_TYPE_DOUBLE:
+			return value ;
+		case Constants.EXTENDED_TYPE_DATE:
+			return "'" + value + "'";
+		default:
+			return value;
+		}
+	}
+	
+	public String getFieldNamesWithValues( ExtendedFieldsBean bean ){
+		StringBuffer sb = new StringBuffer();
+		for( String field_name : field_names ){
+			sb.append( "," ).append( field_name ).append( "=" ).append( getQuotedValue( bean.getValue( field_name ), data_types[ Util.getIndexOf( field_name, field_names) ]));
+		}
+		return sb.substring( 1 );
+	}	
+	
+}

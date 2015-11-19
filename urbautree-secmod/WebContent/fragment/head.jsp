@@ -29,5 +29,18 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <%@include file="validator.jsp"%>
-    
+     <style>
+	@media print
+	{    
+	    .no-print, .no-print *
+	    {
+	        display: none !important;
+	    }
+	    
+  		a[href]:after {
+		    content: none !important;
+		  }
+	    
+	}
+	</style>
   

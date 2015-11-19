@@ -40,6 +40,32 @@ public abstract class AbstractMain {
 		return list;
 	}
 	
+	public ArrayList<String[]> getCombo( String table, String idfield, String idname  ){
+        ArrayList<String[]> list = new ArrayList<String[]>();
+		Connection con = null;
+		Statement  stmt= null;
+		ResultSet  res = null;
+		String sql = "SELECT " + idfield + ", " + idname + " FROM " + table;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			System.out.println( "executing: " + sql );
+			res = stmt.executeQuery( sql );
+			while( res.next()){
+                String str [] = new String[]{res.getString(1),res.getString(2)};
+				list.add( str );
+			}
+		} catch (Exception e) {
+			System.out.println( " error en sql: " + e.getMessage() );
+			System.out.println( ">" + sql );
+			e.printStackTrace();
+			
+		} finally {
+			ConnectionManager.close( con, stmt, res );
+		}
+		return list;
+	}
+	
 	public String getProgramName(){
 		return this.getClass().getName();
 	}

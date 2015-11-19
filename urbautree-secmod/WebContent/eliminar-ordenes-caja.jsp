@@ -107,7 +107,7 @@
           				  </span>
           				<%//}%>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> ORDENES - CAJA </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> ELIMINAR ORDENES</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               
@@ -156,7 +156,7 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">PAGAR</h4>
+			                          <h4 class="modal-title">ELIMINAR...</h4>
 			                      </div>
 			                      <div class="modal-body">
 			                       
@@ -166,30 +166,12 @@
 			                      	  <label>Nit: <b id="formnit"></b></label><br/>
 			                      	  <label>Cliente: <b id="formnombres"></b> <b id="formapellidos"></b></label><br/>
 			                      	  <label>Monto: <b id="formmonto"></b></label><br/>
-				                      <label>Tipo de pago: 
-				                      	<select id="tipo_pago" name="tipo_pago">
-	                              		<option value="efectivo">Efectivo</option>
-	                              		<option value="tarjeta">Tarjeta Credito/Debito</option>
-	                              		<option value="credito">Cliente credito</option>
-	                              		<option value="cheque">Cheque</option>
-	                              	</select>
-				                      </label><br/>
-				                      
-				                    <label>No. Cheque<input id="numero_cheque" name="numero_cheque"></label><br/>
-	                              	<label>Banco<select id="banco" name="banco"><%=bancosOptions %></select></label><br/>
-	                              	<label>Tipo de tarjeta<input id="tipo_tarjeta" name="tipo_tarjeta"></label><br/>
-	                              	<label>No. Tarjeta<input id="numero_tarjeta" name="numero_tarjeta"></label><br/>
-	                              	<label>Autorizaci&oacute;n<input id="autorizacion" name="autorizacion"></label><br/>
-	                              	<label>Monto<input id="monto" name="monto" size="7"></label>
-				                      
-				                      
-						 
+			                      	 
+						 			<h2>Confirma eliminar la orden?</h2>
 			                      </div>
 			                      <div class="modal-footer">
-			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
-			                          <button class="btn btn-theme" type="button" onclick="printBill('elcontenido');">Imprimir</button>
-			                          
+			                          <button class="btn btn-theme" type="button" onclick="dropOrder()">Si</button>
+			                      	  <button data-dismiss="modal" class="btn btn-default" type="button">No</button>
 			                      </div>
 			                  </div>
 			              </div>
@@ -204,8 +186,10 @@
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
 	<script>
+		var currentid;
 		
 		function chargeOrder( id, fecha,nit,nombres,apellidos,monto ){
+			currentid  = id;
 			$('#formid').val( id );
 			$('#formfecha').html(fecha);
 			$('#formnit').html(nit);
@@ -215,24 +199,13 @@
 			$('#myModal').modal('show');
 		}
 		
-		function printBill(content) {
-			 top.consoleRef=window.open('','myconsole',
-		  'width=350,height=250'
-		   +',menubar=0'
-		   +',toolbar=1'
-		   +',status=0'
-		   +',scrollbars=1'
-		   +',resizable=1')
-		 top.consoleRef.document.writeln(
-		  '             1721142-5      JOSE ALEJANDRO URIZAR\n1\t' + content
-		 )
-		 top.consoleRef.document.close()
-		 top.consoleRef.print()
+		function dropOrder() {
+			 alert("remove id:" + currentid );
 		}
 		
 		$("#savebutton").click(function(){
 			
-			var form =$('#modalform');
+			var form =$('#saleform');
 	     	$.ajax({
 	     		type:'POST',
 	     		dataType: "text",

@@ -14,7 +14,6 @@
     <init-param>
       <param-name>dburl</param-name>
       <param-value>jdbc:mysql://127.0.0.1/urbausec</param-value>
-      <!--param-value>jdbc:mysql://127.0.0.1/volcan</param-value-->
     </init-param>
     <init-param>
       <param-name>dbuser</param-name>
@@ -38,7 +37,6 @@
     <servlet-name>Users</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Users</servlet-class>
   </servlet>
-  
   <servlet>
     <servlet-name>IngresoBodega</servlet-name>
     <servlet-class>com.urbau.servlet.entity.IngresoBodega</servlet-class>
@@ -51,7 +49,7 @@
     <servlet-name>Productos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Productos</servlet-class>
   </servlet>
-    <servlet>
+  <servlet>
     <servlet-name>Rols</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Rols</servlet-class>
   </servlet>
@@ -59,7 +57,7 @@
     <servlet-name>Options</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Options</servlet-class>
   </servlet>
-    <servlet>
+  <servlet>
     <servlet-name>Programs</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Programs</servlet-class>
   </servlet>
@@ -122,12 +120,12 @@
   <servlet>
     <servlet-name>Packing</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Packing</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet>
     <servlet-name>PreciosCliente</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PreciosCliente</servlet-class>
   </servlet>
-  <servlet> 
+  <servlet>
     <servlet-name>ProductsFiltered</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ProductsFiltered</servlet-class>
   </servlet>
@@ -162,11 +160,11 @@
   <servlet>
     <servlet-name>TiposDeMovimientos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientos</servlet-class>
-  </servlet>     
+  </servlet>
   <servlet>
     <servlet-name>TiposDeMovimientosBanco</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposDeMovimientosBanco</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet>
     <servlet-name>TiposRubros</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TiposRubros</servlet-class>
@@ -174,7 +172,7 @@
   <servlet>
     <servlet-name>Ordenes</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Ordenes</servlet-class>
-  </servlet> 
+  </servlet>
   <servlet>
     <servlet-name>Presupuestos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Presupuestos</servlet-class>
@@ -182,21 +180,23 @@
   <servlet>
     <servlet-name>PresupuestosProyecciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosProyecciones</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet>
     <servlet-name>PresupuestosEjecuciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosEjecuciones</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet>
     <servlet-name>BodegasUsuarios</servlet-name>
     <servlet-class>com.urbau.servlet.entity.BodegasUsuarios</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet>
     <servlet-name>ClasificacionRubros</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ClasificacionRubros</servlet-class>
-  </servlet>  
-
-
+  </servlet>
+  <servlet>
+    <servlet-name>SavePayment</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SavePayment</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>BodegasUsuarios</servlet-name>
     <url-pattern>/bin/BodegasUsuarios</url-pattern>
@@ -212,6 +212,10 @@
   <servlet-mapping>
     <servlet-name>SearchClients</servlet-name>
     <url-pattern>/bin/searchc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SavePayment</servlet-name>
+    <url-pattern>/bin/SavePayment</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Ordenes</servlet-name>
@@ -233,7 +237,6 @@
     <servlet-name>Users</servlet-name>
     <url-pattern>/bin/Users</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>IngresoBodega</servlet-name>
     <url-pattern>/bin/IngresoBodega</url-pattern>
@@ -246,7 +249,7 @@
     <servlet-name>Productos</servlet-name>
     <url-pattern>/bin/Productos</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>Rols</servlet-name>
     <url-pattern>/bin/Rols</url-pattern>
   </servlet-mapping>
@@ -254,7 +257,7 @@
     <servlet-name>Options</servlet-name>
     <url-pattern>/bin/Options</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>Programs</servlet-name>
     <url-pattern>/bin/Programs</url-pattern>
   </servlet-mapping>
@@ -287,7 +290,7 @@
     <url-pattern>/bin/Paises</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  <servlet-name>MonedasList</servlet-name>
+    <servlet-name>MonedasList</servlet-name>
     <url-pattern>/bin/MonedasList</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -320,7 +323,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PreciosCliente</servlet-name>
-    <url-pattern>/bin/PreciosCliente</url-pattern>    
+    <url-pattern>/bin/PreciosCliente</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ProductsFiltered</servlet-name>
@@ -370,13 +373,28 @@
     <servlet-name>ClasificacionRubros</servlet-name>
     <url-pattern>/bin/ClasificacionRubros</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>TwoFields</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TwoFields</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TwoFields</servlet-name>
+    <url-pattern>/bin/TwoFields</url-pattern>
+  </servlet-mapping>
   
-
-
+  <servlet>
+    <servlet-name>ExtendedFields</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ExtendedFields</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExtendedFields</servlet-name>
+    <url-pattern>/bin/ExtendedFields</url-pattern>
+  </servlet-mapping>
+  
+  
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
-    <!-- param-value>/srv/volcancito/</param-value> -->
-   <param-value>/Users/xumakgt/imagespath/</param-value>
+    <param-value>/Users/xumakgt/imagespath/</param-value>
   </context-param>
 </web-app>

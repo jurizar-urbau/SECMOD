@@ -157,16 +157,16 @@
                                   </td>
                                   <td>
                                 	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_MODIFY)){ %>	                                     
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-primary btn-xs" title="Editar" alt="Editar" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
                                     <%} %>  
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_DELETE)){ %>  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-danger btn-xs" title="Eliminar" alt="Eliminar" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%} %>  
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" title="Ver" alt="Ver" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%} %>  
-                                    <button class="btn btn-success btn-xs" onclick="alias('<%= us.getId()  %>');"><i class="fa fa-tags"></i></button>
-                                    <button class="btn btn-success btn-xs" onclick="packings('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button>
+                                    <button class="btn btn-success btn-xs" title="Alias" alt="Alias" onclick="alias('<%= us.getId()  %>');"><i class="fa fa-tags"></i></button>
+                                    <button class="btn btn-success btn-xs" title="Packing" alt="Packing" onclick="packings('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button>
                                     <!-- button class="btn btn-success btn-xs" onclick="detail('<%= us.getId()  %>');"><i class="fa fa-th-list"></i></button -->
                                   </td>
                               </tr>

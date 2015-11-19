@@ -93,10 +93,11 @@ public class TiposRubrosMain extends AbstractMain {
 	public boolean add( TipoRubroBean bean ){
 		Connection con = null;
 		Statement  stmt= null;
+		String sql = "";
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "INSERT INTO TIPOS_RUBRO " +
+			sql = "INSERT INTO TIPOS_RUBRO " +
 					"(DESCRIPCION,TIPO,ID_CLASIFICACION) " +
 						"VALUES " +
 					"('"+ bean.getDescripcion()+"','" + bean.getTipo() + "'," + bean.getTipo_clasificacion() + ")";
@@ -104,6 +105,7 @@ public class TiposRubrosMain extends AbstractMain {
 			return total>0;
 			
 		} catch (Exception e) {
+			System.out.println( sql );
 			e.printStackTrace();
 			return false;
 		} finally {
@@ -178,6 +180,33 @@ public class TiposRubrosMain extends AbstractMain {
 		} finally {
 			ConnectionManager.close( con, stmt, null );
 		}
+	}
+public ArrayList<TipoRubroBean> getForCombo(){
+		
+		ArrayList<TipoRubroBean> list = new ArrayList<TipoRubroBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( "SELECT ID,DESCRIPCION,TIPO,ID_CLASIFICACION FROM TIPOS_RUBRO" );
+		
+			while( rs.next() ){
+				TipoRubroBean bean = new TipoRubroBean();
+				bean.setId( 						   rs.getInt   ( 1  ));
+				bean.setDescripcion(  Util.trimString( rs.getString( 2  )));
+				bean.setTipo( rs.getString( 3 ));
+				bean.setTipo_clasificacion( rs.getInt( 4 ));
+				bean.setTotal_regs( -1 );
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
 	}
 	
 }
