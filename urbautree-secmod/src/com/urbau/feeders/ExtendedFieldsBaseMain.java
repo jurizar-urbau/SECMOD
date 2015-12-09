@@ -20,6 +20,16 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 	private String raw_fields;
 	private String raw_fields_without_id;
 	
+	public String getTableName(){
+		return tablename;
+	}
+	public String[] getFieldNamesArray(){
+		return field_names;
+	}
+	public int[] getDataTypesArray(){
+		return data_types;
+	}
+	
 	public ExtendedFieldsBaseMain( String tablename, String[] field_names, int[] data_types ){
 		this.tablename   = tablename;
 		this.field_names = field_names;

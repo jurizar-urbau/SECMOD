@@ -32,6 +32,22 @@
                           <li><a  href="carga-bodega.jsp">Carga De Productos</a></li>
                       </ul>
                   </li> 
+                  <li class="sub-menu" id="menu-operaciones">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Planilla</span>
+                      </a>
+                      <ul class="sub">
+                        <li><a  href="planilla.jsp">Planilla</a></li>
+                      	<li><a  href="empleados.jsp">Empleados</a></li>
+                        <li><a  href="puestos.jsp">Puestos</a></li>
+                      	<li><a  href="tipos-de-pago.jsp">Tipos de pago</a></li>
+                      	<li><a  href="municipios.jsp">Municipios</a></li>
+                      	<li><a  href="motivos.jsp">Motivos de Permisos</a></li>
+                      	<li><a  href="permisos.jsp">Permisos</a></li>
+                      	<li><a  href="adelantos.jsp">Adelantos</a></li>
+                      </ul>
+                  </li> 
                   <li class="sub-menu" id="menu-presupuesto">
                   	<a href="javascript:;" >
                           <i class="fa fa-money"></i>
@@ -58,9 +74,9 @@
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.FamiliasMain")) { %>
                           <li><a  href="familias.jsp">Familias</a></li>
                       <% } %>
-                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BancosMain")) { %>
+                      
                           <li><a  href="bancos.jsp">Bancos</a></li>
-                      <% } %>
+                      
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.TiposDeMovimientosMain")) { %>
                           <li><a  href="tipo_movimiento.jsp">Tipos de Movimientos</a></li>
                       <% } %>
@@ -73,6 +89,7 @@
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProveedoresMain")) { %>
                           <li><a  href="proveedores.jsp">Proveedores</a></li>
                       <% } %>
+                      
                           
                       </ul>
                   </li>

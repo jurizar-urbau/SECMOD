@@ -127,5 +127,12 @@ public class Constants {
 	public static final String ACTIVO_PARAMETER = "activo";
 	public static final String ROL_PARAMETER = "rol";	
 
+	
+	
+	public static final int EXTENDED_TYPE_STRING  = 1;
+	public static final int EXTENDED_TYPE_BOOLEAN = 2;
+	public static final int EXTENDED_TYPE_INTEGER = 3;
+	public static final int EXTENDED_TYPE_DATE    = 4;
+	public static final int EXTENDED_TYPE_DOUBLE  = 5;
 }
 

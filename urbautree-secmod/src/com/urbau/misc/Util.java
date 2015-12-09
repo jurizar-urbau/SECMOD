@@ -9,9 +9,24 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.urbau.db.ConnectionManager;
+import com.urbau.feeders.ExtendedFieldsBaseMain;
 
 public class Util {
 
+	
+	public static synchronized String getHiddenFormFrom( ExtendedFieldsBaseMain main ){
+		StringBuffer sb = new StringBuffer();
+		sb.append( "<input type='hidden' name='tablename' id='tablename' value='"+ EncryptUtils.base64encode( main.getTableName() ) + "'></input>" );
+		
+		for( String s : main.getFieldNamesArray() ){
+			sb.append( "<input type='hidden' name='field_names' value='" + EncryptUtils.base64encode( s ) + "'></input>" );
+		}
+		
+		for( int i : main.getDataTypesArray() ){
+			sb.append( "<input type='hidden' name='data_types' value='" +  EncryptUtils.base64encode( String.valueOf( i )) + "'></input>" );
+		}
+		return sb.toString();
+	}
 	public static String getGenericWhere( String template, String q ){
 		return template.replaceAll( "${q}", q );
 	}
@@ -21,6 +36,14 @@ public class Util {
 		} else {
 			return str.trim();
 		}
+	}
+	public static int getIndexOf( String val, String[] list ){
+		for( int n=0; n<list.length ; n++ ){
+			if( val.equals( list[ n ])){
+				return n;
+			}
+		}
+		return -1;
 	}
 	
 	public static String getDate( Calendar cal ){
