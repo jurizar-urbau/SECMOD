@@ -42,6 +42,10 @@
     <servlet-class>com.urbau.servlet.entity.IngresoBodega</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>TrasladoBodega</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TrasladoBodega</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>Bodegas</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Bodegas</servlet-class>
   </servlet>
@@ -150,6 +154,10 @@
     <servlet-class>com.urbau.servlet.entity.SearchExistentProducts</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SearchExistentProductsInStore</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SearchExistentProductsInStore</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>SearchClients</servlet-name>
     <servlet-class>com.urbau.servlet.entity.SearchClients</servlet-class>
   </servlet>
@@ -177,6 +185,11 @@
     <servlet-name>Presupuestos</servlet-name>
     <servlet-class>com.urbau.servlet.entity.Presupuestos</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GeneratePlanilla</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.GeneratePlanilla</servlet-class>
+  </servlet>
+  
   <servlet>
     <servlet-name>PresupuestosProyecciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosProyecciones</servlet-class>
@@ -210,6 +223,10 @@
     <url-pattern>/bin/searchexistentp</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>SearchExistentProductsInStore</servlet-name>
+    <url-pattern>/bin/sepis</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>SearchClients</servlet-name>
     <url-pattern>/bin/searchc</url-pattern>
   </servlet-mapping>
@@ -226,6 +243,11 @@
     <url-pattern>/config/UrbauConfig</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>GeneratePlanilla</servlet-name>
+    <url-pattern>/bin/generateplanilla</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>VerifyUser</servlet-name>
     <url-pattern>/bin/VerifyUser</url-pattern>
   </servlet-mapping>
@@ -240,6 +262,10 @@
   <servlet-mapping>
     <servlet-name>IngresoBodega</servlet-name>
     <url-pattern>/bin/IngresoBodega</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TrasladoBodega</servlet-name>
+    <url-pattern>/bin/TrasladoBodega</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Bodegas</servlet-name>

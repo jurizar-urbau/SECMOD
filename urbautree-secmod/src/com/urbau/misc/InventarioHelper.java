@@ -292,9 +292,11 @@ public class InventarioHelper {
 		try{
 			String checkIfTableExistCommand = "SHOW TABLES  LIKE 'INV"+idBodega+"'";			
 			rs = stmt.executeQuery( checkIfTableExistCommand);
-			rs.beforeFirst();
-			rs.last();			
-			return  rs.getRow();
+			if( rs.next() ){
+				return 1;
+			} else {
+				return 0;
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			return 0;

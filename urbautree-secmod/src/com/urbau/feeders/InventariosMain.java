@@ -149,6 +149,7 @@ public class InventariosMain extends AbstractMain {
 	}
 	public boolean mod( InvetarioBean bean ){
 		if ( bean.getIdBodega() <= 0 ){
+			System.out.println("bodega id["+ bean.getId() + "]" );
 			return false;
 		}
 		Connection con = null;

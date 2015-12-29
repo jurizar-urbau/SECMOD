@@ -200,6 +200,9 @@ public class Util {
 	public static boolean isEmpty( String str ){
 		return ( str == null || str.trim().length() == 0 || "null".equals( str ));
 	}
+	public static boolean isEmpty( int str ){
+		return str <= 0;
+	}
 	public static String getReceptoresWhere( String q ){
 		if ( q == null || q.trim().length() == 0 ){ 
 			return "";
@@ -544,5 +547,60 @@ public class Util {
  			return sb.toString();
  		}
  	}
+ 	
+ 	public static int missingDaysOn15( int empleado, int month, int year ){
+ 		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT COUNT(*) FROM PERMISOS WHERE EMPLEADO=" + empleado + " AND FECHA BETWEEN '" + year + "-" + month + "-01' AND '" + year + "-" + month + "-15'";		
+		int total_regs = -1;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				total_regs = rs.getInt( 1 );
+			}
+		} catch( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return total_regs; 		
+ 	}
+ 	
+ 	public static int missingDaysOn30( int empleado, int month, int year ){
+ 		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT COUNT(*) FROM PERMISOS WHERE EMPLEADO=" + empleado + " AND FECHA BETWEEN '" + year + "-" + month + "-16' AND '" + year + "-" + month + "-31'";		
+		int total_regs = -1;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				total_regs = rs.getInt( 1 );
+			}
+		} catch( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return total_regs; 		
+ 	}
+	public static String arrayToFlat(String[] parameterValues) {
+		StringBuffer sb = new StringBuffer();
+		if( parameterValues.length == 0 ){
+			return "empty list";
+		} else {
+			for( String s : parameterValues ){
+				sb.append( "," ).append( s );
+			}	
+		}
+		return sb.toString().substring( 1 );
+	}
 
 }

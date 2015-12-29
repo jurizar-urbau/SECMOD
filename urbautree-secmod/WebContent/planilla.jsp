@@ -46,6 +46,9 @@
 		function add(){
 			location.replace( "planilla-detail.jsp?mode=add" );
 		}
+		function generate( pid , periodo, mes, anio ){
+			location.replace( "planilla-data.jsp?pid=" + pid + "&periodo=" +  periodo + "&mes="+  mes + "&anio=" +  anio);
+		}
 	</script>
 	</head>
    
@@ -131,7 +134,7 @@
                                       <!-- button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button> -->
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>');"><i class="fa fa-book"></i></button>
+                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>','<%= us.getValue( "DIA") %>','<%= us.getValue( "MES") %>','<%= us.getValue( "ANIO") %>');"><i class="fa fa-book"></i></button>
                                   </td>
                               </tr>
                               <% } %>

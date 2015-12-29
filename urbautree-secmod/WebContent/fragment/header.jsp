@@ -1,3 +1,4 @@
+<div class="no-print">
 <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Ocultar/Mostrar navegaci&oacute;n"></div>
               </div>
@@ -21,4 +22,5 @@
               		<li><a class="profile" href="#">[ <%= loggedUser.getNombre() %> ]@[ <%= loggedUser.getNombre_punto_venta() %> ] </a></li>
                     <li><a class="logout" href="bin/Logout">Salir</a></li>
               </ul>
+            </div>
             </div>

@@ -23,7 +23,8 @@
       		
       		ExtendedFieldsBaseMain rm = new ExtendedFieldsBaseMain( "EMPLEADOS", 
       				new String[]{"NOMBRES","APELLIDOS","DIRECCION","TELEFONO","NUMERO_CEDULA","NIT","ESTADO_CIVIL","SEXO","FECHA_DE_NACIMIENTO","HIJOS","MUNICIPIO",
-      				"PUESTO","TIPO_DE_PAGO","NUMERO_CUENTA","SUELDO_BASE","BONIFICACION","FECHA_DE_INGRESO",
+      				"PUESTO","TIPO_DE_PAGO","NUMERO_CUENTA","SUELDO_BASE","BONIFICACION","INCENTIVO",
+      				"FECHA_DE_INGRESO",
       				"FECHA_DE_EGRESO","PORCENTAJE_AHORRO","CANTIDAD_DE_AHORRO","AHORRO","PAGA_IGSS","AFILIACION_IGSS","ESTADO","BANCO",
       				"DESCUENTO_FIJO","ES_TEMPORAL","ES_IMPRIMIBLE"
       		},
@@ -42,6 +43,7 @@
       				Constants.EXTENDED_TYPE_INTEGER,
       				Constants.EXTENDED_TYPE_INTEGER,
       				Constants.EXTENDED_TYPE_STRING,
+      				Constants.EXTENDED_TYPE_DOUBLE,
       				Constants.EXTENDED_TYPE_DOUBLE,
       				Constants.EXTENDED_TYPE_DOUBLE,
       				Constants.EXTENDED_TYPE_DATE,
@@ -133,6 +135,7 @@
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "NUMERO_CUENTA" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "SUELDO_BASE" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "BONIFICACION" ) %>"></input>
+		                        <input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "INCENTIVO" ) %>"></input>
 		                      	
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "FECHA_DE_INGRESO" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "FECHA_DE_EGRESO" ) %>"></input>
@@ -165,6 +168,7 @@
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_STRING )) %>"></input>
+		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DOUBLE )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DOUBLE )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DOUBLE )) %>"></input>
 		                      	
@@ -449,6 +453,16 @@
 			                          		<input type="text" class="form-control" name="BONIFICACION" id="BONIFICACION" value="<%= bean.getValue( "BONIFICACION" ) %>">	                          	                          
 			                          	<%}else{%>
 			                          		<input type="text" class="form-control" name="BONIFICACION" id="BONIFICACION" disabled value="<%= bean.getValue( "BONIFICACION" )  %>">	                          		
+			                          	<%}%>   	                                  
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Incentivo</label> 
+		                              	<div class="col-sm-10">
+		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>
+		                              		<input type="number" step="0.01" min="0"  class="form-control" name="INCENTIVO" id="INCENTIVO" value="<%= bean.getValue( "INCENTIVO" ) %>">	                          	                          
+			                          	<%}else{%>
+			                          		<input type="number" step="0.01" min="0"  class="form-control" name="INCENTIVO" id="INCENTIVO" disabled value="<%= bean.getValue( "INCENTIVO" )  %>">	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>

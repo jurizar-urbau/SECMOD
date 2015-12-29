@@ -8,8 +8,11 @@ import java.util.HashMap;
 
 import com.urbau._abstract.AbstractMain;
 import com.urbau.beans.ExtendedFieldsBean;
+import com.urbau.beans.KeyValue;
+import com.urbau.beans.KeyValueBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
+import com.urbau.misc.ExtendedFieldsFilter;
 import com.urbau.misc.Util;
 
 public class ExtendedFieldsBaseMain extends AbstractMain {
@@ -73,6 +76,62 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			} else {
 				//TODO implement 'getWhere' first just for String, later for any type or on demand types...
 				sql = "SELECT " + raw_fields + " FROM "+tablename +" " + Util.getDescriptionWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( sql);
+				total_regs = Util.getTotalRegs( tablename, Util.getDescriptionWhere( q ) );
+			}
+			while( rs.next() ){
+				
+				ExtendedFieldsBean bean = new ExtendedFieldsBean();
+
+				bean.setId        ( rs.getInt( 1 ));
+				bean.setTotal_regs( total_regs    );
+				for( String field : field_names ){
+					bean.putValue( field, Util.trimString( rs.getString( field )));
+				}
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			System.out.println( "sql: [" + sql + "]");
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
+	
+	
+	
+	
+	public ArrayList<ExtendedFieldsBean> getSubdetail( String q, int from, KeyValue[] keysAndValues ){
+		ArrayList<ExtendedFieldsBean> list  = new ArrayList<ExtendedFieldsBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "";
+		try{
+			con = ConnectionManager.getConnection(); 
+			stmt = con.createStatement();
+			int total_regs = 0;
+			StringBuffer plusWhere = new StringBuffer();
+			for( KeyValue kv : keysAndValues ){
+				if( plusWhere.length() > 0 ){
+					plusWhere.append( " AND " );
+				} else {
+					plusWhere.append( " WHERE " );
+				}
+				plusWhere.append( kv.getKey() ).append( " = '" ).append( kv.getValue() ).append( "'" );
+			}
+			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
+				sql = "SELECT " + raw_fields + " FROM " + tablename + " " + plusWhere + " ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				System.out.println( "sql: [" + sql + "]");
+				rs = stmt.executeQuery( sql);
+				total_regs = Util.getTotalRegs(tablename, "" );
+				 
+			} else {
+				//TODO implement 'getWhere' first just for String, later for any type or on demand types...
+				sql = "SELECT " + raw_fields + " FROM "+tablename +" " + plusWhere + " AND " + Util.getDescriptionWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				System.out.println( "sql: [" + sql + "]");
 				rs = stmt.executeQuery( sql);
 				total_regs = Util.getTotalRegs( tablename, Util.getDescriptionWhere( q ) );
 			}
@@ -231,6 +290,37 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			sb.append( "," ).append( field_name ).append( "=" ).append( getQuotedValue( bean.getValue( field_name ), data_types[ Util.getIndexOf( field_name, field_names) ]));
 		}
 		return sb.substring( 1 );
+	}
+	
+	public ArrayList<ExtendedFieldsBean> getAll(ExtendedFieldsFilter filter) {
+		ArrayList<ExtendedFieldsBean> list  = new ArrayList<ExtendedFieldsBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "";
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			sql = "SELECT " + raw_fields + " FROM "+tablename +" WHERE " + filter.getWhereClause()  + "  ORDER BY ID DESC";
+			rs = stmt.executeQuery( sql);
+
+			while( rs.next() ){
+				
+				ExtendedFieldsBean bean = new ExtendedFieldsBean();
+
+				bean.setId        ( rs.getInt( 1 ));
+				for( String field : field_names ){
+					bean.putValue( field, Util.trimString( rs.getString( field )));
+				}
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			System.out.println( "sql: [" + sql + "]");
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
 	}	
 	
 }

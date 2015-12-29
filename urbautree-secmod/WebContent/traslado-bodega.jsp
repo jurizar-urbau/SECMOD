@@ -26,11 +26,11 @@
 			console.log( 'clicking:', ele );
 		
 		} 
-		function searchProducts( q ){
+		function searchProducts( q, bo ){
 			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
-			console.log( "looking for products with [" + q + "]");
+			console.log( "looking for products with [" + q + "," + bo + "]");
 			$( "#product-container" ).html("");
-			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+			$.get( "./bin/sepis?q=" + q + "&bo=" + bo, null, function(response){
 			
                  $.each(response, function(i, v) {
                 	 console.log( i, v );
@@ -56,7 +56,7 @@
                          "<div class=\"centered\">" +
                          
                  "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-                 "<p style=\"color:red\"></p>" +
+                 "<p style=\"color:green\">"+v.stock+" disponibles</p>" +
                   "       </div>" +
                   "     </div>" +
                   "   </div>" +
@@ -76,17 +76,7 @@
 	</head>
    
    <body>
-   
-<!-- div id="fb-root"></div>  FACEBOOK DIV -->
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-  <section id="container" >
+     <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
@@ -118,12 +108,15 @@
           <section class="wrapper">
 
               <div class="row">
-              	<h1></h1>
-                  <div class="col-lg-9  main-chart">
+              	
+              	  <div class="col-lg-9  main-chart">
+              	  <h3>TRASLADO ENTRE BODEGAS</h3>
                       <div class="row mt">
-                      
                       <div class="col-lg-12" onclick="chooseStore()">
-                      	Bodega: <b><span id="storedisplay"></span></b>
+                      	Bodega origen: <b><span id="storedisplay"></span></b>
+                      </div>
+                      <div class="col-lg-12" onclick="chooseStore2()">
+                      	Bodega destino: <b><span id="storedisplay2"></span></b>
                       </div>
                       <div class="col-lg-12">
 		          		<form>
@@ -142,7 +135,7 @@
                         	ArrayList<ProductoBean> plist = pm.get(null, 0 );
                         for( ProductoBean pbean: plist ){
                             %>
-    			<a data-toggle="modal" href="carga-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
+    			<a data-toggle="modal" href="traslado-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
     			<% } 
                         %>    	
                         <%
@@ -229,6 +222,7 @@
                       </div>  
                       <form name="saleform" id="saleform" method="POST">
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
+                           <input type='hidden' name='bodega2id' id='bodega2id' value=''>
 		                   <div id="sale-container">
 		                                      
 		                      
@@ -248,21 +242,13 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Seleccione una bodega...</h4>
+			                          <h4 class="modal-title">Seleccione la bodega origen...</h4>
 			                      </div>
 			                      <div class="modal-body">
 				                      <%
-				                      		int fromS = 0;
-											if( request.getParameter( "from" ) != null ){
-												fromS = Integer.parseInt( request.getParameter( "from" ) );
-											}
-											
+				                      		
 											ArrayList<BodegaBean> listS = bm.getForUser( loggedUser.getId() );
-											int total_regsS = -1;
 											
-											if( listS.size() > 0 ){
-												total_regsS = ((BodegaBean)listS.get( 0 )).getTotal_regs();
-											}
 										%>
 										 <table class="table table-striped table-advance table-hover">
 	                  	  	  
@@ -308,17 +294,67 @@
 		          </div>
       <!-- stores modal ends -->
 		          
-      <!--main content end-->
-      <!--footer start-->
-      <!-- footer class="site-footer">
-          <div class="text-center">
-               <a href="http://www.urbau-digital.com">2015 - Urbau Digital</a>
-              <a href="home.jsp" class="go-top">
-                  <i class="fa fa-angle-up"></i>
-              </a>
-          </div>
-      </footer -->
-      <!--footer end-->
+
+    <!-- stores2 modal starts -->
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myStores2" class="modal fade">
+						<form id="modalform" name="modalform" >
+						  <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Seleccione la bodega destino...</h4>
+			                      </div>
+			                      <div class="modal-body">
+				                      <%
+				                      		
+											ArrayList<BodegaBean> listS2 = bm.getForUser( loggedUser.getId() );
+											
+										%>
+										 <table class="table table-striped table-advance table-hover">
+	                  	  	  
+	                  	  	  <thead>
+                              <tr>
+                              	<th></th>
+                              	<th>Id</th>
+                                  <th>Nombre</th>                                                                                                      
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <%
+                              int bodega2Count = 0;
+                              	for(BodegaBean bean: listS2 ){
+                              %>
+                              <tr>
+                              	  <td>
+                              	  	<input type="radio" name="bodega2id" value="<%= bean.getId() %>,<%= bean.getNombre()  %>" <%= bodega2Count == 0 ? "checked" : "" %>>
+                              	  </td>
+                                  <td>
+                                  	<%= bean.getId() %>
+								  </td>
+								  <td>
+								  	<%= bean.getNombre() %>
+								 </td>                                  
+                                                                            
+                                  
+                              </tr>
+                              <% 
+                              bodega2Count++;
+                              	} %>
+                              
+                              </tbody>
+                          </table>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" onclick="setStore2();">Seleccionar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>
+      <!-- stores2  modal ends -->		          
+		          
+     
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -343,6 +379,7 @@
   <script type="text/javascript">
   		  
   		  var selected_bodega_id;
+  		  var selected_bodega_id2;
   		  var allowed_prices;
   		  
 		  function parseSecond(val) {
@@ -366,6 +403,15 @@
 				$('#bodegaid').val( selected_bodega_id );
 		    	hideStore();
 		    }
+		    function setStore2(){
+		    	var value = $('input[name=bodega2id]:checked').val();
+		    	var values = value.split(',');
+		    	console.log('bodega2', values[0]);
+		    	selected_bodega_id2 = values[0];
+				$('#storedisplay2').html(value);
+				$('#bodega2id').val( selected_bodega_id2 );
+		    	hideStore2();
+		    }
   			function addToStore( productid, imagepath, productname, amount, packvalue ){
   				addS( amount, packvalue, productname, imagepath,productid );
   				hideModal('#myModal' + productid );
@@ -376,6 +422,9 @@
   			function chooseStore(){
   				$('#myStores').modal('show');
   			}
+  			function chooseStore2(){
+  				$('#myStores2').modal('show');
+  			}
   			function hideModal( id ){
   				$(id).modal('hide');
   			}
@@ -383,6 +432,9 @@
   			
   			function hideStore(){
   				$('#myStores').modal('hide');
+  			}
+  			function hideStore2(){
+  				$('#myStores2').modal('hide');
   			}
   			
   			
@@ -393,7 +445,7 @@
     	     	$.ajax({
     	     		type:'POST',
     	     		dataType: "text",
-    	 			url: './bin/IngresoBodega',
+    	 			url: './bin/TrasladoBodega',
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		      
@@ -468,10 +520,11 @@
 	        $( "#search-query-3" ).keyup(function() {
 	        	var value = $( "#search-query-3" ).val();
 	        	console.log( "value", value );
-	        	searchProducts( value );
+	        	searchProducts( value, selected_bodega_id );
 			});
 	    });
 	    setStore();
+	    setStore2();
 	</script>
   </body>
 </html>

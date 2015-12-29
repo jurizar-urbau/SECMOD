@@ -1,3 +1,5 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.GregorianCalendar"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.beans.ExtendedFieldsBean"%>
@@ -82,13 +84,15 @@ ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	
 		                              		<select class="form-control" name="DIA" id="DIA">
-		                              				<option value="1" <%=   "1".equals( String.valueOf(  bean.getValue( "DIA" )) ) ? "SELECTED" : ""%>>1</option>
-		                              				<option value="15" <%= "15".equals( String.valueOf(  bean.getValue( "DIA" )) ) ? "SELECTED" : ""%>>15</option>
+		                              				
+		                              				<option value="15" <%= "15".equals( bean.getValue( "DIA" ) ) ? "SELECTED" : ""%>>15</option>
+		                              				<option value="30" <%=   "30".equals( bean.getValue( "DIA" ) ) ? "SELECTED" : ""%>>30</option>
 		                              		</select>                          		
 			                          	<%}else{%>
 			                          		<select class="form-control" name="DIA" id="DIA" disabled>
-		                              				<option value="1" <%=   "1".equals( String.valueOf(  bean.getValue( "DIA" )) ) ? "SELECTED" : ""%>>1</option>
-		                              				<option value="15" <%= "15".equals( String.valueOf(  bean.getValue( "DIA" )) ) ? "SELECTED" : ""%>>15</option>
+		                              				
+		                              				<option value="15" <%= "15".equals( bean.getValue( "DIA" )) ? "SELECTED" : ""%>>15</option>
+		                              				<option value="30" <%=   "30".equals( bean.getValue( "DIA" )) ? "SELECTED" : ""%>>30</option>
 		                              		</select>	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
@@ -99,19 +103,61 @@ ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD
 		                            	<label class="col-sm-2 col-sm-2 control-label">Mes</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="MES" id="MES" value="<%= bean.getValue( "MES" ) %>">	                          	                          
+			                          		<select class="form-control" name="MES" id="MES">
+		                              				<option value="1" <%=   "1".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Enero</option>
+		                              				<option value="2" <%=   "2".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Febrero</option>
+		                              				<option value="3" <%=   "3".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Marzo</option>
+		                              				<option value="4" <%=   "4".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Abril</option>
+		                              				<option value="5" <%=   "5".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Mayo</option>
+		                              				<option value="6" <%=   "6".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Junio</option>
+		                              				<option value="7" <%=   "7".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Julio</option>
+		                              				<option value="8" <%=   "8".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Agosto</option>
+		                              				<option value="9" <%=   "9".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Septiembre</option>
+		                              				<option value="10" <%=   "10".equals(  bean.getValue( "MES" )) ? "SELECTED" : ""%>>Octubre</option>
+		                              				<option value="11" <%=   "11".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Noviembre</option>
+		                              				<option value="12" <%=   "12".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Diciembre</option>
+		                              		</select>	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="MES" id="MES" disabled value="<%= bean.getValue( "MES" )  %>">	                          		
+			                          		<select class="form-control" name="MES" id="MES" disabled>
+		                              				<option value="1" <%=   "1".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Enero</option>
+		                              				<option value="2" <%=   "2".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Febrero</option>
+		                              				<option value="3" <%=   "3".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Marzo</option>
+		                              				<option value="4" <%=   "4".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Abril</option>
+		                              				<option value="5" <%=   "5".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Mayo</option>
+		                              				<option value="6" <%=   "6".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Junio</option>
+		                              				<option value="7" <%=   "7".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Julio</option>
+		                              				<option value="8" <%=   "8".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Agosto</option>
+		                              				<option value="9" <%=   "9".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Septiembre</option>
+		                              				<option value="10" <%=   "10".equals(  bean.getValue( "MES" )) ? "SELECTED" : ""%>>Octubre</option>
+		                              				<option value="11" <%=   "11".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Noviembre</option>
+		                              				<option value="12" <%=   "12".equals(  bean.getValue( "MES" ))  ? "SELECTED" : ""%>>Diciembre</option>
+		                              		</select>	 	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
 		                          	<div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">A&nacute;o</label> 
 		                              	<div class="col-sm-10">
+		                              	<%
+		                              		Calendar cal = GregorianCalendar.getInstance();
+		                              		cal.setTimeInMillis( System.currentTimeMillis() );
+		                              		int currentYear = cal.get( Calendar.YEAR );
+		                              		int previousYear = currentYear -1;
+		                              		int nextYear = currentYear +1;
+		                              				
+		                              	%>
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="ANIO" id="ANIO" value="<%= bean.getValue( "ANIO" ) %>">	                          	                          
+			                          		<select class="form-control" name="ANIO" id="ANIO">
+		                              				<option value="<%= previousYear  %>" <%=   String.valueOf( previousYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= previousYear %></option>
+		                              				<option value="<%= currentYear  %>" <%=   String.valueOf( currentYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= currentYear %></option>
+		                              				<option value="<%= nextYear  %>" <%=   String.valueOf( nextYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= nextYear %></option>
+		                              		</select>	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="ANIO" id="ANIO" disabled value="<%= bean.getValue( "ANIO" )  %>">	                          		
+			                          		<select class="form-control" name="ANIO" id="ANIO" disabled>
+		                              				<option value="<%= previousYear  %>" <%=   String.valueOf( previousYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= previousYear %></option>
+		                              				<option value="<%= currentYear  %>" <%=   String.valueOf( currentYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= currentYear %></option>
+		                              				<option value="<%= nextYear  %>" <%=   String.valueOf( nextYear ).equals( bean.getValue( "ANIO" )) ? "SELECTED" : ""%>><%= nextYear %></option>
+		                              		</select>	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
