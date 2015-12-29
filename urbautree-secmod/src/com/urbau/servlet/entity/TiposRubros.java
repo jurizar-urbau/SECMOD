@@ -37,7 +37,9 @@ public class TiposRubros extends Entity {
 				TipoRubroBean bean = new TipoRubroBean();
 								
 				String descripcionParameter = request.getParameter(DESCRIPCION_PARAMETER);
-				bean.setDescripcion(descripcionParameter);													
+				bean.setDescripcion(descripcionParameter);
+				bean.setTipo( request.getParameter( "tipo" ));
+				bean.setTipo_clasificacion( Integer.valueOf( request.getParameter( "clasificacion" )));
 					
 				if( !ADD.equals( modeParameter ) ){
 					bean.setId( Integer.parseInt( idParameter));

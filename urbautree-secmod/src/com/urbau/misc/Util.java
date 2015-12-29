@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import com.urbau.db.ConnectionManager;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
@@ -602,5 +603,8 @@ public class Util {
 		}
 		return sb.toString().substring( 1 );
 	}
-
+	public static synchronized String getRandomTransactionID( String prefix ){
+		Random random = new Random( System.currentTimeMillis() );
+		return prefix + random.nextLong();
+	}
 }

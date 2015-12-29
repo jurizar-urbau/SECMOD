@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
+import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.beans.InvetarioBean;
+import com.urbau.beans.UsuarioBean;
+import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.InventariosMain;
+import com.urbau.misc.Constants;
 import com.urbau.misc.InventarioHelper;
 import com.urbau.misc.Util;
 
@@ -22,6 +26,7 @@ public class TrasladoBodega extends Entity {
 	public static final String ESTADO_INGRESADO = "I";
 	public static final String ESTADO_CANCELADO = "C";
 	public static final String ESTADO_DESPACHADO = "D";
+	public static final int TRANSIT_PREFIX = 1000000;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
@@ -40,11 +45,11 @@ public class TrasladoBodega extends Entity {
 			String bodegaidStr = request.getParameter( "bodegaid" );
 			String bodegaid2Str = request.getParameter( "bodega2id" );
 			int bodegaid = Integer.valueOf( bodegaidStr );
-			int bodega2id = Integer.valueOf( bodegaid2Str );
+			int bodega2id = TRANSIT_PREFIX +  Integer.valueOf( bodegaid2Str );
 			String productidStr[] = request.getParameterValues( "productid" );
 			String amountStr[] = request.getParameterValues( "amount" );
 			String packStr[] = request.getParameterValues( "pack" );
-			
+			UsuarioBean user = this.getLoggedUser(session);
 			String message = validateParameters( bodegaidStr, bodegaid2Str, productidStr, amountStr, packStr );
 			
 			if( message.length() > 0 ){
@@ -58,12 +63,26 @@ public class TrasladoBodega extends Entity {
 			
 			InventariosMain im = new InventariosMain();
 			
+			ExtendedFieldsBaseMain traslado_head = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
+					new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO"}, 
+					new int[] {Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER}
+					);
+			
+			ExtendedFieldsBean transaction = new ExtendedFieldsBean();
+			transaction.putValue("BODEGA_ORIGEN",  bodegaidStr  );
+			transaction.putValue("BODEGA_DESTINO", bodegaid2Str );
+			transaction.putValue( "FECHA", "2015-12-28" ); //TODO 
+			transaction.putValue( "ESTADO", "C" );
+			transaction.putValue( "USUARIO",  String.valueOf( user.getId() ));
+			
+			String generatedID = traslado_head.addForTransaction( transaction );
+			
 			for( int i = 0; i < productidStr.length; i++ ){
 				int prodid = Integer.valueOf( productidStr[ i ] );
 				int amount = Integer.valueOf( amountStr[ i ] );
 				int pack = Integer.valueOf( packStr[ i ] );
-				
-				
+					
+					
 					InvetarioBean a = im.get ( prodid, "a", bodegaid );
 					InvetarioBean b = im.get ( prodid, "a", bodega2id );
 					
@@ -83,7 +102,7 @@ public class TrasladoBodega extends Entity {
 							InventarioHelper ih = new InventarioHelper();
 							ih.addBodega( b.getIdBodega() );
 							if( im.add( b ) ){
-								message = "Carga agregada exitosamente!";
+								message = generatedID + "|Carga agregada exitosamente!";
 							} else {
 								message = "No se pudo crear en bodega destino.";
 							}
@@ -98,7 +117,7 @@ public class TrasladoBodega extends Entity {
 						
 						if( im.mod( a ) ) {
 							if( im.mod( b ) ){
-								message = "Carga agregada exitosamente!";	
+								message = generatedID + "|Carga agregada exitosamente!";	
 							} else {
 								message = "No se pudo crear en bodega destino";
 							}

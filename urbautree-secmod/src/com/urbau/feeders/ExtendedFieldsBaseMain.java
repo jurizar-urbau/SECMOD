@@ -215,6 +215,30 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		}
 	}
 	
+	public String addForTransaction( ExtendedFieldsBean bean ){
+		Connection con = null;
+		Statement  stmt= null;
+		String sql = "NOT SET";
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String transid = Util.getRandomTransactionID( "EFT" ); 
+			sql = "INSERT INTO "+tablename+
+					" (" + raw_fields_without_id + ",TRANSID) " +
+						"VALUES " +
+					"(" + getQuotedValues( bean ) + ",'" + transid + "')";
+			int total = stmt.executeUpdate( sql );
+			return total > 0 ? transid :"NULL"; 
+			
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+			return "NULL";
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
 	public boolean mod( ExtendedFieldsBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;

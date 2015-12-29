@@ -209,7 +209,7 @@
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
                   <div class="col-lg-3 ds">
-                   <h3>INGRESO ACTUAL</h3>
+                   <h3>TRASLADO ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">
                           Total Productos:
@@ -228,7 +228,7 @@
 		                      
 		                      
 		                  </div>
-		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar</button>
+		                  <button class="btn btn-theme" type="button" id="savesalebutton">Trasladar</button>
                   	</form>
                   </div>
               </div><!--/row -->
@@ -448,11 +448,31 @@
     	 			url: './bin/TrasladoBodega',
     	 			data: form.serialize(),
     	 			
-    		        success: function(msg){		      
-    		        	alert( msg );
-    		        	if( !msg.startsWith('error') ){
-    		        		location.reload();	
+    		        success: function(msg){		
+    		        	var messages = msg.split("|");
+    		        	var idm =-1;
+    		        	var msgm;
+    		        	if ( messages.length == 2){
+    		        		idm = messages[ 0 ];
+    		        		msgm = messages[ 1 ];
+    		        	} else {
+    		        		msgm = msg;
     		        	}
+    		        	alert(msgm);
+    		            console.log( "id:", idm );
+    		            console.log( "msgm:", msgm );
+    		            console.log( "msg:", msg );
+    		        	if( idm !== -1 ){ 
+    		        		window.open( "print-traslado.jsp?id="+idm);
+    		        		location.reload();	
+    		        	 } 
+    		        	
+    		        	
+    		        	/* 
+    		        	if( !msg.startsWith('error') ){
+    		        		window.open( "print-traslado.jsp?id=" );
+    		        		location.reload();	
+    		        	} */
     		            
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){

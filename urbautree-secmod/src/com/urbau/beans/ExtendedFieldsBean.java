@@ -43,7 +43,13 @@ public class ExtendedFieldsBean {
 			return value;
 		}
 	}
-	
+	public int getValueAsInt( String key ){
+		if ( key != null ){
+			return Integer.valueOf( getValue( key ));
+		} else {
+			return -1;	
+		}
+	}
 	
 	
 }

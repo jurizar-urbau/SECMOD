@@ -19,15 +19,6 @@
    
    <body>
    
-<!-- div id="fb-root"></div>  FACEBOOK DIV -->
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -60,7 +51,7 @@
           <section class="wrapper">
 
               <div class="row">
-                  <div class="col-lg-9 main-chart">
+                  <div class="col-lg-12 main-chart">
                   
                     <div class="row mtbox">
                      
@@ -68,7 +59,7 @@
                         	<div class="box1">
                         		<a href="venta.jsp">
                   					<span class="li_shop"></span>
-                  					<h3>Pedido</h3>
+                  					<h3>Pedidos</h3>
                   				</a>
                         	</div>
                   			<p>Ingresar un nuevo pedido.</p>
@@ -79,7 +70,7 @@
                         <div class="box1">
                         	<a href="ordenes-caja.jsp">
 			                  <span class="li_stack"></span>
-			                  <h3>Cobro</h3>
+			                  <h3>Cobros</h3>
 			                </a>
 		                </div>
 		                <p>Cobrar un pedido.</p>
@@ -89,7 +80,7 @@
                       	<div class="box1">
                         	<a href="carga-bodega.jsp">
                   				<span class="li_data"></span>
-                  				<h3>Bodega</h3>
+                  				<h3>Bodegas</h3>
                   	        </a>
                         </div>
                   		<p>Cargar productos a Bodega.</p>
@@ -110,7 +101,7 @@
                       	<div class="box1">
                       		<a href="traslado-bodega.jsp">
 	                  			<span class="li_truck"></span>
-	                  			<h3>Traslado</h3>
+	                  			<h3>Traslados</h3>
                   			</a>
                         </div>
                   		<p>Trasladar producto entre bodegas</p>
@@ -228,27 +219,7 @@
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
                   
-                  <div class="col-lg-3 ds">
-                  <!-- CALENDAR-->
-                        <div id="calendar" class="mb">
-                            <div class="panel green-panel no-margin">
-                                <div class="panel-body">
-                                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
-                                        <div class="arrow"></div>
-                                        <h3 class="popover-title" style="disadding: none;"></h3>
-                                        <div id="date-popover-content" class="popover-content"></div>
-                                    </div>
-                                    <div id="my-calendar"></div>
-                                </div>
-                            </div>
-                        </div><!-- / calendar -->
-                    <!-- div class="fb-page" data-href="https://www.facebook.com/naturaloilgt" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"></div -->
-                    <!--COMPLETED ACTIONS DONUTS CHART-->
-            
-
-                        
-                      
-                  </div><!-- /col-lg-3 -->
+                  
               </div><!--/row -->
           </section>
       </section>
