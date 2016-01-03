@@ -201,6 +201,9 @@ public class Util {
 	public static boolean isEmpty( String str ){
 		return ( str == null || str.trim().length() == 0 || "null".equals( str ));
 	}
+	public static boolean isEmpty( String[] str ){
+		return ( str == null || str.length == 0  );
+	}
 	public static boolean isEmpty( int str ){
 		return str <= 0;
 	}

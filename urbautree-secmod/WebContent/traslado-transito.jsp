@@ -1,3 +1,6 @@
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page import="com.urbau.feeders.BancosMain"%>
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.OrdenExtendedBean"%>
@@ -13,18 +16,14 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 		
-		BancosMain bancosMain = new BancosMain();
-		ArrayList<String[]> bancosList = bancosMain.getCombo( "BANCOS", "CODIGO ", " NOMBRE" );
-		
-		StringBuffer bancosOptions = new StringBuffer();
-		for( String[] option : bancosList ){
-			bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
-		}
+		ExtendedFieldsBaseMain traslados_head = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
+				new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID"},
+				new int[]{ Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING} );
 			
-			
-		OrdenesExtendedMain oem = new OrdenesExtendedMain();			
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"ESTADO"}, new int[]{ ExtendedFieldsFilter.EQUALS},new int[]{Constants.EXTENDED_TYPE_STRING}, new String[]{"C"});
 		
-		ArrayList<OrdenExtendedBean> list = oem.get( request.getParameter("q"), loggedUser.getPunto_de_venta() );  //TODO selected store.
+		ArrayList<ExtendedFieldsBean> transitList = traslados_head.getAll(filter);
+
 	%>
 	
 	</head>
@@ -84,29 +83,29 @@
           		<div class="content-panel">
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> ORDENES - CAJA </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> TRASLADOS EN TRANSITO </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               
                               <tr>
-                                  <th>Fecha</th>                                  
-                                  <th>Nit</th>
-                                  <th>Nombres</th>                                                                    
-                                  <th>Apellidos</th>
-                                  <th>Monto</th>
-                              
+	                              <th>Fecha</th>
+	                              <th>Bodega origen</th>
+	                              <th>Bodega destino</th>
+                                  <th>Usuario</th>
+                                  <th>Transacci&oacute;n</th>                                                                    
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for(OrdenExtendedBean bean: list ){
+                              	for(ExtendedFieldsBean bean: transitList ){
                               %>
-                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>)">
-                                  <td><%= Util.getDateStringDMYHM( bean.getFecha() ) %></td>                                  
-                                  <td><%= bean.getCliente_nit() %></td>
-                                  <td><%= bean.getCliente_nombres() %></td>                                                                    
-                                  <td><%= bean.getCliente_apellidos() %></td>
-                                  <td><%= Util.formatCurrency( bean.getMonto() )%></td>                                                                                                                                                                         
+                              <tr onclick="chargeOrder()">
+                              	  <td><%= bean.getValue( "FECHA")  %></td>
+                                  <td><%= bean.getReferenced( "BODEGA_ORIGEN", "BODEGAS", "NOMBRE")  %></td>
+                                  <td><%= bean.getReferenced( "BODEGA_DESTINO", "BODEGAS", "NOMBRE")   %></td>
+                                  <td><%= bean.getReferenced( "USUARIO", "USUARIOS", "NOMBRE")   %></td>
+                                  <td><%= bean.getValue( "TRANSID")  %></td>                                  
+                                                                                                                                                                                                           
                                                                     
                                  
                               </tr>
@@ -133,38 +132,16 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">PAGAR</h4>
+			                          <h4 class="modal-title">RECIBIR</h4>
 			                      </div>
 			                      <div class="modal-body">
 			                       
 			                      
-			                      	<input type="hidden" name="formid" id="formid" value="">
-			                      	  <label>Fecha: <b id="formfecha"></b></label><br/>
-			                      	  <label>Nit: <b id="formnit"></b></label><br/>
-			                      	  <label>Cliente: <b id="formnombres"></b> <b id="formapellidos"></b></label><br/>
-			                      	  <label>Monto: <b id="formmonto"></b></label><br/>
-				                      <label>Tipo de pago: 
-				                      	<select id="tipo_pago" name="tipo_pago">
-	                              		<option value="efectivo">Efectivo</option>
-	                              		<option value="tarjeta">Tarjeta Credito/Debito</option>
-	                              		<option value="credito">Cliente credito</option>
-	                              		<option value="cheque">Cheque</option>
-	                              	</select>
-				                      </label><br/>
-				                      
-				                    <label>No. Cheque<input id="numero_cheque" name="numero_cheque"></label><br/>
-	                              	<label>Banco<select id="banco" name="banco"><%=bancosOptions %></select></label><br/>
-	                              	<label>Tipo de tarjeta<input id="tipo_tarjeta" name="tipo_tarjeta"></label><br/>
-	                              	<label>No. Tarjeta<input id="numero_tarjeta" name="numero_tarjeta"></label><br/>
-	                              	<label>Autorizaci&oacute;n<input id="autorizacion" name="autorizacion"></label><br/>
-	                              	<label>Monto<input id="monto" name="monto" size="7"></label>
-				                      
-				                      
-						 
+			                      	the body
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
+			                          <button class="btn btn-theme" type="button" id="savebutton">Recibir</button>
 			                          <button class="btn btn-theme" type="button" onclick="printBill('elcontenido');">Imprimir</button>
 			                          
 			                      </div>

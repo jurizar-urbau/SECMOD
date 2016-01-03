@@ -1,8 +1,12 @@
 package com.urbau.beans;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Util;
 
 public class ExtendedFieldsBean {
@@ -51,5 +55,27 @@ public class ExtendedFieldsBean {
 		}
 	}
 	
+	public String getReferenced( String key, String referenced_table, String description_field ){
+		
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT " + description_field + " FROM " + referenced_table + " WHERE ID=" + getValue( key )  ;
+		String value = "";
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				value = rs.getString( 1 );
+			}
+		} catch( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return value;
+	}
 	
 }

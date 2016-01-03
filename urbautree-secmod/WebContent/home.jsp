@@ -100,11 +100,24 @@
                       <div class="col-md-2 col-sm-2 box0">
                       	<div class="box1">
                       		<a href="traslado-bodega.jsp">
-	                  			<span class="li_truck"></span>
+	                  			<span class="li_paperplane"></span>
 	                  			<h3>Traslados</h3>
                   			</a>
                         </div>
                   		<p>Trasladar producto entre bodegas</p>
+                      </div>
+                      </div>
+                      <!-- /row mt -->
+                      
+                      <div class="row mtbox">
+                      <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
+                      	<div class="box1">
+                      		<a href="traslado-transito.jsp">
+	                  			<span class="li_truck"></span>
+	                  			<h3>Transito</h3>
+                  			</a>
+                        </div>
+                  		<p>Productos en transito</p>
                       </div>
                       
                     </div><!-- /row mt -->  
