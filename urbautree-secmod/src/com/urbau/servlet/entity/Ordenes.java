@@ -97,15 +97,22 @@ public class Ordenes extends Entity {
 					a.setAmount( a.getAmount() - b.getCantidad() );
 					a.setIdBodega( ordenBean.getId_bodega() );
 					if( im.mod( a )) {
-						InvetarioBean newi = new  InvetarioBean();
+						InvetarioBean newi;
 						
-						newi.setId_product( a.getId_product() );
-						newi.setEstatus( "r" );
-						newi.setIdBodega( a.getIdBodega() );
-						newi.setAmount( b.getCantidad() );
-						newi.setId_orden( ordenBean.getId() );
+						newi = im.get(a.getId_product(), "r", ordenBean.getId_bodega(), ordenBean.getId() );
+						if( newi == null ){
+							 newi = new  InvetarioBean();
+							 newi.setId_product( a.getId_product() );
+							 newi.setEstatus( "r" );
+							 newi.setIdBodega( ordenBean.getId_bodega() );
+							 newi.setId_orden( ordenBean.getId() );
+							 newi.setAmount( 0 );
+						}
+						newi.setAmount( b.getCantidad() + newi.getAmount() );
+						
 						
 						if( im.add( newi ) ) {
+							System.out.println( "added " + newi.getId_product() + " to order...");
 							message = "Pedido agregado exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");

@@ -37,7 +37,8 @@
 			location.replace( "bodegas-detail.jsp?mode=add" );
 		}
 		function inventarios(bodegaId){
-			location.replace( "inventarios.jsp?bodega="+bodegaId );
+			//location.replace( "inventarios.jsp?bodega="+bodegaId );
+			location.replace( "rpt-inventario.jsp?bodega="+bodegaId );
 		}
 	</script>
 	</head>

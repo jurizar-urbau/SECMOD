@@ -9,9 +9,10 @@ import com.urbau.db.ConnectionManager;
 public class Authorization {
 
 	public static boolean isAuthorizedOption( int idrol, int idprograma, int idopcion 	){
-		
-		System.out.println( "requesting authorization to " + idrol + "~" + idprograma + "~" + idopcion );
-		
+	
+		if( idrol == -1 ){
+			return true;
+		}
 		boolean authorized = false;
 		Connection con = null;
 		Statement  stmt = null;
@@ -33,7 +34,9 @@ public class Authorization {
 	}
 	
 	public static boolean isAuthorizedProgram( int idrol, int idprograma ){
-		System.out.println( "requesting authorization to " + idrol + "~" + idprograma  );
+		if( idrol == -1 ){
+			return true;
+		}
 		boolean authorized = false;
 		Connection con = null;
 		Statement  stmt = null;
@@ -54,7 +57,9 @@ public class Authorization {
 		return authorized;
 	}
 	public static boolean isAuthorizedProgram( int idrol, String programa_name ){
-		System.out.println( "requesting authorization to " + idrol + "~" + programa_name  );
+		if( idrol == -1 ){
+			return true;
+		}
 		boolean authorized = false;
 		Connection con = null;
 		Statement  stmt = null;
@@ -66,7 +71,6 @@ public class Authorization {
 			
 			rs = stmt.executeQuery( sql );
 			if( rs.next() && rs.getInt( 1 ) > 0 ){
-				System.out.println( "authorized: " + idrol + "~" + programa_name  );
 				return true;
 			}
 		} catch( Exception e ){
@@ -74,13 +78,13 @@ public class Authorization {
 		} finally {
 			ConnectionManager.close( con, stmt, rs );
 		}
-		System.out.println( "NOT authorized: " + idrol + "~" + programa_name  + " (" + sql + ")");
 		return authorized;
 	}
 	
 	public static boolean isAuthorizedOption( int idrol, String programa_name, int option ){
-	
-		System.out.println( "requesting authorization to " + idrol + "~" + programa_name + "~" + option );
+		if( idrol == -1 ){
+			return true;
+		}
 		Connection con = null; 
 		Statement  stmt = null;
 		ResultSet  rs  = null;
@@ -91,7 +95,6 @@ public class Authorization {
 			
 			rs = stmt.executeQuery( sql );
 			if( rs.next() && rs.getInt( 1 ) > 0 ){
-				System.out.println( "authorized: " + idrol + "~" + programa_name + "~" + option );
 				return true;
 			}
 		} catch( Exception e ){
@@ -99,7 +102,6 @@ public class Authorization {
 		} finally {
 			ConnectionManager.close( con, stmt, rs );
 		}
-		System.out.println( "NOT authorized: " + idrol + "~" + programa_name  + "~" + option + " (" + sql + ")");
 		return false;
 	}
 	

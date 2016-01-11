@@ -99,5 +99,24 @@ public class OrdenesDetalleMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
+	public boolean mod( OrdenDetailBean bean ){
+		if ( bean.getId() <= 0 ){
+			return false;
+		}
+		Connection con = null;
+		Statement  stmt= null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String sql = "DELETE FROM ORDENESDETALLE WHERE ID = " + bean.getId();
+			int total = stmt.executeUpdate( sql );					
+			return total>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
 	
 }

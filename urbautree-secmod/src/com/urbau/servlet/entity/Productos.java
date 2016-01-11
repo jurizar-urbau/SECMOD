@@ -46,7 +46,7 @@ public class Productos extends Entity {
 	private static final long serialVersionUID = 1L;
 	       
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	    	
+    	request.setCharacterEncoding("UTF-8");
     	//get all parameters from form
     	ProductoHelperBean productoHelperBean = getFormParameters(request);										
     	
@@ -59,14 +59,14 @@ public class Productos extends Entity {
 				
 				ProductoBean bean = new ProductoBean();
 								
-				bean.setCodigo( productoHelperBean.getCodigo() );
+				bean.setCodigo     ( productoHelperBean.getCodigo() );
 				bean.setDescripcion( productoHelperBean.getDescripcion());
-				bean.setProveedor(Integer.valueOf( productoHelperBean.getProveedor() ));
-				bean.setPrecio( Double.valueOf( productoHelperBean.getPrecio()  ));
-				bean.setPrecio_1(Double.valueOf( productoHelperBean.getPrecio_1()  ) );
-				bean.setPrecio_2(Double.valueOf( productoHelperBean.getPrecio_2()  ) );
-				bean.setPrecio_3(Double.valueOf( productoHelperBean.getPrecio_3()  ) );
-				bean.setPrecio_4(Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
+				bean.setProveedor  ( Integer.valueOf( productoHelperBean.getProveedor() ));
+				bean.setPrecio     ( Double.valueOf( productoHelperBean.getPrecio()  ));
+				bean.setPrecio_1   ( Double.valueOf( productoHelperBean.getPrecio_1()  ) );
+				bean.setPrecio_2   ( Double.valueOf( productoHelperBean.getPrecio_2()  ) );
+				bean.setPrecio_3   ( Double.valueOf( productoHelperBean.getPrecio_3()  ) );
+				bean.setPrecio_4   ( Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
 				
 				bean.setImage_path( productoHelperBean.getImage_path() );
 				bean.setFamilia( productoHelperBean.getFamilia() );
@@ -166,49 +166,49 @@ public class Productos extends Entity {
 					}else{		
 						System.out.println("checking value of: " + fieldName );
 						if(fieldName.equals( MODE_PARAMETER )){
-							phBean.setMode(fi.getString());							
+							phBean.setMode(fi.getString("utf-8"));							
 						}else if(fieldName.equals( ID_PARAMETER )){							
-							phBean.setIdString(fi.getString());
+							phBean.setIdString(fi.getString("utf-8"));
 						}else if(fieldName.equals(CODIGO_PARAMETER)){
-							phBean.setCodigo(fi.getString());							
+							phBean.setCodigo(fi.getString("utf-8"));							
 						}else if(fieldName.equals(DESCRIPCION_PARAMETER)){
-							phBean.setDescripcion(fi.getString());							
+							phBean.setDescripcion(fi.getString("utf-8"));							
 						}else if(fieldName.equals(PROVEEDOR_PARAMETER)){							
-							phBean.setProveedor(fi.getString());
+							phBean.setProveedor(fi.getString("utf-8"));
 						}else if(fieldName.equals(PRECIO_PARAMETER)){
 							if(fi.getString().isEmpty()){
 								phBean.setPrecio("0.0");
 							}else{
-								phBean.setPrecio(fi.getString());
+								phBean.setPrecio(fi.getString("utf-8"));
 							}							
 						}else if(fieldName.equals(PRECIO_1_PARAMETER)){
 							if(fi.getString().isEmpty()){
 								phBean.setPrecio_1("0.0");
 							}else{
-								phBean.setPrecio_1(fi.getString());
+								phBean.setPrecio_1(fi.getString("utf-8"));
 							}							
 						}else if(fieldName.equals(PRECIO_2_PARAMETER)){
 							if(fi.getString().isEmpty()){
 								phBean.setPrecio_2("0.0");
 							}else{
-								phBean.setPrecio_2(fi.getString());
+								phBean.setPrecio_2(fi.getString("utf-8"));
 							}							
 						}else if(fieldName.equals(PRECIO_3_PARAMETER)){
 							if(fi.getString().isEmpty()){
 								phBean.setPrecio_3("0.0");
 							}else{
-								phBean.setPrecio_3(fi.getString());
+								phBean.setPrecio_3(fi.getString("utf-8"));
 							}							
 						}else if(fieldName.equals(PRECIO_4_PARAMETER)){
 							if(fi.getString().isEmpty()){
 								phBean.setPrecio_4("0.0");
 							}else{
-								phBean.setPrecio_4(fi.getString());
+								phBean.setPrecio_4(fi.getString("utf-8"));
 							}							
 						}else if(fieldName.equals(IMAGE_PATH_PARAMETER)){							
-							phBean.setImage_path_modified(fi.getString());							
+							phBean.setImage_path_modified(fi.getString("utf-8"));							
 						}else if(fieldName.equals(FAMILIA)){
-							phBean.setFamilia( Integer.valueOf( fi.getString() ));
+							phBean.setFamilia( Integer.valueOf( fi.getString("utf-8") ));
 						}
 					}
 				}  	         

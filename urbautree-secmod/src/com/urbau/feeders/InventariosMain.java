@@ -114,6 +114,35 @@ public class InventariosMain extends AbstractMain {
 		return bean;
 	}
 	
+	public InvetarioBean get( int product_id, String estatus, int idBodega, int idOrden ){
+		if( product_id < 0  || null == estatus){
+			return getBlankBean();
+		}
+		InvetarioBean bean = null;
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + product_id +" AND ESTATUS='"+estatus+"' AND ID_ORDEN=" + idOrden;
+			System.out.println("query:"+query);
+			rs = stmt.executeQuery( query);
+			while( rs.next() ){
+				bean = new InvetarioBean();
+			    bean.setId_product(  rs.getInt   ( 1  ));
+			    bean.setEstatus(  Util.trimString( rs.getString( 2 )));												
+			    bean.setAmount(  rs.getInt( 3 ));
+			    bean.setId_orden( rs.getInt( 4 ));
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return bean;
+	}
+	
 		
 	public InvetarioBean getBlankBean(){
 		InvetarioBean bean = new InvetarioBean();
@@ -164,6 +193,34 @@ public class InventariosMain extends AbstractMain {
 					"AMOUNT = " + bean.getAmount() + " " +
 					"WHERE ID_PRODUCT = " + bean.getId_product() + " " + 
 					"AND ESTATUS = " + Util.vs( bean.getEstatus() );
+					
+			System.out.println(sql);
+			int total = stmt.executeUpdate( sql );
+			return total>0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+	}
+	
+	public boolean modWithoutStatus( InvetarioBean bean ){
+		if ( bean.getIdBodega() <= 0 ){
+			System.out.println("bodega id["+ bean.getId() + "]" );
+			return false;
+		}
+		Connection con = null;
+		Statement  stmt= null;
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();
+			String sql = "UPDATE "+TABLE_NAME+bean.getIdBodega()+" SET " +
+					"ID_PRODUCT = " + bean.getId_product() + " , " +
+					"ESTATUS = " + Util.vs( bean.getEstatus() ) + ", " +
+					"ID_ORDEN = " +bean.getId_orden()  + ", " +
+					"AMOUNT = " + bean.getAmount() + " " +
+					"WHERE ID = " + bean.getId();
 					
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );

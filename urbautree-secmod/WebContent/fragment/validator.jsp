@@ -3,9 +3,11 @@
 
 <%
 if ( !loggedUser.isLogged() ){
+	
 %>
 <script> 
 alert( "No hay ningun usuario logaedo.");
 location.replace( "<%= Util.getAbsoluteParent(request.getRequestURI () , 0) %>" );
 </script>
-<% } %>
+<% }
+%>

@@ -13,8 +13,8 @@
     </init-param>
     <init-param>
       <param-name>dburl</param-name>
-      <param-value>jdbc:mysql://127.0.0.1/urbausec</param-value>
-      <!-- param-value>jdbc:mysql://127.0.0.1/volcan</param-value -->
+      <!-- param-value>jdbc:mysql://127.0.0.1/urbausec</param-value-->
+      <param-value>jdbc:mysql://127.0.0.1/volcan</param-value>
     </init-param>
     <init-param>
       <param-name>dbuser</param-name>
@@ -43,8 +43,20 @@
     <servlet-class>com.urbau.servlet.entity.IngresoBodega</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>CheckCodigoProducto</servlet-name>
+    <servlet-class>com.urbau.servlet.CheckCodigoProducto</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckCodigoProducto</servlet-name>
+    <url-pattern>/bin/CheckCodigoProducto</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>TrasladoBodega</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TrasladoBodega</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>TransitoBodega</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.TransitoBodega</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>Bodegas</servlet-name>
@@ -215,6 +227,10 @@
     <servlet-name>SavePayment</servlet-name>
     <servlet-class>com.urbau.servlet.entity.SavePayment</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ReversePayment</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ReversePayment</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>BodegasUsuarios</servlet-name>
     <url-pattern>/bin/BodegasUsuarios</url-pattern>
@@ -242,6 +258,10 @@
   <servlet-mapping>
     <servlet-name>SavePayment</servlet-name>
     <url-pattern>/bin/SavePayment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReversePayment</servlet-name>
+    <url-pattern>/bin/ReversePayment</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Ordenes</servlet-name>
@@ -275,6 +295,10 @@
   <servlet-mapping>
     <servlet-name>TrasladoBodega</servlet-name>
     <url-pattern>/bin/TrasladoBodega</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TransitoBodega</servlet-name>
+    <url-pattern>/bin/TransitoBodega</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Bodegas</servlet-name>
@@ -425,6 +449,17 @@
     <servlet-name>ExtendedFields</servlet-name>
     <url-pattern>/bin/ExtendedFields</url-pattern>
   </servlet-mapping>
+  
+  
+   <servlet>
+    <servlet-name>CheckPrice</servlet-name>
+    <servlet-class>com.urbau.servlet.CheckClientPrice</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckPrice</servlet-name>
+    <url-pattern>/bin/checkPrice</url-pattern>
+  </servlet-mapping>
+ 
   
   
   <context-param>

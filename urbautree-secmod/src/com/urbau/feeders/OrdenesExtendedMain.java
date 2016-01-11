@@ -35,7 +35,8 @@ public class OrdenesExtendedMain extends AbstractMain {
 							"CLIENTE.NOMBRES," +
 							"CLIENTE.APELLIDOS," +
 							"ORDEN.ID_USUARIO," +
-							"US.NOMBRE USNAME " +
+							"US.NOMBRE USNAME, " +
+							"CLIENTE.ACEPTA_CREDITO " +
 						"FROM " +
 							"ORDENES ORDEN, CLIENTES CLIENTE,USUARIOS US " +
 						"WHERE " +
@@ -58,6 +59,7 @@ public class OrdenesExtendedMain extends AbstractMain {
 				bean.setCliente_apellidos( rs.getString( 8));
 				bean.setUsuario_id( rs.getInt( 9 ));
 				bean.setUsuario_nombre( rs.getString( 10 ));
+				bean.setAcepta_credito( rs.getBoolean( 11 ));
 				list.add( bean );
 			}
 		} catch( Exception e ){

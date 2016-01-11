@@ -147,7 +147,7 @@
 	                  	  	  <thead>
                               <tr>                                                                                                    
                                   <th>Nombre</th>
-                                  <th>Coeficiente</th>
+                                  <!-- th>Coeficiente</th-->
                                   <th></th>
                               </tr>
                               </thead>
@@ -163,7 +163,7 @@
                               %>
                               <tr>
                                   <td><%= precioBean.getNombre() %>  </td>                                  
-                                  <td ><%= precioBean.getCoeficiente() %></td>
+                                  <!-- td ><%= precioBean.getCoeficiente() %></td-->
                                   <td>
                                   	                                      
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>','<%= precioBean.getId()  %>');"><i class="fa fa-pencil"></i></button>

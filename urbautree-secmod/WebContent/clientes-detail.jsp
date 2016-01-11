@@ -115,12 +115,23 @@
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Tipo De Cliente</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<select class="form-control" name="tipodecliente" id="tipodecliente" value="<%= bean.getTipoDeCliente() %>">
-	                          			<option value="interno">Interno</option>
-	                          			<option value="interno">Externo</option>
+	                          		<select class="form-control" name="tipodecliente" id="tipodecliente">
+	                          			<option value="interno" <%= "interno".equals( bean.getTipoDeCliente() ) ? "selected" : "" %>>Interno</option>
+	                          			<option value="externo" <%= "externo".equals( bean.getTipoDeCliente() ) ? "selected" : "" %>>Externo</option>
 	                          		</select>	                          	                          	                                                           
                               </div>
                           </div>
+                                
+                          <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Cliente Credito</label>
+                              <div class="col-sm-10">                              		                          			                          	
+	                          		<select class="form-control" name="aceptacredito" id="aceptacredito">
+	                          			<option value="1" <%= 1 == bean.getAcepta_credito() ? "selected" : "" %>>Si</option>
+	                          			<option value="0" <%= 0 == bean.getAcepta_credito() ? "selected" : "" %>>No</option>
+	                          		</select>	                          	                          	                                                           
+                              </div>
+                          </div>
+                                      
                                                                               
                                                                                                                                                                                                                     
                           <div class="form-actions">

@@ -17,9 +17,22 @@ public class OrdenExtendedBean implements Bean {
 	private String cliente_apellidos;
 	private int usuario_id;
 	private String usuario_nombre;
+	private boolean acepta_credito;
 	
 	
 	
+	public boolean isAcepta_credito() {
+		return acepta_credito;
+	}
+
+
+
+	public void setAcepta_credito(boolean acepta_credito) {
+		this.acepta_credito = acepta_credito;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}

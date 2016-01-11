@@ -23,24 +23,21 @@
 			
 			
 		}
-		
-		function clickon( id ){
+		var current_stock = 0;
+		function clickon( id, stock ){
+			current_stock = stock;
 			var ele = $( "#product-" + id );
 			ele.trigger('click');
-			console.log( 'clicking:', ele );
-		
 		} 
 		function searchProducts( q ){
-			console.log( "looking for products with [" + q + "]");
 			$( "#product-container" ).html("");
 			 $.get( "./bin/searchp?q=" + q + "&bodega=" + selected_bodega_id + "&cliente=" + selected_client_id, null, function(response){
                  $.each(response, function(i, v) {
-                	 console.log( i, v );
                 	 
                 	 var rootele;
                 	 
                 	 var htmltoadd = 
-              "<a  href=\"javascript: clickon('" + v.id + "');\">" + 
+              "<a  href=\"javascript: clickon('" + v.id + "'," + v.stock + ");\">" + 
                      "<div class=\"col-md-3 col-sm-3 mb\">" +
                        "<div class=\"white-panel pn\">" +
                          "<div class=\"white-header\">" +
@@ -57,27 +54,21 @@
                          "</div>" +
                          "<div class=\"centered\">" +
                          
-                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
+                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "&w=90&type=smooth\" width=\"90\">" +
                  "<p style=\"color:red\">"+ v.precio_1 +"</p>" +
                   "       </div>" +
                   "     </div>" +
                   "   </div>" +
          "</a>";
          			$( "#product-container" ).append( htmltoadd );
-                	
-                	 
                  });
               });
 		}
 		function searchClients( q ){
-			console.log( "looking for clients with [" + q + "]");
 			$( "#client-container" ).html("");
 			 $.get( "./bin/searchc?q=" + q, null, function(response){
                  $.each(response, function(i, v) {
-                	 console.log( i, v );
-                	 
                 	 var rootele;
-                	 
                 	 var htmltoadd =
                 		"<tr>" +
                  	  	"<td><input type='radio' name='clienteid' value='" + v.id + "," + v.nombres + " " + v.apellidos + "'></td>" +
@@ -135,6 +126,7 @@
 
               <div class="row">
                   <div class="col-lg-9  main-chart">
+                  <h3>VENTA</h3>
                       <div class="row mt">
                       <div class="col-lg-12">
                       <i class="fa fa-cogs" onclick="chooseClient()"></i>
@@ -158,7 +150,7 @@
                       <!-- SERVER STATUS PANELS -->
                      
                         <%
-                        	ArrayList<ProductoBean> plist = pm.get(null, 0 );
+                        	ArrayList<ProductoBean> plist = pm.get(null, -1 );
                         for( ProductoBean pbean: plist ){
                             %>
     			<a data-toggle="modal" href="venta.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
@@ -180,7 +172,7 @@
 			                      </div>
 			                      <div class="modal-body col-lg-12">
 			                      <div class="col-sm-6">
-			                      	<img src="./bin/RenderImage?imagePath=<%= pbean.getImage_path() %>" width="220">
+			                      	<img src="./bin/RenderImage?imagePath=<%= pbean.getImage_path() %>&w=220&type=smooth" width="220">
 			                      	</div>
 			                      	<div class="col-sm-6">
 			                      	<h3><%= pbean.getDescripcion() %></h3>
@@ -189,10 +181,13 @@
 			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          <%
 			                          	ArrayList<PackingBean> packlist = packmain.getAll( pbean.getId() );
+			                          	int count = 0;
 			                          	for( PackingBean pb : packlist ){
 			                          %>
-			                          	<%= pb.getNombre() %> <input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" >
-			                          <% } %>
+			                          	<input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= count==0?"checked":"" %>>&nbsp;<%= pb.getNombre() %><br>
+			                          <% 
+			                          	count++;
+			                          	} %>
 			                          
 			                          </br>
 			                          </br>
@@ -200,10 +195,18 @@
 			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
 			                          </br>  -->
 			                          <p>Precio:</p>
-			                          (1)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_1()) %>" > <%=  Util.formatCurrency(pbean.compiled_1()) %><br/>
-			                          (2)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_2()) %>" > <%=  Util.formatCurrency(pbean.compiled_2()) %><br/>
-			                          (3)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_3()) %>" > <%=  Util.formatCurrency(pbean.compiled_3()) %><br/>
-			                          (4)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_4()) %>" > <%=  Util.formatCurrency(pbean.compiled_4()) %><br/>
+			                          <div class="price1" style="display: none;">
+			                          	(1)<input type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_1()) %>" checked> <%=  Util.formatCurrency(pbean.compiled_1()) %><br/>
+			                          </div>
+			                          <div class="price2" style="display: none;">
+				                          (2)<input class="price2" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_2()) %>" > <%=  Util.formatCurrency(pbean.compiled_2()) %><br/>
+			                          </div>
+			                          <div class="price3" style="display: none;">
+			                          	(3)<input class="price3" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_3()) %>" > <%=  Util.formatCurrency(pbean.compiled_3()) %><br/>
+			                          </div>
+			                          <div class="price4" style="display: none;">
+			                          	(4)<input class="price4" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_4()) %>" > <%=  Util.formatCurrency(pbean.compiled_4()) %><br/>
+			                          </div>
 			                          
 			                          </div>
 			                      </div>
@@ -465,6 +468,7 @@
   <script type="text/javascript">
   		  var selected_client_id;
   		  var selected_bodega_id;
+  		  var selected_punto_de_venta = '<%= loggedUser.getPunto_de_venta() %>';
   		  var allowed_prices;
   		  
 		  function parseSecond(val) {
@@ -482,22 +486,25 @@
 		    	var value = $('input[name=clienteid]:checked').val();
 		    	var values = value.split(',');
 		    	selected_client_id = values[0];
-		    	console.log('cliente', values[0]);
 				$('#clientdisplay').html(value);
 				$('#clientid').val( selected_client_id );
 		    	hideClient();
+		    	setPrices();
 		    }
 		    function setStore(){
 		    	var value = $('input[name=bodegaid]:checked').val();
 		    	var values = value.split(',');
-		    	console.log('bodega', values[0]);
 		    	selected_bodega_id = values[0];
 				$('#storedisplay').html(value);
 				$('#bodegaid').val( selected_bodega_id );
 		    	hideStore();
+		    	setPrices();
 		    }
   			function addSale( productid, imagepath, productname, price, amount ){
-  				console.log( "adding sale id: " + productid  + ", price: " + price + ", amount: " + amount );
+  				if( amount > current_stock ){
+  					alert( "Cantidad sobrepasa la existencia de " + current_stock + "." );
+  					return false;
+  				}
   				addS( amount, price, productname, imagepath,productid );
   				hideModal('#myModal' + productid );
   				renderVentasList();
@@ -559,7 +566,37 @@
     	     	
     	     	return false;
     	 	});
-  			
+  			function setPrices(){
+  				 
+  				 $.get( "./bin/checkPrice?price=1&store=" + selected_punto_de_venta + "&client=" + selected_client_id, null, function(response){
+  					 if( response ){
+  						 $('.price1').show();
+  					 } else {
+  						$('.price1').hide();
+  					 }
+  				 });
+  				$.get( "./bin/checkPrice?price=2&store=" + selected_punto_de_venta + "&client=" + selected_client_id, null, function(response){
+  					if( response) {
+  						$('.price2').show();
+  					} else {
+	  				    $('.price2').hide();
+	  				}
+ 				 });
+  				$.get( "./bin/checkPrice?price=3&store=" + selected_punto_de_venta + "&client=" + selected_client_id, null, function(response){
+  					if( response ){
+  						$('.price3').show();	
+  					} else {
+  						$('.price3').hide();
+  					}
+ 				 });
+  				$.get( "./bin/checkPrice?price=4&store=" + selected_punto_de_venta + "&client=" + selected_client_id, null, function(response){
+  					if( response ){
+  						$('.price4').show();
+  					} else {
+  						$('.price4').hide();
+  					}
+ 				 });
+  			}
 			$("#savesalebutton").click(function(){
 				
     			var form =$('#saleform');
@@ -598,7 +635,6 @@
   			
   		    var ventasList = [];
   		    function addS( amount, price, description, imagepath,productid ){
-  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", price:" + price );
   		    	var o = {};
   			    o.amount = amount;
   			    o.price = price;
@@ -652,23 +688,23 @@
 	
 	<script type="text/javascript">
 	    $(window).load(function(){
+	    	setPrices();
 	    	$('#search-client').focus();
 	        $('#myModal').modal('show');
 	        
 	        $( "#search-query-3" ).keyup(function() {
 	        	var value = $( "#search-query-3" ).val();
-	        	console.log( "value", value );
 	        	searchProducts( value );
 			});
 	        $( "#search-client" ).keyup(function() {
 	        	var value = $( "#search-client" ).val();
-	        	console.log( "value", value );
 	        	searchClients( value );
 			});
 	        
 	    });
 	    
 	    setStore();
+	    
 	</script>
   </body>
 </html>

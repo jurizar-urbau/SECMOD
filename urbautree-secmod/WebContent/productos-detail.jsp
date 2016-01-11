@@ -28,17 +28,10 @@
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
@@ -80,7 +73,7 @@
           			   
                   	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="productos.jsp">&nbsp;Regresar</a> </h4>
                   	  
-                      <form class="form-horizontal style-form" id="form">
+                      <form class="form-horizontal style-form" id="form" accept-charset="utf-8">
                       	<input type="hidden" name="mode" id="mode"value="<%= mode%>">
                       	<input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>">
                       	<input type="hidden" name="idProveedor" id="idProveedor" value="<%=idProveedor%>">
@@ -123,7 +116,7 @@
                               
                               		<select class="form-control" name="proveedor" id="proveedor">
 	                                  <%
-	                                  	ArrayList<ProveedorBean> proveedores_list = proveedores_main.get(null, 0);
+	                                  	ArrayList<ProveedorBean> proveedores_list = proveedores_main.get(null, -1);
 	                                  	for( ProveedorBean proveedor : proveedores_list ){
 	                                  %>
 	                                  	<option value="<%= proveedor.getId()%>"><%= proveedor.getNombre() %></option>
@@ -144,28 +137,28 @@
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 1</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_1" id="precio_1" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_1()) %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_1" id="precio_1" value="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_1()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 2</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_2" id="precio_2" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_2()) %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_2" id="precio_2" value="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_2()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 3</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_3" id="precio_3" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_3()) %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_3" id="precio_3" value="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_3()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Precio 4</label>
                               <div class="col-sm-10">                              		                          			                          	
-	                          		<input type="text" class="form-control" name="precio_4" id="precio_4" placeholder="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_4()) %>">	                          	                          	                         
+	                          		<input type="text" class="form-control" name="precio_4" id="precio_4" value="<%= Util.formatCurrencyWithoutSymbol (bean.getPrecio_4()) %>">	                          	                          	                         
                                   
                               </div>
                           </div>                          
@@ -222,6 +215,23 @@
              $('#form').validate(
              {
               rules: {
+            	  codigo: {
+                      minlength: 1,
+                      maxlength: 30,
+                      required: true,
+                      remote: {
+                          url: "./bin/CheckCodigoProducto",
+                          type: "post",
+                          data: {
+                            codigo: function() {
+                              return $( "#codigo" ).val();
+                            },
+                            id :function() {
+                              return $( "#id" ).val();
+                            }
+                          }
+                        }
+                    },
                 nombre: {
                   minlength: 2,
                   maxlength: 30,
@@ -237,6 +247,11 @@
                     maxlength: 15,
                     required: true
                 }
+              },
+              messages: {
+          	    codigo: {
+          	      remote: "Ya existe ese codigo asociado a otro producto."
+          	    }
               },
               highlight: function(element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -259,30 +274,36 @@
     		    	
     		$('form#form').submit(function(e){
     			e.preventDefault();
-    		    		    	    		    			    		    	
     			var formData = new FormData(this);
-    			
-    	     	$.ajax({
-    	     		type:'POST',
-    	 			url: './bin/Productos',    	 			
-    	 			data: formData,
-    	 			async: false,
-    	 		    cache: false,
-    	 		    contentType: false,
-    	 		    processData: false,
-    	 		   dataType: "text",
-    	 			
-    		        success: function(msg){		        	
-    		        	alert(msg);
-    		            location.replace( "productos.jsp" );
-    		        },
-    	 			error: function(jqXHR, textStatus, errorThrown){
-    	 				console.log("ERROR srtatus: ", textStatus);
-    	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operacion");	
-    	 			}
-    		            		        
-    	       });
+    			if( $('form#form').valid() ){
+	    	     	$.ajax({
+	    	     		type:'POST',
+	    	 			url: './bin/Productos', 
+	    	 			contentType: "application/x-www-form-urlencoded;charset=utf-8",
+	    	 			beforeSend : function(xhr) {
+	    	 	            xhr.setRequestHeader('Accept', "text/html; charset=utf-8");
+	    	 	        },
+	    	 	        data: formData,
+	    	 			async: false,
+	    	 		    cache: false,
+	    	 		    contentType: false,
+	    	 		    processData: false,
+	    	 		   dataType: "text",
+	    	 			
+	    		        success: function(msg){		        	
+	    		        	alert(msg);
+	    		            location.replace( "productos.jsp" );
+	    		        },
+	    	 			error: function(jqXHR, textStatus, errorThrown){
+	    	 				console.log("ERROR srtatus: ", textStatus);
+	    	 				console.log("ERROR errorThrown: ", errorThrown);
+	    	 				alert("Se prudujo un error al hacer la operacion");	
+	    	 			}
+	    		            		        
+	    	       });
+    			} else {
+    				alert ("Hay errores en el formulario, corrigalos en intente de nuevo. " );
+    			}
     	     	
     	     	return false;
     	 	});

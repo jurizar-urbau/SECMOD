@@ -153,7 +153,7 @@
                                   <td><%= Util.formatCurrency( us.getPrecio_4()) %></td>
                                  
                                   <td>
-                                  	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>" width="100px">
+                                  	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>&w=100&type=smooth" width="100px">
                                   </td>
                                   <td>
                                 	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_MODIFY)){ %>	                                     

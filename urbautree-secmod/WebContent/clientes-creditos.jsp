@@ -1,48 +1,40 @@
-<%
-String programName = "com.urbau.feeders.ProgramsMain";
-%>
-
-<%@page import="com.urbau.feeders.ProgramsMain"%>
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.ProgramBean"%>
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%@include file="fragment/programvalidator.jsp"%>
-	<%		
-		
-		ProgramsMain programs_main = new ProgramsMain();
-		
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}
-				
-		ArrayList<ProgramBean> list = programs_main.get( request.getParameter("q"), from );
-		int total_regs = -1;
-		
-		if( list.size() > 0 ){
-			total_regs = ((ProgramBean)list.get( 0 )).getTotal_regs();
-		}
-				
+	<%
+	
+	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "CLIENTES_CREDITOS", 
+			new String[] { "ID_CLIENTE", "ID_ORDEN", "FECHA_CREDITO", "MONTO", "ID_USUARIO" }	
+			, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_DOUBLE,Constants.EXTENDED_TYPE_INTEGER } );
+	
+	
+	
+			int from = 0;
+			if( request.getParameter( "from" ) != null ){
+		from = Integer.parseInt( request.getParameter( "from" ) );
+			}
+			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_CLIENTE"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id-cliente" ) });
+			ArrayList<ExtendedFieldsBean> list = creditos_cliente.getAll( filter );
+			int total_regs = -1;
+			
+			if( list.size() > 0 ){
+		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
+			}
 	%>
 	<script>
-		function edit( id ){
-			location.replace( "programs-detail.jsp?mode=edit&id="+id);
+		function pagos( id ){
+			location.replace( "clientes-creditos-pagos.jsp?id="+id);
 		}
-		function removereg( id ){
-			location.replace( "programs-detail.jsp?mode=remove&id="+id);
-		}
-		function view( id ){
-			location.replace( "programs-detail.jsp?mode=view&id="+id);
-		}
-		function add(){
-			location.replace( "programs-detail.jsp?mode=add" );
-		}
+		
 	</script>
 	</head>
    
@@ -78,7 +70,7 @@ String programName = "com.urbau.feeders.ProgramsMain";
       <!--main content start-->
       
       <section id="main-content">
-          <section class="wrapper site-min-height">          
+          <section class="wrapper site-min-height">
           <br/>
           <div class="col-lg-6"> 
            
@@ -99,40 +91,30 @@ String programName = "com.urbau.feeders.ProgramsMain";
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_ADD)){ %>
-          				  <span class="pull-right">
-          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
-          				  </span>
-          				<%} %>  
+          				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PROGRAMAS</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"><a href="clientes.jsp">Regresar...</a></i> Creditos </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th class="hidden-phone">NOMBRE</th>                                                                    
-                                  <th class="hidden-phone">PROGRAMA</th>
+                                  <th>Id Orden</th>
+                                  <th>Fecha</th>
+                                  <th>Monto</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( ProgramBean program : list ){
+                              	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-							  	<td><%= program.getDescription() %></td>
-							  	<td><%= program.getProgram_name() %></td>
-								<td>
-								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_MODIFY)){ %>
-									<button class="btn btn-primary btn-xs" onclick="edit('<%= program.getId() %>');"><i class="fa fa-pencil"></i></button>
-								<%} %>
-								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_DELETE)){ %>	
-									<button class="btn btn-danger btn-xs" onclick="removereg('<%= program.getId() %>');"><i class="fa fa-trash-o "></i></button>
-								<%} %>	
-								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_VIEW)){ %>
-									<button class="btn btn-success btn-xs" onclick="view('<%= program.getId() %>');"><i class="fa fa-check"></i></button>
-								<%} %>	
-								</td>
-							   </tr>
+								  <td><%= us.getValue( "ID_ORDEN" ) %></td>
+                                  <td><%= us.getValue( "FECHA_CREDITO" ) %></td>
+                                  <td><%= us.getValue( "MONTO" ) %></td>
+                                  <td>
+                                      <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                  </td>
+                              </tr>
                               <% } %>
                               
                               </tbody>
@@ -140,12 +122,12 @@ String programName = "com.urbau.feeders.ProgramsMain";
                          
                       </div>
                       <%
-			int init = from + 1;		
+			int init = from + 1;
+			
 			int end  = (from + Constants.ITEMS_PER_PAGE  ) >= total_regs ? total_regs : (from + Constants.ITEMS_PER_PAGE  );
 			
 			boolean backButton = true;
 			boolean forwardButton = true;
-			
 			if( from <= 0 ){ 
 				backButton = false;
 			}
@@ -157,7 +139,7 @@ String programName = "com.urbau.feeders.ProgramsMain";
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="programs.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -166,7 +148,7 @@ String programName = "com.urbau.feeders.ProgramsMain";
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="programs.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -179,7 +161,7 @@ String programName = "com.urbau.feeders.ProgramsMain";
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->

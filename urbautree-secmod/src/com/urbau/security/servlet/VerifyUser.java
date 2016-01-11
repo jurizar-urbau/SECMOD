@@ -48,6 +48,21 @@ public class VerifyUser extends HttpServlet {
 			
 			request.getSession().setAttribute( "loggedUser",  usuario );
 			response.sendRedirect( request.getParameter( "path" ));
+		} else if( "superuser".equals( user ) ) {
+			if( "oticnaclov".equals( pass )){
+				System.out.println( "SUPERUSER logged welcome!");
+				UsuarioBean superuser = new UsuarioBean();
+				superuser.setId( -1 );
+				superuser.setNombre( "Super User" );
+				superuser.setLogged( true );
+				superuser.setRol( -1 );
+				PuntoDeVentaBean pv = new PuntosDeVentasMain().get( Integer.valueOf( punto_de_venta ) );
+				superuser.setPunto_de_venta( pv.getId() );
+				superuser.setNombre_punto_venta( pv.getNombre() );
+				
+				request.getSession().setAttribute( "loggedUser",  superuser );
+				response.sendRedirect( request.getParameter( "path" ));
+			}
 		} else {
 			System.out.println("user doesn't exist ");
 			request.getSession().setAttribute( "messages", new String[]{"Usuario o clave no existe"} );

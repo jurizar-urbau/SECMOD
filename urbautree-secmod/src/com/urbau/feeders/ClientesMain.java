@@ -29,12 +29,12 @@ public class ClientesMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				System.out.println( "sql:" + sql );
 				rs = stmt.executeQuery( sql );
 				
 			} else {
-				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
+				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
 				System.out.println( "sql:" + sql );
 				rs = stmt.executeQuery( sql);				
 			}
@@ -47,7 +47,8 @@ public class ClientesMain {
 				bean.setDireccion( Util.trimString( rs.getString( 5 )) );
 				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
 				bean.setEmail( Util.trimString( rs.getString( 7 )));
-				bean.setTipoDeCliente(Util.trimString( rs.getString( 8 )));				
+				bean.setTipoDeCliente(Util.trimString( rs.getString( 8 )));
+				bean.setAcepta_credito( rs.getInt( 9 ) );
 				list.add( bean );
 			}
 		} catch( Exception e ){
@@ -69,7 +70,7 @@ public class ClientesMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE FROM CLIENTES WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES WHERE ID=" + id );
 			while( rs.next() ){
 				bean = new ClienteBean();
 				bean.setId(  rs.getInt   ( 1  ));
@@ -80,6 +81,7 @@ public class ClientesMain {
 				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
 				bean.setEmail( Util.trimString( rs.getString( 7 )));
 				bean.setTipoDeCliente( Util.trimString( rs.getString( 8 )));
+				bean.setAcepta_credito( rs.getInt( 9 ));
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -100,7 +102,7 @@ public class ClientesMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE FROM CLIENTES WHERE NIT='" + nit + "'" );
+			rs = stmt.executeQuery( "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES WHERE NIT='" + nit + "'" );
 			while( rs.next() ){
 				bean = new ClienteBean();
 				bean.setId(  rs.getInt   ( 1  ));
@@ -111,6 +113,7 @@ public class ClientesMain {
 				bean.setTelefono( Util.trimString( rs.getString( 6 )) );
 				bean.setEmail( Util.trimString( rs.getString( 7 )));
 				bean.setTipoDeCliente( Util.trimString( rs.getString( 8 )));
+				bean.setAcepta_credito( rs.getInt( 9 ));
 			}
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -132,6 +135,7 @@ public class ClientesMain {
 		bean.setFecha_ingreso( new java.util.Date( System.currentTimeMillis() ));
 		bean.setObservaciones( "" );
 		bean.setTipoDeCliente("");
+		bean.setAcepta_credito( -1 );
 		return bean;
 	}
 	
@@ -141,8 +145,8 @@ public class ClientesMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			String sql = "INSERT INTO CLIENTES ( NIT, NOMBRES, APELLIDOS, DIRECCION, TELEFONO, CORREO, TIPODECLIENTE ) VALUES " +
-						 "('" + bean.getNit() + "','"+bean.getNombres()+"','"+bean.getApellidos()+"','"+bean.getDireccion()+"','"+bean.getTelefono()+"','"+bean.getEmail()+"','"+bean.getTipoDeCliente()+ "')";
+			String sql = "INSERT INTO CLIENTES ( NIT, NOMBRES, APELLIDOS, DIRECCION, TELEFONO, CORREO, TIPODECLIENTE,ACEPTA_CREDITO ) VALUES " +
+						 "('" + bean.getNit() + "','"+bean.getNombres()+"','"+bean.getApellidos()+"','"+bean.getDireccion()+"','"+bean.getTelefono()+"','"+bean.getEmail()+"','"+bean.getTipoDeCliente()+ "'," + bean.getAcepta_credito() + ")";
 			System.out.println("sql: " +sql );
 			int total = stmt.executeUpdate( sql );
 			return total>0;
@@ -166,7 +170,7 @@ public class ClientesMain {
 			stmt= con.createStatement();
 			String sql = "UPDATE CLIENTES SET " +
 					"NIT=" + Util.vs( bean.getNit() ) + ", NOMBRES=" + Util.vs( bean.getNombres() ) + ", APELLIDOS=" + Util.vs( bean.getApellidos() ) + ", DIRECCION=" + Util.vs( bean.getDireccion() ) + "," + 
-					"CORREO=" + Util.vs( bean.getEmail() ) + ", TELEFONO=" + Util.vs( bean.getTelefono() )+ ", TIPODECLIENTE=" + Util.vs( bean.getTipoDeCliente() ) + " WHERE ID=" + bean.getId();
+					"CORREO=" + Util.vs( bean.getEmail() ) + ", TELEFONO=" + Util.vs( bean.getTelefono() )+ ", TIPODECLIENTE=" + Util.vs( bean.getTipoDeCliente() ) + ", ACEPTA_CREDITO=" + bean.getAcepta_credito() + " WHERE ID=" + bean.getId();
 			System.out.println("sql: " + sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;

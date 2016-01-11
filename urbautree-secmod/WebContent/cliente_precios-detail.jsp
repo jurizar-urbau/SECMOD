@@ -41,14 +41,6 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
@@ -102,13 +94,10 @@
                               <div class="col-sm-10">
                               
                               		<select class="form-control" name="precio" id="precio">
-	                                  <%
-	                                  	ArrayList<PrecioBean> precioList = preciosMain.get(null, 0);
-	                                  	for( PrecioBean precio : precioList ){
-	                                  %>
-	                                  	<option value="<%= precio.getId()%>"><%= precio.getNombre() %></option>
-	                                  <% } %>									  
-									  
+                              			<option value="1">Precio 1</option>
+                              			<option value="2">Precio 2</option>
+                              			<option value="3">Precio 3</option>
+                              			<option value="4">Precio 4</option>
 									</select>
                               	
                                   

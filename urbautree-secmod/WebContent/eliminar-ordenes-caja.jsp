@@ -13,15 +13,7 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 		
-		BancosMain bancosMain = new BancosMain();
-		ArrayList<String[]> bancosList = bancosMain.getCombo( "BANCOS", "CODIGO ", " NOMBRE" );
 		
-		StringBuffer bancosOptions = new StringBuffer();
-		for( String[] option : bancosList ){
-			bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
-		}
-			
-			
 		OrdenesExtendedMain oem = new OrdenesExtendedMain();			
 		
 		ArrayList<OrdenExtendedBean> list = oem.get( request.getParameter("q"), loggedUser.getPunto_de_venta() );  //TODO selected store.
@@ -170,7 +162,7 @@
 						 			<h2>Confirma eliminar la orden?</h2>
 			                      </div>
 			                      <div class="modal-footer">
-			                          <button class="btn btn-theme" type="button" onclick="dropOrder()">Si</button>
+			                          <button class="btn btn-theme" type="button" id="savebutton" onclick="dropOrder()">Si</button>
 			                      	  <button data-dismiss="modal" class="btn btn-default" type="button">No</button>
 			                      </div>
 			                  </div>
@@ -199,17 +191,17 @@
 			$('#myModal').modal('show');
 		}
 		
-		function dropOrder() {
-			 alert("remove id:" + currentid );
+		function dropOrder( id ) {
+			//$('#formid').val( id );
 		}
 		
 		$("#savebutton").click(function(){
-			
-			var form =$('#saleform');
+			$('#formid').val( currentid );
+			var form =$('#modalform');
 	     	$.ajax({
 	     		type:'POST',
 	     		dataType: "text",
-	 			url: './bin/SavePayment',
+	 			url: './bin/ReversePayment',
 	 			data: form.serialize(),
 	 			
 		        success: function(msg){		      

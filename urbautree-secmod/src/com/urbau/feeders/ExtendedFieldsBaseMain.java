@@ -238,6 +238,30 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
+	public int getIdFromTransaction( String transaction ){
+		Connection con = null;
+		Statement  stmt= null;
+		ResultSet  rec = null;
+		String sql = "";
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement(); 
+			sql = "SELECT ID FROM TRASLADOS_HEADER WHERE TRANSID='" + transaction + "'";
+			rec = stmt.executeQuery( sql );
+			if( rec.next() ){
+				return rec.getInt( 1 );
+			} else {
+				return -1;
+			}
+			
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+			return -1;
+		} finally {
+			ConnectionManager.close( con, stmt, rec );
+		}
+	}
 	
 	public boolean mod( ExtendedFieldsBean bean ){
 		if ( bean.getId() <= 0 ){
@@ -326,6 +350,7 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			sql = "SELECT " + raw_fields + " FROM "+tablename +" WHERE " + filter.getWhereClause()  + "  ORDER BY ID DESC";
+			System.out.println( "executing: " + sql );
 			rs = stmt.executeQuery( sql);
 
 			while( rs.next() ){

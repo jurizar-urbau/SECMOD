@@ -87,10 +87,7 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
                       	<div class="form-group">                      	
                           	<label class="col-sm-2 col-sm-2 control-label">Programa</label>
                           	<div class="col-sm-10">
-                          	
-                          		<select class="form-control" name="programname" id="programname">                          																 
-								</select>
-                          		                 	                                          
+                          		<input class="form-control" name="programname" id="programname" value="<%= bean.getProgram_name() %>">                          																 
                           	</div>
                       	</div>
                       	
@@ -161,7 +158,7 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
     		
     		var programName = "<%=bean.getProgram_name() %>";    		
     		
-    		$.ajax({
+    		/* $.ajax({
 				url: './bin/FeedersList',
 	     		type:'POST',    	 			
 	 		    data: { packageName: 'com.urbau.feeders'},        	 			
@@ -189,7 +186,7 @@ if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( 
 	 				alert("Se prudujo un error al hacer la operacion");	
 	 			}
 		            		        
-	       });
+	       }); */
     		
     		    		    		    		   
     		

@@ -132,7 +132,7 @@
                       <!-- SERVER STATUS PANELS -->
                      
                         <%
-                        	ArrayList<ProductoBean> plist = pm.get(null, 0 );
+                        	ArrayList<ProductoBean> plist = pm.get(null, -1 );
                         for( ProductoBean pbean: plist ){
                             %>
     			<a data-toggle="modal" href="traslado-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
@@ -169,7 +169,7 @@
 			                          	for( PackingBean pb : packlist ){
 			                          	
 			                          %>
-			                          	<%= pb.getNombre() %> <input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>
+			                          	<input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>&nbsp;<%= pb.getNombre() %><br> 
 			                          <%
 			                          
 			                          count++ ;
@@ -507,6 +507,11 @@
   	  		    ventasList.push( o );  	
   		    }
   		    
+  		  function removeItem( index ){
+			  	ventasList.splice( index, 1 );
+				renderVentasList();
+		  }
+  		    
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
@@ -514,6 +519,7 @@
   				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].pack );
 				var htmltoadd =
 					  "<div class=\"desc\">" +
+					  "<button type='button' class='close' aria-hidden='true' onclick='removeItem(\"" + i + "\")'>×</button>" +
 					  "<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
 					  "<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
 					  "<input type='hidden' name='pack' value='" + ventasList[ i ].pack + "'>" +

@@ -7,13 +7,17 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 import com.urbau.db.ConnectionManager;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 
 public class Util {
-
+	public final static int PRECIO_1 = 1;
+	public final static int PRECIO_2 = 2;
+	public final static int PRECIO_3 = 3;
+	public final static int PRECIO_4 = 4;
 	
 	public static synchronized String getHiddenFormFrom( ExtendedFieldsBaseMain main ){
 		StringBuffer sb = new StringBuffer();
@@ -47,6 +51,11 @@ public class Util {
 		return -1;
 	}
 	
+	public static String getTodayDate(){
+		Calendar cal = GregorianCalendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd");
+		return sdf.format( cal.getTime() );
+	}
 	public static String getDate( Calendar cal ){
 		if( cal == null ){
 			return "-";
@@ -609,5 +618,64 @@ public class Util {
 	public static synchronized String getRandomTransactionID( String prefix ){
 		Random random = new Random( System.currentTimeMillis() );
 		return prefix + random.nextLong();
+	}
+	
+	
+	
+	public static synchronized boolean isAllowedPrice( int precio, int store, int client ){
+		System.out.println( "checking price permission: precio:"+ precio + ",store:" + store + ",client:" + client );
+		if( isAllowedOnPuntosDeVenta(store, precio)){
+			System.out.println( "returning true" );
+			return true;
+		} else if( isAllowedOnClient(client, precio)) {
+			System.out.println( "returning true" );
+			return true;
+		} else {
+			System.out.println( "returning FALSE" );
+			return false;
+		}
+	}
+	
+	public static synchronized boolean isAllowedOnPuntosDeVenta( int store, int precio){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT COUNT( * ) FROM PRECIOS_PUNTOSDEVENTAS WHERE ID_PUNTOSDEVENTAS = " + store + " AND ID_PRECIO = " + precio;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			System.out.println( sql );
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				return r.getInt( 1 ) > 0;
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return false;
+	}
+	public static synchronized boolean isAllowedOnClient( int cliente, int precio){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT COUNT( * ) FROM PRECIOS_CLIENTE WHERE ID_CLIENTE = " + cliente + " AND ID_PRECIO = " + precio;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			System.out.println( sql );
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				return r.getInt( 1 ) > 0;
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return false;
 	}
 }

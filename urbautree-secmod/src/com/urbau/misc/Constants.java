@@ -91,6 +91,7 @@ public class Constants {
 	public static final String APELLIDOS_PARAMETER = "apellidos";
 	public static final String CORREO_PARAMETER = "correo";
 	public static final String TIPO_DE_CLIENTE_PARAMETER = "tipodecliente";
+	public static final String ACEPTA_CREDITO_PARAMETER = "aceptacredito";
 	public static final String PACKAGE_NAME_PARAMETER = "packageName";
 	public static final String PRODUCTO_PARAMETER = "producto";
 	public static final String ESTATUS_PARAMETER = "estatus";

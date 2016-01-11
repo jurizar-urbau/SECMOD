@@ -17,6 +17,8 @@ public class ClienteBean implements Bean {
 	private Date   fecha_ingreso;
 	private String observaciones;
 	private String tipoDeCliente;
+	private int acepta_credito;
+	
 	private int total_regs;
 	
 	public int getTotal_regs() {
@@ -90,6 +92,13 @@ public class ClienteBean implements Bean {
 	}
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+	
+	public int getAcepta_credito() {
+		return acepta_credito;
+	}
+	public void setAcepta_credito(int acepta_credito) {
+		this.acepta_credito = acepta_credito;
 	}
 	@Override
 	public int getProgramId() {

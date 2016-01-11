@@ -77,14 +77,6 @@
    
    <body>
    
-<!-- div id="fb-root"></div>  FACEBOOK DIV -->
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
@@ -120,6 +112,7 @@
               <div class="row">
               	<h1></h1>
                   <div class="col-lg-9  main-chart">
+                  <h3>INGRESO A BODEGA</h3>
                       <div class="row mt">
                       
                       <div class="col-lg-12" onclick="chooseStore()">
@@ -139,7 +132,7 @@
                       <!-- SERVER STATUS PANELS -->
                      
                         <%
-                        	ArrayList<ProductoBean> plist = pm.get(null, 0 );
+                        	ArrayList<ProductoBean> plist = pm.get(null, -1 );
                         for( ProductoBean pbean: plist ){
                             %>
     			<a data-toggle="modal" href="carga-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
@@ -176,7 +169,7 @@
 			                          	for( PackingBean pb : packlist ){
 			                          	
 			                          %>
-			                          	<%= pb.getNombre() %> <input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>
+			                          	<input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>&nbsp;<%= pb.getNombre() %> <br> 
 			                          <%
 			                          
 			                          count++ ;
@@ -192,7 +185,7 @@
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addToStore(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.packing.value,document.modalform<%= pbean.getId() %>.cantidad.value);">Agregar</button>
+			                          <button class="btn btn-theme" type="button" onclick="addToStore(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.cantidad.value,document.modalform<%= pbean.getId() %>.packing.value);">Agregar</button>
 			                      </div>
 			                  </div>
 			              </div>
@@ -435,6 +428,11 @@
   	  		    ventasList.push( o );  	
   		    }
   		    
+  		    
+  		  function removeItem( index ){
+			  	ventasList.splice( index, 1 );
+				renderVentasList();
+		  }  
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
@@ -442,6 +440,7 @@
   				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].pack );
 				var htmltoadd =
 					  "<div class=\"desc\">" +
+					  "<button type='button' class='close' aria-hidden='true' onclick='removeItem(\"" + i + "\")'>×</button>" +
 					  "<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
 					  "<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
 					  "<input type='hidden' name='pack' value='" + ventasList[ i ].pack + "'>" +

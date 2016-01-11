@@ -42,6 +42,9 @@
 		function bodegaCliente( id ){
 			location.replace( "bodega_cliente.jsp?cliente="+id );					
 		}
+		function creditosCliente( id ){
+			location.replace( "clientes-creditos.jsp?id-cliente="+id );					
+		}
 	</script>
 	</head>
    
@@ -139,10 +142,13 @@
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%//}%>  
 									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-eye"></i></button>
                                     <%//}%>
-                                      <button class="btn btn-info btn-xs" onclick="clientePrecios('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>	  
-                                      <button class="btn btn-info btn-xs" onclick="bodegaCliente('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button>
+                                      <button class="btn btn-warning btn-xs" onclick="clientePrecios('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i>Precios</button>	  
+                                      <!-- button class="btn btn-info btn-xs" onclick="bodegaCliente('<%= bean.getId()  %>');"><i class="fa fa-file-o"></i></button-->
+                                      
+                                      <button class="btn btn-info btn-xs" onclick="creditosCliente('<%= bean.getId()  %>');"><i class="fa fa-money"></i>Creditos</button>
+                                      
                                   </td>
                               </tr>
                               <% } %>

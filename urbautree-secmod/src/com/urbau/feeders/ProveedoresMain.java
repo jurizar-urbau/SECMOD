@@ -23,7 +23,10 @@ public class ProveedoresMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			int total_regs = 0;
-			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
+			if( from == -1 ){
+				sql = "SELECT ID,NIT,CODIGO,NOMBRE,RAZON_SOCIAL,CONTACTO,DIRECCION,TELEFONO,CORREO,PAIS,MONEDA,LIMITE_CREDITO,SALDO FROM PROVEEDORES  ORDER BY ID DESC";
+				rs = stmt.executeQuery( sql );
+			} else if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				sql = "SELECT ID,NIT,CODIGO,NOMBRE,RAZON_SOCIAL,CONTACTO,DIRECCION,TELEFONO,CORREO,PAIS,MONEDA,LIMITE_CREDITO,SALDO FROM PROVEEDORES  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "PROVEEDORES", "" );

@@ -1,7 +1,7 @@
 package com.urbau.servlet.entity;
 
 import java.io.IOException;
-
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
+import com.urbau.beans.ExtendedFieldsBean;
+import com.urbau.beans.OrdenBean;
 import com.urbau.beans.OrdenPagoBean;
 import com.urbau.beans.UsuarioBean;
+import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.OrdenesMain;
 import com.urbau.feeders.OrdenesPagoMain;
+import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
 import static com.urbau.misc.Constants.ESTADO_PAGADO;
 
@@ -56,7 +60,9 @@ public class SavePayment extends Entity {
 			b.setOrden_id( Integer.valueOf( id ));
 			b.setTipo_pago(tipo_pago);
 			b.setNumero_cheque(numero_cheque);
-			b.setId_banco( Integer.valueOf( banco )	);
+			if( banco != null ){
+				b.setId_banco( Integer.valueOf( banco )	);
+			}
 			b.setTipo_tarjeta(tipo_tarjeta);
 			b.setNumero_tarjeta(numero_tarjeta);
 			b.setNumero_autorizacion(autorizacion);
@@ -67,11 +73,27 @@ public class SavePayment extends Entity {
 			OrdenesMain ordenesMain = new OrdenesMain();
 			if( opm.add( b ) ){
 				if( ordenesMain.changeStatus( b.getOrden_id(), ESTADO_PAGADO, loggedUser.getId() )){
-					//TODO unreserve products from storage.
-					message = "Pagado con exito."; 
-					 
+					if( "credito".equals( tipo_pago ) ){
+						ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "CLIENTES_CREDITOS", 
+								new String[] { "ID_CLIENTE", "ID_ORDEN", "FECHA_CREDITO", "MONTO", "ID_USUARIO" }	
+								, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_DOUBLE,Constants.EXTENDED_TYPE_INTEGER } );
+						
+						ExtendedFieldsBean creditos_cliente_bean = new ExtendedFieldsBean();
+						OrdenBean ordenBean = ordenesMain.get( b.getOrden_id() );
+						creditos_cliente_bean.putValue( "ID_CLIENTE", String.valueOf( ordenBean.getId_cliente() ));
+						creditos_cliente_bean.putValue( "ID_ORDEN", id );
+						creditos_cliente_bean.putValue( "FECHA_CREDITO", Util.getDateString( new Date() ));
+						creditos_cliente_bean.putValue( "MONTO", monto );
+						creditos_cliente_bean.putValue( "ID_USUARIO", String.valueOf( loggedUser.getId() ) );
+						
+						if( creditos_cliente.add( creditos_cliente_bean )) {
+							message = "Pagado con exito.";
+						}
+					} else {
+						message = "Pagado con exito.";
+					}
 				} else {
-					
+					message = "No se pudo pagar.";
 				}
 			}
 			

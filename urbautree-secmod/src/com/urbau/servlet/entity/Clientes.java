@@ -25,7 +25,7 @@ import static com.urbau.misc.Constants.DIRRECCION_PARAMETER;
 import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
 import static com.urbau.misc.Constants.CORREO_PARAMETER;
 import static com.urbau.misc.Constants.TIPO_DE_CLIENTE_PARAMETER;
-
+import static com.urbau.misc.Constants.ACEPTA_CREDITO_PARAMETER;
 
 
 
@@ -52,7 +52,7 @@ public class Clientes extends Entity {
 					bean.setTelefono( request.getParameter( TELEFONO_PARAMETER ));					
 					bean.setEmail( request.getParameter( CORREO_PARAMETER ));
 					bean.setTipoDeCliente(request.getParameter( TIPO_DE_CLIENTE_PARAMETER ));
-																																													
+					bean.setAcepta_credito( Integer.valueOf( request.getParameter( ACEPTA_CREDITO_PARAMETER )));																																													
 					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
 						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));
 					}

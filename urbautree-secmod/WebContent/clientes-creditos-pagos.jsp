@@ -1,32 +1,62 @@
 <%@page import="com.urbau.feeders.BancosMain"%>
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.OrdenExtendedBean"%>
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.OrdenesExtendedMain"%>
-<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	<!--  META HTTP-EQUIV="refresh" CONTENT="15">-->
-
 	<%@include file="fragment/head.jsp"%>
 	<%
-		boolean clientecredito = false;
-		BancosMain bancosMain = new BancosMain();
-		ArrayList<String[]> bancosList = bancosMain.getCombo( "BANCOS", "ID ", " DESCRIPCION" );
-		
-		StringBuffer bancosOptions = new StringBuffer();
-		for( String[] option : bancosList ){
-			bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
-		}
-			
-			
-		OrdenesExtendedMain oem = new OrdenesExtendedMain();			
-		
-		ArrayList<OrdenExtendedBean> list = oem.get( request.getParameter("q"), loggedUser.getPunto_de_venta() );  //TODO selected store.
-	%>
 	
+	BancosMain bancosMain = new BancosMain();
+	ArrayList<String[]> bancosList = bancosMain.getCombo( "BANCOS", "ID ", " DESCRIPCION" );
+	
+	StringBuffer bancosOptions = new StringBuffer();
+	for( String[] option : bancosList ){
+		bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
+	}
+	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "CLIENTES_CREDITOS_PAGOS", 
+			new String[] { "ID_CREDITO","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
+			, new int[]{ 
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_DATE,
+			Constants.EXTENDED_TYPE_DOUBLE,
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_STRING
+			} );
+	
+	
+	
+			int from = 0;
+			if( request.getParameter( "from" ) != null ){
+		from = Integer.parseInt( request.getParameter( "from" ) );
+			}
+			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_CREDITO"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id" ) });
+			ArrayList<ExtendedFieldsBean> list = creditos_cliente.getAll( filter );
+			int total_regs = -1;
+			
+			if( list.size() > 0 ){
+		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
+			}
+	%>
+	<script>
+		function pagos( id ){
+			location.replace( "clientes-creditos-pagos.jsp?id="+id);
+		}
+		function add(){
+			$('#myModal').modal('show');
+		}
+		
+	</script>
 	</head>
    
    <body>
@@ -37,7 +67,7 @@
       *********************************************************************************************************************************************************** -->
       <!--header start-->
       
-      <header class="header black-bg no-print">
+      <header class="header black-bg">
       		<%@include file="fragment/header.jsp"%>        
         </header>
       <!--header end-->
@@ -66,7 +96,7 @@
           <div class="col-lg-6"> 
            
           </div>
-          <div class="col-lg-6 no-print">
+          <div class="col-lg-6">
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
@@ -82,33 +112,41 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          				  <span class="pull-right">
+          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  
+          				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> ORDENES - CAJA </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id" ) %>">Regresar...</a></i> Pagos de credito </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
-                              
+	                  	  	  
                               <tr>
-                                  <th>Fecha</th>                                  
-                                  <th>Nit</th>
-                                  <th>Nombres</th>                                                                    
-                                  <th>Apellidos</th>
+                                  <th>Fecha</th>
                                   <th>Monto</th>
-                              
+                                  <th>Tipo pago</th>
+                                  <th>No. Autorizaci&oacute;n</th>
+                                  <th>No. Cheque</th>
+                                  <th>Banco</th>
+                                  <th>Tipo tarjeta</th>
+                                  <th>No. Tarjeta</th>
+                                  
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for(OrdenExtendedBean bean: list ){
-                              		
+                              	for( ExtendedFieldsBean us : list ){
                               %>
-                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>)">
-                                  <td><%= Util.getDateStringDMYHM( bean.getFecha() ) %></td>                                  
-                                  <td><%= bean.getCliente_nit() %></td>
-                                  <td><%= bean.getCliente_nombres() %></td>                                                                    
-                                  <td><%= bean.getCliente_apellidos() %></td>
-                                  <td><%= Util.formatCurrency( bean.getMonto() )%></td>                                                                                                                                                                         
-                                                                    
+                              <tr>
+                              
+								  <td><%= us.getValue( "FECHA" ) %></td>
+                                  <td><%= us.getValue( "MONTO" ) %></td>
+                                  <td><%= us.getValue( "TIPO_PAGO" ) %></td>
+                                  <td><%= us.getValue( "NO_AUTORIZACION" ) %></td>
+                                  <td><%= us.getValue( "NO_CHEQUE" ) %></td>
+                                  <td><%= us.getValue( "BANCO" ) %></td>
+                                  <td><%= us.getValue( "TIPO_TARJETA" ) %></td>
+                                  <td><%= us.getValue( "NO_TARJETA" ) %></td>
                                  
                               </tr>
                               <% } %>
@@ -118,39 +156,67 @@
                          
                       </div>
                       <%
+			int init = from + 1;
 			
+			int end  = (from + Constants.ITEMS_PER_PAGE  ) >= total_regs ? total_regs : (from + Constants.ITEMS_PER_PAGE  );
+			
+			boolean backButton = true;
+			boolean forwardButton = true;
+			if( from <= 0 ){ 
+				backButton = false;
+			}
+			if( end >= total_regs ){
+				forwardButton = false;
+			}
 		%>
-		           
+		              <nav>
+					  <ul class="pager">
+					  <% if( backButton ) {%>
+					  <li class="previous">
+					    		<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
+					  <% } else { %>
+					  <li class="previous disabled">
+					    		<a href="javascript: return null">
+					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
+					  <% } %>
+					    <% if( forwardButton ){  %>
+					    <li class="next">
+					    	<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+					    <% } else { %>
+					    <li class="next disabled">
+					    	<a href="javascript: return null">
+					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+					    <% } %>
+					    
+					  </ul>
+					</nav>
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
- 	<!-- clients modal -->
-      	 
-					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+
+			<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 						
 						  <div class="modal-dialog">
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">PAGAR</h4>
+			                          <h4 class="modal-title">ABONO</h4>
 			                      </div>
 			                      <div class="modal-body">
 			                       <form id="modalform" name="modalform"  class="form-horizontal style-form">
 			                      
 			                      	<input type="hidden" name="formid" id="formid" value="">
-			                      	  <label>Fecha: <b id="formfecha"></b></label>
-			                      	  <label>Nit: <b id="formnit"></b></label><br/>
-			                      	  <label>Cliente: <b id="formnombres"></b> <b id="formapellidos"></b></label>
-			                      	  <label>Monto: <b id="formmonto"></b></label><br/>
+			                      	  <label>Saldo: <b id="formmonto"></b></label><br/>
 			                      	  	<div class="form-group">                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Tipo de pago:</label>
 				                          	<div class="col-sm-4">
 				                              <select class="form-control" id="tipo_pago" name="tipo_pago">
 				                              		<option value="efectivo">Efectivo</option>
 				                              		<option value="tarjeta">Tarjeta Credito/Debito</option>
-				                              		<option value="credito" id="creditooption" <%= clientecredito ? "":"disabled" %>>Cliente credito</option>
 				                              		<option value="cheque">Cheque</option>
 				                              	</select>
 				                          	</div>
@@ -205,73 +271,12 @@
       <footer class="site-footer">
           <%@include file="fragment/footer.jsp"%>
       </footer>
+      
       <!--footer end-->
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
 	<script>
-	
-		var acepta_credito = false;
-		
-		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito ){
-			$('#formid').val( id );
-			$('#formfecha').html(fecha);
-			$('#formnit').html(nit);
-			$('#formnombres').html(nombres);
-			$('#formapellidos').html(apellidos);
-			$('#formmonto').html(monto);
-			$('#myModal').modal('show');
-			if( aceptacredito ){
-				$('#creditooption').removeAttr('disabled');
-			} else {
-				$('#creditooption').attr('disabled','disabled');	
-			}
-			
-		}
-		
-		function printBill(content) {
-			 top.consoleRef=window.open('','myconsole',
-		  'width=350,height=250'
-		   +',menubar=0'
-		   +',toolbar=1'
-		   +',status=0'
-		   +',scrollbars=1'
-		   +',resizable=1')
-		 top.consoleRef.document.writeln(
-		  '             1721142-5      JOSE ALEJANDRO URIZAR\n1\t' + content
-		 )
-		 top.consoleRef.document.close()
-		 top.consoleRef.print()
-		}
-		
-		$("#savebutton").click(function(){
-			
-			var form =$('#modalform');
-	     	$.ajax({
-	     		type:'POST',
-	     		dataType: "text",
-	 			url: './bin/SavePayment',
-	 			data: form.serialize(),
-	 			
-		        success: function(msg){		      
-		        	alert( msg );
-		        	if( !msg.startsWith('error') ){
-		        		location.reload();	
-		        	}
-		            
-		        },
-	 			error: function(jqXHR, textStatus, errorThrown){
-	 				console.log("ERROR srtatus: ", textStatus);
-	 				console.log("ERROR errorThrown: ", errorThrown);
-	 				alert("Se prudujo un error al hacer la operaciòn");	
-	 			}
-		            		        
-	       });
-	     	
-	     	return false;
-	 	});
-		
-			
-         function setTarjeta(){
+      function setTarjeta(){
        	  $('#numero_cheque').val('');
        	  //$('#banco').val('');
        	  $('#tipo_tarjeta').val('');
@@ -342,7 +347,6 @@
      		});
      		setEfectivio();
          });
-		
-	    </script>
+      </script>
   </body>
 </html>

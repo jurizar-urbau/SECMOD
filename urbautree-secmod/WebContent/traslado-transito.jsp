@@ -1,3 +1,6 @@
+<%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
+<%@page import="com.urbau.feeders.BodegasMain"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
 <%@page import="com.urbau.beans.ExtendedFieldsBean"%>
 <%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
@@ -17,13 +20,24 @@
 	<%
 		
 		ExtendedFieldsBaseMain traslados_head = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
-				new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID"},
+				new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID","ID"},
 				new int[]{ Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING} );
 			
 		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"ESTADO"}, new int[]{ ExtendedFieldsFilter.EQUALS},new int[]{Constants.EXTENDED_TYPE_STRING}, new String[]{"C"});
 		
 		ArrayList<ExtendedFieldsBean> transitList = traslados_head.getAll(filter);
 
+		
+		
+		ExtendedFieldsBaseMain traslados_detail = new ExtendedFieldsBaseMain( "TRASLADOS_DETAIL", 
+				new String[]{"ID_TRASLADO","PRODUCTO","UNIDADES","PACKING"},
+				new int[]{ 
+					Constants.EXTENDED_TYPE_INTEGER, 
+					Constants.EXTENDED_TYPE_INTEGER, 
+					Constants.EXTENDED_TYPE_INTEGER, 
+					Constants.EXTENDED_TYPE_STRING
+				} );
+		
 	%>
 	
 	</head>
@@ -85,6 +99,20 @@
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> TRASLADOS EN TRANSITO </h4>
 	                  	  	  <hr>
+	                  	  	  <%  
+	                  	  		BodegasUsuariosMain bm = new BodegasUsuariosMain();
+	                  	  	  	ArrayList<BodegaBean> listS = bm.getForUser( loggedUser.getId() );
+	                  	  	  	
+	                  	  	  %>
+	                  	  	  <form method="POST">
+	                  	  	  <select name="bodega">
+	                  	  	  	<option value="">Seleccione una bodega</option>
+	                  	  	  <% for( BodegaBean b : listS ){ %>
+	                  	  	  	<option value="<%= b.getId()%>"><%= b.getNombre() %></option>
+	                  	  	  	<% } %>
+	                  	  	  </select>
+	                  	  	  <input type="submit" value="Ver">
+	                  	  	  </form>
 	                  	  	  <thead>
                               
                               <tr>
@@ -98,8 +126,9 @@
                               <tbody>
                               <%
                               	for(ExtendedFieldsBean bean: transitList ){
+                              		if ( bean.getValue( "BODEGA_DESTINO" ).equals( request.getParameter("bodega") ) ){
                               %>
-                              <tr onclick="chargeOrder()">
+                              <tr onclick="chargeOrder('<%= bean.getValue( "ID" ) %>')">
                               	  <td><%= bean.getValue( "FECHA")  %></td>
                                   <td><%= bean.getReferenced( "BODEGA_ORIGEN", "BODEGAS", "NOMBRE")  %></td>
                                   <td><%= bean.getReferenced( "BODEGA_DESTINO", "BODEGAS", "NOMBRE")   %></td>
@@ -109,7 +138,42 @@
                                                                     
                                  
                               </tr>
-                              <% } %>
+                              <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal<%= bean.getValue( "ID" ) %>" class="modal fade">
+									
+										<input type="hidden" name="trasladoid" value="<%= bean.getValue( "ID" ) %>">
+									  	<div class="modal-dialog">
+						                  <div class="modal-content">
+							                  <div class="modal-header">
+						                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                          <h4 class="modal-title">RECIBIR</h4>
+						                      </div>
+						                      <div class="modal-body">
+						                      <%
+						                      ExtendedFieldsFilter filterDetail =
+						                      new ExtendedFieldsFilter(
+						                    		  new String[]{"ID_TRASLADO"}, 
+						                    		  new int[]{ ExtendedFieldsFilter.EQUALS},
+						                    		  new int[]{Constants.EXTENDED_TYPE_INTEGER}, 
+						                    		  new String[]{ String.valueOf( bean.getValue( "ID" ))});
+						                      ArrayList<ExtendedFieldsBean> detalles = traslados_detail.getAll( filterDetail );
+						                      for( ExtendedFieldsBean detailBean : detalles ){
+						                      %>
+						                      	Unidades: <%= Integer.valueOf( detailBean.getValue( "UNIDADES" ) ) * Integer.valueOf( detailBean.getValue( "PACKING" ) )  %> - <%= detailBean.getReferenced( "PRODUCTO", "PRODUCTOS", "DESCRIPCION" ) %><br> 
+						                      <% } %>
+						                      	
+						                      </div>
+						                      <div class="modal-footer">
+						                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+						                          <button class="btn btn-theme" type="button" onclick="recibir('<%= bean.getValue( "ID" ) %>')">Recibir</button>
+						                          
+						                      </div>
+						                  </div>
+						              </div>
+					              
+					          </div>
+                              <% }
+                              		}
+                              %>
                               
                               </tbody>
                           </table>
@@ -128,6 +192,8 @@
       	 
 					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 						<form id="modalform" name="modalform" >
+							<input type="hidden" name="id" id="id">
+							<input type="hidden" name="action" id="action">
 						  <div class="modal-dialog">
 			                  <div class="modal-content">
 				                  <div class="modal-header">
@@ -159,14 +225,8 @@
 	<%@include file="fragment/footerscripts.jsp"%>
 	<script>
 		
-		function chargeOrder( id, fecha,nit,nombres,apellidos,monto ){
-			$('#formid').val( id );
-			$('#formfecha').html(fecha);
-			$('#formnit').html(nit);
-			$('#formnombres').html(nombres);
-			$('#formapellidos').html(apellidos);
-			$('#formmonto').html(monto);
-			$('#myModal').modal('show');
+		function chargeOrder( id ){
+			$('#myModal' + id ).modal('show');
 		}
 		
 		function printBill(content) {
@@ -184,13 +244,41 @@
 		 top.consoleRef.print()
 		}
 		
+		function recibir( id ){
+			$('#id').val(id);
+			$('#action').val('A');
+			var form =$('#modalform');
+	     	$.ajax({
+	     		type:'POST',
+	     		dataType: "text",
+	 			url: './bin/TransitoBodega',
+	 			data: form.serialize(),
+	 			
+		        success: function(msg){		      
+		        	alert( msg );
+		        	if( !msg.startsWith('error') ){
+		        		location.reload();	
+		        	}
+		            
+		        },
+	 			error: function(jqXHR, textStatus, errorThrown){
+	 				console.log("ERROR srtatus: ", textStatus);
+	 				console.log("ERROR errorThrown: ", errorThrown);
+	 				alert("Se prudujo un error al hacer la operaciòn");	
+	 			}
+		            		        
+	       });
+	     	
+	     	return false;
+		}
+		
 		$("#savebutton").click(function(){
 			
 			var form =$('#modalform');
 	     	$.ajax({
 	     		type:'POST',
 	     		dataType: "text",
-	 			url: './bin/SavePayment',
+	 			url: './bin/TransitoBodega',
 	 			data: form.serialize(),
 	 			
 		        success: function(msg){		      

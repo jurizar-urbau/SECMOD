@@ -102,13 +102,10 @@
                               <div class="col-sm-10">
                               
                               		<select class="form-control" name="precio" id="precio">
-	                                  <%
-	                                  	ArrayList<PrecioBean> precioList = preciosMain.get(null, 0);
-	                                  	for( PrecioBean precio : precioList ){
-	                                  %>
-	                                  	<option value="<%= precio.getId()%>"><%= precio.getNombre() %></option>
-	                                  <% } %>									  
-									  
+                              			<option value="1">Precio 1</option>
+                              			<option value="2">Precio 2</option>
+                              			<option value="3">Precio 3</option>
+                              			<option value="4">Precio 4</option>
 									</select>
                               	
                                   

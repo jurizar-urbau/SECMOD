@@ -55,7 +55,49 @@
                   
                     <div class="row mtbox">
                      
-                      <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
+                       <div class="col-md-2 col-sm-2 col-md-offset-1  box0">
+                      	<div class="box1">
+                        	<a href="carga-bodega.jsp">
+                  				<span class="li_data"></span>
+                  				<h3>Bodegas</h3>
+                  	        </a>
+                        </div>
+                  		<p>Cargar productos a Bodega.</p>
+                      </div>
+                      
+                     
+                      <!--  div class="col-md-2 col-sm-2 box0">
+                      	<div class="box1">
+                      		<a href="ingreso-gasto.jsp">
+			                	<span class="li_banknote"></span>
+			                  	<h3>Gastos</h3>
+			                </a>
+		                </div>
+		                <p>Ingresar un gasto</p>
+		              </div-->
+		                      
+                      <div class="col-md-2 col-sm-2 box0">
+                      	<div class="box1">
+                      		<a href="traslado-bodega.jsp">
+	                  			<span class="li_paperplane"></span>
+	                  			<h3>Traslados</h3>
+                  			</a>
+                        </div>
+                  		<p>Trasladar producto entre bodegas</p>
+                      </div>
+                      
+                      <div class="col-md-2 col-sm-2 box0">
+                      	<div class="box1">
+                      		<a href="traslado-transito.jsp">
+	                  			<span class="li_truck"></span>
+	                  			<h3>Transito</h3>
+                  			</a>
+                        </div>
+                  		<p>Productos en transito</p>
+                      </div>
+                      
+                      
+                      <div class="col-md-2 col-sm-2 box0">
                         	<div class="box1">
                         		<a href="venta.jsp">
                   					<span class="li_shop"></span>
@@ -75,57 +117,9 @@
 		                </div>
 		                <p>Cobrar un pedido.</p>
                       </div>
-                     
-                      <div class="col-md-2 col-sm-2  box0">
-                      	<div class="box1">
-                        	<a href="carga-bodega.jsp">
-                  				<span class="li_data"></span>
-                  				<h3>Bodegas</h3>
-                  	        </a>
-                        </div>
-                  		<p>Cargar productos a Bodega.</p>
-                      </div>
                       
-                     
-                      <div class="col-md-2 col-sm-2 box0">
-                      	<div class="box1">
-                      		<a href="ingreso-gasto.jsp">
-			                	<span class="li_banknote"></span>
-			                  	<h3>Gastos</h3>
-			                </a>
-		                </div>
-		                <p>Ingresar un gasto</p>
-		              </div>
-		                      
-                      <div class="col-md-2 col-sm-2 box0">
-                      	<div class="box1">
-                      		<a href="traslado-bodega.jsp">
-	                  			<span class="li_paperplane"></span>
-	                  			<h3>Traslados</h3>
-                  			</a>
-                        </div>
-                  		<p>Trasladar producto entre bodegas</p>
-                      </div>
                       </div>
                       <!-- /row mt -->
-                      
-                      <div class="row mtbox">
-                      <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                      	<div class="box1">
-                      		<a href="traslado-transito.jsp">
-	                  			<span class="li_truck"></span>
-	                  			<h3>Transito</h3>
-                  			</a>
-                        </div>
-                  		<p>Productos en transito</p>
-                      </div>
-                      
-                    </div><!-- /row mt -->  
-                  
-                      
-                      
-                      
-                      
                       
                       <div class="row mt">
                       <%
@@ -238,16 +232,7 @@
       </section>
 
       <!--main content end-->
-      <!--footer start-->
-      <footer class="site-footer">
-          <div class="text-center">
-               <a href="http://www.urbau-digital.com">2015 - Urbau Digital</a>
-              <a href="home.jsp" class="go-top">
-                  <i class="fa fa-angle-up"></i>
-              </a>
-          </div>
-      </footer>
-      <!--footer end-->
+      
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -270,75 +255,7 @@
     <script src="assets/js/sparkline-chart.js"></script>    
   <script src="assets/js/zabuto_calendar.js"></script>  
   
-  <script type="text/javascript">
-        $(document).ready(function () {
-        	
-        	/*
-        var unique_id = $.gritter.add({
-            // (string | mandatory) the heading of the notification
-            title: 'Bienvenido Alejandro!',
-            // (string | mandatory) the text inside the notification
-            text: '"Cuando veo a un adulto sobre una bicicleta, aún creo que hay esperanza para la humanidad."',
-            // (string | optional) the image to display on the left
-            image: 'assets/img/ui-jur.jpg',
-            // (bool | optional) if you want it to fade out on its own or just sit there
-            sticky: false,
-            // (int | optional) the time you want it to be alive for before fading out
-            time: '',
-            // (string | optional) the class name you want to apply to that specific message
-            class_name: 'my-sticky-class'
-        });
-
-        return false;
-        });
-        */
-  </script>
-  
-  <script type="application/javascript">
-        $(document).ready(function () {
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-                $(this).hide();
-            });
-        
-            $("#my-calendar").zabuto_calendar({
-                action: function () {
-                    return myDateFunction(this.id, false);
-                },
-                action_nav: function () {
-                    return myNavFunction(this.id);
-                },
-                ajax: {
-                    url: "show-data.jsp?action=1",
-                    modal: true
-                },
-                legend: [
-                    {type: "text", label: "Special event", badge: "00"},
-                    {type: "block", label: "Regular event", }
-                ]
-            });
-        });
-        
-        function myDateFunction(id) {
-            var date = $("#" + id).data("date");
-            var hasEvent = $("#" + id).data("hasEvent");
-        }
-        function myNavFunction(id) {
-            $("#date-popover").hide();
-            var nav = $("#" + id).data("navigation");
-            var to = $("#" + id).data("to");
-            console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-        }
-    </script>
-  <script type="text/javascript">
-  $(document).idle({
-	  onIdle: function(){
-	    alert('Since you waited so long, the answer to the Ultimate Question of Life, the Universe, and Everything is 42');
-	  },
-	  idle: 10000
-	});
-	</script>  
+    
 
   </body>
 </html>
