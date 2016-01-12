@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true" version="3.0">
   <description>
       Volcancito
     </description>
@@ -13,7 +15,6 @@
     </init-param>
     <init-param>
       <param-name>dburl</param-name>
-      <!-- param-value>jdbc:mysql://127.0.0.1/urbausec</param-value-->
       <param-value>jdbc:mysql://127.0.0.1/volcan</param-value>
     </init-param>
     <init-param>
@@ -206,7 +207,6 @@
     <servlet-name>GeneratePlanilla</servlet-name>
     <servlet-class>com.urbau.servlet.entity.GeneratePlanilla</servlet-class>
   </servlet>
-  
   <servlet>
     <servlet-name>PresupuestosProyecciones</servlet-name>
     <servlet-class>com.urbau.servlet.entity.PresupuestosProyecciones</servlet-class>
@@ -275,7 +275,6 @@
     <servlet-name>GeneratePlanilla</servlet-name>
     <url-pattern>/bin/generateplanilla</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>VerifyUser</servlet-name>
     <url-pattern>/bin/VerifyUser</url-pattern>
@@ -432,7 +431,7 @@
     <servlet-name>ClasificacionRubros</servlet-name>
     <url-pattern>/bin/ClasificacionRubros</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>TwoFields</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TwoFields</servlet-class>
   </servlet>
@@ -440,7 +439,6 @@
     <servlet-name>TwoFields</servlet-name>
     <url-pattern>/bin/TwoFields</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>ExtendedFields</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ExtendedFields</servlet-class>
@@ -449,9 +447,7 @@
     <servlet-name>ExtendedFields</servlet-name>
     <url-pattern>/bin/ExtendedFields</url-pattern>
   </servlet-mapping>
-  
-  
-   <servlet>
+  <servlet>
     <servlet-name>CheckPrice</servlet-name>
     <servlet-class>com.urbau.servlet.CheckClientPrice</servlet-class>
   </servlet>
@@ -459,9 +455,6 @@
     <servlet-name>CheckPrice</servlet-name>
     <url-pattern>/bin/checkPrice</url-pattern>
   </servlet-mapping>
- 
-  
-  
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload-path</param-name>
