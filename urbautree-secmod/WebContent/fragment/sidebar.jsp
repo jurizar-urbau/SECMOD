@@ -68,6 +68,9 @@
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
                           <li><a  href="bodegas.jsp">Bodegas</a></li>
                       <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
+                          <li><a  href="cargas-bodega.jsp">Cargas a Bodega</a></li>
+                      <% } %>
                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.ProductosMain")) { %>
                           <li><a  href="productos.jsp">Productos</a></li>
                       <% } %>

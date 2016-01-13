@@ -246,11 +246,12 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement(); 
-			sql = "SELECT ID FROM TRASLADOS_HEADER WHERE TRANSID='" + transaction + "'";
+			sql = "SELECT ID FROM "+getTableName()+" WHERE TRANSID='" + transaction + "'";
 			rec = stmt.executeQuery( sql );
 			if( rec.next() ){
 				return rec.getInt( 1 );
 			} else {
+				System.out.println( "not found for [" + sql + "]");
 				return -1;
 			}
 			
@@ -350,7 +351,7 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			sql = "SELECT " + raw_fields + " FROM "+tablename +" WHERE " + filter.getWhereClause()  + "  ORDER BY ID DESC";
-			System.out.println( "executing: " + sql );
+			
 			rs = stmt.executeQuery( sql);
 
 			while( rs.next() ){

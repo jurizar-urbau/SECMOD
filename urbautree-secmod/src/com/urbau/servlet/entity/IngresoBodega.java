@@ -10,8 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.urbau._abstract.entity.Entity;
+import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.beans.InvetarioBean;
+import com.urbau.beans.UsuarioBean;
+import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.InventariosMain;
+import com.urbau.misc.Constants;
+import com.urbau.misc.Util;
 
 @WebServlet("/bin/IngresoBodega")
 public class IngresoBodega extends Entity {
@@ -46,11 +51,38 @@ public class IngresoBodega extends Entity {
 			
 			InventariosMain im = new InventariosMain();
 			
+			UsuarioBean loggedUser = getLoggedUser(session);
+			
+			ExtendedFieldsBaseMain carga_bodega = new ExtendedFieldsBaseMain( 
+					"CARGAS_BODEGA", new String[]{"FECHA","USUARIO"}, new int[]{ Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_INTEGER
+			});
+			ExtendedFieldsBean carga_bean = new ExtendedFieldsBean();
+			carga_bean.putValue("FECHA", Util.getTodayDate() );
+			carga_bean.putValue( "USUARIO", String.valueOf( loggedUser.getId() ));
+			
+			String transaction_id = carga_bodega.addForTransaction( carga_bean );
+			
+			int carga_id = carga_bodega.getIdFromTransaction( transaction_id );
+			carga_bean.setId( carga_id );
+					
+			ExtendedFieldsBaseMain carga_bodega_detail = new ExtendedFieldsBaseMain( "CARGAS_BODEGA_DETALLE", 
+					new String[]{ "ID_CARGA", "ID_PRODUCTO", "UNIDADES_PRODUCTO", "UNITARIO", "PACKING_SELECCIONADO" }, 
+					new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER} 
+			);
+			
 			for( int i = 0; i < productidStr.length; i++ ){
 				int prodid = Integer.valueOf( productidStr[ i ] );
 				int amount = Integer.valueOf( amountStr[ i ] );
 				int pack = Integer.valueOf( packStr[ i ] );
 				
+				ExtendedFieldsBean carga_bean_detalle_bean = new ExtendedFieldsBean();
+				carga_bean_detalle_bean.putValue( "ID_CARGA", String.valueOf(  carga_id ));
+				carga_bean_detalle_bean.putValue( "ID_PRODUCTO", String.valueOf( prodid ));
+				carga_bean_detalle_bean.putValue( "UNIDADES_PRODUCTO", String.valueOf( amount * pack ));
+				carga_bean_detalle_bean.putValue( "UNITARIO", String.valueOf( amount ));
+				carga_bean_detalle_bean.putValue( "PACKING_SELECCIONADO", String.valueOf( pack ));
+				
+				carga_bodega_detail.add( carga_bean_detalle_bean );
 				
 					InvetarioBean a = im.get ( prodid, "a", bodegaid );
 					if( a == null ){
