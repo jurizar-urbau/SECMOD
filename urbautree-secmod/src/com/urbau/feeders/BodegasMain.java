@@ -123,14 +123,46 @@ public class BodegasMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
+	public boolean getSiEsBodegaPrincipal(){
+		
+		Connection con = null;
+		Statement  stmt= null;
+		ResultSet  rs   = null;
+		String sql = "SELECT COUNT(*) from BODEGAS where ESTADO = '1'";
+		try {
+			con = ConnectionManager.getConnection();
+			stmt= con.createStatement();			
+			rs = stmt.executeQuery( sql );
+			
+			if( rs.next() ){
+				if( rs.getInt( 1 ) >= 1 ){
+					return true;
+				} else {
+					return false;
+				}
+			}
+								
+		} catch (Exception e) {
+			System.out.println(sql);
+			e.printStackTrace();
+			
+		} finally {
+			ConnectionManager.close( con, stmt, null );
+		}
+		return false;
+	}
 	
 	public BodegaBean getBlankBean(){
 		BodegaBean bean = new BodegaBean();
 		bean.setNombre( "" );
 		bean.setDireccion( "" );
 		bean.setTelefono( "" );
-		bean.setEstado(false);		
-		verificarSiEsBodegaPrincipal(bean);
+		bean.setEstado(false);
+		bean.setExisteBodegaPrincipal ( getSiEsBodegaPrincipal() );
+		
+		bean.setEstadoEsEditable( !bean.getExisteBodegaPrincipal() );
+		
+		
 		return bean;
 	}
 	

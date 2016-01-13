@@ -20,15 +20,6 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -114,7 +105,7 @@
 			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
 			                      </div>
 		                      </div>
-		                      <%}else if(bean.getEstadoEsEditable()){%>
+		                      <%} else if(bean.getEstadoEsEditable()){%>
 		                      <div class="col-sm-10">
 	                              <div class="col-sm-6 text-left">
 			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
