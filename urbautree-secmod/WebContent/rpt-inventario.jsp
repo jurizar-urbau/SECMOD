@@ -83,6 +83,10 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+           					<span class="pull-right no-print">
+          				  		<button type="button" class="btn btn-success" onclick="print();">Imprimir</button>&nbsp;&nbsp;&nbsp;
+          				  	</span>
+          		
           				  <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i>&nbsp;<%= bodegaBean.getNombre() %>  > Inventario </h4>
 	                  	  	  <hr>

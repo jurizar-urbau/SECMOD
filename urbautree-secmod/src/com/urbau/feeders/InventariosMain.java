@@ -160,6 +160,10 @@ public class InventariosMain extends AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
+			
+			InventarioHelper invHelper = new InventarioHelper();
+			invHelper.addBodega( bean.getIdBodega() );
+			
 			String sql = "INSERT INTO "+TABLE_NAME+bean.getIdBodega()+
 					" (ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN) " +
 						"VALUES " +
@@ -216,11 +220,13 @@ public class InventariosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "UPDATE "+TABLE_NAME+bean.getIdBodega()+" SET " +
-					"ID_PRODUCT = " + bean.getId_product() + " , " +
 					"ESTATUS = " + Util.vs( bean.getEstatus() ) + ", " +
-					"ID_ORDEN = " +bean.getId_orden()  + ", " +
-					"AMOUNT = " + bean.getAmount() + " " +
-					"WHERE ID = " + bean.getId();
+					"AMOUNT = " + bean.getAmount() + ", " +
+					"ID_USUARIO = " + bean.getId_usuario() +
+					" WHERE " +
+			"ID_PRODUCT = " + bean.getId_product() + " AND " +
+			"ID_ORDEN = " +bean.getId_orden() ;
+			
 					
 			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );

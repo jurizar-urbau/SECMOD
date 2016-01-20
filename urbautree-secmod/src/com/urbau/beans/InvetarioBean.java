@@ -9,6 +9,8 @@ public class InvetarioBean implements Bean {
 	private String estatus;	
 	private int amount;
 	private int id_orden;
+	private int id_usuario;
+	
 	
 	int total_regs;
 	
@@ -143,5 +145,13 @@ public class InvetarioBean implements Bean {
 	public void setId(int i) {
 		// TODO Auto-generated method stub		
 	}
+	public int getId_usuario() {
+		return id_usuario;
+	}
+	public void setId_usuario(int id_usuario) {
+		this.id_usuario = id_usuario;
+	}
+	
+	
 	
 }

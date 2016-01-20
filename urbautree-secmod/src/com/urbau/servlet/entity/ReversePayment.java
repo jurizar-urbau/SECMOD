@@ -62,6 +62,7 @@ public class ReversePayment extends Entity {
 						InvetarioBean inv_inactivo = inventarios.get( ordenDetailBean.getId_producto(), "r", ordenBean.getId_bodega(), ordenBean.getId() );
 						inv_inactivo.setEstatus(ESTADO_CANCELADO);
 						inv_inactivo.setIdBodega( ordenBean.getId_bodega() );
+						inv_inactivo.setId_usuario( loggedUser.getId() );
 						boolean a2 = inventarios.modWithoutStatus( inv_inactivo );
 						System.out.println("a2:" + a2 );
 					}

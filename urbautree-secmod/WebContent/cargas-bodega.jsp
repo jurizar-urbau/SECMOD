@@ -12,9 +12,10 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "CARGAS_BODEGA", 
-			new String[]{"FECHA","USUARIO"},
+			new String[]{"BODEGA","FECHA","USUARIO"},
 				new int[]{ 
-				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_INTEGER
 			} );
 	
@@ -99,6 +100,7 @@
 	                  	  	  <thead>
                               <tr>
                               	  <th>No. carga</th>
+                              	  <th>Bodega</th>
                               	  <th>Fecha</th>
                                   <th>Usuario</th>
                                   <th></th>
@@ -110,6 +112,7 @@
                               %>
                               <tr>
                               	<td><%= us.getId() %></td>
+                              	  <td><%= us.getReferenced( "BODEGA" , "BODEGAS", "NOMBRE") %></td>
 								  <td><%= us.getValue( "FECHA" ) %></td>
 								  <td><%= us.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></td>
 								  <td>

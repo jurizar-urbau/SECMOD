@@ -54,9 +54,11 @@ public class IngresoBodega extends Entity {
 			UsuarioBean loggedUser = getLoggedUser(session);
 			
 			ExtendedFieldsBaseMain carga_bodega = new ExtendedFieldsBaseMain( 
-					"CARGAS_BODEGA", new String[]{"FECHA","USUARIO"}, new int[]{ Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_INTEGER
+					"CARGAS_BODEGA", new String[]{"BODEGA","FECHA","USUARIO"}, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_INTEGER
 			});
 			ExtendedFieldsBean carga_bean = new ExtendedFieldsBean();
+			
+			carga_bean.putValue("BODEGA", String.valueOf( bodegaid)  );
 			carga_bean.putValue("FECHA", Util.getTodayDate() );
 			carga_bean.putValue( "USUARIO", String.valueOf( loggedUser.getId() ));
 			
