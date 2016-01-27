@@ -125,7 +125,7 @@
           <section class="wrapper">
 
               <div class="row">
-                  <div class="col-lg-9  main-chart">
+                  <div class="col-lg-9  col-md-9 col-sm-9 main-chart">
                   <h3>VENTA</h3>
                       <div class="row mt">
                       <div class="col-lg-12">
@@ -146,6 +146,7 @@
 				            </div>
 					    </form>
 					  </div>
+					  
 					  <br/><br/><br/>
                       <!-- SERVER STATUS PANELS -->
                      
@@ -219,10 +220,10 @@
 		              </form>
 		          </div>         
             <% } %>
-            <div id="product-container" class="separator">
-                        
-					</div> <!--  content -->
-                    </div><!-- /row -->
+           			<div id="product-container" class="separator">
+                    </div> <!--  content -->
+                    
+              </div><!-- /row -->
                      	
                             
           
@@ -235,7 +236,7 @@
       <!-- **********************************************************************************************************************************************************
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
-                  <div class="col-lg-3 ds">
+                  <div class="col-lg-3 ds col-md-3 col-sm-3">
                    <h3>ORDEN ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">

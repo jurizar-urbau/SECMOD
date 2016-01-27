@@ -95,7 +95,7 @@ public class IngresoBodega extends Entity {
 						a.setAmount( amount * pack );
 						
 						if( im.add( a ) ) {
-							message = "Carga agregada exitosamente!";
+							message = carga_id + "|Carga agregada exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");
 						}
@@ -103,7 +103,7 @@ public class IngresoBodega extends Entity {
 						a.setAmount( a.getAmount() + ( amount * pack ) );
 						a.setIdBodega( bodegaid );
 						if( im.mod( a ) ) {
-							message = "Carga agregada exitosamente!";
+							message = carga_id + "|Carga agregada exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");
 						}

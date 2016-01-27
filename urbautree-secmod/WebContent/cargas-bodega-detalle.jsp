@@ -25,6 +25,15 @@
 		} );
 	
 	
+	ExtendedFieldsBaseMain cargaHead = new ExtendedFieldsBaseMain( "CARGAS_BODEGA", 
+			new String[]{"BODEGA","FECHA","USUARIO"},
+				new int[]{ 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
+				Constants.EXTENDED_TYPE_INTEGER
+			} );
+			ExtendedFieldsBean head = cargaHead.get( Integer.valueOf( id ));
+	
 
 	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_CARGA" }, 
 			new int[]{ ExtendedFieldsFilter.EQUALS}, 
@@ -108,7 +117,12 @@
           				  		<button type="button" class="btn btn-success" onclick="print();">Imprimir</button>&nbsp;&nbsp;&nbsp;
           				  	</span>
           				  <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left no-print">&nbsp;<a href="cargas-bodega.jsp">Regresar...</a> &nbsp;</i> Detalle de carga No. <%= id %></h4>
+	                  	  	  <h4>
+	                  	  	  	<i class="fa fa-angle-left no-print">&nbsp;<a href="cargas-bodega.jsp">Regresar...</a> &nbsp;</i> <BR>
+	                  	  	  	<b>Detalle de carga No:</b> <%= id %><br>
+	                  	  	  	<b>Bodega :</b> <%= head.getReferenced( "BODEGA", "BODEGAS", "NOMBRE") %><br>
+	                  	  	  	<b>Fecha&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%= head.getValue( "FECHA" ) %><br>
+	                  	  	  	<b>Usuario&nbsp;:</b> <%= head.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
@@ -125,9 +139,10 @@
                               %>
                               <tr>
                               	  <td><%= us.getReferenced( "ID_PRODUCTO" , "PRODUCTOS", "DESCRIPCION") %></td>
-								  <td><%= us.getValue( "UNIDADES_PRODUCTO" ) %></td>
 								  <td><%= us.getValue( "UNITARIO" ) %></td>
 								  <td><%= us.getValue( "PACKING_SELECCIONADO" ) %></td>
+								  <td><%= us.getValue( "UNIDADES_PRODUCTO" ) %></td>
+								  
 								 
                               </tr>
                               <% } %>
@@ -188,4 +203,14 @@
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
   </body>
+  <%
+ 	if( "true".equals( request.getParameter( "autoprint" )) ){
+ 		%>
+ 		<script>
+ 			window.print();
+ 		</script>
+ 		
+ 		<% 
+ 	}
+  %>
 </html>

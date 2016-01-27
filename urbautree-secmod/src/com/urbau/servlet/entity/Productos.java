@@ -2,6 +2,7 @@ package com.urbau.servlet.entity;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.urbau.beans.ProductoBean;
 import com.urbau.beans.ProductoHelperBean;
 
 import com.urbau.feeders.ProductosMain;
+import com.urbau.misc.ImageUtil;
 
 import static com.urbau.misc.Constants.ADD;
 import static com.urbau.misc.Constants.EDIT;
@@ -59,30 +61,44 @@ public class Productos extends Entity {
 				
 				ProductoBean bean = new ProductoBean();
 								
-				bean.setCodigo     ( productoHelperBean.getCodigo() );
-				bean.setDescripcion( productoHelperBean.getDescripcion());
-				bean.setProveedor  ( Integer.valueOf( productoHelperBean.getProveedor() ));
-				bean.setPrecio     ( Double.valueOf( productoHelperBean.getPrecio()  ));
-				bean.setPrecio_1   ( Double.valueOf( productoHelperBean.getPrecio_1()  ) );
-				bean.setPrecio_2   ( Double.valueOf( productoHelperBean.getPrecio_2()  ) );
-				bean.setPrecio_3   ( Double.valueOf( productoHelperBean.getPrecio_3()  ) );
-				bean.setPrecio_4   ( Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
+
 				
-				bean.setImage_path( productoHelperBean.getImage_path() );
-				bean.setFamilia( productoHelperBean.getFamilia() );
-																			
 				if( !ADD.equals( productoHelperBean.getMode()) ){
 					bean.setId( Integer.parseInt( productoHelperBean.getIdString()));
 				}
 				ProductosMain rmain = new ProductosMain();
 				
 				if( ADD.equals( productoHelperBean.getMode() )){
+					bean.setCodigo     ( productoHelperBean.getCodigo() );
+					bean.setDescripcion( productoHelperBean.getDescripcion());
+					bean.setProveedor  ( productoHelperBean.getProveedor() == null ? -1 : Integer.valueOf( productoHelperBean.getProveedor() ));
+					bean.setPrecio     ( Double.valueOf( productoHelperBean.getPrecio()  ));
+					bean.setPrecio_1   ( Double.valueOf( productoHelperBean.getPrecio_1()  ) );
+					bean.setPrecio_2   ( Double.valueOf( productoHelperBean.getPrecio_2()  ) );
+					bean.setPrecio_3   ( Double.valueOf( productoHelperBean.getPrecio_3()  ) );
+					bean.setPrecio_4   ( Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
+					
+					bean.setImage_path( productoHelperBean.getImage_path() );
+					bean.setFamilia( productoHelperBean.getFamilia() );
+					
 					if ( rmain.add( bean ) ){
 						message = "Registro creado con exito.";
 					} else {
 						showMessage( "No se pudo crear el registro " , response );
 					}
 				} else if( EDIT.equals( productoHelperBean.getMode() )){
+					bean.setCodigo     ( productoHelperBean.getCodigo() );
+					bean.setDescripcion( productoHelperBean.getDescripcion());
+					bean.setProveedor  ( productoHelperBean.getProveedor() == null ? -1 : Integer.valueOf( productoHelperBean.getProveedor() ));
+					bean.setPrecio     ( Double.valueOf( productoHelperBean.getPrecio()  ));
+					bean.setPrecio_1   ( Double.valueOf( productoHelperBean.getPrecio_1()  ) );
+					bean.setPrecio_2   ( Double.valueOf( productoHelperBean.getPrecio_2()  ) );
+					bean.setPrecio_3   ( Double.valueOf( productoHelperBean.getPrecio_3()  ) );
+					bean.setPrecio_4   ( Double.valueOf( productoHelperBean.getPrecio_4()  ) );				
+					
+					bean.setImage_path( productoHelperBean.getImage_path() );
+					bean.setFamilia( productoHelperBean.getFamilia() );
+					
 					if ( rmain.mod( bean ) ){
 						message = "Registro modificado con exito.";
 					} else {
@@ -158,8 +174,11 @@ public class Productos extends Entity {
 					            file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
 				            }else{
 					            file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-				            }				            			            				            	
-				            fi.write( file ) ;
+				            }	
+				            InputStream is = fi.getInputStream();
+				            
+				            ImageUtil.saveScaledImage( is, 220, 220, file );
+				            //fi.write( file ) ;
 				            				            
 				            phBean.setImage_path(file.toString());				            
 						}			           

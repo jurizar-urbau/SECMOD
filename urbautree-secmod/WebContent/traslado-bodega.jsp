@@ -109,7 +109,7 @@
 
               <div class="row">
               	
-              	  <div class="col-lg-9  main-chart">
+              	  <div class="col-lg-9  col-md-9 col-sm-9  main-chart">
               	  <h3>TRASLADO ENTRE BODEGAS</h3>
                       <div class="row mt">
                       <div class="col-lg-12" onclick="chooseStore()">
@@ -208,7 +208,7 @@
       <!-- **********************************************************************************************************************************************************
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
-                  <div class="col-lg-3 ds">
+                  <div class="col-lg-3 ds  col-md-3 col-sm-3">
                    <h3>TRASLADO ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">

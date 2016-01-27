@@ -1,3 +1,5 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Date"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.feeders.BodegasMain"%>
 <%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
@@ -88,7 +90,15 @@
           				  	</span>
           		
           				  <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i>&nbsp;<%= bodegaBean.getNombre() %>  > Inventario </h4>
+          				  <%
+	                  	  	  	Date date = new Date();
+	                  	  	  	date.setTime( System.currentTimeMillis() );
+	                  	  	  %>
+	                  	  	  <h4>
+	                  	  	  <i class="fa fa-angle-right"></i>&nbsp;
+	                  	  	  <b>INVENTARIO:</b> 
+	                  	  	  <%= bodegaBean.getNombre() %></br><i class="fa fa-angle-right"></i>&nbsp;
+	                  	  	  <b>FECHA Y HORA:</b> <%= Util.getDateStringDMYHM( date )%></h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

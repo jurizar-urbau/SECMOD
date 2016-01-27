@@ -111,19 +111,26 @@
 
               <div class="row">
               	<h1></h1>
-                  <div class="col-lg-9  main-chart">
+                  <div class="col-lg-9  col-md-9 col-sm-9  main-chart">
                   <h3>INGRESO A BODEGA</h3>
                       <div class="row mt">
-                      
                       <div class="col-lg-12" onclick="chooseStore()">
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
-                      <div class="col-lg-12">
+                      <!-- div class="col-lg-3 pull-left">
+                      	Fecha carga: <input type="date" name="fecha_carga" id="fecha_carga" class="form-control">
+                      	</div>
+                      	<div class="col-lg-3 pull-left">
+                      	No. Compra: <input type="text" name="no_compra" id="no_compra" class="form-control">
+                      </div-->
+                      
+                      <div class="col-lg-4 pull-right">
+                      Busqueda:
 		          		<form>
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-					                    <li><button class="btn btn-primary">Buscar</button></li>
+					                    <li><span class="btn btn-primary" onclick="searchByQuery()">Buscar</span></li>
 					              </ul>
 				            </div>
 					    </form>
@@ -208,7 +215,7 @@
       <!-- **********************************************************************************************************************************************************
       RIGHT SIDEBAR CONTENT
       *********************************************************************************************************************************************************** -->                  
-                  <div class="col-lg-3 ds">
+                  <div class="col-lg-3 ds col-md-3 col-sm-3">
                    <h3>INGRESO ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">
@@ -389,10 +396,22 @@
     	 			url: './bin/IngresoBodega',
     	 			data: form.serialize(),
     	 			
-    		        success: function(msg){		      
-    		        	alert( msg );
+    		        success: function(msg){
+    		        	var messages = msg.split('|');
+    		        	alert( messages[ 1 ] );
     		        	if( !msg.startsWith('error') ){
-    		        		location.reload();	
+    		        		
+    		        		if( confirm( "Desea imprimir la carga?" ) ){
+    		        			window.open( 'cargas-bodega-detalle.jsp?autoprint=true&id=' + messages[ 0 ] );
+    		        			location.reload();
+    		        		} else {
+    		        			location.reload();
+    		        		}
+    		        		// if( confirm("desea imprimir la carga?") ){
+    		        		//	location.replace( 'cargas-bodega-detalle.jsp?id=6' );
+    		        		 //} else {
+    		        			
+    		        		//}
     		        	}
     		            
     		        },
@@ -470,6 +489,12 @@
 	        	searchProducts( value );
 			});
 	    });
+	    
+	    function searchByQuery( ){
+	    	var value = $( "#search-query-3" ).val();
+        	console.log( "value", value );
+        	searchProducts( value );
+	    }
 	    setStore();
 	</script>
   </body>
