@@ -228,6 +228,10 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-class>com.urbau.servlet.entity.SavePayment</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SaveCreditOrderPayment</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SaveOrderPayment</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ReversePayment</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ReversePayment</servlet-class>
   </servlet>
@@ -258,6 +262,10 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>SavePayment</servlet-name>
     <url-pattern>/bin/SavePayment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveCreditOrderPayment</servlet-name>
+    <url-pattern>/bin/SaveCreditOrderPayment</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReversePayment</servlet-name>

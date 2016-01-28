@@ -291,33 +291,34 @@
      		setEfectivio();
          });
          
-         
          $("#savebutton").click(function(){
- 			
- 			var form =$('#modalform');
- 	     	$.ajax({
- 	     		type:'POST',
- 	     		dataType: "text",
- 	 			url: './bin/SaveCreditPayment',
- 	 			data: form.serialize(),
- 	 			
- 		        success: function(msg){		      
- 		        	alert( msg );
- 		        	if( !msg.startsWith('error') ){
- 		        		location.reload();	
- 		        	}
- 		            
- 		        },
- 	 			error: function(jqXHR, textStatus, errorThrown){
- 	 				console.log("ERROR srtatus: ", textStatus);
- 	 				console.log("ERROR errorThrown: ", errorThrown);
- 	 				alert("Se prudujo un error al hacer la operacion");	
- 	 			}
- 		            		        
- 	       });
- 	     	
- 	     	return false;
- 	 	});
+		
+				var form =$('#modalform');
+		     	$.ajax({
+		     		type:'POST',
+		     		dataType: "text",
+		 			url: './bin/SaveCreditOrderPayment',
+		 			data: form.serialize(),
+		 			
+			        success: function(msg){		      
+			        	alert( msg );
+			        	if( !msg.startsWith('error') ){
+			        		location.reload();	
+			        	}
+			            
+			        },
+		 			error: function(jqXHR, textStatus, errorThrown){
+		 				console.log("ERROR srtatus: ", textStatus);
+		 				console.log("ERROR errorThrown: ", errorThrown);
+		 				alert("Se prudujo un error al hacer la operaciòn");	
+		 			}
+			            		        
+		       });
+		     	
+		     	return false;
+		 	});
+
+         
          
       </script>
   </body>

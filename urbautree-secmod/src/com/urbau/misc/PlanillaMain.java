@@ -13,7 +13,8 @@ public class PlanillaMain {
 		
 		for( ExtendedFieldsBean employee : employees ){
 			
-			int daysWorked = 30 - Util.missingDaysOn15( employee.getId() , month, year );
+			int daysWorked   = 30 - Util.missingDaysOn15( employee.getId(), month, year );
+			int daysWorked30 = Util.missingDaysOn30(    employee.getId(), month, year);
 		}
 		
 		return false;
