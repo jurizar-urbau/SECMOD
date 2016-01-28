@@ -678,4 +678,27 @@ public class Util {
 		}
 		return false;
 	}
+	public static synchronized double getTotalOrderPayments( int id_orden ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT SUM(MONTO) FROM CLIENTES_CREDITOS_PAGOS WHERE ID_CREDITO=" + id_orden;
+		double total = 0;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			System.out.println( sql );
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				total = r.getDouble( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return total;	
+	}
+	
 }

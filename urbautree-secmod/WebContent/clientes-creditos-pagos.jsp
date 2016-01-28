@@ -35,18 +35,8 @@
 			} );
 	
 	
-	
-			int from = 0;
-			if( request.getParameter( "from" ) != null ){
-		from = Integer.parseInt( request.getParameter( "from" ) );
-			}
 			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_CREDITO"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id" ) });
 			ArrayList<ExtendedFieldsBean> list = creditos_cliente.getAll( filter );
-			int total_regs = -1;
-			
-			if( list.size() > 0 ){
-		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
-			}
 	%>
 	<script>
 		function pagos( id ){
@@ -96,17 +86,7 @@
           <div class="col-lg-6"> 
            
           </div>
-          <div class="col-lg-6">
-          		<form>
-	          		<div class="top-menu">
-			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-			                    <li><button class="btn btn-primary">Buscar</button></li>
-			              </ul>
-		            </div>
-			    </form>
-			  </div>
-			  <br/>
+          
 			  
           	
           	<div class="row mt">
@@ -155,44 +135,7 @@
                           </table>
                          
                       </div>
-                      <%
-			int init = from + 1;
-			
-			int end  = (from + Constants.ITEMS_PER_PAGE  ) >= total_regs ? total_regs : (from + Constants.ITEMS_PER_PAGE  );
-			
-			boolean backButton = true;
-			boolean forwardButton = true;
-			if( from <= 0 ){ 
-				backButton = false;
-			}
-			if( end >= total_regs ){
-				forwardButton = false;
-			}
-		%>
-		              <nav>
-					  <ul class="pager">
-					  <% if( backButton ) {%>
-					  <li class="previous">
-					    		<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
-					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
-					  <% } else { %>
-					  <li class="previous disabled">
-					    		<a href="javascript: return null">
-					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
-					  <% } %>
-					    <% if( forwardButton ){  %>
-					    <li class="next">
-					    	<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
-					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
-					    <% } else { %>
-					    <li class="next disabled">
-					    	<a href="javascript: return null">
-					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
-					    <% } %>
-					    
-					  </ul>
-					</nav>
-          		</div>
+            	</div>
           	</div>
 			
 		</section><!--/wrapper -->
@@ -347,6 +290,35 @@
      		});
      		setEfectivio();
          });
+         
+         
+         $("#savebutton").click(function(){
+ 			
+ 			var form =$('#modalform');
+ 	     	$.ajax({
+ 	     		type:'POST',
+ 	     		dataType: "text",
+ 	 			url: './bin/SaveCreditPayment',
+ 	 			data: form.serialize(),
+ 	 			
+ 		        success: function(msg){		      
+ 		        	alert( msg );
+ 		        	if( !msg.startsWith('error') ){
+ 		        		location.reload();	
+ 		        	}
+ 		            
+ 		        },
+ 	 			error: function(jqXHR, textStatus, errorThrown){
+ 	 				console.log("ERROR srtatus: ", textStatus);
+ 	 				console.log("ERROR errorThrown: ", errorThrown);
+ 	 				alert("Se prudujo un error al hacer la operacion");	
+ 	 			}
+ 		            		        
+ 	       });
+ 	     	
+ 	     	return false;
+ 	 	});
+         
       </script>
   </body>
 </html>

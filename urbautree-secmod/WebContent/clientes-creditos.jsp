@@ -93,24 +93,30 @@
           		<div class="content-panel">
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"><a href="clientes.jsp">Regresar...</a></i> Creditos </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="clientes.jsp">Regresar...</a></i> Creditos </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
                                   <th>Id Orden</th>
                                   <th>Fecha</th>
                                   <th>Monto</th>
+                                  <th>Pagos</th>
+                                  <th>Saldo</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
                               	for( ExtendedFieldsBean us : list ){
+                              		double total_payments = Util.getTotalOrderPayments( us.getId() );
+                              		double balance = Double.valueOf( us.getValue( "MONTO" ) ) - total_payments ;
                               %>
                               <tr>
 								  <td><%= us.getValue( "ID_ORDEN" ) %></td>
                                   <td><%= us.getValue( "FECHA_CREDITO" ) %></td>
-                                  <td><%= us.getValue( "MONTO" ) %></td>
+                                  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "MONTO" ) )) %></td>
+                                  <td><%= Util.formatCurrency( total_payments ) %>
+                                  <td><%= Util.formatCurrency( balance ) %></td>
                                   <td>
                                       <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                   </td>

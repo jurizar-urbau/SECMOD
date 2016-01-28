@@ -117,12 +117,12 @@
                       <div class="col-lg-12" onclick="chooseStore()">
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
-                      <!-- div class="col-lg-3 pull-left">
+                      <div class="col-lg-3 pull-left">
                       	Fecha carga: <input type="date" name="fecha_carga" id="fecha_carga" class="form-control">
                       	</div>
                       	<div class="col-lg-3 pull-left">
                       	No. Compra: <input type="text" name="no_compra" id="no_compra" class="form-control">
-                      </div-->
+                      </div>
                       
                       <div class="col-lg-4 pull-right">
                       Busqueda:

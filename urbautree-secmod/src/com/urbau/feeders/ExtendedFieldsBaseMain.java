@@ -9,7 +9,6 @@ import java.util.HashMap;
 import com.urbau._abstract.AbstractMain;
 import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.beans.KeyValue;
-import com.urbau.beans.KeyValueBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
 import com.urbau.misc.ExtendedFieldsFilter;
@@ -353,7 +352,7 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			sql = "SELECT " + raw_fields + " FROM "+tablename +" WHERE " + filter.getWhereClause()  + "  ORDER BY ID DESC";
 			
 			rs = stmt.executeQuery( sql);
-
+			
 			while( rs.next() ){
 				
 				ExtendedFieldsBean bean = new ExtendedFieldsBean();
