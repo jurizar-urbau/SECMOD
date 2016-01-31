@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.ProductoBean"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
@@ -27,7 +29,7 @@
 	BodegaBean bodegaBean = bodegasMain.getBodega( Integer.valueOf( bodega ));
 	
 	ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "INV" + bodega + " INV, PRODUCTOS PRO", 
-			new String[]{"PRO.CODIGO","PRO.DESCRIPCION","IMAGE_PATH","INV.AMOUNT"},
+			new String[]{"PRO.CODIGO","PRO.DESCRIPCION","PRO.PRECIO","PRO.ID","IMAGE_PATH","INV.AMOUNT"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_STRING, 
 				Constants.EXTENDED_TYPE_STRING,
@@ -41,7 +43,7 @@
 	
 	
 	ArrayList<ExtendedFieldsBean> list = reporteMain.getAll(filter);
-		
+	ProductosMain productosMain = new ProductosMain();	
 	%>
 	
 	</head>
@@ -106,12 +108,18 @@
                                   <th>Descripcion</th>
                                   <th>Imagen</th>
                                   <th>Cantidad</th>
+                                  <th>Costo</th>
+                                  <th>Precio 1</th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
+                              	double total_costo =0;
+	                          	double total_precio1=0;
                               	for( ExtendedFieldsBean us : list ){
-                              		
+                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
+                              		total_costo += Double.valueOf( us.getValue( "PRO.PRECIO" ) );
+                              		total_precio1 += producto.compiled_1();
                               %>
                               <tr>
 								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
@@ -119,9 +127,19 @@
 								  <td>
 								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
 								  <td><%= us.getValue( "INV.AMOUNT" ) %></td>
+								    
+								  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
+								  <td><%= Util.formatCurrency( producto.compiled_1()) %></td>
                               </tr>
                               <% } %>
-                              
+                              <tr>
+								  <td></td>
+								  <td></td>
+								  <td></td> 
+								  <td><b><i>TOTALES</i></b></td>
+								  <td><b><%= Util.formatCurrency( total_costo )%></b></td>
+								  <td><b><%= Util.formatCurrency( total_precio1 ) %></b></td>
+                              </tr>
                               </tbody>
                           </table>
                          
