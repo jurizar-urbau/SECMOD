@@ -97,7 +97,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id" ) %>">Regresar...</a></i> Pagos de credito </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id" ) %>">Regresar...</a></i> Pagos de credito </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
 	                  	  	  
@@ -152,7 +152,7 @@
 			                      <div class="modal-body">
 			                       <form id="modalform" name="modalform"  class="form-horizontal style-form">
 			                      
-			                      	<input type="hidden" name="formid" id="formid" value="">
+			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id" ) %>">
 			                      	  <label>Saldo: <b id="formmonto"></b></label><br/>
 			                      	  	<div class="form-group">                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Tipo de pago:</label>
