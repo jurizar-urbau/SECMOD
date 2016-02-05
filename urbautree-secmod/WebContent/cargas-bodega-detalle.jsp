@@ -58,6 +58,16 @@
 		} 
 		
 	</script>
+	<style>
+	@page  
+		{ 
+		    size: auto;   /* auto is the initial value */ 
+		
+		    /* this affects the margin in the printer settings */ 
+		    margin: 25mm 25mm 25mm 25mm;  
+		} 
+			
+	</style>
 	</head>
    
    <body>

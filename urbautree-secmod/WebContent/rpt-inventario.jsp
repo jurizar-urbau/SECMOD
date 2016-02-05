@@ -17,7 +17,13 @@
 <html lang="en">
 	<head>
 	<style>
-		@page { size: auto;  margin: 0mm; }
+		@page  
+		{ 
+		    size: auto;   /* auto is the initial value */ 
+		
+		    /* this affects the margin in the printer settings */ 
+		    margin: 25mm 25mm 25mm 25mm;  
+		} 
 	</style>
 		
 	<%@include file="fragment/head.jsp"%>
@@ -118,8 +124,8 @@
 	                          	double total_precio1=0;
                               	for( ExtendedFieldsBean us : list ){
                               		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_costo += Double.valueOf( us.getValue( "PRO.PRECIO" ) );
-                              		total_precio1 += producto.compiled_1();
+                              		total_costo += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
+                              		total_precio1 += producto.compiled_1() * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
                               %>
                               <tr>
 								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
