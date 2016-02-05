@@ -1,13 +1,14 @@
 package com.urbau.servlet.entity;
 
 import com.urbau._abstract.entity.Entity;
+import com.urbau.beans.ClienteBean;
 import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.beans.OrdenBean;
 import com.urbau.beans.OrdenPagoBean;
 import com.urbau.beans.UsuarioBean;
+import com.urbau.feeders.ClientesMain;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.OrdenesMain;
-import com.urbau.feeders.OrdenesPagoMain;
 import com.urbau.feeders.OrdenesPagoOrdenMain;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
@@ -18,9 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
 
-import static com.urbau.misc.Constants.ESTADO_PAGADO;
 
 @WebServlet("/bin/SaveCreditOrderPayment")
 public class SaveOrderPayment extends Entity {
@@ -43,6 +42,7 @@ public class SaveOrderPayment extends Entity {
 			String numero_tarjeta = request.getParameter( "numero_tarjeta" );
 			String autorizacion = request.getParameter( "autorizacion" );
 			String monto = request.getParameter( "monto" );
+			String factura = request.getParameter( "factura" );
 			
 			
 			String message = validateParameters( id, tipo_pago, numero_cheque, banco, tipo_tarjeta, numero_tarjeta, autorizacion, monto );
@@ -68,9 +68,48 @@ public class SaveOrderPayment extends Entity {
 			b.setMonto( Double.valueOf( monto ));
 			b.setId_usuario( loggedUser.getId() );
 			
+			ExtendedFieldsBaseMain creditoMain = new ExtendedFieldsBaseMain( "CLIENTES_CREDITOS", new String[]{"ID_CLIENTE"},
+					new int[]{ Constants.EXTENDED_TYPE_INTEGER});
+			ExtendedFieldsBean creditoBean = creditoMain.get( Integer.valueOf( id ));
+			System.out.println( "ORDEN ID: " + id );
+			
+			int client_id = creditoBean.getValueAsInt( "ID_CLIENTE" );
+			ClientesMain clientesMain = new ClientesMain();
+			ClienteBean  clienteBean = clientesMain.get( client_id );
+			
 			OrdenesPagoOrdenMain opm = new OrdenesPagoOrdenMain();
 
 			if( opm.add( b ) ){
+				ExtendedFieldsBaseMain facturasMain = new ExtendedFieldsBaseMain( 
+						"FACTURAS" , 
+						new String[]{"ORDEN","FACTURA","FECHA","SUBTOTAL","TOTAL","USUARIO","NIT","NOMBRE","DIRECCION"}, 
+						new int[]{ 
+								Constants.EXTENDED_TYPE_INTEGER,
+								Constants.EXTENDED_TYPE_STRING,
+								Constants.EXTENDED_TYPE_INTEGER,
+								Constants.EXTENDED_TYPE_DOUBLE,
+								Constants.EXTENDED_TYPE_DOUBLE,
+								Constants.EXTENDED_TYPE_INTEGER,
+								Constants.EXTENDED_TYPE_STRING,
+								Constants.EXTENDED_TYPE_STRING,
+								Constants.EXTENDED_TYPE_STRING
+						}
+				);
+				ExtendedFieldsBean facturaBean = new ExtendedFieldsBean();
+				
+				facturaBean.putValue( "ORDEN", id );
+				facturaBean.putValue( "FACTURA", factura );
+				facturaBean.putValue( "FECHA", "NOW()" );
+				facturaBean.putValue( "SUBTOTAL", monto );
+				facturaBean.putValue( "TOTAL", monto );
+				facturaBean.putValue( "USUARIO", String.valueOf( loggedUser.getId() ));
+				facturaBean.putValue( "NIT", clienteBean.getNit() );
+				facturaBean.putValue( "NOMBRE", clienteBean.getNombres() + " " + clienteBean.getApellidos() );
+				facturaBean.putValue( "DIRECCION", clienteBean.getDireccion() );
+				
+				String transactionID = facturasMain.addForTransaction(facturaBean);
+				int facturaID = facturasMain.getIdFromTransaction(transactionID);
+				System.out.println( "Id factura: " + facturaID );
 				message = "Pagado con exito.";
 			} else {
 				message = "No se pudo pagar.";

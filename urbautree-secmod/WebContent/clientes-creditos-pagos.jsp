@@ -154,6 +154,14 @@
 			                      
 			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id" ) %>">
 			                      	  <label>Saldo: <b id="formmonto"></b></label><br/>
+			                      	  
+			                      	  <div class="form-group">                      	
+				                          	<label class="col-sm-2 col-sm-2 control-label">Factura</label>
+				                          	<div class="col-sm-4">
+				                          		<input class="form-control" id="factura" name="factura">
+				                          	</div>
+				                      	</div>
+			                      	  
 			                      	  	<div class="form-group">                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Tipo de pago:</label>
 				                          	<div class="col-sm-4">
