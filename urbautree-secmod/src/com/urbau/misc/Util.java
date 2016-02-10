@@ -502,6 +502,12 @@ public class Util {
 		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
 		return formatter.format( applyRoundRules ( value ) );
 	}
+	
+	public static String formatCurrencyWithNoRound( double value ){
+		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
+		return formatter.format(value );
+	}
+	
 	public static String formatCurrencyWithoutSymbol( double value ){
 		
 		DecimalFormat formatter = new DecimalFormat("0.00");     

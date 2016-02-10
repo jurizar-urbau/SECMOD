@@ -114,8 +114,8 @@
                                   <th>Descripcion</th>
                                   <th>Imagen</th>
                                   <th>Cantidad</th>
-                                  <th>Costo</th>
-                                  <th>Precio 1</th>
+                                  <th>Unitario</th>
+                                  <th>Total</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -124,8 +124,7 @@
 	                          	double total_precio1=0;
                               	for( ExtendedFieldsBean us : list ){
                               		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_costo += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              		total_precio1 += producto.compiled_1() * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
+                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
                               %>
                               <tr>
 								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
@@ -134,16 +133,16 @@
 								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
 								  <td><%= us.getValue( "INV.AMOUNT" ) %></td>
 								    
-								  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
-								  <td><%= Util.formatCurrency( producto.compiled_1()) %></td>
+								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
+								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></td>
                               </tr>
                               <% } %>
                               <tr>
 								  <td></td>
 								  <td></td>
 								  <td></td> 
-								  <td><b><i>TOTALES</i></b></td>
-								  <td><b><%= Util.formatCurrency( total_costo )%></b></td>
+								  <td></td>
+								  <td><b><i>TOTAL</i></b></td>
 								  <td><b><%= Util.formatCurrency( total_precio1 ) %></b></td>
                               </tr>
                               </tbody>

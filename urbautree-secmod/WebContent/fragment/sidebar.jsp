@@ -59,6 +59,16 @@
                           <li><a  href="clasificacion_rubros.jsp">Clasificacion Rubros</a></li>
                       </ul>
                   </li>
+                  <li class="sub-menu" id="menu-compras">
+                  	<a href="javascript:;" >
+                          <i class="fa fa-money"></i>
+                          <span>Compras</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="compras.jsp">Compras</a></li>
+                          <li><a  href="gastos.jsp">Gastos</a></li>
+                      </ul>
+                  </li>
                   <li class="sub-menu" id="menu-configuracion">
                   	<a href="javascript:;" >
                           <i class="fa fa-cogs"></i>

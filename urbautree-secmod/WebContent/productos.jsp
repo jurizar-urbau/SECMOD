@@ -146,7 +146,7 @@
                                   <td><%= us.getDescripcion() %></td>
                                   <td><%= familia.getNombre() %></td>
                                   <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio() ) %></td>
+                                  <td><%= Util.formatCurrencyWithNoRound( us.getPrecio() ) %></td>
                                   <td><%= Util.formatCurrency( us.getPrecio_1()) %></td>
                                   <td><%= Util.formatCurrency( us.getPrecio_2() ) %></td>
                                   <td><%= Util.formatCurrency( us.getPrecio_3()) %></td>
