@@ -55,7 +55,14 @@
                   
                     <div class="row mtbox">
                      
-                       <div class="col-md-2 col-sm-2 col-md-offset-1  box0">
+                    <%
+                    	boolean addedFirst = false;
+                    %>
+               
+                    <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_BODEGAS")) { 
+                    	
+                    %>
+                       <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
                       	<div class="box1">
                         	<a href="carga-bodega.jsp">
                   				<span class="li_data"></span>
@@ -64,19 +71,14 @@
                         </div>
                   		<p>Cargar productos a Bodega.</p>
                       </div>
-                      
-                     
-                      <!--  div class="col-md-2 col-sm-2 box0">
-                      	<div class="box1">
-                      		<a href="ingreso-gasto.jsp">
-			                	<span class="li_banknote"></span>
-			                  	<h3>Gastos</h3>
-			                </a>
-		                </div>
-		                <p>Ingresar un gasto</p>
-		              </div-->
-		                      
-                      <div class="col-md-2 col-sm-2 box0">
+                      <% 
+                      addedFirst = true;  
+                    } %>     
+                    
+                         <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_TRASLADOS")) { 
+                    	
+                    %>
+                      <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
                       	<div class="box1">
                       		<a href="traslado-bodega.jsp">
 	                  			<span class="li_paperplane"></span>
@@ -85,8 +87,16 @@
                         </div>
                   		<p>Trasladar producto entre bodegas</p>
                       </div>
-                      
-                      <div class="col-md-2 col-sm-2 box0">
+                      <% 
+	                      addedFirst = true;  
+	                    } %>    
+	                    
+	                    
+	                    
+	                     <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_TRANSITO")) { 
+		                    	
+		                    %>  
+                      <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
                       	<div class="box1">
                       		<a href="traslado-transito.jsp">
 	                  			<span class="li_truck"></span>
@@ -95,9 +105,14 @@
                         </div>
                   		<p>Productos en transito</p>
                       </div>
-                      
-                      
-                      <div class="col-md-2 col-sm-2 box0">
+                       <% 
+	                      addedFirst = true;  
+	                    } %>    
+	                 
+                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_PEDIDOS")) { 
+		                    	
+		                    %>
+                      <div class="col-md-2 col-sm-2 box0  <%= addedFirst ? "" : "col-md-offset-1" %>">
                         	<div class="box1">
                         		<a href="venta.jsp">
                   					<span class="li_shop"></span>
@@ -106,9 +121,15 @@
                         	</div>
                   			<p>Ingresar un nuevo pedido.</p>
                       </div>
+                       <% 
+	                      addedFirst = true;  
+	                    } %>    
+	                 
+                     <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COBROS")) { 
+		                    	
+		                    %>
                       
-                      
-                      <div class="col-md-2 col-sm-2 box0">
+                      <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
                         <div class="box1">
                         	<a href="ordenes-caja.jsp">
 			                  <span class="li_stack"></span>
@@ -117,10 +138,15 @@
 		                </div>
 		                <p>Cobrar un pedido.</p>
                       </div>
-                      
+                      <% 
+	                      addedFirst = true;  
+	                    } %>
                       </div>
                       <!-- /row mt -->
                       
+                       <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_GRAFICA_PRESUPUESTO")) { 
+		               %>
+                    
                       <div class="row mt">
                       <%
 		                StatusPresupuesto statusPresupuesto = new StatusPresupuesto();
@@ -214,7 +240,9 @@
 
                     </div><!-- /row -->
                     
-                            
+                            <% 
+	                        
+	                    } %>
           
           
           

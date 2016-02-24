@@ -1,43 +1,60 @@
+<%@page import="com.urbau.beans.TwoFieldsBean"%>
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.PuntoDeVentaBean"%>
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.PuntosDeVentasMain"%>
-<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-		PuntosDeVentasMain um = new PuntosDeVentasMain();			
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}
-		
-		ArrayList<PuntoDeVentaBean> list = um.get( request.getParameter("q"), from );
-		int total_regs = -1;
-		
-		if( list.size() > 0 ){
-			total_regs = ((PuntoDeVentaBean)list.get( 0 )).getTotal_regs();
-		}
+	ExtendedFieldsBaseMain ordenesMain = new ExtendedFieldsBaseMain( 
+			"ORDENES" , 
+			new String[]{"FECHA","ID_CLIENTE","ID_BODEGA","MONTO","ID_USUARIO","ESTADO"}, 
+			new int[]{ 
+					Constants.EXTENDED_TYPE_DATE,
+					Constants.EXTENDED_TYPE_INTEGER,
+					Constants.EXTENDED_TYPE_INTEGER,
+					Constants.EXTENDED_TYPE_DOUBLE,
+					Constants.EXTENDED_TYPE_INTEGER,
+					Constants.EXTENDED_TYPE_STRING
+			}
+	);
+
+	
+	
+	
+			int from = 0;
+			if( request.getParameter( "from" ) != null ){
+		from = Integer.parseInt( request.getParameter( "from" ) );
+			}
+			ArrayList<ExtendedFieldsBean> list = ordenesMain.get( request.getParameter("q"), from );
+			int total_regs = -1;
+			
+			if( list.size() > 0 ){
+		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
+			}
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "puntosdeventas-detail.jsp?mode=edit&id="+id);
+			location.replace( "ordenes-detail.jsp?mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "puntosdeventas-detail.jsp?mode=remove&id="+id);
+			location.replace( "ordenes-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "puntosdeventas-detail.jsp?mode=view&id="+id);
-		}
+			location.replace( "ordenes-detail.jsp?mode=view&id="+id);
+		} 
 		function add(){
-			location.replace( "puntosdeventas-detail.jsp?mode=add" );
+			location.replace( "ordenes-detail.jsp?mode=add" );
 		}
-		function PuntoDeVentaPrecios( id ){
-			location.replace( "puntodeventa_precios.jsp?puntoDeVenta="+id );					
+		function printOrder( id ){
+			window.open( "print-orden.jsp?id="+id);
 		}
+		
 	</script>
 	</head>
    
@@ -94,41 +111,37 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_ADD)){ %>          				
-          				  <span class="pull-right">
-          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
-          				  </span>
-          				<%//}%>  
+          				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PUNTOS DE VENTAS </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Ordenes </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
-                              <tr>                                  
-                                  <th>Nombre</th>                                                                                                     
-                                  <th class="hidden-phone">Direcci&oacute;n</th>
-                                  <th>Telefono</th>                                                                                                     
+                              <tr>
+                              	  <th>Orden</th> 
+                              	  <th>Fecha</th>
+                                  <th>Cliente</th>
+                                  <th>Bodega</th>
+                                  <th>Monto</th>
+                                  <th>Usuario</th>
+                                  <th>Estado</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for(PuntoDeVentaBean bean: list ){
+                              	for( ExtendedFieldsBean us : list ){
                               %>
-                              <tr>                                                                    
-                                  <td><%= bean.getNombre() %></td>                                                                                                     
-                                  <td><%= bean.getDireccion() %></td>
-                                  <td class="hidden-phone" ><%= bean.getTelefono() %></td>                                                                                                                                                                                                                                                                               
+                              <tr>
+                              	  <td> <%= us.getId() %></td>
+                                  <td><%= us.getValue( "FECHA" ) %></td>
+								  <td><%= us.getReferenced( "ID_CLIENTE", "CLIENTES", "NOMBRES") %></td>
+								  <td><%= us.getReferenced( "ID_BODEGA", "BODEGAS", "NOMBRE") %></td>
+                                  <td><%= us.getValue( "MONTO" ) %></td>
+                                  <td><%= us.getReferenced( "ID_USUARIO", "USUARIOS", "NOMBRE") %></td>
+                                  <td><%= "I".equals( us.getValue( "ESTADO" ) ) ? "Ingresada" : ( "P".equals( us.getValue( "ESTADO" ) ) ? "Pagada" : "-" )  %></td>
                                   <td>
-                                  	<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_MODIFY)){ %>                                     
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                    <%//}%>  
-                                    <% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_DELETE)){ %>  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                    <%//}%>  
-									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%//}%>
-                                      <button class="btn btn-info btn-xs" onclick="PuntoDeVentaPrecios('<%= bean.getId()  %>');" alt="Precios por punto de venta" title="Precios por punto de venta"><i class="fa fa-file-o"></i></button>	  
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-warning btn-xs" onclick="printOrder('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>
                                   </td>
                               </tr>
                               <% } %>
@@ -155,7 +168,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="proveedores.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="ordenes.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -164,7 +177,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="proveedores.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="ordenes.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -177,7 +190,7 @@
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->

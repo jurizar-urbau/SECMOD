@@ -147,10 +147,16 @@
                                   <td><%= familia.getNombre() %></td>
                                   <td><%= proveedores_main.get(us.getProveedor()).getNombre()  %></td>
                                   <td><%= Util.formatCurrencyWithNoRound( us.getPrecio() ) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_1()) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_2() ) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_3()) %></td>
-                                  <td><%= Util.formatCurrency( us.getPrecio_4()) %></td>
+                                  <td>
+                                  	<%= Util.formatCurrency( us.getPrecio_1()) %><br>
+                                  	<span style="color: red"><%= Util.formatCurrency( us.compiled_1()) %></span>
+                                  </td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_2() ) %><br>
+                                  	<span style="color: red"><%= Util.formatCurrency( us.compiled_2()) %></span></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_3()) %><br>
+                                  	<span style="color: red"><%= Util.formatCurrency( us.compiled_3()) %></span></td>
+                                  <td><%= Util.formatCurrency( us.getPrecio_4()) %><br>
+                                  	<span style="color: red"><%= Util.formatCurrency( us.compiled_4()) %></span></td>
                                  
                                   <td>
                                   	<img src="./bin/RenderImage?imagePath=<%= us.getImage_path() %>&w=100&type=smooth" width="100px">

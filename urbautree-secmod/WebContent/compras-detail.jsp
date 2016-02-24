@@ -1,3 +1,4 @@
+<%@page import="com.urbau.feeders.Main"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.beans.ExtendedFieldsBean"%>
@@ -8,43 +9,38 @@
       
 <%
 
-	ExtendedFieldsBaseMain rm = new ExtendedFieldsBaseMain( "ADELANTOS", 
-		new String[]{"EMPLEADO","FECHA","MONTO","OBSERVACIONES"},
-			new int[]{ 
-			Constants.EXTENDED_TYPE_INTEGER, 
-			Constants.EXTENDED_TYPE_DATE,
+	ExtendedFieldsBaseMain comprasMain = new ExtendedFieldsBaseMain( "COMPRAS", 
+		new String[]{ 
+			"FECHA","ID_PROVEEDOR",
+			"ID_ORDEN_DE_COMPRA","TIPO_DE_PAGO",
+			"FORMA_DE_INGRESO","SUBTOTAL",
+			"DESCUENTO","TOTAL","GASTOS",
+			"TOTAL_CON_GASTOS","ESTADO"
+	    },
+		new int[]{ 
+			Constants.EXTENDED_TYPE_DATE, 
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DOUBLE,
-			Constants.EXTENDED_TYPE_STRING
-		} );
-
-ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS", 
-		new String[]{"NOMBRES","APELLIDOS","DIRECCION","TELEFONO","NUMERO_CEDULA","NIT","ESTADO_CIVIL","SEXO","FECHA_DE_NACIMIENTO","HIJOS","MUNICIPIO","ESTADO"},
-			new int[]{ 
-			Constants.EXTENDED_TYPE_STRING, 
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_STRING,
-			Constants.EXTENDED_TYPE_DATE,
-			Constants.EXTENDED_TYPE_INTEGER,
-			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_DOUBLE,
+			Constants.EXTENDED_TYPE_DOUBLE,
+			Constants.EXTENDED_TYPE_DOUBLE,
+			Constants.EXTENDED_TYPE_DOUBLE,
 			Constants.EXTENDED_TYPE_INTEGER
 		} );
-	
-	
+
       	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
       		
       		
-      		ArrayList<String[]> empleadosList = empleadosMain.getCombo("EMPLEADOS", "ID", "CONCAT( NOMBRES ,' ', APELLIDOS)" );
+//      		ArrayList<String[]> empleadosList = empleadosMain.getCombo("EMPLEADOS", "ID", "CONCAT( NOMBRES ,' ', APELLIDOS)" );
       		
       		
       		
       	
       	int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
-      	ExtendedFieldsBean bean = rm.get( id );
+      	ExtendedFieldsBean bean = comprasMain.get( id );
       	String mode = request.getParameter( "mode" );
       
       %>  
@@ -94,89 +90,86 @@ ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS",
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
-          			   		<h4 class="mb"><i class="fa fa-angle-left"></i><a href=adelantos.jsp">&nbsp;Regresar</a> </h4>
+          			   		<h4 class="mb"><i class="fa fa-angle-left"></i><a href="compras.jsp">&nbsp;Regresar</a> </h4>
+          			   		
           			   		<form class="form-horizontal style-form" id="form" name="form">
+          			   			
 		                  	   	<input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>"></input>
 		                      	<input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>"></input>
-		                      	<input type="hidden" name="tablename" id="tablename" value="<%= EncryptUtils.base64encode( "ADELANTOS" ) %>"></input>
-		                      	
-		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "EMPLEADO" ) %>"></input>
-		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "FECHA" ) %>"></input>
-		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "MONTO" ) %>"></input>
-		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "OBSERVACIONES" ) %>"></input>
-		                      	
-		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
-		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DATE )) %>"></input>
-		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DOUBLE )) %>"></input>
-		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_STRING )) %>"></input>
+		                      	<%= Util.getHiddenFormFrom( comprasMain ) %>
 		                      	
 		                      	
-		                      	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Empleado</label> 
-		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	
-		                              		<select class="form-control" name="EMPLEADO" id="EMPLEADO">
-		                              			<%
-		                              				for( String[] keyValue : empleadosList ){
-		                              			%> 
-		                              				<option data="<%= keyValue[0] + "," + keyValue[1] %>" value="<%= keyValue[ 0 ] %>" <%= bean.getValue( "EMPLEADO" ).equals( String.valueOf( keyValue[0]) ) ? "SELECTED" : ""%>><%= keyValue[1] %></option>
-		                              			<% } %>
-		                              		</select>                          		
-			                          	<%}else{%>
-			                          		<select class="form-control" name="EMPLEADO" id="EMPLEADO" disabled>
-		                              			<%
-		                              				for( String[] keyValue : empleadosList ){
-		                              			%> 
-		                              				<option value="<%= keyValue[0] %>" <%= bean.getValue( "EMPLEADO" ).equals( String.valueOf( keyValue[0]) ) ? "SELECTED" : ""%>><%= keyValue[1] %></option>
-		                              			<% } %>
-		                              		</select>	                          		
-			                          	<%}%>   	                                  
-		                              	</div>
-		                          	</div>
-		                      	
-		                      	
-		                      		<div class="form-group">
+		                      	    <div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">Fecha</label> 
 		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="date" class="form-control" name="FECHA" id="FECHA" value="<%= bean.getValue( "FECHA" ) %>">	                          	                          
-			                          	<%}else{%>
-			                          		<input type="date" class="form-control" name="FECHA" id="FECHA" disabled value="<%= bean.getValue( "FECHA" )  %>">	                          		
-			                          	<%}%>   	                                  
+				                        	<input type="date" class="form-control" name="FECHA" id="FECHA" value="<%= bean.getValue( "FECHA" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
 		                              	</div>
 		                          	</div>
 		                          	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Monto</label> 
+		                            	<label class="col-sm-2 col-sm-2 control-label">Proveedor</label> 
 		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="MONTO" id="MONTO" value="<%= bean.getValue( "MONTO" ) %>">	                          	                          
-			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="MONTO" id="MONTO" disabled value="<%= bean.getValue( "MONTO" )  %>">	                          		
-			                          	<%}%>   	                                  
+				                        	<input type="text" class="form-control" name="ID_PROVEEDOR" id="ID_PROVEEDOR" value="<%= bean.getValue( "ID_PROVEEDOR" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
 		                              	</div>
 		                          	</div>
-		                          	
-		                          	
 		                          	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Observaciones</label> 
+		                            	<label class="col-sm-2 col-sm-2 control-label">Orden de compra</label> 
 		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="OBSERVACIONES" id="OBSERVACIONES" value="<%= bean.getValue( "OBSERVACIONES" ) %>">	                          	                          
-			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="OBSERVACIONES" id="OBSERVACIONES" disabled value="<%= bean.getValue( "OBSERVACIONES" )  %>">	                          		
-			                          	<%}%>   	                                  
+				                        	<input type="text" class="form-control" name="ID_ORDEN_DE_COMPRA" id="ID_ORDEN_DE_COMPRA" value="<%= bean.getValue( "ID_ORDEN_DE_COMPRA" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
 		                              	</div>
 		                          	</div>
-		                          	
-	                          	
-	                          	
-	                          	
-	                          	
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Tipo de pago</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="TIPO_DE_PAGO" id="TIPO_DE_PAGO" value="<%= bean.getValue( "TIPO_DE_PAGO" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Forma de ingreso</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="FORMA_DE_INGRESO" id="FORMA_DE_INGRESO" value="<%= bean.getValue( "FORMA_DE_INGRESO" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Subtotal</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="SUBTOTAL" id="SUBTOTAL" value="<%= bean.getValue( "SUBTOTAL" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Descuento</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="DESCUENTO" id="DESCUENTO" value="<%= bean.getValue( "DESCUENTO" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Total</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="TOTAL" id="TOTAL" value="<%= bean.getValue( "TOTAL" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Gasto</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="GASTOS" id="GASTOS" value="<%= bean.getValue( "GASTOS" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Total con gastos</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="TOTAL_CON_GASTOS" id="TOTAL_CON_GASTOS" value="<%= bean.getValue( "TOTAL_CON_GASTOS" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>
+		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Estado</label> 
+		                              	<div class="col-sm-10">
+				                        	<input type="text" class="form-control" name="ESTADO" id="ESTADO" value="<%= bean.getValue( "ESTADO" ) %>" <%= ( "edit".equals( mode ) || "add".equals( mode ) ) ? "" : "disabled" %>>	                          	                          
+		                              	</div>
+		                          	</div>	                          	
                           	</form>
                          </div>
                          <div class="form-actions">
                            	    <button type="submit" class="btn btn-success" id="savebutton">Guardar</button> 
-					            <button class="btn" onclick="location.replace('adelantos.jsp')">Cancelar</button>
+					            <button class="btn" onclick="location.replace('compras.jsp')">Cancelar</button>
 					     </div>                                                                                                      
                   </div>
           		</div>
@@ -238,7 +231,7 @@ ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS",
     	 			
     		        success: function(msg){		        	
     		        	alert(msg);
-    		            location.replace( "adelantos.jsp" );
+    		            location.replace( "compras.jsp" );
     		        },
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);

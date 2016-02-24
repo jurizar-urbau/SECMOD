@@ -41,15 +41,6 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -103,7 +94,7 @@
                               
                               		<select class="form-control" name="bodega" id="bodega">
 	                                  <%
-	                                  	ArrayList<BodegaBean> bodegaList = BodegasMain.getBodega(null, 0);
+	                                  	ArrayList<BodegaBean> bodegaList = BodegasMain.getBodega(null, -1);
 	                                  	for( BodegaBean bodega : bodegaList ){
 	                                  %>
 	                                  	<option value="<%= bodega.getId()%>"><%= bodega.getNombre() %></option>

@@ -67,6 +67,7 @@ public class Constants {
 	public static final String PRODUCT_ID_PARAMETER = "productid";
 	public static final String AMOUNT_PARAMETER = "amount";
 	public static final String PRICE_PARAMETER = "price";
+	public static final String PACKING_PARAMETER = "packing";
 	public static final String COIN_PARAMETER = "coin";
 	
 	public static final String NOMBRE_PARAMETER="nombre";

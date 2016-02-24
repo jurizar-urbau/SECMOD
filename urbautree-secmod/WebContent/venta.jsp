@@ -141,7 +141,7 @@
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-					                    <li><button class="btn btn-primary">Buscar</button></li>
+					                    <li><span class="btn btn-primary" onclick="searchByQuery()">Buscar</span></li>
 					              </ul>
 				            </div>
 					    </form>
@@ -213,7 +213,7 @@
 			                      </div>
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addSale(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.precio.value,document.modalform<%= pbean.getId() %>.cantidad.value);">Agregar</button>
+			                          <button class="btn btn-theme" type="button" onclick="addSale(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.precio.value,document.modalform<%= pbean.getId() %>.cantidad.value,document.modalform<%= pbean.getId() %>.packing.value);">Agregar</button>
 			                      </div>
 			                  </div>
 			              </div>
@@ -251,6 +251,7 @@
                       <form name="saleform" id="saleform" method="POST">
                            <input type='hidden' name='clientid' id='clientid' value=''>
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
+                           Fecha: <input type="date" name="postfecha">
 		                   <div id="sale-container">
 		                  </div>
 		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar Pedido</button>
@@ -501,12 +502,12 @@
 		    	hideStore();
 		    	setPrices();
 		    }
-  			function addSale( productid, imagepath, productname, price, amount ){
+  			function addSale( productid, imagepath, productname, price, amount, packing ){
   				if( amount > current_stock ){
   					alert( "Cantidad sobrepasa la existencia de " + current_stock + "." );
   					return false;
   				}
-  				addS( amount, price, productname, imagepath,productid );
+  				addS( amount, price, productname, imagepath,productid, packing );
   				hideModal('#myModal' + productid );
   				renderVentasList();
   				
@@ -635,13 +636,14 @@
   			
   			
   		    var ventasList = [];
-  		    function addS( amount, price, description, imagepath,productid ){
+  		    function addS( amount, price, description, imagepath,productid,packing ){
   		    	var o = {};
   			    o.amount = amount;
   			    o.price = price;
   			    o.description = description;
   			    o.imagepath = imagepath;
   			    o.id = productid;
+  			    o.packing = packing;
   	  		    ventasList.push( o );  	
   		    }
   		    
@@ -653,13 +655,14 @@
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
   			for (i = 0; i < ventasList.length; i++) { 
-  				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].price );
+  				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].packing * ventasList[ i ].price );
 				var htmltoadd =
 					"<div class='desc'>" +
 					"<button type='button' class='close' aria-hidden='true' onclick='removeItem(\"" + i + "\")'>×</button>" +
 					" 	<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
 					" 	<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
 					" 	<input type='hidden' name='price' value='" + ventasList[ i ].price + "'>" +
+					" 	<input type='hidden' name='packing' value='" + ventasList[ i ].packing + "'>" +
 					" 	<div style='float:left'>" +    
 					" 		<img width='70' src='./bin/RenderImage?imagePath=" + ventasList[ i ].imagepath + "'>" +  
 					" 	</div>" +
@@ -668,11 +671,11 @@
 					"			&nbsp;&nbsp;&nbsp;" + ventasList[ i ].description + "<br>" +
 					"			&nbsp;&nbsp;" +
 					"			&nbsp;" +
-					"			<span style='color:red; font-size:10pt'>" + ventasList[ i ].amount + "</span>" +
+					"			<span style='color:red; font-size:10pt'>(" + ventasList[ i ].amount + " * " + ventasList[ i ].packing + ")</span>" +
 					"			<span style='color:black; font-size:10pt'>X</span>" +
 					"			<span style='color:blue; font-size:10pt'>Q "+ventasList[ i ].price+" </span>" +
 					"			<span style='color:black; font-size:10pt'>=</span>" +
-					"			<span style='color:blue; font-size:10pt'>Q " + ( ventasList[ i ].amount * ventasList[ i ].price ).toFixed(2) + "</span>" +
+					"			<span style='color:blue; font-size:10pt'>Q " + ( ventasList[ i ].amount * ventasList[ i ].packing * ventasList[ i ].price ).toFixed(2) + "</span>" +
 					"		</p>" +  
 					"	</div>" +
 					"</div>" ;
@@ -703,6 +706,11 @@
 			});
 	        
 	    });
+	    function searchByQuery( ){
+	    	var value = $( "#search-query-3" ).val();
+        	console.log( "value", value );
+        	searchProducts( value );
+	    }
 	    
 	    setStore();
 	    

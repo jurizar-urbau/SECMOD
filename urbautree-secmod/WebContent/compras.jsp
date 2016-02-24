@@ -54,7 +54,10 @@
 		}
 		function view( id ){
 			location.replace( "compras-detail.jsp?mode=view&id="+id);
-		} 
+		}
+		function detail( id ){
+			location.replace( "compras-detail-detail.jsp?id="+id);
+		}
 		function add(){
 			location.replace( "compras-detail.jsp?mode=add" );
 		}
@@ -157,9 +160,10 @@
                                   <td><%= us.getValue( "ESTADO" ) %></td>
                                   
                                   <td>
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');" alt="Editar" title="Editar" > <i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"  alt="Eliminar" title="Eliminar"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"  alt="Ver" title="Ver"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-info btn-xs" onclick="detail('<%= us.getId()  %>');"  alt="Detalle" title="Detalle"><i class="fa fa-list-alt"></i></button>
                                   </td>
                               </tr>
                               <% } %>

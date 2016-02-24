@@ -22,18 +22,23 @@ public class BodegasMain extends AbstractMain {
 		ResultSet  rs   = null;
 		String sql = "";
 		try{
+			
+			
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			int total_regs = 0;
-			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
+			if( from == -1 ){
+				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS ORDER BY ID DESC";
+				rs = stmt.executeQuery( sql );
+				total_regs = Util.getTotalRegs( "BODEGAS", "" );
+			} else if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
 				total_regs = Util.getTotalRegs( "BODEGAS", "" );
 				 
 			} else {
-				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
+				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
 				rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
-				
 				total_regs = Util.getTotalRegs( "BODEGAS", Util.getBodegasWhere( q ) );
 			}
 			System.out.println( "sql: " + sql );

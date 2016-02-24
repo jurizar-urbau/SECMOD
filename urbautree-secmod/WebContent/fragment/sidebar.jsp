@@ -15,7 +15,8 @@
                       </a>
                   </li>
 
-                  
+                  <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_OPERACIONES")) { 
+                   %>
 
                    <li class="sub-menu" id="menu-operaciones">
                       <a href="javascript:;" >
@@ -30,9 +31,14 @@
                           <li><a  href="clientes.jsp">Clientes</a></li>
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
                           <li><a  href="carga-bodega.jsp">Carga De Productos</a></li>
+                          <li><a  href="ordenes.jsp">Ordenes</a></li>
                       </ul>
                   </li> 
-                  <li class="sub-menu" id="menu-operaciones">
+                  <% } %>
+                  <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_PLANILLA")) { 
+                   %>
+                  
+                  <li class="sub-menu" id="menu-planilla">
                       <a href="javascript:;" >
                           <i class="fa fa-tasks"></i>
                           <span>Planilla</span>
@@ -48,6 +54,10 @@
                       	<li><a  href="adelantos.jsp">Adelantos</a></li>
                       </ul>
                   </li> 
+                  <% } %>
+                  <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_PRESUPUESTO")) { 
+                   %>
+                  
                   <li class="sub-menu" id="menu-presupuesto">
                   	<a href="javascript:;" >
                           <i class="fa fa-money"></i>
@@ -59,7 +69,7 @@
                           <li><a  href="clasificacion_rubros.jsp">Clasificacion Rubros</a></li>
                       </ul>
                   </li>
-                  <li class="sub-menu" id="menu-compras">
+                  <!-- li class="sub-menu" id="menu-compras">
                   	<a href="javascript:;" >
                           <i class="fa fa-money"></i>
                           <span>Compras</span>
@@ -68,7 +78,11 @@
                           <li><a  href="compras.jsp">Compras</a></li>
                           <li><a  href="gastos.jsp">Gastos</a></li>
                       </ul>
-                  </li>
+                  </li> -->
+                  <% } %>
+                  <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_CONFIGURACION")) { 
+                   %>
+                  
                   <li class="sub-menu" id="menu-configuracion">
                   	<a href="javascript:;" >
                           <i class="fa fa-cogs"></i>
@@ -106,6 +120,11 @@
                           
                       </ul>
                   </li>
+                  
+                  <% } %>
+                  <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_SEGURIDAD")) { 
+                   %>
+                  
                   <li class="sub-menu" id="menu-seguridad">
                       <a href="javascript:;" >
                           <i class="fa fa-lock"></i>
@@ -130,7 +149,7 @@
                       </ul>
                   </li>
                   
-                  
+                  <% } %>
                   <!-- 
                   <li class="sub-menu">
                       <a href="javascript:;" >

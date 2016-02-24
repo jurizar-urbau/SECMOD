@@ -17,6 +17,7 @@ import com.urbau.beans.UsuarioBean;
 import com.urbau.feeders.InventariosMain;
 import com.urbau.feeders.OrdenesDetalleMain;
 import com.urbau.feeders.OrdenesMain;
+import com.urbau.misc.Util;
 
 import static com.urbau.misc.Constants.ESTADO_INGRESADO;
 import static com.urbau.misc.Constants.CLIENT_ID_PARAMETER;
@@ -24,6 +25,7 @@ import static com.urbau.misc.Constants.BODEGA_ID_PARAMETER;
 import static com.urbau.misc.Constants.PRODUCT_ID_PARAMETER;
 import static com.urbau.misc.Constants.AMOUNT_PARAMETER;
 import static com.urbau.misc.Constants.PRICE_PARAMETER;
+import static com.urbau.misc.Constants.PACKING_PARAMETER;
 
 @WebServlet("/bin/Ordenes")
 public class Ordenes extends Entity {
@@ -42,8 +44,11 @@ public class Ordenes extends Entity {
 			String productidStr[] = request.getParameterValues( PRODUCT_ID_PARAMETER  );
 			String amountStr[] = request.getParameterValues( AMOUNT_PARAMETER );
 			String priceStr[] = request.getParameterValues( PRICE_PARAMETER );
+			String packingStr[] = request.getParameterValues( PACKING_PARAMETER );
+			String postfecha = request.getParameter( "postfecha" );
 			
-			String message = validateParameters( clientidStr, bodegaidStr, productidStr, amountStr, priceStr );
+			
+			String message = validateParameters( clientidStr, bodegaidStr, productidStr, amountStr, priceStr, packingStr );
 			
 			if( message.length() > 0 ){
 				response.getOutputStream().write( message.getBytes() );
@@ -63,11 +68,18 @@ public class Ordenes extends Entity {
 			ordenBean.setUid( ordenBean.getId_cliente() + "-" + getUID() );
 			ordenBean.setId_punto_venta( loggedUser.getPunto_de_venta() );
 			
+			if( Util.isEmpty( postfecha )){
+				ordenBean.setFecha( null );
+			} else {
+				ordenBean.setFecha( Util.getDateFrom( postfecha ));
+			}
+			
 			double monto = 0.00;
 			for( int i = 0; i < productidStr.length; i++ ){
 				int amount = Integer.valueOf( amountStr[ i ] );
 				double price = Double.valueOf( priceStr[ i ] );
-				monto += amount * price;
+				int packing = Integer.valueOf( packingStr[ i ]);
+				monto += amount * packing * price;
 			}
 			ordenBean.setMonto(monto);
 			
@@ -82,7 +94,9 @@ public class Ordenes extends Entity {
 			
 			for( int i = 0; i < productidStr.length; i++ ){
 				int prodid = Integer.valueOf( productidStr[ i ] );
-				int amount = Integer.valueOf( amountStr[ i ] );
+				int packing = Integer.valueOf( packingStr[ i ]);
+				int amount = Integer.valueOf( amountStr[ i ] ) * packing;
+				
 				double price = Double.valueOf( priceStr[ i ] );
 				
 				OrdenDetailBean b = new OrdenDetailBean();
@@ -147,13 +161,13 @@ public class Ordenes extends Entity {
     	}
     }
 	
-    private String  validateParameters( String clientidStr, String bodegaidStr, String[] productidStr,String[] amountStr,String[] priceStr ) {
+    private String  validateParameters( String clientidStr, String bodegaidStr, String[] productidStr,String[] amountStr,String[] priceStr, String[] packingStr ) {
     	String message = "";
     	if( isEmpty(clientidStr) ){
     		message = "No ha seleccionado un cliente";
     	} else if( isEmpty( bodegaidStr )) {
     		message = "No ha seleccionado una bodega";
-     	} else if( isEmpty( productidStr ) || isEmpty( amountStr ) || isEmpty( priceStr )) {
+     	} else if( isEmpty( productidStr ) || isEmpty( amountStr ) || isEmpty( priceStr ) || isEmpty( packingStr ) ) {
     		message = "No ha seleccionado ningun producto";
     	}
     	return message;

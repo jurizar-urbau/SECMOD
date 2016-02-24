@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.urbau._abstract.AbstractMain;
 import com.urbau.beans.OrdenBean;
@@ -150,7 +152,7 @@ public class OrdenesMain extends AbstractMain {
 			String sql = "INSERT INTO ORDENES " +
 					"(FECHA,ID_CLIENTE,ID_BODEGA,MONTO,ID_USUARIO,ESTADO,UID,ID_PUNTO_VENTA) " +
 						"VALUES " +
-					"( NOW(),"+bean.getId_cliente()+","+bean.getId_bodega()+","+bean.getMonto()+","+bean.getId_usuario()+",'"+bean.getEstado()+"','" + bean.getUid() + "'," + bean.getId_punto_venta() + ")";
+					"( "+getDateFor(bean)+","+bean.getId_cliente()+","+bean.getId_bodega()+","+bean.getMonto()+","+bean.getId_usuario()+",'"+bean.getEstado()+"','" + bean.getUid() + "'," + bean.getId_punto_venta() + ")";
 			int total = stmt.executeUpdate( sql );					
 			return total>0;
 			 
@@ -161,6 +163,14 @@ public class OrdenesMain extends AbstractMain {
 			ConnectionManager.close( con, stmt, null );
 		}
 	}
+	private String getDateFor( OrdenBean bean ){
+		if(  bean.getFecha() == null ){
+			return "NOW()"; 
+		} else {
+			return "'" + Util.getDateString( bean.getFecha() ) + "'";
+		}
+	}
+	
 	public boolean mod( OrdenBean bean ){
 		if ( bean.getId() <= 0 ){
 			return false;

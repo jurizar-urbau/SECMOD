@@ -89,6 +89,7 @@
 	                  	  	  <thead>
                               
                               <tr>
+                              	 <th>Orden</th>
                                   <th>Fecha</th>                                  
                                   <th>Nit</th>
                                   <th>Nombres</th>                                                                    
@@ -103,6 +104,7 @@
                               		
                               %>
                               <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>)">
+                              	  <td><%= bean.getId() %></td>
                                   <td><%= Util.getDateStringDMYHM( bean.getFecha() ) %></td>                                  
                                   <td><%= bean.getCliente_nit() %></td>
                                   <td><%= bean.getCliente_nombres() %></td>                                                                    
@@ -200,7 +202,7 @@
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
 			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
-			                          <button class="btn btn-theme" type="button" onclick="printBill('elcontenido');">Imprimir</button>
+			                          <button class="btn btn-theme" type="button" onclick="printBill();">Imprimir Orden</button>
 			                          
 			                      </div>
 			                  </div>
@@ -218,14 +220,17 @@
 	<script>
 	
 		var acepta_credito = false;
+		var selectedID;
 		
 		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito ){
+			selectedID = id;
 			$('#formid').val( id );
 			$('#formfecha').html(fecha);
 			$('#formnit').html(nit);
 			$('#formnombres').html(nombres);
 			$('#formapellidos').html(apellidos);
-			$('#formmonto').html(monto);
+			$('#formmonto').html(monto.toFixed(2)  );
+			$('#monto').val( monto.toFixed(2) );
 			$('#myModal').modal('show');
 			if( aceptacredito ){
 				$('#creditooption').removeAttr('disabled');
@@ -235,19 +240,8 @@
 			
 		}
 		
-		function printBill(content) {
-			 top.consoleRef=window.open('','myconsole',
-		  'width=350,height=250'
-		   +',menubar=0'
-		   +',toolbar=1'
-		   +',status=0'
-		   +',scrollbars=1'
-		   +',resizable=1')
-		 top.consoleRef.document.writeln(
-		  '             1721142-5      JOSE ALEJANDRO URIZAR\n1\t' + content
-		 )
-		 top.consoleRef.document.close()
-		 top.consoleRef.print()
+		function printBill() {
+			window.open( "print-orden.jsp?id="+selectedID);
 		}
 		
 		$("#savebutton").click(function(){
@@ -259,8 +253,15 @@
 	 			url: './bin/SavePayment',
 	 			data: form.serialize(),
 	 			
-		        success: function(msg){		      
-		        	alert( msg );
+		        success: function(msg){
+		        	var messages = msg.split("|");
+		        	alert( messages[1] );
+		        	if( confirm("Desea imprimir la factura?") ){
+		        		window.open( "print-factura.jsp?id="+messages[ 0 ]);
+		        		location.reload();
+		        	} else {
+		        		location.reload();
+		        	}
 		        	if( !msg.startsWith('error') ){
 		        		location.reload();	
 		        	}

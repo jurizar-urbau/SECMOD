@@ -322,16 +322,35 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		case Constants.EXTENDED_TYPE_BOOLEAN:
 			return  value;
 		case Constants.EXTENDED_TYPE_INTEGER:
-			return value;
+			return integerValue( value );
 		case Constants.EXTENDED_TYPE_DOUBLE:
-			return value ;
+			return doubleValue( value ) ;
 		case Constants.EXTENDED_TYPE_DATE:
-			return "'" + value + "'";
+			return "NOW()".equals(value) ? value : "'" + value + "'";
 		default:
 			return value;
 		}
+		
 	}
 	
+	public String integerValue( String value ){
+		int n=0;
+		try {
+			n = Integer.parseInt( value );
+		} catch (Exception e ){
+			
+		}
+		return "" + n;
+	}
+	public String doubleValue( String value ){
+		double n=0;
+		try {
+			n = Double.parseDouble( value );
+		} catch (Exception e ){
+			
+		}
+		return "" + n;
+	}
 	public String getFieldNamesWithValues( ExtendedFieldsBean bean ){
 		StringBuffer sb = new StringBuffer();
 		for( String field_name : field_names ){

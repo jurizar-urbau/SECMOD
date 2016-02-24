@@ -79,7 +79,6 @@ public class ProductoBean implements Bean {
 	}
 	
 	public double compiled_1(){
-		System.out.println( "compiled 1 precio_1: " + precio_1 );
 		if( this.precio_1 > 0 ){
 			return getPrecio_1();
 		}

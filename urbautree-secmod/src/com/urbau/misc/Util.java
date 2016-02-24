@@ -498,6 +498,17 @@ public class Util {
 		}	
 	}
 	
+	public static Date getDateFrom( String date ){
+		Date parsedDate = new Date();
+		try{
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+			parsedDate = simpleDateFormat.parse( date );
+		} catch ( Exception e ){
+			e.printStackTrace();
+		}
+		return parsedDate;
+	}
+	
 	public static String formatCurrency( double value ){
 		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
 		return formatter.format( applyRoundRules ( value ) );
