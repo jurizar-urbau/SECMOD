@@ -59,7 +59,7 @@ public class TrasladoBodega extends Entity {
 				return;
 			}
 			
-			message = "No se pudo crear el pedido.";
+			message = "No se pudo hacer el traslado.";
 			
 			InventariosMain im = new InventariosMain();
 			
@@ -117,7 +117,7 @@ public class TrasladoBodega extends Entity {
 							InventarioHelper ih = new InventarioHelper();
 							ih.addBodega( b.getIdBodega() );
 							if( im.add( b ) ){
-								message = generatedID + "|Carga agregada exitosamente!";
+								message = generatedID + "|Traslado ejecutado exitosamente!";
 							} else {
 								message = "No se pudo crear en bodega destino.";
 							}
@@ -132,7 +132,7 @@ public class TrasladoBodega extends Entity {
 						
 						if( im.mod( a ) ) {
 							if( im.mod( b ) ){
-								message = generatedID + "|Carga agregada exitosamente!";	
+								message = generatedID + "|Traslado ejecutado exitosamente!";	
 							} else {
 								message = "No se pudo crear en bodega destino";
 							}

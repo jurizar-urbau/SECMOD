@@ -10,7 +10,7 @@ import com.urbau.misc.Util;
 
 public class OrdenesPagoMain extends AbstractMain {
 	
-	private String allColumnNamesNoId = " ID_ORDEN,FECHA,MONTO,TIPO_PAGO,NO_AUTORIZACION,NO_CHEQUE,ID_BANCO,TIPO_TARJETA,NO_TARJETA,ID_USUARIO ";
+	private String allColumnNamesNoId = " ID_ORDEN,FECHA,MONTO,TIPO_PAGO,NO_AUTORIZACION,NO_CHEQUE,ID_BANCO,TIPO_TARJETA,NO_TARJETA,ID_USUARIO,ID_PUNTO_VENTA,ID_CAJA_PUNTO_VENTA ";
 	
 	public static int getProgramId(){
 		return -2;
@@ -32,7 +32,11 @@ public class OrdenesPagoMain extends AbstractMain {
 				bean.getId_banco() + ", " +
 				Util.vs( bean.getTipo_tarjeta() ) + ", " +
 				Util.vs( bean.getNumero_tarjeta() ) + ", " +
-				bean.getId_usuario() + ")";
+				bean.getId_usuario() +  ", " +
+				bean.getPunto_de_venta() + ", " +
+				bean.getCaja_punto_de_venta() + 
+				
+				")";
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();

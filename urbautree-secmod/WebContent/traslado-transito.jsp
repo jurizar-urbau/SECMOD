@@ -164,7 +164,7 @@
 						                      </div>
 						                      <div class="modal-footer">
 						                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-						                          <button class="btn btn-theme" type="button" onclick="recibir('<%= bean.getValue( "ID" ) %>')">Recibir</button>
+						                          <button class="btn btn-theme" type="button" onclick="recibir('<%= bean.getValue( "ID" ) %>','<%= bean.getValue( "TRANSID" ) %>')">Recibir</button>
 						                          
 						                      </div>
 						                  </div>
@@ -244,7 +244,7 @@
 		 top.consoleRef.print()
 		}
 		
-		function recibir( id ){
+		function recibir( id, transid ){
 			$('#id').val(id);
 			$('#action').val('A');
 			var form =$('#modalform');
@@ -257,7 +257,7 @@
 		        success: function(msg){		      
 		        	alert( msg );
 		        	if( !msg.startsWith('error') ){
-		        		location.reload();	
+		        		location.replace( "print-traslado.jsp?from=transito&id=" + transid );
 		        	}
 		            
 		        },

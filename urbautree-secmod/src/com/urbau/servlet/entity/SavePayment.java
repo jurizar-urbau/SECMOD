@@ -72,6 +72,8 @@ public class SavePayment extends Entity {
 			b.setNumero_autorizacion(autorizacion);
 			b.setMonto( Double.valueOf( monto ));
 			b.setId_usuario( loggedUser.getId() );
+			b.setPunto_de_venta( loggedUser.getPunto_de_venta() );
+			b.setCaja_punto_de_venta( loggedUser.getCaja_punto_de_venta() );
 			
 			OrdenesPagoMain opm = new OrdenesPagoMain();
 			OrdenesMain ordenesMain = new OrdenesMain();

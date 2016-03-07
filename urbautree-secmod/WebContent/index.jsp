@@ -1,3 +1,7 @@
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
+<%@page import="com.urbau.misc.Constants"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page import="com.urbau.beans.PuntoDeVentaBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.feeders.PuntosDeVentasMain"%>
@@ -40,12 +44,40 @@
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
 
+<script>
+	function reloadPage(){
+		document.loginform.action = "index.jsp";
+		document.loginform.submit();
+	}
+</script>
 	  <div id="login-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="bin/VerifyUser?path=../home.jsp" method="POST">
+		      <form class="form-login" action="bin/VerifyUser?path=../home.jsp" method="POST" name="loginform" id="loginform">
 		        <h2 class="form-login-heading"><img src="assets/img/logoytel.png" width="50%"><br>Inicio de sesi&oacute;n</h2>
 		        <%
+		        	String puntodeventa = request.getParameter( "punto_de_venta" );
+		        	String cajapuntodeventa = request.getParameter( "caja_punto_de_venta" );
+		        	
+		        	ArrayList<ExtendedFieldsBean> list = new ArrayList<ExtendedFieldsBean>();
+		        	
+		        	ExtendedFieldsBaseMain cajas_punto = new ExtendedFieldsBaseMain( "CAJA_PUNTO_VENTA", 
+		        			new String[] { "ID_PUNTO_VENTA","DESCRIPCION" }	
+		        			, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING } );
+		        	
+		        	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( 
+		        			new String[]{"ID_PUNTO_VENTA"},
+		        			new int[]{ ExtendedFieldsFilter.EQUALS}, 
+		        			new int[]{ Constants.EXTENDED_TYPE_INTEGER}, 
+		        			new String[]{ puntodeventa });
+		        	
+					if( puntodeventa != null && !"null".equals( puntodeventa )){
+						list = cajas_punto.getAll( filter );
+					}
+					
+		        	
+		        	
+		        	
 		        	session.removeAttribute( "loggedUser" );
 		        	String[] messages = (String[])session.getAttribute( "messages" );
 		        	if( messages != null && messages.length > 0 ){
@@ -58,20 +90,38 @@
 		        	session.removeAttribute( "messages" );
 		        	PuntosDeVentasMain pdvm = new PuntosDeVentasMain();
 		        	ArrayList<PuntoDeVentaBean> pdvList = pdvm.getAll();
+		        	
+		        	
+		        	
+		        	
 		        %>
 		          
 		        <div class="login-wrap">
 		        
 		        	
-		        	<select class="form-control" name="punto_de_venta">
+		        	<select class="form-control" name="punto_de_venta" onchange="reloadPage()">
+		        		<option value="null">Seleccione un punto de venta</option>
 		        		<%
 		        			for( PuntoDeVentaBean pdv : pdvList ){
 		        		%>
-		        			<option value="<%= pdv.getId() %>"><%= pdv.getNombre() %></option>
+		        			<option value="<%= pdv.getId() %>"  <%= puntodeventa != null && puntodeventa.equals( String.valueOf( pdv.getId() ) ) ? "SELECTED" : "" %>   ><%= pdv.getNombre() %></option>
 		        		<%
 		        		}
 		        		%>
 		        	</select>
+		        	<br>
+		        	<% if( puntodeventa != null && !"null".equals( puntodeventa ) ) { %>
+		        	<select class="form-control" name="caja_punto_de_venta">
+		        		<option value="null">Seleccione una caja</option>
+		        		<%
+		        			for( ExtendedFieldsBean pdv : list ){
+		        		%>
+		        			<option value="<%= pdv.getId() %>"><%= pdv.getValue("DESCRIPCION") %></option>
+		        		<%
+		        		}
+		        		%>
+		        	</select>
+		        	<% }  %>
 		        	<br>
 		            <input type="text" class="form-control" name="user" placeholder="Usuario" autofocus>
 		            <br>

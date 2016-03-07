@@ -440,49 +440,41 @@
   			
   			
 			$("#savesalebutton").click(function(){
-				
-    			var form =$('#saleform');
-    	     	$.ajax({
-    	     		type:'POST',
-    	     		dataType: "text",
-    	 			url: './bin/TrasladoBodega',
-    	 			data: form.serialize(),
-    	 			
-    		        success: function(msg){		
-    		        	var messages = msg.split("|");
-    		        	var idm =-1;
-    		        	var msgm;
-    		        	if ( messages.length == 2){
-    		        		idm = messages[ 0 ];
-    		        		msgm = messages[ 1 ];
-    		        	} else {
-    		        		msgm = msg;
-    		        	}
-    		        	alert(msgm);
-    		            console.log( "id:", idm );
-    		            console.log( "msgm:", msgm );
-    		            console.log( "msg:", msg );
-    		        	if( idm !== -1 ){ 
-    		        		window.open( "print-traslado.jsp?id="+idm);
-    		        		location.reload();	
-    		        	 } 
-    		        	
-    		        	
-    		        	/* 
-    		        	if( !msg.startsWith('error') ){
-    		        		window.open( "print-traslado.jsp?id=" );
-    		        		location.reload();	
-    		        	} */
-    		            
-    		        },
-    	 			error: function(jqXHR, textStatus, errorThrown){
-    	 				console.log("ERROR srtatus: ", textStatus);
-    	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
-    	 			}
-    		            		        
-    	       });
-    	     	
+				if( confirm( "Confirma que desea hacer el traslado?" ) ){
+	    			var form =$('#saleform');
+	    	     	$.ajax({
+	    	     		type:'POST',
+	    	     		dataType: "text",
+	    	 			url: './bin/TrasladoBodega',
+	    	 			data: form.serialize(),
+	    	 			
+	    		        success: function(msg){		
+	    		        	var messages = msg.split("|");
+	    		        	var idm =-1;
+	    		        	var msgm;
+	    		        	if ( messages.length == 2){
+	    		        		idm = messages[ 0 ];
+	    		        		msgm = messages[ 1 ];
+	    		        	} else {
+	    		        		msgm = msg;
+	    		        	}
+	    		        	alert(msgm);
+	    		            console.log( "id:", idm );
+	    		            console.log( "msgm:", msgm );
+	    		            console.log( "msg:", msg );
+	    		        	if( idm !== -1 ){ 
+	    		        		location.replace( "print-traslado.jsp?id="+idm);
+	    		        	 } 
+	    		            
+	    		        },
+	    	 			error: function(jqXHR, textStatus, errorThrown){
+	    	 				console.log("ERROR srtatus: ", textStatus);
+	    	 				console.log("ERROR errorThrown: ", errorThrown);
+	    	 				alert("Se prudujo un error al hacer la operaciòn");	
+	    	 			}
+	    		            		        
+	    	       });
+				}
     	     	return false;
     	 	});
   			

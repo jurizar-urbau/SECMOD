@@ -15,6 +15,10 @@ public class UsuarioBean implements Bean {
 	private int punto_de_venta;
 	private String nombre_punto_venta;
 	
+	private int caja_punto_de_venta;
+	private String nombre_caja_punto_venta;
+	
+	
 	public String getNombre_punto_venta() {
 		return nombre_punto_venta;
 	}
@@ -94,7 +98,20 @@ public class UsuarioBean implements Bean {
 	}
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
-	} 
+	}
+	
+	public int getCaja_punto_de_venta() {
+		return caja_punto_de_venta;
+	}
+	public void setCaja_punto_de_venta(int caja_punto_de_venta) {
+		this.caja_punto_de_venta = caja_punto_de_venta;
+	}
+	public String getNombre_caja_punto_venta() {
+		return nombre_caja_punto_venta;
+	}
+	public void setNombre_caja_punto_venta(String nombre_caja_punto_venta) {
+		this.nombre_caja_punto_venta = nombre_caja_punto_venta;
+	}
 	@Override
 	public int getProgramId() {
 		return 1;

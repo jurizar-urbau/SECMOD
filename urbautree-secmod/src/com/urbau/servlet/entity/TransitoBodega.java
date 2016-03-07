@@ -34,7 +34,7 @@ public class TransitoBodega extends Entity {
 		try{
 			System.out.println( "traslado entre bodegas...");
 			HttpSession session = request.getSession();
-			//UsuarioBean loggedUser = getLoggedUser( session );
+			UsuarioBean loggedUser = getLoggedUser( session );
 			validateRequest( session );
 			Enumeration<String> parameter_list =  request.getParameterNames();
 			while( parameter_list.hasMoreElements() ){
@@ -48,8 +48,8 @@ public class TransitoBodega extends Entity {
 			int id = Integer.valueOf( idStr );
 			
 			ExtendedFieldsBaseMain traslado_head = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
-					new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO"}, 
-					new int[] {Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER}
+					new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","DESTINATARIO"}, 
+					new int[] {Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER}
 					);
 			
 			ExtendedFieldsBaseMain traslado_detail = new ExtendedFieldsBaseMain( "TRASLADOS_DETAIL", 
@@ -62,6 +62,7 @@ public class TransitoBodega extends Entity {
 			
 			ExtendedFieldsBean traslado_head_bean = traslado_head.get( id );
 			traslado_head_bean.putValue( "ESTADO" , "T" );
+			traslado_head_bean.putValue( "DESTINATARIO", String.valueOf( loggedUser.getId() ));
 			
 			String bodegaOrigen  =String.valueOf(  TRANSIT_PREFIX + Integer.valueOf( traslado_head_bean.getValue( "BODEGA_DESTINO" )));
 			String bodegaDestino = traslado_head_bean.getValue( "BODEGA_DESTINO" );

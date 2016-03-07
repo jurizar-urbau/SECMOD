@@ -391,5 +391,37 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		return list;
 	}	
 	
+	public ArrayList<ExtendedFieldsBean> getAllWithoutID(ExtendedFieldsFilter filter) {
+		ArrayList<ExtendedFieldsBean> list  = new ArrayList<ExtendedFieldsBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "";
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			sql = "SELECT " + raw_fields_without_id + " FROM "+tablename +" WHERE " + filter.getWhereClause() ;
+			
+			rs = stmt.executeQuery( sql);
+			
+			while( rs.next() ){
+				
+				ExtendedFieldsBean bean = new ExtendedFieldsBean();
+
+				bean.setId        ( rs.getInt( 1 ));
+				for( String field : field_names ){
+					bean.putValue( field, Util.trimString( rs.getString( field )));
+				}
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			System.out.println( "sql: [" + sql + "]");
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}	
+	
 	
 }

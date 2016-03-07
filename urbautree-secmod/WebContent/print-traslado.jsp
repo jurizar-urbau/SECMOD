@@ -12,20 +12,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%
+boolean envio = !"transito".equals( request.getParameter( "from" ) );
+
+%>
+<script>
+	function regresar(){
+		<%
+		if( envio ){
+		%>
+		location.replace( "traslado-bodega.jsp" );
+		<%
+		} else {
+		%>
+		location.replace( "traslado-transito.jsp" );
+		<% 
+		}
+		%>
+	}
+</script>
 <style>
-@page { size: auto;  margin: 0mm; }
-</style>
+	@page { size: auto;  margin: 0mm; }
+
+	@media print
+	{    
+	    .no-print, .no-print *
+	    {
+	        display: none !important;
+	    }
+	    
+  		a[href]:after {
+		    content: none !important;
+		  }
+	    
+	}
+	</style>
 <%
 
 ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
-		new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID"},
+		new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID","DESTINATARIO"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER, 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DATE,
 			Constants.EXTENDED_TYPE_STRING,
 			Constants.EXTENDED_TYPE_INTEGER,
-			Constants.EXTENDED_TYPE_STRING
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_INTEGER
 			
 		} );
 
@@ -48,7 +81,13 @@ ExtendedFieldsBaseMain pm = new ExtendedFieldsBaseMain( "PRODUCTOS",
 		} );
 
 
-ArrayList<ExtendedFieldsBean> results = um.getAll( new ExtendedFieldsFilter(new String[]{"TRANSID"},new int[]{ExtendedFieldsFilter.EQUALS}, new int[]{Constants.EXTENDED_TYPE_STRING},new String[]{request.getParameter( "id" )}));
+ArrayList<ExtendedFieldsBean> results = um.getAll( 
+		new ExtendedFieldsFilter(
+				new String[]{"TRANSID"},
+				new int[]{ExtendedFieldsFilter.EQUALS}, 
+				new int[]{Constants.EXTENDED_TYPE_STRING},
+				new String[]{ request.getParameter( "id" )})
+		);
 ExtendedFieldsBean bean = null;
 	if( results.size() > 0  ){
 		bean = results.get( 0 );
@@ -57,14 +96,37 @@ BodegasMain bodegasMain = new BodegasMain();
 UsuariosMain usuariosMain = new UsuariosMain();
 BodegaBean bodegaOrigen = bodegasMain.getBodega( bean.getValueAsInt( "BODEGA_ORIGEN" ) );
 BodegaBean bodegaDestino = bodegasMain.getBodega( bean.getValueAsInt( "BODEGA_DESTINO" ) );
-UsuarioBean usuarioBean = usuariosMain.get( bean.getValueAsInt( "USUARIO" )); 
+UsuarioBean usuarioBean = usuariosMain.get( bean.getValueAsInt( "USUARIO" ));
+UsuarioBean usuarioDestinatarioBean =  null;
+
+if( !envio ){
+	usuarioDestinatarioBean = usuariosMain.get( bean.getValueAsInt( "DESTINATARIO" ));
+}
+
+
+	
+
 %>
 </head>
 <body>
+<button onclick="regresar()" class="no-print">Regresar</button>
+<button onclick="window.print()" class="no-print">Imprimir</button>
 <table width="100%" style="text-align: left;">
+<%
+	if( envio ){
+%>
 	<tr>
-		<td></td><td></td><td width="70%">&nbsp;</td>
+		<td colspan="2"><h1>Traslado - Envio</h1></td><td></td><td width="70%">&nbsp;</td>
 	</tr>
+	<%
+	} else {
+		%>
+	<tr>
+		<td colspan="2" ><h1>Traslado - Recibo</h1></td><td></td><td width="70%">&nbsp;</td>
+	</tr>		
+		<%
+	}
+	%>
 	<tr>
 		<th>Bodega Origen</th><td><%= bodegaOrigen.getId() + " " + bodegaOrigen.getNombre() %></td>
 	</tr>
@@ -72,8 +134,15 @@ UsuarioBean usuarioBean = usuariosMain.get( bean.getValueAsInt( "USUARIO" ));
 		<th>Bodega Destino</th><td><%= bodegaDestino.getId() + " " + bodegaDestino.getNombre() %></td>
 	</tr>
 	<tr>
-		<th>Usuario</th><td><%= usuarioBean.getNombre().toUpperCase() %></td>
+		<th>Remitente</th><td><%= usuarioBean.getNombre().toUpperCase() %></td>
 	</tr>
+	<%
+		if( !envio ){
+	%>
+	<tr>
+		<th>Destinatario</th><td><%= usuarioDestinatarioBean.getNombre().toUpperCase() %></td>
+	</tr>
+	<% } %>
 	<tr>
 		<th>Fecha</th><td><%= bean.getValue( "FECHA" ) %></td>
 	</tr>
@@ -85,7 +154,11 @@ UsuarioBean usuarioBean = usuariosMain.get( bean.getValueAsInt( "USUARIO" ));
 				</tr>
 				
 				<%
-					ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"ID_TRASLADO"},new int[]{ ExtendedFieldsFilter.EQUALS }, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id" ) } );
+					ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
+							new String[]{"ID_TRASLADO"},
+							new int[]{ ExtendedFieldsFilter.EQUALS }, 
+							new int[]{ Constants.EXTENDED_TYPE_STRING},
+							new String[]{ String.valueOf( bean.getId() ) } );
 					ArrayList<ExtendedFieldsBean> details = dm.getAll( filter );
 					for( ExtendedFieldsBean b : details ){
 						ExtendedFieldsBean producto = pm.get( b.getValueAsInt( "PRODUCTO" ));

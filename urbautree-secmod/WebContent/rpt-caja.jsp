@@ -22,40 +22,28 @@
 		    size: auto;   /* auto is the initial value */ 
 		
 		    /* this affects the margin in the printer settings */ 
-		    margin: 25mm 25mm 25mm 25mm;
-		   
-  
+		    margin: 25mm 25mm 25mm 25mm;  
 		} 
-		.smallprint {
-			font-size: 9px;
-		}
-		
 	</style>
 		
 	<%@include file="fragment/head.jsp"%>
 	<%
 	
-	String bodega = request.getParameter( "bodega" );
 	
-	BodegasMain bodegasMain = new BodegasMain();
-	BodegaBean bodegaBean = bodegasMain.getBodega( Integer.valueOf( bodega ));
-	
-	ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "INV" + bodega + " INV, PRODUCTOS PRO", 
-			new String[]{"PRO.CODIGO","PRO.DESCRIPCION","PRO.PRECIO","PRO.ID","IMAGE_PATH","INV.AMOUNT"},
+	ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES", 
+			new String[]{"SUM(MONTO)","TIPO_PAGO"},
 				new int[]{ 
-				Constants.EXTENDED_TYPE_STRING, 
-				Constants.EXTENDED_TYPE_STRING,
-				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_DOUBLE, 
 				Constants.EXTENDED_TYPE_STRING
 			} );
 	
-	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"INV.ID_PRODUCT","ESTATUS"},new int[]{ ExtendedFieldsFilter.EQUALS,ExtendedFieldsFilter.EQUALS},
-			new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING}, new String[]{"PRO.ID","A"}
+	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_CAJA_PUNTO_VENTA","DATE_FORMAT(NOW(), '%Y-%m-%d')"},new int[]{ ExtendedFieldsFilter.EQUALS,ExtendedFieldsFilter.EQUALS},
+			new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER}, new String[]{"3","'2016-02-28' GROUP BY TIPO_PAGO"}
 			);
 	
 	
-	ArrayList<ExtendedFieldsBean> list = reporteMain.getAll(filter);
-	ProductosMain productosMain = new ProductosMain();	
+	ArrayList<ExtendedFieldsBean> list = reporteMain.getAllWithoutID(filter);
+		
 	%>
 	
 	</head>
@@ -103,53 +91,32 @@
           				  		<button type="button" class="btn btn-success" onclick="print();">Imprimir</button>&nbsp;&nbsp;&nbsp;
           				  	</span>
           		
-          				  <table class="table table-striped table-advance table-hover smallprint">
+          				  <table class="table table-striped table-advance table-hover">
           				  <%
 	                  	  	  	Date date = new Date();
 	                  	  	  	date.setTime( System.currentTimeMillis() );
 	                  	  	  %>
-	                  	  	  <h4>
-	                  	  	  <i class="fa fa-angle-right"></i>&nbsp;
-	                  	  	  <b>INVENTARIO:</b> 
-	                  	  	  <%= bodegaBean.getNombre() %></br><i class="fa fa-angle-right"></i>&nbsp;
-	                  	  	  <b>FECHA Y HORA:</b> <%= Util.getDateStringDMYHM( date )%></h4>
-	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  <th>Codigo</th>
                                   <th>Descripcion</th>
-                                  <th>Imagen</th>
-                                  <th>Cantidad</th>
-                                  <th>Unitario</th>
-                                  <th>Total</th>
+                                  <th>Monto</th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	double total_costo =0;
-	                          	double total_precio1=0;
+                              	double total =0;
+	                          	
                               	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
+                              	 total += Double.valueOf( us.getValue( "SUM(MONTO)" ));	
                               %>
                               <tr>
-								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
-								  <td><%= us.getValue( "PRO.DESCRIPCION" ) %></td>
-								  <td>
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  <td><%= us.getValue( "INV.AMOUNT" ) %></td>
-								    
-								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
-								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></td>
+								  <td><%= us.getValue( "TIPO_PAGO" ) %></td>
+								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf(  us.getValue( "SUM(MONTO)" ) ))%></td>
                               </tr>
                               <% } %>
                               <tr>
 								  <td></td>
-								  <td></td>
-								  <td></td> 
-								  <td></td>
-								  <td><b><i>TOTAL</i></b></td>
-								  <td><b><%= Util.formatCurrency( total_precio1 ) %></b></td>
+								  <td><b><%= Util.formatCurrency( total ) %></b></td>
                               </tr>
                               </tbody>
                           </table>

@@ -84,7 +84,7 @@
           		<div class="content-panel">
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> ORDENES - CAJA </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> CAJA [<%= loggedUser.getNombre_caja_punto_venta() %>]</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               
@@ -258,10 +258,12 @@
 		        	alert( messages[1] );
 		        	if( confirm("Desea imprimir la factura?") ){
 		        		window.open( "print-factura.jsp?id="+messages[ 0 ]);
-		        		location.reload();
-		        	} else {
-		        		location.reload();
 		        	}
+		        	if( confirm("Desea imprimir la orden?") ){
+		        		window.open( "print-orden.jsp?id="+selectedID);
+		        	} 
+		        	location.reload();
+		        	
 		        	if( !msg.startsWith('error') ){
 		        		location.reload();	
 		        	}

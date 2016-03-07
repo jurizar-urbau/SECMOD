@@ -89,14 +89,14 @@ ExtendedFieldsBean bean = null;
 		<td colspan="4">
 			<table border="1" width="100%" >
 				<tr>
-					<th width="30px">Producto</th><th>Unitario</th><th>Cantidad</th><th>Total</th>
+					<th>Producto</th><th>Unitario</th><th>Cantidad</th><th>Total</th>
 				</tr>
 				
 				<%
 					for( ExtendedFieldsBean b : results ){
 					%>
 					<tr>
-						<td><%= b.getValue( "ID_PRODUCTO" ) %></td>
+						<td><%= b.getValue( "ID_PRODUCTO" ) %> - <%= b.getReferenced( "ID_PRODUCTO", "PRODUCTOS", "DESCRIPCION") %></td>
 						<td><%= b.getValue( "PRECIO_UNITARIO" )%></td>
 						<td><%= b.getValue( "CANTIDAD" )%></td>
 						<td><%= b.getValue( "TOTAL" ) %></td>

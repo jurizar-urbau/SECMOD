@@ -15,7 +15,21 @@ public class OrdenPagoBean {
 	private String numero_tarjeta;
 	private double monto;
 	private int id_usuario;
+	private int punto_de_venta;
+	private int caja_punto_de_venta;
 	
+	public int getPunto_de_venta() {
+		return punto_de_venta;
+	}
+	public void setPunto_de_venta(int punto_de_venta) {
+		this.punto_de_venta = punto_de_venta;
+	}
+	public int getCaja_punto_de_venta() {
+		return caja_punto_de_venta;
+	}
+	public void setCaja_punto_de_venta(int caja_punto_de_venta) {
+		this.caja_punto_de_venta = caja_punto_de_venta;
+	}
 	public int getId() {
 		return id;
 	}
