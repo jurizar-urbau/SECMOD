@@ -718,6 +718,27 @@ public class Util {
 		return total;	
 	}
 	
+	public static synchronized boolean isOpenedCaja( int id_caja ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT ESTADO FROM CAJA_PUNTO_VENTA WHERE ID = " + id_caja;
+		boolean open = false;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				open = r.getBoolean( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return open;	
+	}
 	
 	
 }

@@ -51,6 +51,17 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-name>CheckCodigoProducto</servlet-name>
     <url-pattern>/bin/CheckCodigoProducto</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ToggleFieldValue</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ToggleFieldValue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ToggleFieldValue</servlet-name>
+    <url-pattern>/bin/ToggleFieldValue</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>TrasladoBodega</servlet-name>
     <servlet-class>com.urbau.servlet.entity.TrasladoBodega</servlet-class>

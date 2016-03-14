@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.EncryptUtils"%>
 <%@page import="com.urbau.feeders.BancosMain"%>
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.OrdenExtendedBean"%>
@@ -24,7 +25,15 @@
 			
 		OrdenesExtendedMain oem = new OrdenesExtendedMain();			
 		
-		ArrayList<OrdenExtendedBean> list = oem.get( request.getParameter("q"), loggedUser.getPunto_de_venta() );  //TODO selected store.
+		int cajaid = loggedUser.getCaja_punto_de_venta();
+		boolean opened = Util.isOpenedCaja( cajaid );
+		
+		
+		ArrayList<OrdenExtendedBean> list = new ArrayList<OrdenExtendedBean>(); 
+		if( opened ){				
+			list = oem.get( request.getParameter("q"), loggedUser.getPunto_de_venta() );
+		}
+		
 	%>
 	
 	</head>
@@ -82,7 +91,18 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  
+          		<form id="toggleValue" name="toggleValue">
+          			<input type="hidden" name="id" value="<%= EncryptUtils.base64encode( String.valueOf( loggedUser.getCaja_punto_de_venta()) ) %>">
+          			<input type="hidden" name="tablename" value="<%= EncryptUtils.base64encode("CAJA_PUNTO_VENTA") %>">
+          			<input type="hidden" name="fieldname" value="<%= EncryptUtils.base64encode("ESTADO") %>">
+          			<input type="hidden" name="fieldvalue" value="<%= EncryptUtils.base64encode( opened ? "0" : "1" ) %>">
+          			<input type="hidden" name="datatype" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_BOOLEAN )) %>">
+          		</form>
+          		<% if( opened ){ %>
+          				  <span class="pull-right"><button class="btn btn-theme" onclick="cerrar()">Cerrar Caja</button>&nbsp;</span>
+          		<% } else { %>
+          				  <span class="pull-right"><button class="btn btn-success"  onclick="abrir()">Abrir Caja</button>&nbsp;</span>
+          		<% } %>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> CAJA [<%= loggedUser.getNombre_caja_punto_venta() %>]</h4>
 	                  	  	  <hr>
@@ -222,6 +242,49 @@
 		var acepta_credito = false;
 		var selectedID;
 		
+		function abrir(){
+			if( confirm( "Confirma que desea abrir la caja? " ) ){
+				 toggle( "Caja abierta" );
+			}
+		}
+		
+		
+		function cerrar(){
+			if( confirm( "Confirma que desea cerrar la caja? " ) ){
+				toggle( "Caja cerrada" );
+			}
+		}
+		function toggle(successmessage){
+			if(  true  ){
+				var form =$('#toggleValue');
+		     	$.ajax({
+		     		type:'POST',
+		     		dataType: "text",
+		 			url: './bin/ToggleFieldValue',
+		 			data: form.serialize(),
+		 			
+			        success: function(msg){
+			        	if( msg === "true" ){
+			        		alert( successmessage );
+			        		location.reload();
+			        	} else {
+			        		alert( "Ha ocurrido un error.");
+			        	}
+			            
+			        },
+		 			error: function(jqXHR, textStatus, errorThrown){
+		 				console.log("ERROR srtatus: ", textStatus);
+		 				console.log("ERROR errorThrown: ", errorThrown);
+		 				alert("Se prudujo un error al hacer la operaciòn");	
+		 			}
+			            		        
+		       });
+		     	
+		     	
+				
+			}
+		}
+		
 		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito ){
 			selectedID = id;
 			$('#formid').val( id );
@@ -243,6 +306,7 @@
 		function printBill() {
 			window.open( "print-orden.jsp?id="+selectedID);
 		}
+		
 		
 		$("#savebutton").click(function(){
 			
