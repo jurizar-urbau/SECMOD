@@ -91,16 +91,20 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          		<form id="toggleValue" name="toggleValue">
-          			<input type="hidden" name="id" value="<%= EncryptUtils.base64encode( String.valueOf( loggedUser.getCaja_punto_de_venta()) ) %>">
-          			<input type="hidden" name="tablename" value="<%= EncryptUtils.base64encode("CAJA_PUNTO_VENTA") %>">
-          			<input type="hidden" name="fieldname" value="<%= EncryptUtils.base64encode("ESTADO") %>">
-          			<input type="hidden" name="fieldvalue" value="<%= EncryptUtils.base64encode( opened ? "0" : "1" ) %>">
-          			<input type="hidden" name="datatype" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_BOOLEAN )) %>">
-          		</form>
+          		
           		<% if( opened ){ %>
+	          		<form id="toggleValue" name="toggleValue">
+	          			<input type="hidden" name="action" value="close">
+	          			<input type="hidden" name="id_punto_venta" value="<%= loggedUser.getPunto_de_venta() %>">
+	          			<input type="hidden" name="id_caja" value="<%= loggedUser.getCaja_punto_de_venta() %>">
+	          		</form>
           				  <span class="pull-right"><button class="btn btn-theme" onclick="cerrar()">Cerrar Caja</button>&nbsp;</span>
           		<% } else { %>
+          			<form id="toggleValue" name="toggleValue">
+	          			<input type="hidden" name="action" value="open">
+	          			<input type="hidden" name="id_punto_venta" value="<%= loggedUser.getPunto_de_venta() %>">
+	          			<input type="hidden" name="id_caja" value="<%= loggedUser.getCaja_punto_de_venta() %>">
+	          		</form>
           				  <span class="pull-right"><button class="btn btn-success"  onclick="abrir()">Abrir Caja</button>&nbsp;</span>
           		<% } %>
                           <table class="table table-striped table-advance table-hover">
@@ -260,7 +264,7 @@
 		     	$.ajax({
 		     		type:'POST',
 		     		dataType: "text",
-		 			url: './bin/ToggleFieldValue',
+		 			url: './bin/ClosePayments',
 		 			data: form.serialize(),
 		 			
 			        success: function(msg){

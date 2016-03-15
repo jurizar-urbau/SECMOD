@@ -23,7 +23,8 @@ public class ClosePayments extends Entity {
 	private static final long serialVersionUID = 1L;
 	
 	
-	private boolean excecute( String id_punto_venta, int loggedUserId , int id_caja_abierta ){
+	private boolean closeCaja( String id_punto_venta, int loggedUserId , int id_caja_abierta, int id_caja ){
+		System.out.println( "CLOSING: punto de venta: "  + id_punto_venta + ", userId:" + loggedUserId + ", id_caja_abierta:" + id_caja_abierta + ", id_caja:" + id_caja );
 		
 		Connection con  = null;
 		Statement  stmt = null;
@@ -33,6 +34,10 @@ public class ClosePayments extends Entity {
 		String sql ="SELECT ID,MONTO,TIPO_PAGO FROM PAGOS_ORDENES WHERE CERRADO IS NULL AND ID_PUNTO_VENTA=" + id_punto_venta;
 		
 		Map<String, Double> pagos = new HashMap<String,Double>();
+		pagos.put("credito", 0.00 );
+		pagos.put("tarjeta", 0.00 );
+		pagos.put("efectivo", 0.00 );
+		pagos.put("cheque", 0.00 );
 		try{
 			con = ConnectionManager.getConnection();
 			con.setAutoCommit( false );
@@ -66,16 +71,23 @@ public class ClosePayments extends Entity {
 					+ "CHEQUE_CIERRE   ="+pagos.get( "cheque" )+" "
 					+ "WHERE ID=" + id_caja_abierta;
 			int updated_caja = stmt_p.executeUpdate( close_reg );
-			if( updated_caja  <= 0 ){
-				ConnectionManager.close(null, stmt_p, null);
-				ConnectionManager.close(con, stmt, rs);
-				throw new Exception( "No se pudo actualizar detalle de caja." );
+			if( updated_caja  > 0 ){
+			
+				String sql_toggle = "UPDATE CAJA_PUNTO_VENTA SET ESTADO=0 WHERE ID = " + id_caja;
+				int updated_closed = stmt_p.executeUpdate(sql_toggle);
+				if( updated_closed <= 0 ){
+					ConnectionManager.close(null, stmt_p, null);
+					ConnectionManager.close(con, stmt, rs);
+					throw new Exception( "No se pudo actualizar detalle de caja." );
+				}
 			}
+			
 			
 			con.commit();
 			System.out.println( "TRANSACTION FINISHED" );
 			return true;
 		} catch ( Exception e ){
+			e.printStackTrace();
 			try {
 				con.rollback();	
 			} catch(Exception ee ){
@@ -107,16 +119,42 @@ public class ClosePayments extends Entity {
 					+ "CREDITO_APERTURA,"
 					+ "CHEQUE_APERTURA) VALUE "
 					+ "("+id_caja+",NOW(),"+loggedUserId+",0,0,0,0)";
-			int total = stmt.executeUpdate( sql );
-			return total>0;
+			
+			String sql_toggle = "UPDATE CAJA_PUNTO_VENTA SET ESTADO=1 WHERE ID = " + id_caja ;
+			int toggle = stmt.executeUpdate( sql_toggle );
+			if( toggle > 0 ){
+				int total = stmt.executeUpdate( sql );
+				return total>0;
+			}
 			
 		} catch (Exception e) {
 			System.out.println( sql );
 			e.printStackTrace();
-			return false;
 		} finally {
 			ConnectionManager.close( con, stmt, null );
 		}
+		return false;
+	}
+	
+	private int getOpenedDetail( int id_caja ){
+		String sql = "SELECT ID FROM CAJA_DETALLE WHERE FECHA_CIERRE IS NULL AND  ID_CAJA=" + id_caja;
+		Connection c = null;
+		Statement  s = null;
+		ResultSet  r = null;
+		int id = -1;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				id = r.getInt( 1 );
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return id;
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -126,10 +164,18 @@ public class ClosePayments extends Entity {
 			UsuarioBean loggedUser = getLoggedUser( session );
 			validateRequest( session );
 			
-			String id_punto_venta   = request.getParameter( "id_punto_venta" );
-			String id_caja_abierta  = request.getParameter( "id_caja_abierta" );
+			String id_punto_venta = request.getParameter( "id_punto_venta" );
+			String id_caja        = request.getParameter( "id_caja" );
+			String action         = request.getParameter( "action" );
 			
-			boolean succed = excecute(id_punto_venta, loggedUser.getId(), Integer.valueOf( id_caja_abierta )) ;
+			boolean succed = false;
+			
+			if(  "close".equals( action ) ){
+				int id_caja_abierta = getOpenedDetail( Integer.valueOf( id_caja ));
+				succed = closeCaja(id_punto_venta, loggedUser.getId(), Integer.valueOf( id_caja_abierta ), Integer.valueOf( id_caja ) ) ;
+			} else if( "open".equals( action ) ) {
+				succed = openCaja(Integer.valueOf( id_caja ), loggedUser.getId() );
+			}
 			String message = "false";
 			if( succed ){
 				message = "true";

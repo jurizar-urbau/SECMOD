@@ -61,6 +61,14 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/bin/ToggleFieldValue</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>ClosePayments</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.ClosePayments</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClosePayments</servlet-name>
+    <url-pattern>/bin/ClosePayments</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>TrasladoBodega</servlet-name>
