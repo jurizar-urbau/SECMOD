@@ -740,5 +740,27 @@ public class Util {
 		return open;	
 	}
 	
+	public static final int SIDE_LEFT = 1;
+	public static final int SIDE_RIGHT = 2;
+	
+	public static synchronized String getFixedString( String string, int size, String fillChar, int fillSide ){
+		String return_string = string;
+		if( string.length() >= size ){
+			return string;
+		} else {
+			int neededChars = size - string.length();
+			String fillString = "";
+			for( int n=0; n < neededChars; n++ ){
+				fillString += fillChar;
+			}
+			if( fillSide == SIDE_LEFT ){
+				return_string = fillString + string;
+			} else {
+				return_string = string + fillString;
+			}
+		}
+		return return_string;
+	}
+	
 	
 }

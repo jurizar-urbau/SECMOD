@@ -31,7 +31,7 @@ public class ClosePayments extends Entity {
 		Statement  stmt_p = null;
 		ResultSet  rs   = null;
 		
-		String sql ="SELECT ID,MONTO,TIPO_PAGO FROM PAGOS_ORDENES WHERE CERRADO IS NULL AND ID_PUNTO_VENTA=" + id_punto_venta;
+		String sql ="SELECT ID,MONTO,TIPO_PAGO FROM PAGOS_ORDENES WHERE CERRADO IS NULL AND ID_CAJA_PUNTO_VENTA=" + id_caja;
 		
 		Map<String, Double> pagos = new HashMap<String,Double>();
 		pagos.put("credito", 0.00 );
@@ -54,7 +54,7 @@ public class ClosePayments extends Entity {
 				double preval = pagos.get( tipo_pago );
 				pagos.put( tipo_pago, preval + monto );
 				
-				String pagoUpdate = "UPDATE PAGOS_ORDENES SET CERRADO=1 WHERE ID=" + id;
+				String pagoUpdate = "UPDATE PAGOS_ORDENES SET CERRADO=1, ID_CIERRE=" + id_caja_abierta + " WHERE ID=" + id;
  				int updated = stmt_p.executeUpdate( pagoUpdate );
  				if( updated <= 0 ){
  					ConnectionManager.close(null, stmt_p, null);
@@ -172,6 +172,7 @@ public class ClosePayments extends Entity {
 			
 			if(  "close".equals( action ) ){
 				int id_caja_abierta = getOpenedDetail( Integer.valueOf( id_caja ));
+				
 				succed = closeCaja(id_punto_venta, loggedUser.getId(), Integer.valueOf( id_caja_abierta ), Integer.valueOf( id_caja ) ) ;
 			} else if( "open".equals( action ) ) {
 				succed = openCaja(Integer.valueOf( id_caja ), loggedUser.getId() );

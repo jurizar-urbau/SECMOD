@@ -611,7 +611,8 @@
     		        success: function(msg){		      
     		        	alert( msg );
     		        	if( !msg.startsWith('error') && !msg.startsWith('No ') ){
-    		        		location.reload();	
+    		        		window.open( "" );
+    		        		//location.reload();	
     		        	}
     		            //location.replace( "clientes.jsp" );
     		        },
