@@ -32,6 +32,7 @@
                           <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
                           <li><a  href="carga-bodega.jsp">Carga De Productos</a></li>
                           <li><a  href="ordenes.jsp">Ordenes</a></li>
+                          <li><a  href="facturas.jsp">Facturas</a></li>
                       </ul>
                   </li> 
                   <% } %>

@@ -142,7 +142,7 @@
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_VIEW)){ %>
 										<button class="btn btn-success btn-xs" onclick="view('<%= us.getId() %>');"><i class="fa fa-check"></i></button>
 									<%} %>
-									<button class="btn btn-success btn-xs" onclick="cierres('<%= us.getId() %>');"><i class="fa fa-check"></i></button>	
+									<button class="btn btn-success btn-xs" onclick="cierres('<%= us.getId() %>');"><i class="fa fa-check"></i>Cierres</button>	
 									</td>
 									
                               </tr>

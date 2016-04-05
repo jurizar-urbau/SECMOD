@@ -422,6 +422,14 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		}
 		return list;
 	}	
-	
+
+	public ExtendedFieldsBean fillBean(String...strings ){
+		ExtendedFieldsBean bean = new ExtendedFieldsBean();
+		String[] fields = getFieldNamesArray();
+		for( int n = 0; n < strings.length; n++ ){
+			bean.putValue( fields[ n ], strings[ n ]);
+		}
+		return bean;
+	}
 	
 }

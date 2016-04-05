@@ -24,6 +24,21 @@ public class IngresoBodega extends Entity {
 	public static final String ESTADO_INGRESADO = "I";
 	public static final String ESTADO_CANCELADO = "C";
 	public static final String ESTADO_DESPACHADO = "D";
+	
+	ExtendedFieldsBaseMain comprasMain = new ExtendedFieldsBaseMain( "COMPRAS_DETALLE", 
+			new String[]{ 
+					"ID_COMPRA","ID_BODEGA","ID_PRODUCTO","UNIDADES","COSTO","SUBTOTAL"
+		    },
+			new int[]{ 
+				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DOUBLE,
+				Constants.EXTENDED_TYPE_DOUBLE
+			} );
+	
+	
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
@@ -33,11 +48,31 @@ public class IngresoBodega extends Entity {
 			validateRequest( session );
 			
 			String bodegaidStr = request.getParameter( "bodegaid" );
+			
+			String proveedoridStr = request.getParameter( "proveedorid" );
+			
 			int bodegaid = Integer.valueOf( bodegaidStr );
 			String productidStr[] = request.getParameterValues( "productid" );
 			String amountStr[] = request.getParameterValues( "amount" );
 			String packStr[] = request.getParameterValues( "pack" );
 			
+			String priceStr[] = request.getParameterValues( "price" );
+			
+			
+			boolean withProvider = false;
+			
+			if ( priceStr != null && proveedoridStr != null ){
+				withProvider = true;
+			}
+			
+			
+			String descuento = request.getParameter( "descuento" );
+			
+			
+			System.out.println( "descuento: " + descuento );
+			System.out.println( "proveedor: " + proveedoridStr ) ;
+			System.out.println( "bodega   : " + bodegaidStr  );
+			 
 			String message = validateParameters( bodegaidStr, productidStr, amountStr, packStr );
 			
 			if( message.length() > 0 ){
@@ -71,6 +106,49 @@ public class IngresoBodega extends Entity {
 					new String[]{ "ID_CARGA", "ID_PRODUCTO", "UNIDADES_PRODUCTO", "UNITARIO", "PACKING_SELECCIONADO" }, 
 					new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER} 
 			);
+			int compraID = -1;
+			if( !Util.isEmpty(proveedoridStr )){
+				 
+				ExtendedFieldsBaseMain comprasMain = new ExtendedFieldsBaseMain( "COMPRAS", 
+						new String[]{ 
+							"FECHA","ID_PROVEEDOR",
+							"ID_ORDEN_DE_COMPRA","TIPO_DE_PAGO",
+							"FORMA_DE_INGRESO","SUBTOTAL",
+							"DESCUENTO","TOTAL","GASTOS",
+							"TOTAL_CON_GASTOS","ESTADO"
+					    },
+						new int[]{ 
+							Constants.EXTENDED_TYPE_DATE, 
+							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_DOUBLE,
+							Constants.EXTENDED_TYPE_DOUBLE,
+							Constants.EXTENDED_TYPE_DOUBLE,
+							Constants.EXTENDED_TYPE_DOUBLE,
+							Constants.EXTENDED_TYPE_DOUBLE,
+							Constants.EXTENDED_TYPE_INTEGER
+						} );
+				
+				ExtendedFieldsBean compra = new ExtendedFieldsBean();
+				compra.putValue( "FECHA", "NOW()" );
+				compra.putValue( "ID_PROVEEDOR", proveedoridStr );
+				compra.putValue( "ID_ORDEN_DE_COMPRA",  String.valueOf( carga_id ) );
+				compra.putValue( "TIPO_DE_PAGO", "0" );
+				compra.putValue( "FORMA_DE_INGRESO", "0" );
+				compra.putValue( "SUBTOTAL", "0" );
+				compra.putValue( "DESCUENTO", "0" );
+				compra.putValue( "TOTAL", "0" );
+				compra.putValue( "GASTOS", "0" );
+				compra.putValue( "TOTAL_CON_GASTOS", "0" );
+				compra.putValue( "ESTADO", "0" );
+				
+				String addedCompra = comprasMain.addForTransaction(compra);
+				compraID = comprasMain.getIdFromTransaction( addedCompra );
+				System.out.println( "compra added: " + addedCompra );
+				
+			}
 			
 			for( int i = 0; i < productidStr.length; i++ ){
 				int prodid = Integer.valueOf( productidStr[ i ] );
@@ -78,13 +156,33 @@ public class IngresoBodega extends Entity {
 				int pack = Integer.valueOf( packStr[ i ] );
 				
 				ExtendedFieldsBean carga_bean_detalle_bean = new ExtendedFieldsBean();
+				
+				
 				carga_bean_detalle_bean.putValue( "ID_CARGA", String.valueOf(  carga_id ));
 				carga_bean_detalle_bean.putValue( "ID_PRODUCTO", String.valueOf( prodid ));
 				carga_bean_detalle_bean.putValue( "UNIDADES_PRODUCTO", String.valueOf( amount * pack ));
 				carga_bean_detalle_bean.putValue( "UNITARIO", String.valueOf( amount ));
 				carga_bean_detalle_bean.putValue( "PACKING_SELECCIONADO", String.valueOf( pack ));
 				
+				if( withProvider ){
+					double price = Double.valueOf( priceStr[ i ]);
+					System.out.println( "prodID :" + productidStr );
+					System.out.println( "pack   :" + pack );
+					System.out.println( "amount :" + amount );
+					System.out.println( "price  :" + price );
+					ExtendedFieldsBean compra_detalle_bean = comprasMain.fillBean(
+							String.valueOf( compraID ),
+							String.valueOf( bodegaid ), 
+							productidStr[ i ], 
+							String.valueOf( pack * amount),
+							priceStr[ i ], 
+							String.valueOf( price * pack * amount )   
+					);
+					comprasMain.add( compra_detalle_bean );
+				}
+
 				carga_bodega_detail.add( carga_bean_detalle_bean );
+				
 				
 					InvetarioBean a = im.get ( prodid, "a", bodegaid );
 					if( a == null ){

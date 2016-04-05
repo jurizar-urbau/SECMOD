@@ -1,47 +1,44 @@
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%@page import="com.urbau.beans.ProveedorBean"%>
-<%@page import="com.urbau.beans.MonedaBean"%>
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.ProveedoresMain"%>
-<%@page import="com.urbau.feeders.PaisesMain"%>
-<%@page import="com.urbau.feeders.MonedasMain"%>
-<%@page import="com.urbau.security.Authorization"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-		ProveedoresMain um = new ProveedoresMain();
-		PaisesMain paises_main = new PaisesMain();
-		MonedasMain monedas_main = new MonedasMain();		
-		int from = 0;
-		if( request.getParameter( "from" ) != null ){
-			from = Integer.parseInt( request.getParameter( "from" ) );
-		}
-		ArrayList<ProveedorBean> list = um.get( request.getParameter("q"), from );
-		int total_regs = -1;
-		
-		if( list.size() > 0 ){
-			total_regs = ((ProveedorBean)list.get( 0 )).getTotal_regs();
-		}
+	
+	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "FACTURAS", 
+			new String[]{"FACTURA","ORDEN","FECHA","SUBTOTAL","TOTAL","NIT","NOMBRE"},
+				new int[]{ 
+				Constants.EXTENDED_TYPE_STRING, 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
+				Constants.EXTENDED_TYPE_DOUBLE,
+				Constants.EXTENDED_TYPE_DOUBLE,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING
+			} );
+			
+			int from = 0;
+			if( request.getParameter( "from" ) != null ){
+		from = Integer.parseInt( request.getParameter( "from" ) );
+			}
+			ArrayList<ExtendedFieldsBean> list = um.get( request.getParameter("q"), from );
+			int total_regs = -1;
+			
+			if( list.size() > 0 ){
+		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
+			}
 	%>
 	<script>
-		function edit( id ){
-			location.replace( "proveedores-detail.jsp?mode=edit&id="+id);
+		function imprimirFactura( id ){
+			window.open( "print-factura.jsp?id="+id );
 		}
-		function removereg( id ){
-			location.replace( "proveedores-detail.jsp?mode=remove&id="+id);
-		}
-		function view( id ){
-			location.replace( "proveedores-detail.jsp?mode=view&id="+id);
-		}
-		function add(){
-			location.replace( "proveedores-detail.jsp?mode=add" );
-		}
-		function compras( id ){
-			location.replace( "proveedores-compras.jsp?id-proveedor=" + id );
-		}
+		
 	</script>
 	</head>
    
@@ -98,50 +95,40 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_ADD)){ %>          				
           				  <span class="pull-right">
-          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
+          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
+          				  
           				  </span>
-          				<%}%>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PROVEEDORES </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Facturas </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                              	  <th>ID</th>
-                                  <th>Nit</th>                                  
+                                  <th>No. Factura</th>
+                                  <th>No. Orden</th>
+                                  <th>Fecha</th>
+                                  <th>Subtotal</th>
+                                  <th>Total</th>
+                                  <th>NIT</th>
                                   <th>Nombre</th>
-                                  <th class="hidden-phone">Razon Social</th>                                                                    
-                                  <th>Telefono</th>
-                                  <th class="hidden-phone">Correo</th>                                  
-                                  <th>Saldo</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for(ProveedorBean proveedor: list ){
+                              	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-                              	  <td><%= proveedor.getId() %></td>
-                                  <td><%= proveedor.getNit() %></td>                                  
-                                  <td><%= proveedor.getNombre() %></td>
-                                  <td class="hidden-phone" ><%= proveedor.getRazonSocial() %></td>                                                                    
-                                  <td><%= proveedor.getTelefono() %></td>
-                                  <td class="hidden-phone" ><%= proveedor.getEmail() %></td>                                                                                                                                                                         
-                                  <td><%= proveedor.getSaldo() %></td>
-                                                                    
+								  <td><%= us.getValue( "FACTURA" ) %></td>
+                                  <td><%= us.getValue( "ORDEN" ) %></td>
+                                  <td><%= us.getValue( "FECHA" ) %></td>
+                                  <td><%= us.getValue( "SUBTOTAL" ) %></td>
+                                  <td><%= us.getValue( "TOTAL" ) %></td>
+                                  <td><%= us.getValue( "NIT" ) %></td>
+                                  <td><%= us.getValue( "NOMBRE" ) %></td>
+                                  
                                   <td>
-                                  	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_MODIFY)){ %>                                     
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= proveedor.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                    <%}%>  
-                                    <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_DELETE)){ %>  
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= proveedor.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                    <%}%>  
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= proveedor.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%}%>  
-                                    <button class="btn btn-success btn-xs" onclick="compras('<%= proveedor.getId()  %>');"><i class="fa fa-check">Compras</i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="imprimirFactura('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>
                                   </td>
                               </tr>
                               <% } %>
@@ -168,7 +155,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="proveedores.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -177,7 +164,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="proveedores.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="empleados.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -190,7 +177,7 @@
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->

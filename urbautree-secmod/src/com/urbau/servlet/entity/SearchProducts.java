@@ -37,34 +37,19 @@ public class SearchProducts extends Entity {
 		
 		JSONArray jsonArray = new JSONArray();
 		
-		System.out.println(  "cliente: " + cliente + ", bodega: " + bodega );
-		
 		if(null != q){		
 			Connection con  = null;
 			Statement  stmt = null;
 			ResultSet  rs   = null;
-//			String sql = "select " +
-//					"DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD," +
-//					"PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,IMAGE_PATH,ID " +
-//					"from " +
-//					"productos " +
-//					"where " +
-//					"( descripcion like '%" + q + "%'" +
-//					" or codigo like'%" + q + "%'" +
-//					" or ID in " +
-//					"(select id_producto from Alias where descripcion like '%" + q + "%')" + 
-//					")" +
-//					" AND ( ID IN " + 
-//					"( select ID_product from INV" + bodega + " ) " +
-//					")";
-			
+
 			String sql = 
 					"SELECT " + 
 					" PRO.DESCRIPCION,PRO.CODIGO,PRO.COEFICIENTE_UNIDAD,PRO.PRECIO,PRO.PRECIO_1,PRO.PRECIO_2,PRO.PRECIO_3,PRO.PRECIO_4,PRO.IMAGE_PATH,PRO.ID, INV.AMOUNT " + 
 					" FROM PRODUCTOS PRO, INV"+bodega+" INV WHERE PRO.ID = INV.ID_PRODUCT AND INV.ESTATUS='a' AND " +
-					" ( descripcion like '%" + q + "%' or codigo like'%" + q + "%' or ID in  " +
-					" (select id_producto from Alias where descripcion like '%" + q + "%') " +
-					" or familia in (select id from familias where nombre like '%" + q + "%'))";
+					" ( DESCRIPCION LIKE '%" + q + "%' OR CODIGO LIKE'%" + q + "%' OR ID IN  " +
+					" (SELECT ID_PRODUCTO FROM ALIAS WHERE DESCRIPCION LIKE '%" + q + "%') " +
+					" OR FAMILIA IN (SELECT ID FROM FAMILIAS WHERE NOMBRE LIKE '%" + q + "%'))";
+					
 			if( q != null && !q.trim().equals( "" ) ){
 				try{
 					con  = ConnectionManager.getConnection();
