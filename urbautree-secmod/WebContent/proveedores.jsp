@@ -42,6 +42,9 @@
 		function compras( id ){
 			location.replace( "proveedores-compras.jsp?id-proveedor=" + id );
 		}
+		function pagos( id ){
+			location.replace( "proveedores-pagos.jsp?id-proveedor=" + id );
+		}
 	</script>
 	</head>
    
@@ -142,6 +145,7 @@
                                       <button class="btn btn-success btn-xs" onclick="view('<%= proveedor.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%}%>  
                                     <button class="btn btn-success btn-xs" onclick="compras('<%= proveedor.getId()  %>');"><i class="fa fa-check">Compras</i></button>
+                                    <button class="btn btn-success btn-xs" onclick="pagos('<%= proveedor.getId()  %>');"><i class="fa fa-check">Pagos</i></button>
                                   </td>
                               </tr>
                               <% } %>

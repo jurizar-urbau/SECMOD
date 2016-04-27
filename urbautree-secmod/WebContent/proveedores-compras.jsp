@@ -9,6 +9,11 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+	<style>
+		.red {
+			color: red;
+		}
+	</style>
 	<%@include file="fragment/head.jsp"%>
 	<%
 	
@@ -108,13 +113,14 @@
                               <tr>
                                   <th>Fecha</th>
                                   <th># Orden</th>
-                                  <th>Tipo de pago</th>
                                   <th>Subtotal</th>
                                   <th>Descuentos</th>
                                   <th>Total</th>
                                   <th>Gastos</th>
                                   <th>Total con gastos</th>
-                                  <th>Estado</th>
+                                  <th>Saldo</th>
+                                  
+                                  
                                   <th></th>
                               </tr>
                               </thead>
@@ -125,13 +131,12 @@
                               <tr>
 								  <td><%= us.getValue( "FECHA" ) %></td>
                                   <td><%= us.getValue( "ID_ORDEN_DE_COMPRA" ) %></td>
-                                  <td><%= us.getValue( "TIPO_DE_PAGO" ) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "SUBTOTAL" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "DESCUENTO" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "GASTOS" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL_CON_GASTOS" ) )) %></td>
-                                  <td><%= us.getValue( "ESTADO" ) %></td>
+                                  <td><span class="red">Q 10.00</span></td>
                                   <td>
                                       <button class="btn btn-success btn-xs" onclick="detalle('<%= us.getId()  %>');"><i class="fa fa-eye">Ver detalle</i></button>
                                   </td>

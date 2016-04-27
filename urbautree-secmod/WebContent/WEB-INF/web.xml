@@ -251,9 +251,18 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-class>com.urbau.servlet.entity.SaveOrderPayment</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SaveProviderPayment</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SaveProviderPayment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SaveProviderPayment</servlet-name>
+    <url-pattern>/bin/SaveProviderPayment</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>ReversePayment</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ReversePayment</servlet-class>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>BodegasUsuarios</servlet-name>
     <url-pattern>/bin/BodegasUsuarios</url-pattern>

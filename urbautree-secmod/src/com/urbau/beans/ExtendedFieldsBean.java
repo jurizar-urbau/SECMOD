@@ -47,6 +47,14 @@ public class ExtendedFieldsBean {
 			return value;
 		}
 	}
+	public String getValue( String key, String defaultValue  ){
+		String value = values.get( key );
+		if( Util.isEmpty( value )){
+			return defaultValue;
+		} else {
+			return value;
+		}
+	}
 	public int getValueAsInt( String key ){
 		if ( key != null ){
 			return Integer.valueOf( getValue( key ));

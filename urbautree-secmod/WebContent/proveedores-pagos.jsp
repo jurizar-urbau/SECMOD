@@ -21,7 +21,7 @@
 		bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
 	}
 	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "PROVEEDORES_PAGOS", 
-			new String[] { "ID_CREDITO","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
+			new String[] { "ID_PROVEEDOR","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
 			, new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DATE,
@@ -35,11 +35,12 @@
 			} );
 	
 	
-			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_CREDITO"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id" ) });
+			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_PROVEEDOR"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id-proveedor" ) });
 			ArrayList<ExtendedFieldsBean> list = creditos_cliente.getAll( filter );
 	%>
 	<script>
 		function pagos( id ){
+			alert( "pagos!!!" );
 			location.replace( "clientes-creditos-pagos.jsp?id="+id);
 		}
 		function add(){
@@ -97,7 +98,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id" ) %>">Regresar...</a></i> Pagos de credito </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="proveedores.jsp">Regresar...</a></i> Pagos de credito </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
 	                  	  	  
@@ -124,7 +125,7 @@
                                   <td><%= us.getValue( "TIPO_PAGO" ) %></td>
                                   <td><%= us.getValue( "NO_AUTORIZACION" ) %></td>
                                   <td><%= us.getValue( "NO_CHEQUE" ) %></td>
-                                  <td><%= us.getValue( "BANCO" ) %></td>
+                                  <td><%= us.getReferenced("ID_BANCO", "BANCOS", "DESCRIPCION") %></td>
                                   <td><%= us.getValue( "TIPO_TARJETA" ) %></td>
                                   <td><%= us.getValue( "NO_TARJETA" ) %></td>
                                  
@@ -147,20 +148,13 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">ABONO</h4>
+			                          <h4 class="modal-title">ABONO A PROVEEDOR</h4>
 			                      </div>
 			                      <div class="modal-body">
 			                       <form id="modalform" name="modalform"  class="form-horizontal style-form">
 			                      
-			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id" ) %>">
+			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id-proveedor" ) %>">
 			                      	  <label>Saldo: <b id="formmonto"></b></label><br/>
-			                      	  
-			                      	  <div class="form-group">                      	
-				                          	<label class="col-sm-2 col-sm-2 control-label">Factura</label>
-				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="factura" name="factura">
-				                          	</div>
-				                      	</div>
 			                      	  
 			                      	  	<div class="form-group">                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Tipo de pago:</label>
@@ -210,8 +204,6 @@
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
 			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
-			                          <button class="btn btn-theme" type="button" onclick="printBill('elcontenido');">Imprimir</button>
-			                          
 			                      </div>
 			                  </div>
 			              </div>
@@ -305,7 +297,7 @@
 		     	$.ajax({
 		     		type:'POST',
 		     		dataType: "text",
-		 			url: './bin/SaveCreditOrderPayment',
+		 			url: './bin/SaveProviderPayment',
 		 			data: form.serialize(),
 		 			
 			        success: function(msg){		      

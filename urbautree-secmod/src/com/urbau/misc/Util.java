@@ -2,14 +2,17 @@ package com.urbau.misc;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
+import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 
@@ -761,6 +764,33 @@ public class Util {
 		}
 		return return_string;
 	}
-	
+	public static ArrayList<ExtendedFieldsBean> getFromQuery( String sql ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		ArrayList<ExtendedFieldsBean> list = new ArrayList<ExtendedFieldsBean>();
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			System.out.println( sql );
+			r = s.executeQuery( sql );
+			ResultSetMetaData rsmd = r.getMetaData();
+			int total = rsmd.getColumnCount();
+			System.out.println( "total columns: " + total );
+			while( r.next() ){
+				ExtendedFieldsBean bean = new ExtendedFieldsBean();
+				for( int n = 1; n <= total ; n++ ){
+					bean.putValue( String.valueOf( n ),  r.getString( n ));
+				}
+				list.add(bean);
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return list;
+	}
 	
 }

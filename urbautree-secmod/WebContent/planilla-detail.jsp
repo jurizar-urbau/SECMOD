@@ -16,7 +16,7 @@ ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD
 			Constants.EXTENDED_TYPE_INTEGER, 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER,
-			Constants.EXTENDED_TYPE_INTEGER
+			Constants.EXTENDED_TYPE_DATE
 		} );
 
 	
@@ -161,7 +161,7 @@ ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	<input type="hidden" name="FECHA" ID="FECHA" VALUE="now()">
+		                          	<input type="hidden" name="FECHA" ID="FECHA" VALUE="NOW()">
 		                          	
                           	</form>
                          </div>

@@ -131,17 +131,27 @@ public class IngresoBodega extends Entity {
 							Constants.EXTENDED_TYPE_INTEGER
 						} );
 				
+				double subtotal = 0;
+				double total = 0;
+				for( int i = 0; i < productidStr.length; i++ ){
+					double price = Double.valueOf( priceStr[ i ]);
+					int amount = Integer.valueOf( amountStr[ i ] );
+					int pack = Integer.valueOf( packStr[ i ] );
+					subtotal +=  price * pack * amount;
+					total +=  price * pack * amount;
+				}
+				
 				ExtendedFieldsBean compra = new ExtendedFieldsBean();
 				compra.putValue( "FECHA", "NOW()" );
 				compra.putValue( "ID_PROVEEDOR", proveedoridStr );
 				compra.putValue( "ID_ORDEN_DE_COMPRA",  String.valueOf( carga_id ) );
 				compra.putValue( "TIPO_DE_PAGO", "0" );
 				compra.putValue( "FORMA_DE_INGRESO", "0" );
-				compra.putValue( "SUBTOTAL", "0" );
+				compra.putValue( "SUBTOTAL", "" + subtotal );
 				compra.putValue( "DESCUENTO", "0" );
-				compra.putValue( "TOTAL", "0" );
+				compra.putValue( "TOTAL", "" + total );
 				compra.putValue( "GASTOS", "0" );
-				compra.putValue( "TOTAL_CON_GASTOS", "0" );
+				compra.putValue( "TOTAL_CON_GASTOS", "" + total  );
 				compra.putValue( "ESTADO", "0" );
 				
 				String addedCompra = comprasMain.addForTransaction(compra);
@@ -164,7 +174,7 @@ public class IngresoBodega extends Entity {
 				carga_bean_detalle_bean.putValue( "UNITARIO", String.valueOf( amount ));
 				carga_bean_detalle_bean.putValue( "PACKING_SELECCIONADO", String.valueOf( pack ));
 				
-				if( withProvider ){
+				if( withProvider && compraID > 0 ){
 					double price = Double.valueOf( priceStr[ i ]);
 					System.out.println( "prodID :" + productidStr );
 					System.out.println( "pack   :" + pack );
@@ -255,10 +265,6 @@ public class IngresoBodega extends Entity {
     		}
     	}
     	return false;
-    }
-    private String getUID(){
-    	UUID id = UUID.randomUUID();
-    	return id.toString();
     }
 }
 				

@@ -81,6 +81,18 @@
                       </ul>
                   </li> -->
                   <% } %>
+                  
+                   <li class="sub-menu" id="menu-reportes">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Reportes</span>
+                      </a>
+                      <ul class="sub">
+                        <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
+                        <li><a  href="rpt-ingresos-empresa.jsp">Ingresos empresa</a></li>
+                      </ul>
+                  </li> 
+                  
                   <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_CONFIGURACION")) { 
                    %>
                   
