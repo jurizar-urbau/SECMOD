@@ -196,11 +196,14 @@
                       <% } %>
                        <li><a  href="tipos-de-pago.jsp">Tipos de pago</a></li>
                           <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.TiposDeMovimientosMain")) { %>
-						                          <li><a  href="tipo_movimiento.jsp">Tipos de Movimientos</a></li>
-						                      <% } %>
-						                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.MonedasMain")) { %>
-						                          <li><a  href="monedas.jsp">Monedas</a></li>
-						                      <% } %>
+                          <li><a  href="tipo_movimiento.jsp">Tipos de Movimientos</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.MonedasMain")) { %>
+                          <li><a  href="monedas.jsp">Monedas</a></li>
+                      <% } %>
+                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"CORRELATIVOS")) { %>
+                          <li><a  href="correlativos.jsp">Correlativos</a></li>
+                      <% } %>
                       </ul>
                   </li>
                   

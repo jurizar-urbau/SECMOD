@@ -16,6 +16,7 @@ import com.urbau.beans.UsuarioBean;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.InventariosMain;
 import com.urbau.misc.Constants;
+import com.urbau.misc.CorrelativosUtil;
 import com.urbau.misc.Util;
 
 @WebServlet("/bin/IngresoBodega")
@@ -89,13 +90,17 @@ public class IngresoBodega extends Entity {
 			UsuarioBean loggedUser = getLoggedUser(session);
 			
 			ExtendedFieldsBaseMain carga_bodega = new ExtendedFieldsBaseMain( 
-					"CARGAS_BODEGA", new String[]{"BODEGA","FECHA","USUARIO"}, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_INTEGER
+					"CARGAS_BODEGA", new String[]{"BODEGA","FECHA","USUARIO","CORRELATIVO"}, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE, Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_INTEGER
 			});
 			ExtendedFieldsBean carga_bean = new ExtendedFieldsBean();
+			
+			CorrelativosUtil correlativosUtil = new CorrelativosUtil();
+			int next = correlativosUtil.getNextAndAdvance( "CARGA_BODEGA_" + bodegaid );
 			
 			carga_bean.putValue("BODEGA", String.valueOf( bodegaid)  );
 			carga_bean.putValue("FECHA", Util.getTodayDate() );
 			carga_bean.putValue( "USUARIO", String.valueOf( loggedUser.getId() ));
+			carga_bean.putValue( "CORRELATIVO", String.valueOf( next ));
 			
 			String transaction_id = carga_bodega.addForTransaction( carga_bean );
 			
