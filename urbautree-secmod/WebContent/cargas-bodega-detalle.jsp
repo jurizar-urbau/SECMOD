@@ -26,12 +26,14 @@
 	
 	
 	ExtendedFieldsBaseMain cargaHead = new ExtendedFieldsBaseMain( "CARGAS_BODEGA", 
-			new String[]{"BODEGA","FECHA","USUARIO"},
+			new String[]{"BODEGA","FECHA","USUARIO","CORRELATIVO"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_DATE,
+				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER
 			} );
+	
 			ExtendedFieldsBean head = cargaHead.get( Integer.valueOf( id ));
 	
 
@@ -129,7 +131,7 @@
           				  <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4>
 	                  	  	  	<i class="fa fa-angle-left no-print">&nbsp;<a href="cargas-bodega.jsp">Regresar...</a> &nbsp;</i> <BR>
-	                  	  	  	<b>Detalle de carga No:</b> <%= id %><br>
+	                  	  	  	<b>Detalle de carga No:</b> <%= head.getValue( "CORRELATIVO") %><br>
 	                  	  	  	<b>Bodega :</b> <%= head.getReferenced( "BODEGA", "BODEGAS", "NOMBRE") %><br>
 	                  	  	  	<b>Fecha&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%= head.getValue( "FECHA" ) %><br>
 	                  	  	  	<b>Usuario&nbsp;:</b> <%= head.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></h4>
