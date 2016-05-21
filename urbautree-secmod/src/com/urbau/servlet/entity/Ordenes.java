@@ -126,8 +126,8 @@ public class Ordenes extends Entity {
 						
 						
 						if( im.add( newi ) ) {
-							System.out.println( "added " + newi.getId_product() + " to order...");
-							message = "Pedido agregado exitosamente!";
+							System.out.println( "added  order..." + ordenBean.getId() );
+							message = ordenBean.getId() + "|Pedido agregado exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");
 						}

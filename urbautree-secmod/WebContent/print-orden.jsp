@@ -14,7 +14,20 @@
 <head>
 <style>
 @page { size: auto;  margin: 0mm; }
-</style>
+
+	@media print
+	{    
+	    .no-print, .no-print *
+	    {
+	        display: none !important;
+	    }
+	    
+  		a[href]:after {
+		    content: none !important;
+		  }
+	    
+	}
+	</style>
 <%
 
 ExtendedFieldsBaseMain facturasMain = new ExtendedFieldsBaseMain( 
@@ -55,8 +68,16 @@ ExtendedFieldsBean bean = null;
 		bean = results.get( 0 );
 	}
 %>
+<script>
+	function regresar(){
+		location.replace( "venta.jsp" );
+	}
+</script>
 </head>
 <body>
+<button onclick="regresar()" class="no-print">Regresar</button>
+<button onclick="window.print()" class="no-print">Imprimir</button>
+
 <%
 	if( facturaBean != null ){
 %>
@@ -114,7 +135,4 @@ ExtendedFieldsBean bean = null;
 </table>
 <% } %>
 </body>
-<script>
-	print();
-</script>
 </html>

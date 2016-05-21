@@ -125,10 +125,11 @@
           		<div class="col-lg-12">
           		<div class="content-panel">
           		
-          				
+          				<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "BODEGAS_POR_USUARIO", Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
           				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
           				  </span>
+          				  <%} %>
           				
           				  
                           <table class="table table-striped table-advance table-hover">
@@ -157,12 +158,15 @@
                                   <td ><%= bodegaBean.getDireccion() %></td>
                                   <td ><%= bodegaBean.getTelefono() %></td>
                                   <td>
-                                  	                                      
+                                  	 <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "BODEGAS_POR_USUARIO", Constants.OPTIONS_MODIFY)){ %>                                     
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId() %>','<%= bodegaBean.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                        			  
+                        			  <% } %>
+                        			  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "BODEGAS_POR_USUARIO", Constants.OPTIONS_DELETE)){ %>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getIdBodega()  %>','<%= bodegaBean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bodegaBean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "BODEGAS_POR_USUARIO", Constants.OPTIONS_VIEW)){ %>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bodegaBean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <% } %>                                      
                                                                                                                                                                                                                                                                                                                           
                                   </td>
                               </tr>

@@ -63,6 +63,42 @@ public class UsuariosMain extends AbstractMain {
 		return list;
 	}
 	
+	
+	public UsuarioBean logIn( String user, String pass, String puntoventa ){
+
+		String sql = "SELECT "
+						+ "US.ID "
+				   + "FROM "
+				   	    + "USUARIOS US,BODEGAS BOD, BODEGAS_USUARIOS BODUS "
+				   + "WHERE "
+				        + "US.ESTADO = 1 AND "
+				        + "US.USUARIO = '"+user+"'  AND "
+				        + "US.CLAVE='" + pass + "' AND "
+				        + "BOD.ID_PUNTO_DE_VENTA = " + puntoventa + " AND "
+				        + "BODUS.ID_USUARIO = US.ID AND "
+				        + "BODUS.ID_BODEGA = BOD.ID";
+		
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				return get( rs.getInt( 1 ) );
+			} else {
+				System.out.println( sql );
+				return null;
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return null;
+
+	}
 	public UsuarioBean logIn( String user, String pass ){
 		Connection con  = null;
 		Statement  stmt = null;
@@ -70,7 +106,7 @@ public class UsuariosMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID FROM USUARIOS WHERE USUARIO='" + user + "' AND CLAVE='" + pass + "'" );
+			rs = stmt.executeQuery( "SELECT ID FROM USUARIOS WHERE USUARIO='" + user + "' AND CLAVE='" + pass + "' AND ESTADO = 1" );
 			if( rs.next() ){
 				return get( rs.getInt( 1 ) );
 			} else {

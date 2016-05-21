@@ -609,10 +609,22 @@
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){		      
-    		        	alert( msg );
+    		        	
     		        	if( !msg.startsWith('error') && !msg.startsWith('No ') ){
-    		        		window.open( "" );
+    		        		if( msg.indexOf('|') > 0 ){
+    		        			var messages = msg.split('|');
+    		        			alert( messages[1] );
+    		        			location.replace( "print-orden.jsp?id=" + messages[0] );
+    		        			console.log( messages[0] );
+    		        			console.log( messages[1] );
+    		        		} else {
+    		        			alert( msg );
+    		        			console.log( msg );	
+    		        		}
+    		        		
     		        		//location.reload();	
+    		        	} else {
+    		        		alert( msg );
     		        	}
     		            //location.replace( "clientes.jsp" );
     		        },

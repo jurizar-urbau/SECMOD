@@ -1,13 +1,6 @@
 
 <%@page import="com.urbau.security.Authorization"%>
 <ul class="sidebar-menu no-print" id="nav-accordion">
-              
-                  <!--  p class="centered">
-                  <a href="home.jsp">
-                  <img src="https://scontent-mia.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10742_714103018653633_713490040812823849_n.png?oh=1e76af0ab2ff870bbeffd15cb90b57ff&oe=55CE1A43" class="img-circle" width="60">
-                  </a></p>
-                  <h5 class="centered">the name</h5-->
-                    
                   <li class="mt">
                       <a class="active" href="home.jsp">
                           <i class="fa fa-dashboard"></i>
@@ -43,15 +36,19 @@
                   </li>
                   
                   <% } %>
-
+ 				   <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_INVENTARIO")) { 
+                   %>
+                 
 					<li class="sub-menu" id="menu-inventario">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
 					                          <span>Inventario</span> 
 					                      </a>
 					                      <ul class="sub">
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"CARGA_DE_PRODUCTO")) { %>
 					                      <li><a  href="carga-bodega.jsp">Carga De Productos</a></li>
- 										<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
+					                      <% } %>
+ 										 <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
 					                          <li><a  href="bodegas.jsp">Bodegas</a></li>
 					                      <% } %>
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
@@ -66,8 +63,10 @@
 					                      
 					                      </ul>
 					</li>
-					
-					
+					<% } %>
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_CLIENTES")) { 
+                 	%>
+                 
 					<li class="sub-menu" id="menu-clientes">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
@@ -77,7 +76,10 @@
 					                      <li><a  href="clientes.jsp">Clientes</a></li>
 					                      </ul>
 					</li>
-					
+					<% } %>
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_VENTAS")) { 
+                 	%>
+                 
 					<li class="sub-menu" id="menu-ventas">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
@@ -93,7 +95,10 @@
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
 					                      </ul>
 					</li>
-					
+					<% } %>
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_BANCOS")) { 
+                 	%>
+                 
 					<li class="sub-menu" id="menu-bancos">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
@@ -105,7 +110,10 @@
 						                      
 					                      </ul>
 					</li>
-					                      
+					<% } %>
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_FACTURACION")) { 
+                 	%>
+                                       
 					<li class="sub-menu" id="menu-facturacion">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
@@ -115,7 +123,10 @@
 					                       		<li><a  href="facturas.jsp">Facturas</a></li>
 					                      </ul>
 					</li>
-					
+					<% } %>
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_PROVEEDORES")) { 
+                 	%>
+                 
 					<li class="sub-menu" id="menu-proveedores">
 					                      <a href="javascript:;" >
 					                          <i class="fa fa-tasks"></i>
@@ -129,6 +140,7 @@
 
 					                      </ul>
 					</li>
+					<% } %>
 					 <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_PRESUPUESTO")) { 
                    %>
                   
@@ -165,6 +177,9 @@
                   <% } %>
                   
 				 
+					<% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_REPORTES")) { 
+                 	%>
+                 
                    <li class="sub-menu" id="menu-reportes">
                       <a href="javascript:;" >
                           <i class="fa fa-tasks"></i>
@@ -177,8 +192,8 @@
                   </li> 
                   
                   
-                  
-                  
+                  <% } %>
+					
                   
                   <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MENU_CONFIGURACION")) { 
                    %>

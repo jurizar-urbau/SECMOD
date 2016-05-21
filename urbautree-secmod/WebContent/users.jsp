@@ -143,10 +143,11 @@
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%}%>  
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_USUARIOS, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                    <%}%>  
-                                    
-                                    <button class="btn btn-info btn-xs" onclick="bodegaUsuario('<%= us.getId()  %>');"><i class="fa fa-file-o"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
+                                    <%}%>   
+                                    <% if(Authorization.isAuthorizedProgram(loggedUser.getRol(), "BODEGAS_POR_USUARIO" )){ %>
+                                    	<button class="btn btn-info btn-xs" onclick="bodegaUsuario('<%= us.getId()  %>');"><i class="fa fa-file-o">&nbsp;Bodegas</i></button>
+                                    <% } %>
                                   </td>
                               </tr>
                               <% } %>

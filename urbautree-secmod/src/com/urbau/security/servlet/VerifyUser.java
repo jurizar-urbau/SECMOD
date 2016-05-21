@@ -42,7 +42,7 @@ public class VerifyUser extends HttpServlet {
 		
 		System.out.println("loggin in [" + user + "]");
 		UsuariosMain usuarios = new UsuariosMain();
-		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass); //TODO validate punto de venta
+		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass, punto_de_venta);
 		if( usuario != null ){
 			System.out.println("user exists.");
 			usuario.setLogged( true );
