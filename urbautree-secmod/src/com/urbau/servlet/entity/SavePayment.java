@@ -15,11 +15,13 @@ import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.beans.OrdenBean;
 import com.urbau.beans.OrdenDetailBean;
 import com.urbau.beans.OrdenPagoBean;
+import com.urbau.beans.ProductoBean;
 import com.urbau.beans.UsuarioBean;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.OrdenesDetalleMain;
 import com.urbau.feeders.OrdenesMain;
 import com.urbau.feeders.OrdenesPagoMain;
+import com.urbau.feeders.ProductosMain;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
 import static com.urbau.misc.Constants.ESTADO_PAGADO;
@@ -150,17 +152,18 @@ public class SavePayment extends Entity {
 						String transactionID = facturasMain.addForTransaction(facturaBean);
 						int facturaID = facturasMain.getIdFromTransaction(transactionID);
 						System.out.println( "Id factura: " + facturaID );
+						ProductosMain productos = new ProductosMain();
+						
 						for( OrdenDetailBean detalle : orderDetalle ){
+							ProductoBean producto = productos.get( detalle.getId_producto() );
 							ExtendedFieldsBean bean = new ExtendedFieldsBean();
 							bean.putValue( "ID_FACTURA", String.valueOf(( facturaID )));
 							bean.putValue( "CANTIDAD", String.valueOf( detalle.getCantidad()) );
-							bean.putValue( "DESCRIPCION", String.valueOf( detalle.getId_producto() ));
+							bean.putValue( "DESCRIPCION",  producto.getDescripcion() );
 							bean.putValue( "SUBTOTAL", String.valueOf( detalle.getPrecio_unitario() ));
 							bean.putValue( "TOTAL", String.valueOf( detalle.getTotal() ) );
 							facturasDetail.add( bean );
 						}
-						
-						
 						
 						message = facturaID + "|Pagado con exito.";
 					}
