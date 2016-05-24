@@ -91,10 +91,13 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		
+          		<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "FAMILIAS", Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
           				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  
           				  </span>
+          				  <% } %>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> FAMILIAS </h4>
 	                  	  	  <hr>
@@ -112,10 +115,15 @@
                               <tr>
                                   <td><%= bean.getNombre() %></td>                                                                   
                                   <td>
-                                      
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "FAMILIAS", Constants.OPTIONS_MODIFY)){ %>
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= bean.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "FAMILIAS", Constants.OPTIONS_DELETE)){ %>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "FAMILIAS", Constants.OPTIONS_VIEW)){ %>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <% } %>
                                       
                                   </td>
                               </tr>

@@ -227,9 +227,5 @@
 </html>
 
 <% 		
-} else {
-%>
-		<p>La bodega NO EXISTE</p>
-<%
  } 
 %>

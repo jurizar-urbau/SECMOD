@@ -87,10 +87,14 @@
 					                      </a>
 					                      <ul class="sub">
 					                      
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_PEDIDOS")) { %>
 					                      <li><a  href="venta.jsp">VENTAS</a></li>
+					                      <% } %>
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COBROS")) { %>
 				                          <li><a  href="ordenes-caja.jsp">CAJA</a></li>
+				                          <% } %>
 				                          <li><a  href="eliminar-ordenes-caja.jsp">Eliminar orden</a></li>
-				                          <!-- li><a  href="precios.jsp">Precios</a></li-->
+				                          
 				                          <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
 					                      </ul>

@@ -17,7 +17,6 @@
 
 		int id = "add".equals( request.getParameter( "mode" ) ) || "addModal".equals( request.getParameter( "mode" ) ) ? -1 : Integer.valueOf( request.getParameter( "id" ) );
 				
-		System.out.println("ID: "+id);
 		TiposDeMovimientosMain tiposMovimientosMain = new TiposDeMovimientosMain();
 		BancosMovimientosMain main = new BancosMovimientosMain();		
 		BancoMovimientoBean bean = main.get( id );		
@@ -39,15 +38,6 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -114,7 +104,7 @@
                               </div>
                         </div>
                         <div class="form-group">                      	
-                          	<label class="col-sm-2 col-sm-2 control-label">Descripcion</label>
+                          	<label class="col-sm-2 col-sm-2 control-label">Descripci&oacute;n</label>
                           	<div class="col-sm-10">                          	            
 								<input type="text" class="form-control" name="descripcion" id="descripcion" value="<%=bean.getDescripcion()%>">	                          	                                                                                                  
                           	</div>

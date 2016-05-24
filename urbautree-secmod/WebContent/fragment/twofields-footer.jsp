@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.Constants"%>
 <%
 	
 	TwoFieldsBaseMain um = new TwoFieldsBaseMain( TABLE_NAME );
@@ -82,10 +83,12 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
+          				  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_ADD)){ %>
+	          				  <span class="pull-right">
+	          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
+	          				  </span>
+	          			  <% } %>
           				  
-          				  </span>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> <%= PAGE_TITLE %></h4>
 	                  	  	  <hr>
@@ -103,10 +106,15 @@
                               <tr>
                                   <td><%= us.getDescripcion() %></td>                                                                   
                                   <td>
-                                      
-                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_MODIFY)){ %>
+                                      	<button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_DELETE)){ %>
+                                      	<button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_VIEW)){ %>
+                                      	<button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <% } %>
                                   </td>
                               </tr>
                               <% } %>

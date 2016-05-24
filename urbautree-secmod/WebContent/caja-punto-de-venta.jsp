@@ -112,10 +112,11 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "CAJA", Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  </span>
+          				  <% } %>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-left"><a href="puntosdeventas.jsp">Regresar...</a></i> Cajas de punto de venta <b><%= bean.getNombre() %></b></h4>
 	                  	  	  <hr>
@@ -133,16 +134,18 @@
                               <tr>
 								  <td><%= us.getValue( "DESCRIPCION" ) %></td>
                                  <td>
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_MODIFY)){ %>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "CAJA", Constants.OPTIONS_MODIFY)){ %>
 										<button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId() %>');"><i class="fa fa-pencil"></i></button>
 									<%} %>
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_DELETE)){ %>	
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "CAJA", Constants.OPTIONS_DELETE)){ %>	
 										<button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId() %>');"><i class="fa fa-trash-o "></i></button>
 									<%} %>	
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROGRAMS, Constants.OPTIONS_VIEW)){ %>
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "CAJA", Constants.OPTIONS_VIEW)){ %>
 										<button class="btn btn-success btn-xs" onclick="view('<%= us.getId() %>');"><i class="fa fa-check"></i></button>
 									<%} %>
-									<button class="btn btn-success btn-xs" onclick="cierres('<%= us.getId() %>');"><i class="fa fa-check"></i>Cierres</button>	
+									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "CAJA", Constants.OPTIONS_DETAIL)){ %>
+										<button class="btn btn-success btn-xs" onclick="cierres('<%= us.getId() %>');"><i class="fa fa-check"></i>Cierres</button>
+									<% } %>	
 									</td>
 									
                               </tr>

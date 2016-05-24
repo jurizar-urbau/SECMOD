@@ -118,10 +118,11 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "ADELANTOS", Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  </span>
+                <% } %>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> Adelantos </h4>
 	                  	  	  <hr>
@@ -143,9 +144,15 @@
                                   <td><%= us.getValue( "FECHA" ) %></td>
                                   <td><%= us.getValue( "MONTO" ) %></td>
                                   <td>
+                                  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "ADELANTOS", Constants.OPTIONS_MODIFY)){ %>
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <% }  %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "ADELANTOS", Constants.OPTIONS_DELETE)){ %>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "ADELANTOS", Constants.OPTIONS_VIEW)){ %>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <% } %>
                                   </td>
                               </tr>
                               <% } %>

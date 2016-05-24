@@ -600,7 +600,8 @@
  				 });
   			}
 			$("#savesalebutton").click(function(){
-				
+				$("#savesalebutton").prop('disabled', true);
+				if( confirm( "Confirma que desea guardar esta orden?" ) ){
     			var form =$('#saleform');
     	     	$.ajax({
     	     		type:'POST',
@@ -635,7 +636,8 @@
     	 			}
     		            		        
     	       });
-    	     	
+				}
+				$("#savesalebutton").prop('disabled', false);
     	     	return false;
     	 	});
   			
