@@ -112,7 +112,7 @@
                                   <th>Nombre</th>
                                   <th class="hidden-phone">Direcci&oacute;n</th>
                                   <th>Telefono</th>
-                                  <th>Estado</th>
+                                  
                                   <th></th>
                               </tr>
                               </thead>
@@ -125,11 +125,7 @@
                                   <td><%= bodega.getNombre() %></td>
                                   <td class="hidden-phone"><%= bodega.getDireccion() %></td>
                                   <td ><%= bodega.getTelefono() %></td>
-                                  <td>                                  
-                                  	<% if( bodega.getEstado()){ %>
-                                  	<span class="label label-success label-mini">Principal</span>
-                                  	<% } %>                                  	
-                                  </td>
+                                  
                                   
                                   <td>
                                   	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BODEGAS, Constants.OPTIONS_MODIFY)){ %>                                      
@@ -139,7 +135,7 @@
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= bodega.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%}%>  
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BODEGAS, Constants.OPTIONS_VIEW)){ %>  
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bodega.getId()  %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bodega.getId()  %>');"><i class="fa fa-eye"></i></button>
                                     <%}%>  
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "INVENTARIO_DE_BODEGA", Constants.OPTIONS_VIEW)){ %>                                                                        
                                     <button class="btn btn-info btn-xs" onclick="inventarios('<%= bodega.getId()  %>');"><i class="fa fa-file-o">&nbsp;Inventario</i></button>

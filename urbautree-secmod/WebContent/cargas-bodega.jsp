@@ -117,7 +117,7 @@
 								  <td><%= us.getValue( "FECHA" ) %></td>
 								  <td><%= us.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></td>
 								  <td>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
                                   </td>
                               </tr>
                               <% } %>

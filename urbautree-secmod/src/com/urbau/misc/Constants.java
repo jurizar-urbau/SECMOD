@@ -71,7 +71,7 @@ public class Constants {
 	public static final String COIN_PARAMETER = "coin";
 	
 	public static final String NOMBRE_PARAMETER="nombre";
-	public static final String DIRRECCION_PARAMETER="dirreccion";
+	public static final String DIRRECCION_PARAMETER="direccion";
 	public static final String TELEFONO_PARAMETER="telefono";
 	public static final String PRINCIPAL_PARAMETER="principal";
 	public static final String CLIENTE_PARAMETER = "cliente";
@@ -128,6 +128,7 @@ public class Constants {
 	public static final String EMAIL_PARAMETER = "email";
 	public static final String ACTIVO_PARAMETER = "activo";
 	public static final String ROL_PARAMETER = "rol";	
+	public static final String ID_PUNTO_DE_VENTA_PARAMETER_NAME = "ID_PUNTO_DE_VENTA";
 
 	
 	

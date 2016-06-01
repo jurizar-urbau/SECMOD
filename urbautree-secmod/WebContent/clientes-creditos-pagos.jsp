@@ -20,7 +20,7 @@
 	for( String[] option : bancosList ){
 		bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
 	}
-	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "PROVEEDORES_PAGOS", 
+	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "CLIENTES_CREDITOS_PAGOS", 
 			new String[] { "ID_CREDITO","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
 			, new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER,
@@ -97,7 +97,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id" ) %>">Regresar...</a></i> Pagos de credito </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="clientes-creditos.jsp?id-cliente=<%= request.getParameter( "id-cliente" ) %>">Regresar...</a></i> Pagos de credito </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
 	                  	  	  

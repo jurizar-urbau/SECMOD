@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.urbau._abstract.entity.Entity;
 import com.urbau.db.ConnectionManager;
+import com.urbau.misc.Util;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -54,7 +55,7 @@ public class SearchExistentProductsInStore extends Entity {
 						jsonObject.put("imagepath",   rs.getString( 3 ));
 						jsonObject.put("id",          rs.getString( 4 ));
 						jsonObject.put("stock",       rs.getString( 5 ) );
-						
+						jsonObject.put("packings", Util.getPackings( rs.getString( 4 )) );
 						jsonArray.add(jsonObject);
 						
 					}

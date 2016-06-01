@@ -35,7 +35,11 @@
 		}
 		
 	%>
-	
+	<style>
+		.red{
+			color: red;
+		}
+	</style>
 	</head>
    
    <body>
@@ -164,7 +168,7 @@
 			                      </div>
 			                      <div class="modal-body">
 			                       <form id="modalform" name="modalform"  class="form-horizontal style-form">
-			                      
+			                      <H1 id="creditooptionlabel" class="red pull-right"></H1>
 			                      	<input type="hidden" name="formid" id="formid" value="">
 			                      	  <label>Fecha: <b id="formfecha"></b></label>
 			                      	  <label>Nit: <b id="formnit"></b></label><br/>
@@ -200,21 +204,20 @@
 				                      	                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Tipo de tarjeta</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="tipo_tarjeta" name="tipo_tarjeta">
+				                          		<select class="form-control" id="tipo_tarjeta" name="tipo_tarjeta">
+				                              		<option value="debito">D&eacute;bito</option>
+				                              		<option value="credito">Cr&eacute;dito</option>
+				                              	</select>
+				                          		
+				                          		
 				                          	</div>
 				                      	</div>
 				                    <div class="form-group">                      	
-				                          	<label class="col-sm-2 col-sm-2 control-label">No. Tarjeta</label>
-				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="numero_tarjeta" name="numero_tarjeta">
-				                          	</div>
-				                      	  	<label class="col-sm-2 col-sm-2 control-label">Autorizaci&oacute;n</label>
+				                          	<label class="col-sm-2 col-sm-2 control-label">Autorizaci&oacute;n</label>
 				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="autorizacion" name="autorizacion">
 				                          	</div>
-				                      	</div>
-				                      	<div class="form-group">                      	
-				                          	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
+				                      	  	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
 				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="monto" name="monto" size="7">
 				                          	</div>
@@ -301,8 +304,10 @@
 			$('#myModal').modal('show');
 			if( aceptacredito ){
 				$('#creditooption').removeAttr('disabled');
+				$('#creditooptionlabel').html('Cliente Credito');
 			} else {
-				$('#creditooption').attr('disabled','disabled');	
+				$('#creditooption').attr('disabled','disabled');
+				$('#creditooptionlabel').html('');
 			}
 			
 		}
@@ -353,16 +358,17 @@
        	  $('#numero_cheque').val('');
        	  //$('#banco').val('');
        	  $('#tipo_tarjeta').val('');
-       	  $('#numero_tarjeta').val('');
+       	  //$('#numero_tarjeta').val('');
        	  $('#autorizacion').val('');
        	  
        	  $('#numero_cheque').prop('readonly', true);
        	  $('#banco').prop('disabled', false);
-       	  $('#tipo_tarjeta').prop('readonly', false);
-       	  $('#numero_tarjeta').prop('readonly', false);
+       	  //$('#tipo_tarjeta').prop('readonly', false);
+       	  $('#tipo_tarjeta').css('pointer-events','all');
+       	  //$('#numero_tarjeta').prop('readonly', false);
        	  $('#autorizacion').prop('readonly', false);
        	  
-       	  $('#monto').prop('readonly', false);
+       	  $('#monto').prop('readonly', true);
        	  $('#banco').focus();
        	  
          }
@@ -371,16 +377,17 @@
        	  $('#numero_cheque').val('');
        	  $('#banco').val('');
        	  $('#tipo_tarjeta').val('');
-       	  $('#numero_tarjeta').val('');
+       	  //$('#numero_tarjeta').val('');
        	  $('#autorizacion').val('');
        	  
        	  $('#numero_cheque').prop('readonly', true);
        	  $('#banco').prop('disabled', 'disabled');
-       	  $('#tipo_tarjeta').prop('readonly', true);
-       	  $('#numero_tarjeta').prop('readonly', true);
+       	  //$('#tipo_tarjeta').prop('readonly', true);
+       	  $('#tipo_tarjeta').css('pointer-events','none'); 
+       	  //$('#numero_tarjeta').prop('readonly', true);
        	  $('#autorizacion').prop('readonly', true);
        	  
-       	  $('#monto').prop('readonly', false);
+       	  $('#monto').prop('readonly', true);
        	  $('#monto').focus();
        	  
          }
@@ -389,16 +396,17 @@
 	       	  $('#numero_cheque').val('');
 	       	  $('#banco').val('');
 	       	  $('#tipo_tarjeta').val('');
-	       	  $('#numero_tarjeta').val('');
+	       	  //$('#numero_tarjeta').val('');
 	       	  $('#autorizacion').val('');
 	       	  
 	       	  $('#numero_cheque').prop('readonly', false);
 	       	  $('#banco').prop('disabled', false);
-	       	  $('#tipo_tarjeta').prop('readonly', true);
-	       	  $('#numero_tarjeta').prop('readonly', true);
+	       	  //$('#tipo_tarjeta').prop('readonly', true);
+	       	  $('#tipo_tarjeta').css('pointer-events','none');
+	       	  //$('#numero_tarjeta').prop('readonly', true);
 	       	  $('#autorizacion').prop('readonly', true);
 	       	  
-	       	  $('#monto').prop('readonly', false);
+	       	  $('#monto').prop('readonly', true);
 	       	  $('#numero_cheque').focus();
 	       	  
          }

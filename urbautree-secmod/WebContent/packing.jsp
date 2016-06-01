@@ -106,7 +106,7 @@
           				  </span>
           				<%} %>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left"><a href="productos.jsp">&nbsp;Regresar</a></i> PACKING DE PRODUCTO</h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="productos.jsp">&nbsp;Regresar</a></i> Presentaciones de venta</h4>
 	                  	  	  
 	                  	  	  <hr>
 	                  	  	  <thead>

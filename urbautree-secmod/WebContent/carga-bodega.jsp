@@ -57,6 +57,7 @@
                          
                  "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
                  "<p style=\"color:red\"></p>" +
+                 "<p>"+v.packings+"</p>" + 
                   "       </div>" +
                   "     </div>" +
                   "   </div>" +
@@ -398,6 +399,7 @@
     	 			data: form.serialize(),
     	 			
     		        success: function(msg){
+    		        	console.log( "msg:", msg );
     		        	var messages = msg.split('|');
     		        	alert( messages[ 1 ] );
     		        	if( !msg.startsWith('error') ){

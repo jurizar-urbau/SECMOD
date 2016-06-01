@@ -24,6 +24,7 @@
 			Constants.EXTENDED_TYPE_INTEGER
 		} );
 	
+
 	
 	ExtendedFieldsBaseMain cargaHead = new ExtendedFieldsBaseMain( "CARGAS_BODEGA", 
 			new String[]{"BODEGA","FECHA","USUARIO","CORRELATIVO"},
@@ -138,7 +139,8 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                              	  <th>Producto</th>
+                              	  <th>Codigo</th>
+                              	  <th>Descripci&oacute;n</th>
                                   <th>Unidades</th>
                                   <th>Unidades en packing</th>
                                   <th>Total Unidades cargadas</th>
@@ -148,8 +150,10 @@
                               <tbody>
                               <%
                               	for( ExtendedFieldsBean us : list ){
+                              	
                               %>
                               <tr>
+                              	  <td><%= us.getReferenced( "ID_PRODUCTO" , "PRODUCTOS", "CODIGO") %></td>
                               	  <td><%= us.getReferenced( "ID_PRODUCTO" , "PRODUCTOS", "DESCRIPCION") %></td>
 								  <td><%= us.getValue( "UNITARIO" ) %></td>
 								  <td><%= us.getValue( "PACKING_SELECCIONADO" ) %></td>

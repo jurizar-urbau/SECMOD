@@ -12,6 +12,7 @@ public class BodegaBean implements Bean {
 	private Boolean estado;
 	private Boolean existeBodegaPrincipal;
 	private Boolean estadoEsEditable;
+	private String id_punto_de_venta;
 	
 	
 	private int total_regs;
@@ -70,7 +71,13 @@ public class BodegaBean implements Bean {
 	public int getProgramId() {
 		return 1;
 	}
+	public String getId_punto_de_venta(){
+		return id_punto_de_venta;
+	}
 	
+	public void setId_punto_de_venta( String punto ){
+		this.id_punto_de_venta = punto;
+	}
 	
 	
 	

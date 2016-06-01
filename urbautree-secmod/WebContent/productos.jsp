@@ -169,13 +169,13 @@
                                       <button class="btn btn-danger btn-xs" title="Eliminar" alt="Eliminar" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%} %>  
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRODUCTOS, Constants.OPTIONS_VIEW)){ %>  
-                                      <button class="btn btn-success btn-xs" title="Ver" alt="Ver" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" title="Ver" alt="Ver" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
                                     <%} %>  
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "com.urbau.feeders.AliasMain", Constants.OPTIONS_VIEW)){ %>
                                       <button class="btn btn-success btn-xs" title="Alias" alt="Alias" onclick="alias('<%= us.getId()  %>');"><i class="fa fa-tags">&nbsp;Alias</i></button>
                                     <% } %>
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "com.urbau.feeders.PackingMain", Constants.OPTIONS_VIEW)){ %>
-                                    	<button class="btn btn-success btn-xs" title="Packing" alt="Packing" onclick="packings('<%= us.getId()  %>');"><i class="fa fa-th-list">&nbsp;Packings</i></button>
+                                    	<button class="btn btn-success btn-xs" title="Packing" alt="Packing" onclick="packings('<%= us.getId()  %>');"><i class="fa fa-th-list">&nbsp;Presentaciones</i></button>
                                     	<% } %>
                                     
                                   </td>

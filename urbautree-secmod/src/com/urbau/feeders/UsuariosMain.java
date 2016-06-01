@@ -35,11 +35,10 @@ public class UsuariosMain extends AbstractMain {
 				total_regs = Util.getTotalRegs( "USUARIOS", "" );
 				 
 			} else {
-				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
+				sql = "SELECT ID,USUARIO,NOMBRE,CLAVE,ROL,ESTADO,CORREO,TELEFONO FROM USUARIOS " + Util.getUsuariosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
 				rs = stmt.executeQuery(  sql );
 				total_regs = Util.getTotalRegs( "USUARIOS", Util.getUsuariosWhere( q ) );
 			}
-			System.out.println( "sql: " + sql );
 			while( rs.next() ){
 				UsuarioBean bean = new UsuarioBean();
 				bean.setTotal_regs( total_regs );
@@ -55,8 +54,9 @@ public class UsuariosMain extends AbstractMain {
 				list.add( bean );
 			}
 		} catch( Exception e ){
-			e.printStackTrace();
 			System.out.println( "sql: [" + sql + "]");
+			e.printStackTrace();
+			
 		} finally {
 			ConnectionManager.close( con, stmt, rs );
 		}

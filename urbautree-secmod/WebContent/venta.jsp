@@ -25,6 +25,7 @@
 		}
 		var current_stock = 0;
 		function clickon( id, stock ){
+			setPrices();
 			current_stock = stock;
 			var ele = $( "#product-" + id );
 			ele.trigger('click');
@@ -56,6 +57,7 @@
                          
                  "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "&w=90&type=smooth\" width=\"90\">" +
                  "<p style=\"color:red\">"+ v.precio_1 +"</p>" +
+                 "<p>"+v.packings+"</p>" +
                   "       </div>" +
                   "     </div>" +
                   "   </div>" +
@@ -473,6 +475,7 @@
   		  var selected_punto_de_venta = '<%= loggedUser.getPunto_de_venta() %>';
   		  var allowed_prices;
   		  
+  	
 		  function parseSecond(val) {
 			    var result = "Not found",
 			        tmp = [];
@@ -538,6 +541,8 @@
   			$("#saveclientbutton").click(function(){
 				
     			var form =$('#modalformnewclient');
+    			console.log( "forma valida? ", form.valid() );
+    			if( form.valid() ){
     	     	$.ajax({
     	     		type:'POST',
     	     		dataType: "text",
@@ -565,7 +570,9 @@
     	 			}
     		            		        
     	       });
-    	     	
+    			} else {
+    				alert( "Errores en el formulario." );
+    			}
     	     	return false;
     	 	});
   			function setPrices(){
@@ -615,7 +622,8 @@
     		        		if( msg.indexOf('|') > 0 ){
     		        			var messages = msg.split('|');
     		        			alert( messages[1] );
-    		        			location.replace( "print-orden.jsp?id=" + messages[0] );
+    		        			//location.replace( "print-orden.jsp?id=" + messages[0] );
+    		        			location.reload();
     		        			console.log( messages[0] );
     		        			console.log( messages[1] );
     		        		} else {
@@ -729,6 +737,69 @@
 	    
 	    setStore();
 	    
+	</script>
+	<%@include file="fragment/footerscripts.jsp"%>
+	<script>
+	$(document).ready(function(){
+        $('#modalformnewclient').validate(
+        {
+         rules: {
+       	  
+       	  nit: {
+                 minlength: 2,
+                 maxlength: 15,
+                 required: true,
+                 remote: {
+                     url: "./bin/CheckNit",
+                     type: "post",
+                     data: {
+                       nit: function() {
+                         return $( "#nit" ).val();
+                       }
+                     }
+                   }
+               },                
+           nombres: {
+               minlength: 3,
+               maxlength: 50,
+               required: true
+             },
+           appelidos: {
+               minlength: 3,
+               maxlength: 50                  
+             },                                      
+           direccion: {
+               minlength: 3,
+               maxlength: 50                    
+             },     
+           telefono: {
+               minlength: 3,
+               maxlength: 20                    
+             },                                                       
+           correo: {
+             required: true,
+             email: true
+           },
+           tipodecliente: {
+               required: true                   
+             }
+           
+         },
+         messages: {
+     	    nit: {
+     	      remote: "Ya existe un cliente asociado a ese NIT."
+     	    }
+       	},
+         highlight: function(element) {
+           $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+         },
+         success: function(element) {
+       	$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+         }
+        });
+       });
+		  
+		  
 	</script>
   </body>
 </html>

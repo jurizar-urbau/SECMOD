@@ -32,7 +32,7 @@
 	%>
 	<script>
 		function pagos( id ){
-			location.replace( "clientes-creditos-pagos.jsp?id="+id);
+			location.replace( "clientes-creditos-pagos.jsp?id-cliente=<%= request.getParameter( "id-cliente" ) %>&id="+id);
 		}
 		
 	</script>

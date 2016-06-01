@@ -28,17 +28,17 @@ public class BodegasMain extends AbstractMain {
 			stmt = con.createStatement();
 			int total_regs = 0;
 			if( from == -1 ){
-				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS ORDER BY ID DESC";
+				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ID_PUNTO_DE_VENTA FROM BODEGAS ORDER BY ID DESC";
 				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "BODEGAS", "" );
 			} else if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM BODEGAS ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
-				rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE);
+				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ID_PUNTO_DE_VENTA FROM BODEGAS  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "BODEGAS", "" );
 				 
 			} else {
-				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE + " ORDER BY ID DESC";
-				rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE );
+				sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ID_PUNTO_DE_VENTA FROM BODEGAS " + Util.getBodegasWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( "BODEGAS", Util.getBodegasWhere( q ) );
 			}
 			System.out.println( "sql: " + sql );
@@ -49,7 +49,7 @@ public class BodegasMain extends AbstractMain {
 				bean.setNombre(  Util.trimString( rs.getString( 2 )));
 				bean.setDireccion( Util.trimString( rs.getString( 3 )));
 				bean.setTelefono( Util.trimString( rs.getString( 4 )));
-				bean.setEstado( rs.getBoolean( 5 ));
+				bean.setId_punto_de_venta( rs.getString( 5 ));
 				list.add( bean );
 			}
 		} catch( Exception e ){
@@ -75,22 +75,17 @@ public class BodegasMain extends AbstractMain {
 		try{
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ESTADO FROM BODEGAS WHERE ID=" + id );
+			rs = stmt.executeQuery( "SELECT ID,NOMBRE,DIRECCION,TELEFONO,ID_PUNTO_DE_VENTA FROM BODEGAS WHERE ID=" + id );
 			if( rs.next() ){
 				bean = new BodegaBean();
 			    bean.setId(  rs.getInt   ( 1  ));
 			    bean.setNombre(  Util.trimString( rs.getString( 2 )));
 				bean.setDireccion( Util.trimString( rs.getString( 3 )));
 				bean.setTelefono( Util.trimString( rs.getString( 4 )));
-				bean.setEstado( rs.getBoolean( 5 ));
-				if( bean.getEstado() ){
-					bean.setEstadoEsEditable(true);
-				}else{
-					bean.setEstadoEsEditable(false);
-				}
+				bean.setId_punto_de_venta( rs.getString( 5 ));
+				
 			}
-							
-			verificarSiEsBodegaPrincipal(bean);
+			
 			
 		} catch( Exception e ){
 			e.printStackTrace();
@@ -162,10 +157,7 @@ public class BodegasMain extends AbstractMain {
 		bean.setNombre( "" );
 		bean.setDireccion( "" );
 		bean.setTelefono( "" );
-		bean.setEstado(false);
-		bean.setExisteBodegaPrincipal ( getSiEsBodegaPrincipal() );
-		
-		bean.setEstadoEsEditable( !bean.getExisteBodegaPrincipal() );
+		bean.setId_punto_de_venta( "" );
 		
 		
 		return bean;
@@ -178,13 +170,11 @@ public class BodegasMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO BODEGAS " +
-					"(NOMBRE,DIRECCION,TELEFONO,ESTADO) " +
+					"(NOMBRE,DIRECCION,TELEFONO,ID_PUNTO_DE_VENTA) " +
 						"VALUES " +
-					"('"+ bean.getNombre()+"','"+ bean.getDireccion()+"','"+ bean.getTelefono()+"',"+ bean.getEstado()+")";
-			System.out.println("sql: " + sql);
+					"('"+ bean.getNombre()+"','"+ bean.getDireccion()+"','"+ bean.getTelefono()+"','"+ bean.getId_punto_de_venta()+"')";
 			int total = stmt.executeUpdate( sql );
 			
-			//verificarSiEsBodegaPrincipal(bean);
 			return total>0;
 			
 		} catch (Exception e) {
@@ -208,9 +198,9 @@ public class BodegasMain extends AbstractMain {
 					"NOMBRE = " + Util.vs( bean.getNombre() ) + ", " +
 					"DIRECCION = " + Util.vs( bean.getDireccion() ) + ", " +
 					"TELEFONO = " + Util.vs( bean.getTelefono() ) + ", "+
-					"ESTADO = " + bean.getEstado()  + " "+
+					"ID_PUNTO_DE_VENTA = '" + bean.getId_punto_de_venta() + "' "+
 					"WHERE ID = " + bean.getId();
-			System.out.println("sql: " + sql);
+			
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {

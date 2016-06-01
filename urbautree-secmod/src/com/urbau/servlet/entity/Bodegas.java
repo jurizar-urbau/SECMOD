@@ -20,6 +20,7 @@ import static com.urbau.misc.Constants.DIRRECCION_PARAMETER;
 import static com.urbau.misc.Constants.TELEFONO_PARAMETER;
 import static com.urbau.misc.Constants.PRINCIPAL_PARAMETER;
 import static com.urbau.misc.Constants.ID_PARAMETER;
+import static com.urbau.misc.Constants.ID_PUNTO_DE_VENTA_PARAMETER_NAME;
 
 @WebServlet("/Bodegas")
 public class Bodegas extends Entity {
@@ -45,6 +46,8 @@ public class Bodegas extends Entity {
 					}else{
 						bean.setEstado(true);
 					}
+					bean.setId_punto_de_venta( request.getParameter( ID_PUNTO_DE_VENTA_PARAMETER_NAME ));
+					
 					
 					if( !ADD.equals( request.getParameter( MODE_PARAMETER ) ) ){
 						bean.setId( Integer.parseInt( request.getParameter( ID_PARAMETER )));

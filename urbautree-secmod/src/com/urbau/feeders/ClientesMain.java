@@ -211,5 +211,33 @@ public class ClientesMain {
 		String str = cal.get(Calendar.YEAR ) + "-" + ( cal.get( Calendar.MONTH ) + 1 ) + "-" + cal.get( Calendar.DAY_OF_MONTH );
 		return str;
 	}
+
+	public boolean existeNit(String nit) {
+boolean exists = true;
+		
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			String sql = "SELECT count(ID) FROM CLIENTES WHERE NIT='" + nit + "'";
+			
+			System.out.println("SQL: " + sql );
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				int total = rs.getInt( 1 );
+				System.out.println( "total: " + total );
+				if( total == 0  ){
+					exists = false;
+				}
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return exists;
+	}
 	
 }

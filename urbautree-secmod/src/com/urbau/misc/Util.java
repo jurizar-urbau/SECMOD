@@ -792,5 +792,30 @@ public class Util {
 		}
 		return list;
 	}
+	public static Object getPackings(String product_id) {
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT MULTIPLICADOR FROM PACKINGS WHERE ID_PRODUCTO = " + product_id + " ORDER BY MULTIPLICADOR ASC";
+		String buffer = new String();
+		try {
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				 buffer +=  " / " + rs.getString( 1 )  ;
+			}
+			if( buffer.length() > 0 ){
+				buffer = buffer.substring( 3 );
+			}
+		} catch ( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace( );
+		} finally {
+			ConnectionManager.close(con, stmt, rs);
+		}
+		return buffer;
+	}
 	
 }

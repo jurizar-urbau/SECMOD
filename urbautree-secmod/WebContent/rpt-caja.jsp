@@ -41,6 +41,11 @@ boolean envio = !"transito".equals( request.getParameter( "from" ) );
 <%
 String id = request.getParameter( "id-cierre" );
 
+ExtendedFieldsBaseMain ordenesMain = new ExtendedFieldsBaseMain( "ORDENES", 
+		    new String[]{"ID_CLIENTE"},
+			new int[]{ Constants.EXTENDED_TYPE_INTEGER } );
+
+
 ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES", 
 		new String[]{"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO"},
 			new int[]{ 
@@ -125,21 +130,22 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 				<thead>
                               <tr>
                                   <th>Id orden</th>
+                                  <td>Nit</td>
+								  <td>Cliente</td>
                                   <th>Fecha</th>
-                                  <th>Monto</th>
+                                  
                                   <th>Autorizacion</th>
                                   <th>Cheque</th>
                                   <th>Banco</th>
+                                  <th>Monto</th>
                               </tr>
                 </thead>
                 <tbody>
                               <%
                               	double total =0;
-                              String lastTitle = "";
+                              	String lastTitle = "";
 	                          	
                               	for( ExtendedFieldsBean us : list ){
-                              		
-                              		
                               		
                               		String id_orden  = us.getValue( "ID_ORDEN" );
                               		String fecha     = us.getValue( "FECHA" );
@@ -148,7 +154,12 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               		String no_auth   = us.getValue( "NO_AUTORIZACION" );
                               		String no_cheque = us.getValue( "NO_CHEQUE" );
                               		String banco  = us.getReferenced( "ID_BANCO", "BANCOS", "DESCRIPCION" );
-                              		//"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO"
+                              		
+                              		ExtendedFieldsBean orden = ordenesMain.get( Integer.valueOf( id_orden ) );
+                              		String nit      = orden.getReferenced( "ID_CLIENTE", "CLIENTES", "NIT");
+                              		String cliente  = orden.getReferenced( "ID_CLIENTE", "CLIENTES", "CONCAT( NOMBRES,' ',APELLIDOS)");
+                              		
+                              		
                               		if(  !lastTitle.equals( tipo_pago )) {
                               			lastTitle = tipo_pago;
                               			%>
@@ -159,14 +170,34 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               %>
                               <tr>
 								  <td><%= id_orden %></td>
+								  
+								  <td><%= nit %></td>
+								  <td><%= cliente %></td>
+								  
 								  <td><%= fecha %></td>
 								  
-								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf(  monto ))%></td>
+								  
 								  <td><%= no_auth %></td>
 								  <td><%= no_cheque %></td>
 								  <td><%= banco %></td>
+								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf(  monto ))%></td>
                               </tr>
-                              <% } %>
+                              <%
+                              total += Double.valueOf(  monto );
+                              } %>
+                              <tr><td>&nbsp;</td></tr>
+                              <tr>
+								  <td></td>
+								  <td></td>
+								  
+								  
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td><B>Total</B></td>
+								  <th><b><%= Util.formatCurrencyWithNoRound( total )%></b></th>
+                              </tr>
                               </tbody>
                 
 			</table>

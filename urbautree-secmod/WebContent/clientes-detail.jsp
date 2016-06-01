@@ -23,15 +23,6 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -165,11 +156,20 @@
              {
               rules: {
             	  
-                nit: {
-                  minlength: 2,
-                  maxlength: 15,
-                  required: true
-                },                
+            	  nit: {
+                      minlength: 2,
+                      maxlength: 15,
+                      required: true,
+                      remote: {
+                          url: "./bin/CheckNit",
+                          type: "post",
+                          data: {
+                            nit: function() {
+                              return $( "#nit" ).val();
+                            }
+                          }
+                        }
+                    },                
                 nombres: {
                     minlength: 3,
                     maxlength: 50,
@@ -196,6 +196,11 @@
                   }
                 
               },
+              messages: {
+          	    nit: {
+          	      remote: "Ya existe un cliente asociado a ese NIT."
+          	    }
+            	},
               highlight: function(element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
               },

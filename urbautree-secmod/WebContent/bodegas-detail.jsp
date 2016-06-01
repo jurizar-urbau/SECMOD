@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.feeders.BodegasMain"%>
@@ -10,6 +12,13 @@
 			BodegaBean bean = rm.getBodega( id );						
 			String mode = request.getParameter( "mode" );
 			Boolean estado = bean.getEstado();
+			
+			
+			TwoFieldsBaseMain puntosDeVentaMain = new TwoFieldsBaseMain("PUNTOSDEVENTAS");
+			
+			ArrayList<String[]> puntosList = puntosDeVentaMain.getCombo("PUNTOSDEVENTAS", "ID", "NOMBRE" );
+			
+			
 %>  
 
 <%@page pageEncoding="utf-8" %>
@@ -98,18 +107,32 @@
                               </div>
                           </div>                                                
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Principal</label>
-                              <%if( !bean.getExisteBodegaPrincipal() && !bean.getEstadoEsEditable() ){%>
+                              <label class="col-sm-2 col-sm-2 control-label">Punto de Venta</label>
+                              <%if( "edit".equals( mode ) || "add".equals( mode )  ){%>
                               <div class="col-sm-10">
-	                              <div class="col-sm-6 text-left">
-			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
-			                      </div>
+	                              	<select  class="form-control"  name="ID_PUNTO_DE_VENTA" id="ID_PUNTO_DE_VENTA">
+	                              	<%
+	                              		for( String[] punto : puntosList ){
+	                              	%>
+	                              		<option value="<%= punto[ 0 ] %>"  <%= bean.getId_punto_de_venta() != null && bean.getId_punto_de_venta().equals( punto[ 0 ])  ? "SELECTED" : ""%>  ><%= punto[ 1 ] %></option>
+	                              	<% 
+	                              		}
+	                              	%>
+	                              	</select>
 		                      </div>
-		                      <%} else if(bean.getEstadoEsEditable()){%>
+		                      <%} else {%>
 		                      <div class="col-sm-10">
-	                              <div class="col-sm-6 text-left">
-			                      	<input type="checkbox" name="principal" id="principal" data-toggle="switch" />
-			                      </div>
+	                               
+			                      	<select class="form-control" name="ID_PUNTO_DE_VENTA" disabled id="ID_PUNTO_DE_VENTA">
+	                              	<%
+	                              		for( String[] punto : puntosList ){
+	                              	%>
+	                              		<option value="<%= punto[ 0 ] %>" <%= bean.getId_punto_de_venta() != null &&  bean.getId_punto_de_venta().equals( punto[ 0 ])  ? "SELECTED" : ""%> ><%= punto[ 1 ] %></option>
+	                              	<% 
+	                              		}
+	                              	%>
+	                              	</select>
+			                      
 		                      </div>
 		                      	
 		                      <%}%>
