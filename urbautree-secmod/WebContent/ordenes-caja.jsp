@@ -217,10 +217,24 @@
 				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="autorizacion" name="autorizacion">
 				                          	</div>
-				                      	  	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
+				                      	  	<label class="col-sm-2 col-sm-2 control-label">#Cupon de descuento</label>
+				                          	<div class="col-sm-4">
+				                          		<input class="form-control" id="cupon" name="cupon" size="7">
+				                          	</div>
+				                      	</div>
+				                      	
+				                      	
+				                      	 <div class="form-group">
+				                      	    <label class="col-sm-2 col-sm-2 control-label">Descuento</label>
+				                          	<div class="col-sm-4">
+				                          		<input class="form-control" id="descuento" name="descuento" size="7">
+				                          	</div>                      	
+				                          	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
 				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="monto" name="monto" size="7">
 				                          	</div>
+				                          	
+				                      	  	
 				                      	</div>
 				                   
 				                      </form>
@@ -229,7 +243,7 @@
 			                      <div class="modal-footer">
 			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
 			                          <button class="btn btn-theme" type="button" id="savebutton">Pagar</button>
-			                          <button class="btn btn-theme" type="button" onclick="printBill();">Imprimir Orden</button>
+			                          <!-- button class="btn btn-theme" type="button" onclick="printBill();">Imprimir Orden</button -->
 			                          
 			                      </div>
 			                  </div>
@@ -316,6 +330,29 @@
 			window.open( "print-orden.jsp?id="+selectedID);
 		}
 		
+		$("#cupon").change( function (){
+			$.ajax({
+	     		type:'GET',
+	     		dataType: "text",
+	 			url: './bin/CheckCupon',
+	 			data: { cupon: $("#cupon").val() , location: "Boston" },
+	 			
+		        success: function(msg){
+		        	var dataJ = JSON.parse(msg);
+		        	console.log( "status", dataJ.status );
+		        	console.log( "monto", dataJ.monto );
+		        	console.log( "id", dataJ.id );
+		        	$("#descuento").val( dataJ.monto );
+		        },
+	 			error: function(jqXHR, textStatus, errorThrown){
+	 				console.log("ERROR srtatus: ", textStatus);
+	 				console.log("ERROR errorThrown: ", errorThrown);
+	 				alert("Se prudujo un error al hacer la operaciòn");	
+	 			}
+		            		        
+	       });
+			 
+		});
 		
 		$("#savebutton").click(function(){
 			

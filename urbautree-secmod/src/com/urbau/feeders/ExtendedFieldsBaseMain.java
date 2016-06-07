@@ -74,10 +74,11 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 				 
 			} else {
 				//TODO implement 'getWhere' first just for String, later for any type or on demand types...
-				sql = "SELECT " + raw_fields + " FROM "+tablename +" " + Util.getDescriptionWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				sql = "SELECT " + raw_fields + " FROM "+tablename +" " + getWhereClause( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
 				rs = stmt.executeQuery( sql);
-				total_regs = Util.getTotalRegs( tablename, Util.getDescriptionWhere( q ) );
+				total_regs = Util.getTotalRegs( tablename, getWhereClause( q ) );
 			}
+			System.out.println( "excecuted: " + sql );
 			while( rs.next() ){
 				
 				ExtendedFieldsBean bean = new ExtendedFieldsBean();
@@ -430,6 +431,19 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			bean.putValue( fields[ n ], strings[ n ]);
 		}
 		return bean;
+	}
+	public String getWhereClause( String q ){
+		StringBuffer sb = new StringBuffer();
+		for( String field_name : field_names ){
+			if( data_types[ Util.getIndexOf( field_name, field_names) ] == Constants.EXTENDED_TYPE_STRING ){
+				sb.append( " OR " + field_name + " LIKE '%" + q + "%'" );
+			}
+		}
+		if ( sb.length() > 4 ){
+			return " WHERE " + sb.substring( 3 );
+		} else {
+			return "";
+		}
 	}
 	
 }

@@ -1,31 +1,51 @@
+<%@page import="com.urbau.beans.KeyValueBean"%>
+<%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
-<%
+<%@page import="com.urbau.beans.ExtendedFieldsBean"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.ExtendedFieldsBaseMain"%>
+<%@page pageEncoding="utf-8" %>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<%@include file="fragment/head.jsp"%>
+	<%
 	
-	TwoFieldsBaseMain um = new TwoFieldsBaseMain( TABLE_NAME );
+	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
+			new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN"},
+				new int[]{ 
+				Constants.EXTENDED_TYPE_DOUBLE, 
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_INTEGER
+			} );
 			
 			int from = 0;
 			if( request.getParameter( "from" ) != null ){
 		from = Integer.parseInt( request.getParameter( "from" ) );
 			}
-			ArrayList<TwoFieldsBean> list = um.get( request.getParameter("q"), from );
+			ArrayList<ExtendedFieldsBean> list = um.get( request.getParameter("q"), from );
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
-		total_regs = ((TwoFieldsBean)list.get( 0 )).getTotal_regs();
+		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
 			}
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "<%= PAGE_BASE_NAME %>-detail.jsp?mode=edit&id="+id);
+			location.replace( "descuentos-detail.jsp?mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "<%= PAGE_BASE_NAME %>-detail.jsp?mode=remove&id="+id);
+			location.replace( "descuentos-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "<%= PAGE_BASE_NAME %>-detail.jsp?mode=view&id="+id);
+			location.replace( "descuentos-detail.jsp?mode=view&id="+id);
 		} 
 		function add(){
-			location.replace( "<%= PAGE_BASE_NAME %>-detail.jsp?mode=add" );
+			location.replace( "descuentos-detail.jsp?mode=add" );
 		}
 	</script>
 	</head>
@@ -39,7 +59,7 @@
       <!--header start-->
       
       <header class="header black-bg">
-      		<%@include file="header.jsp"%>        
+      		<%@include file="fragment/header.jsp"%>        
         </header>
       <!--header end-->
       
@@ -50,7 +70,7 @@
       <aside>
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
-              <%@include file="sidebar.jsp"%>
+              <%@include file="fragment/sidebar.jsp"%>
               <!-- sidebar menu end-->
           </div>
       </aside>
@@ -83,38 +103,42 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_ADD)){ %>
-	          				  <span class="pull-right">
-	          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-	          				  </span>
-	          			  <% } %>
+          				  <span class="pull-right">
+          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  
+          				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> <%= PAGE_TITLE %></h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Cupones de Descuento </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                                  
-                                  <th>Descripci&oacute;n</th>                                  
+                                  <th>Monto</th>
+                                  <th>Descripci&oacute;n</th>
+                                  <th>Usuario</th>
+                                  <th>Fecha</th>
+                                  <th>Estado</th>
+                                  <th>Cliente</th>
+                                  <th>Orden</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	for( TwoFieldsBean us : list ){
+                              	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-                                  <td><%= us.getDescripcion() %></td>                                                                   
+								  <td><%= us.getValue( "MONTO" ) %></td>
+                                  <td><%= us.getValue( "DESCRIPCION" ) %></td>
+                                  <td><%= us.getValue( "ID_USUARIO" ) %></td>
+                                  <td><%= us.getValue( "FECHA_CREACION" ) %></td>
+                                  <td><%= us.getValue( "ESTADO" ) %></td>
+                                  <td><%= us.getValue( "ID_CLIENTE" ) %></td>
+                                  <td><%= us.getValue( "ID_ORDEN" ) %></td>
+                                  
                                   <td>
-                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_MODIFY)){ %>
-                                      	<button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
-                                      <% } %>
-                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_DELETE)){ %>
-                                      	<button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <% } %>
-                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), TABLE_NAME, Constants.OPTIONS_VIEW)){ %>
-                                      	<button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
-                                      <% } %>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
                                   </td>
                               </tr>
                               <% } %>
@@ -141,7 +165,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="<%= PAGE_BASE_NAME %>.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="descuentos.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -150,7 +174,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="<%= PAGE_BASE_NAME %>.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="descuentos.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -169,10 +193,10 @@
       <!--main content end-->
       <!--footer start-->
       <footer class="site-footer">
-          <%@include file="footer.jsp"%>
+          <%@include file="fragment/footer.jsp"%>
       </footer>
       <!--footer end-->
   </section>
-	<%@include file="footerscripts.jsp"%>
+	<%@include file="fragment/footerscripts.jsp"%>
   </body>
 </html>
