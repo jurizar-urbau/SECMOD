@@ -9,7 +9,7 @@
 <%
 
 ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
-		new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN"},
+		new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN","ID_MOTIVO"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_DOUBLE, 
 			Constants.EXTENDED_TYPE_STRING,
@@ -17,9 +17,11 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			Constants.EXTENDED_TYPE_DATE,
 			Constants.EXTENDED_TYPE_STRING,
 			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER
 		} );
 
+		ArrayList<String[]> motivos = cupones.getCombo( "MOTIVOS_DE_DESCUENTO", "ID","DESCRIPCION" );
 	
       	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
       		
@@ -86,6 +88,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 		                      	
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "MONTO" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "DESCRIPCION" ) %>"></input>
+		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "ID_MOTIVO" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "ID_USUARIO" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "FECHA_CREACION" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "ESTADO" ) %>"></input>
@@ -94,6 +97,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 		                      	
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DOUBLE )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_STRING )) %>"></input>
+		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DATE )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_STRING )) %>"></input>
@@ -112,7 +116,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 		                              	</div>
 		                          	</div>
 		                          	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Descripcion</label> 
+		                            	<label class="col-sm-2 col-sm-2 control-label">Descripci&oacute;n</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
 			                          		<input type="text" class="form-control" name="DESCRIPCION" id="DESCRIPCION" value="<%= bean.getValue( "DESCRIPCION" ) %>">	                          	                          
@@ -122,6 +126,28 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 		                              	</div>
 		                          	</div>
 		                          	<div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Motivo</label> 
+		                              	<div class="col-sm-10">
+		                              	<% if( "edit".equals( mode ) || "add".equals( mode ) ){%>	
+		                              		<select class="form-control" name="ID_MOTIVO" id="ID_MOTIVO">
+		                              			<%
+		                              				for( String[] motivo : motivos ){
+		                              			%>
+		                              				<option value="<%= motivo[ 0 ]%>"  <%= motivo[0].equals( bean.getValue( "ID_MOTIVO" ) ) ? "selected" : "" %>><%= motivo[ 1 ] %></option>
+		                              			<% } %>
+		                              		</select>                          		
+			                          	<%}else{%>
+			                          		<select class="form-control" name="ID_MOTIVO" id="ID_MOTIVO" disabled>
+		                              			<%
+		                              				for( String[] motivo : motivos ){
+		                              			%>
+		                              				<option value="<%= motivo[ 0 ]%>"  <%= motivo[0].equals( bean.getValue( "ID_MOTIVO" ) ) ? "selected" : "" %>><%= motivo[ 1 ] %></option>
+		                              			<% } %>
+		                              		</select> 	                          		
+			                          	<%}%>   	                                  
+		                              	</div>
+		                          	</div>
+		                          	<!-- div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">Usuario</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
@@ -131,7 +157,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	<!-- div class="form-group">
+		                          	<div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">Fecha</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		

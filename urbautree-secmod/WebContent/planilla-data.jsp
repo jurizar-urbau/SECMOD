@@ -177,6 +177,7 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		<h4 class="mb"><i class="fa fa-angle-left no-print"></i><a href="planilla.jsp">&nbsp;Regresar</a> </h4>
           				  <span class="pull-right no-print">
           				  <button type="button" class="btn btn-success" onclick="generate('<%= request.getParameter("pid") %>','<%= request.getParameter("periodo") %>','<%= request.getParameter("mes") %>','<%= request.getParameter("anio") %>');">Generar</button>&nbsp;&nbsp;&nbsp;
           				  
@@ -198,7 +199,7 @@
                                   <th>Prestamo</th>
                                   <th>Deducciones</th>
                                   <th>L&iacute;quido</th>
-                                  <th class="no-print"></th>
+                                  
                               </tr>
                               </thead>
                               <tbody>
@@ -222,12 +223,7 @@
 								  <td><%= us.getValue( "PRESTAMO" ) %></td>
 								  <td><%= us.getValue( "TOTAL_DEDUCCIONES" ) %></td>
 								  <td><%= us.getValue( "LIQUIDO" ) %></td>
-                                  <td class="no-print">
-                                      <!-- button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button> -->
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
-                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>');"><i class="fa fa-book"></i></button>
-                                  </td>
+                                  
                               </tr>
                               <% } %>
                               

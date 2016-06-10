@@ -97,6 +97,8 @@
 				                          
 				                          <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
+					                      <li><a  href="descuentos.jsp">Cupones de Descuento</a></li>
+					                      <li><a  href="motivos-de-descuento.jsp">Motivos de Descuento</a></li>
 					                      </ul>
 					</li>
 					<% } %>
@@ -141,7 +143,7 @@
 						                          <li><a  href="proveedores.jsp">Proveedores</a></li>
 						                      <% } %>
 						                      
-
+											<li><a  href="compra-bodega.jsp">Compras</a></li>
 					                      </ul>
 					</li>
 					<% } %>
@@ -157,6 +159,16 @@
                           <li><a  href="presupuestos.jsp">Presupuesto</a></li>
                           <li><a  href="tiposrubros.jsp">Rubros</a></li>
                           <li><a  href="clasificacion_rubros.jsp">Clasificacion Rubros</a></li>
+                          
+                      </ul>
+                  </li>
+                  <li class="sub-menu" id="menu-nomina">
+                  	<a href="javascript:;" >
+                          <i class="fa fa-money"></i>
+                          <span>Nomina</span>
+                      </a>
+                      <ul class="sub">
+                          
                           
                           <li><a  href="planilla.jsp">Planilla</a></li>
                       	<li><a  href="empleados.jsp">Empleados</a></li>

@@ -119,7 +119,7 @@
 	                                  	ArrayList<TipoRubroBean> tiposRubrosList = tiposRubrosMain.get(null, 0);
 	                                  	for( TipoRubroBean rubroBean : tiposRubrosList ){
 	                                  %>
-	                                  	<option value="<%= rubroBean.getId()%>"><%= rubroBean.getDescripcion() %></option>
+	                                  	<option value="<%= rubroBean.getId()%>"><%= rubroBean.getDescripcion() %> - ( <%= rubroBean.getTipo() %> )</option>
 	                                  <% } %>									  									  
 									</select>                              	                                
                               </div>

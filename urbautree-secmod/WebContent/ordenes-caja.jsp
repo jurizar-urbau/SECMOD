@@ -131,7 +131,7 @@
                               	for(OrdenExtendedBean bean: list ){
                               		
                               %>
-                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>)">
+                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>,<%= bean.getCliente_id() %>)">
                               	  <td><%= bean.getId() %></td>
                                   <td><%= Util.getDateStringDMYHM( bean.getFecha() ) %></td>                                  
                                   <td><%= bean.getCliente_nit() %></td>
@@ -306,7 +306,7 @@
 			}
 		}
 		
-		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito ){
+		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito, idcliente ){
 			selectedID = id;
 			$('#formid').val( id );
 			$('#formfecha').html(fecha);
@@ -323,6 +323,7 @@
 				$('#creditooption').attr('disabled','disabled');
 				$('#creditooptionlabel').html('');
 			}
+			updateCupons( idcliente );
 			
 		}
 		
@@ -330,18 +331,21 @@
 			window.open( "print-orden.jsp?id="+selectedID);
 		}
 		
-		$("#cupon").change( function (){
+		function updateCupons( id ){
 			$.ajax({
 	     		type:'GET',
 	     		dataType: "text",
 	 			url: './bin/CheckCupon',
-	 			data: { cupon: $("#cupon").val() , location: "Boston" },
+	 			data: { idcliente: id },
 	 			
 		        success: function(msg){
 		        	var dataJ = JSON.parse(msg);
-		        	console.log( "status", dataJ.status );
-		        	console.log( "monto", dataJ.monto );
-		        	console.log( "id", dataJ.id );
+		        	console.log( "dataJ", dataJ );
+		        	console.log("size: " + dataJ.length );
+		        	for( var n = 0; n < dataJ.length; n++ ){
+		        		console.log( "monto", dataJ[n].monto );
+			        	console.log( "descripcion", dataJ[n].descripcion );
+		        	}
 		        	$("#descuento").val( dataJ.monto );
 		        },
 	 			error: function(jqXHR, textStatus, errorThrown){
@@ -351,8 +355,7 @@
 	 			}
 		            		        
 	       });
-			 
-		});
+		}
 		
 		$("#savebutton").click(function(){
 			

@@ -84,6 +84,7 @@
                           	    <select class="form-control" name="tipo">
                           	    	<option value="F" <%=  "F".equals( bean.getTipo() ) ? "SELECTED":"" %>>Fijo</option>
                           	    	<option value="V" <%=  "V".equals( bean.getTipo() ) ? "SELECTED":"" %>>Variable</option>
+                          	    	<option value="P" <%=  "P".equals( bean.getTipo() ) ? "SELECTED":"" %>>Planilla</option>
                           	    </select>       
                           	</div>
                           	

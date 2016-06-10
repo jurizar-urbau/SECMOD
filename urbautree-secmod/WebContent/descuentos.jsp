@@ -12,13 +12,14 @@
 	<%
 	
 	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
-			new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN"},
+			new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN","ID_MOTIVO"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_DOUBLE, 
 				Constants.EXTENDED_TYPE_STRING,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER
 			} );
@@ -114,6 +115,7 @@
                               <tr>
                                   <th>Monto</th>
                                   <th>Descripci&oacute;n</th>
+                                  <th>Motivo</th>
                                   <th>Usuario</th>
                                   <th>Fecha</th>
                                   <th>Estado</th>
@@ -129,7 +131,8 @@
                               <tr>
 								  <td><%= us.getValue( "MONTO" ) %></td>
                                   <td><%= us.getValue( "DESCRIPCION" ) %></td>
-                                  <td><%= us.getValue( "ID_USUARIO" ) %></td>
+                                  <td><%= us.getReferenced( "ID_MOTIVO", "MOTIVOS_DE_DESCUENTO", "DESCRIPCION" ) %></td>
+                                  <td><%= us.getReferenced( "ID_USUARIO" ,"USUARIOS", "NOMBRE" ) %></td>
                                   <td><%= us.getValue( "FECHA_CREACION" ) %></td>
                                   <td><%= us.getValue( "ESTADO" ) %></td>
                                   <td><%= us.getValue( "ID_CLIENTE" ) %></td>
@@ -138,7 +141,7 @@
                                   <td>
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
                                   </td>
                               </tr>
                               <% } %>

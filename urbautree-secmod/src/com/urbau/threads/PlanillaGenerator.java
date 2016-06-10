@@ -142,14 +142,17 @@ public class PlanillaGenerator extends Thread {
 						)
 						);
 				
-				if( "1".equals( empleado.getValue( "PAGA_IGSS" ))){
-					planillaDetailBean.putValue( "IGSS" ,  String.valueOf( 
-						Double.valueOf( planillaDetailBean.getValue( "POR_DIA" ) ) *
-						diasLaborados * ( 4.83 / 100 )
-						));
-				} else {
-					planillaDetailBean.putValue( "IGSS" ,  "0" );
-				}
+				planillaDetailBean.putValue( "IGSS" ,  "0" );
+				
+//				if( "1".equals( empleado.getValue( "PAGA_IGSS" ))){
+//					planillaDetailBean.putValue( "IGSS" ,  String.valueOf( 
+//						Double.valueOf( planillaDetailBean.getValue( "POR_DIA" ) ) *
+//						diasLaborados * ( 4.83 / 100 )
+//						));
+//				} else {
+//					planillaDetailBean.putValue( "IGSS" ,  "0" );
+//				}
+				
 				planillaDetailBean.putValue( "ANTICIPO_SUELDO" , String.valueOf( getAticipos(id_empleado) ));  //TODO TBD
 				planillaDetailBean.putValue( "PRESTAMO" , "0");  //TODO TBD
 				
@@ -193,6 +196,7 @@ public class PlanillaGenerator extends Thread {
 				String banco = bancoBean.getDescripcion();
 				
 				int diasLaborados = 15 - getDiasLaborados( id_empleado );
+				int diasLaboradosMes = 30 - getDiasLaboradosMes( id_empleado );
 						
 				print( "Empleado [" + empleado.getValue( "NOMBRES" ) + "]", id_planilla,id_empleado, clasificacion,departamento,formaDePago,cuenta, banco, diasLaborados );
 
@@ -220,8 +224,7 @@ public class PlanillaGenerator extends Thread {
 				
 				if( "1".equals( empleado.getValue( "PAGA_IGSS" ))){
 					planillaDetailBean.putValue( "IGSS" ,  String.valueOf( 
-						Double.valueOf( planillaDetailBean.getValue( "POR_DIA" ) ) *
-						diasLaborados * ( 4.83 / 100 )
+						Double.valueOf( planillaDetailBean.getValue( "SUELDO_BASE" ) ) *  ( 4.83 / 100 )
 						));
 				} else {
 					planillaDetailBean.putValue( "IGSS" ,  "0" );
@@ -283,6 +286,24 @@ public class PlanillaGenerator extends Thread {
 		return list.size();
 
 	}
+	
+	private int getDiasLaboradosMes( int id_empleado ){
+		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
+				new String[]{"FECHA"},
+					new int[]{ 
+					Constants.EXTENDED_TYPE_INTEGER 
+				} );
+		
+		String range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-31'";
+		
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
+				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado ) } );
+		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
+		return list.size();
+
+	}
+	
+	
 	
 	private double getAticipos( int id_empleado){
 		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "ADELANTOS", 

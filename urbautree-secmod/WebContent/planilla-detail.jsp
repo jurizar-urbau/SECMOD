@@ -73,7 +73,7 @@ ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
-          			   		<h4 class="mb"><i class="fa fa-angle-left"></i><a href=adelantos.jsp">&nbsp;Regresar</a> </h4>
+          			   		<h4 class="mb"><i class="fa fa-angle-left"></i><a href="planilla.jsp">&nbsp;Regresar</a> </h4>
           			   		<form class="form-horizontal style-form" id="form" name="form">
 		                  	   	<input type="hidden" name="mode" id="mode"value="<%= request.getParameter("mode")%>"></input>
 		                      	<input type="hidden" name="id" id="id" value="<%= request.getParameter("id")%>"></input>

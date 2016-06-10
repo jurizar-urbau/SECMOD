@@ -124,7 +124,7 @@
                                   <td><%= us.getValue( "TIPO_PAGO" ) %></td>
                                   <td><%= us.getValue( "NO_AUTORIZACION" ) %></td>
                                   <td><%= us.getValue( "NO_CHEQUE" ) %></td>
-                                  <td><%= us.getValue( "BANCO" ) %></td>
+                                  <td><%= us.getReferenced("ID_BANCO", "BANCOS", "DESCRIPCION" ) %></td>
                                   <td><%= us.getValue( "TIPO_TARJETA" ) %></td>
                                   <td><%= us.getValue( "NO_TARJETA" ) %></td>
                                  

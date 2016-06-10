@@ -2,6 +2,7 @@ package com.urbau.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import org.json.simple.JSONObject;
 import com.urbau.beans.ExtendedFieldsBean;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.misc.Constants;
+import com.urbau.misc.ExtendedFieldsFilter;
 
 
 /**
@@ -41,7 +43,8 @@ public class CheckCupon extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
-		String id = request.getParameter( "cupon" );
+		
+		String id_cliente = request.getParameter( "idcliente" );
 		
 		ExtendedFieldsBaseMain main = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
 				new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_ORDEN"},
@@ -55,27 +58,30 @@ public class CheckCupon extends HttpServlet {
 					Constants.EXTENDED_TYPE_INTEGER
 				} );
 		
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter( 
+											new String[]{ "ID_CLIENTE" }, 
+											new int[]   { ExtendedFieldsFilter.EQUALS }, 
+											new int[]   { Constants.EXTENDED_TYPE_INTEGER }, 
+											new String[]{ id_cliente } 
+									);
 		
-		ExtendedFieldsBean bean = main.get( Integer.valueOf( id ));
-		System.out.println("ID:" + bean.getId() );
-		if( bean.getId() != -1 ){
-			
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put( "status", "ok");
-			jsonObject.put( "id",  bean.getId());
-			jsonObject.put( "monto",  bean.getValue( "MONTO" ));
-			
-			PrintWriter out = response.getWriter();
-			out.print(jsonObject);
-		}  else {
-			
-			JSONObject jsonObject = new JSONObject();				
-			jsonObject.put( "status", "error");
-			
-			PrintWriter out = response.getWriter();
-			out.print(jsonObject);
+		ArrayList<ExtendedFieldsBean> beans = main.getAll( filter );
+		
+		JSONArray jsonArray = new JSONArray();
+		System.out.println( "looping cupons" );
+		for( ExtendedFieldsBean bean : beans ){
+			System.out.println("ID:" + bean.getId() );
+			if( bean.getId() != -1 ){
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put( "status", "ok");
+				jsonObject.put( "id",  bean.getId());
+				jsonObject.put( "monto",  bean.getValue( "MONTO" ));
+				jsonObject.put( "descripcion",  bean.getValue( "DESCRIPCION" ));
+				jsonArray.add( jsonObject );
+			}  
 		}
-		
+		PrintWriter out = response.getWriter();
+		out.print(jsonArray);
 	}
 
 }

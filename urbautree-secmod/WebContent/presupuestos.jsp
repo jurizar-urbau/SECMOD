@@ -136,10 +136,10 @@
 										<button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId() %>');"><i class="fa fa-trash-o "></i></button>
 									<%}%>	
 									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PRESUPUESTO, Constants.OPTIONS_VIEW)){ %>
-										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-check"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<button class="btn btn-success btn-xs" onclick="view('<%= bean.getId() %>');"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%}%>
-									<button class="btn btn-success btn-xs" onclick="proyeccion('<%= bean.getId() %>');"><i class="fa fa-leaf"></i></button>
-									<button class="btn btn-info btn-xs" onclick="ejecucion('<%= bean.getId() %>');"><i class="fa fa-stack-overflow"></i></button>
+									<button class="btn btn-success btn-xs" onclick="proyeccion('<%= bean.getId() %>');"><i class="fa fa-leaf">Proyecci&oacute;n</i></button>
+									<button class="btn btn-info btn-xs" onclick="ejecucion('<%= bean.getId() %>');"><i class="fa fa-stack-overflow">Ejecuci&oacute;n</i></button>
 								</td>
 							   </tr>
                               <% } %>
