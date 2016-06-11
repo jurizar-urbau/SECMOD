@@ -178,6 +178,7 @@
                       	<li><a  href="motivos.jsp">Motivos de Permisos</a></li>
                       	<li><a  href="permisos.jsp">Permisos</a></li>
                       	<li><a  href="adelantos.jsp">Adelantos</a></li>
+                      	<li><a  href="prestamos.jsp">Prestamos</a></li>
                       </ul>
                   </li>
                   <!-- li class="sub-menu" id="menu-compras">

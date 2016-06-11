@@ -11,22 +11,38 @@
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD", 
-			new String[]{"DIA","MES","ANIO","FECHA"},
+	ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS", 
+			new String[]{"NOMBRES","APELLIDOS","DIRECCION","TELEFONO","NUMERO_CEDULA","NIT","ESTADO_CIVIL","SEXO","FECHA_DE_NACIMIENTO","HIJOS","MUNICIPIO","ESTADO"},
 				new int[]{ 
-				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_STRING, 
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER,
-				Constants.EXTENDED_TYPE_DATE
+				Constants.EXTENDED_TYPE_INTEGER
 			} );
 	
 	
-	
+	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PRESTAMOS", 
+			new String[]{"EMPLEADO","FECHA","MONTO","OBSERVACIONES"},
+				new int[]{ 
+				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_DATE,
+				Constants.EXTENDED_TYPE_DOUBLE,
+				Constants.EXTENDED_TYPE_STRING
+			} );
+			
 			int from = 0;
 			if( request.getParameter( "from" ) != null ){
 		from = Integer.parseInt( request.getParameter( "from" ) );
 			}
-			ArrayList<ExtendedFieldsBean> list = planillaHead.get( request.getParameter("q"), from );
+			ArrayList<ExtendedFieldsBean> list = um.get( request.getParameter("q"), from );
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
@@ -35,19 +51,16 @@
 	%>
 	<script>
 		function edit( id ){
-			location.replace( "planilla-detail.jsp?mode=edit&id="+id);
+			location.replace( "prestamos-detail.jsp?mode=edit&id="+id);
 		}
 		function removereg( id ){
-			location.replace( "planilla-detail.jsp?mode=remove&id="+id);
+			location.replace( "prestamos-detail.jsp?mode=remove&id="+id);
 		}
 		function view( id ){
-			location.replace( "planilla-detail.jsp?mode=view&id="+id);
+			location.replace( "prestamos-detail.jsp?mode=view&id="+id);
 		} 
 		function add(){
-			location.replace( "planilla-detail.jsp?mode=add" );
-		}
-		function generate( pid , periodo, mes, anio ){
-			location.replace( "planilla-data.jsp?pid=" + pid + "&periodo=" +  periodo + "&mes="+  mes + "&anio=" +  anio);
+			location.replace( "prestamos-detail.jsp?mode=add" );
 		}
 	</script>
 	</head>
@@ -105,36 +118,41 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
+          		<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "PRESTAMOS", Constants.OPTIONS_ADD)){ %>
           				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
+          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  </span>
+                <% } %>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Planilla </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Prestamos </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                              	  <th>D&iacute;a</th>
-                                  <th>Mes</th>
-                                  <th>A&ntilde;o</th>
-                                  <th>Fehca de creaci&oacute;n</th>
+                                  <th>Empleado</th>
+                                  <th>Fecha</th>
+                                  <th>Monto</th>
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
                               <%
                               	for( ExtendedFieldsBean us : list ){
+                              		ExtendedFieldsBean efb = empleadosMain.get( Integer.valueOf( us.getValue( "EMPLEADO" )));
                               %>
                               <tr>
-								  <td><%= us.getValue( "DIA" ) %></td>
-								  <td><%= us.getValue( "MES" ) %></td>
-								  <td><%= us.getValue( "ANIO" ) %></td>
+								  <td><%= efb.getValue( "NOMBRES" ) %> <%= efb.getValue( "APELLIDOS" ) %></td>
                                   <td><%= us.getValue( "FECHA" ) %></td>
+                                  <td><%= us.getValue( "MONTO" ) %></td>
                                   <td>
-                                      <!-- button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button> -->
+                                  <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "PRESTAMOS", Constants.OPTIONS_MODIFY)){ %>
+                                      <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
+                                      <% }  %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "PRESTAMOS", Constants.OPTIONS_DELETE)){ %>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                                      <% } %>
+                                      <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "PRESTAMOS", Constants.OPTIONS_VIEW)){ %>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
-                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>','<%= us.getValue( "DIA") %>','<%= us.getValue( "MES") %>','<%= us.getValue( "ANIO") %>');"><i class="fa fa-book">&nbsp;Detalle</i></button>
+                                      <% } %>
                                   </td>
                               </tr>
                               <% } %>
@@ -161,7 +179,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="prestamos.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -170,7 +188,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="prestamos.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">

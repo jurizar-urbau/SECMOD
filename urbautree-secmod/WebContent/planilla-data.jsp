@@ -72,7 +72,7 @@
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
-		total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
+				total_regs = ((ExtendedFieldsBean)list.get( 0 )).getTotal_regs();
 			}
 	%>
 	<script>
@@ -177,13 +177,13 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          		<h4 class="mb"><i class="fa fa-angle-left no-print"></i><a href="planilla.jsp">&nbsp;Regresar</a> </h4>
+          		<h4 class="mb no-print"><i class="fa fa-angle-left no-print"></i><a href="planilla.jsp">&nbsp;Regresar</a> </h4>
           				  <span class="pull-right no-print">
           				  <button type="button" class="btn btn-success" onclick="generate('<%= request.getParameter("pid") %>','<%= request.getParameter("periodo") %>','<%= request.getParameter("mes") %>','<%= request.getParameter("anio") %>');">Generar</button>&nbsp;&nbsp;&nbsp;
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Planilla Data </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Planilla <%= request.getParameter("periodo") %>/<%= request.getParameter("mes") %>/<%= request.getParameter("anio") %> </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

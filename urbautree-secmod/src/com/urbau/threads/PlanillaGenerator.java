@@ -134,7 +134,7 @@ public class PlanillaGenerator extends Thread {
 				planillaDetailBean.putValue( "POR_DIA" , String.valueOf( ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 )));
 				planillaDetailBean.putValue( "SUELDO_DEVENGADO" , String.valueOf( diasLaborados * ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 ) ) );
 				planillaDetailBean.putValue( "BONIFICACION" , empleado.getValue( "BONIFICACION","0" ));
-				planillaDetailBean.putValue( "INCENTIVO" , String.valueOf( Double.valueOf( empleado.getValue( "INCENTIVO","0" ) ) / 30 * diasLaborados ));  //TODO TBD
+				planillaDetailBean.putValue( "INCENTIVO" , String.valueOf( Double.valueOf( empleado.getValue( "INCENTIVO","0" ) ) / 30 * diasLaborados ));  
 				planillaDetailBean.putValue( "TOTAL_INGRESOS" ,  String.valueOf( 
 						Double.valueOf( planillaDetailBean.getValue( "SUELDO_DEVENGADO","0" ) ) +
 						Double.valueOf( planillaDetailBean.getValue( "BONIFICACION","0" ) ) +
@@ -153,8 +153,8 @@ public class PlanillaGenerator extends Thread {
 //					planillaDetailBean.putValue( "IGSS" ,  "0" );
 //				}
 				
-				planillaDetailBean.putValue( "ANTICIPO_SUELDO" , String.valueOf( getAticipos(id_empleado) ));  //TODO TBD
-				planillaDetailBean.putValue( "PRESTAMO" , "0");  //TODO TBD
+				planillaDetailBean.putValue( "ANTICIPO_SUELDO" , String.valueOf( getAticipos(id_empleado) ));  
+				planillaDetailBean.putValue( "PRESTAMO" , String.valueOf( getPrestamos(id_empleado) ));  
 				
 				planillaDetailBean.putValue( "TOTAL_DEDUCCIONES" ,  String.valueOf( 
 						Double.valueOf( planillaDetailBean.getValue( "IGSS" ) ) +
@@ -196,7 +196,7 @@ public class PlanillaGenerator extends Thread {
 				String banco = bancoBean.getDescripcion();
 				
 				int diasLaborados = 15 - getDiasLaborados( id_empleado );
-				int diasLaboradosMes = 30 - getDiasLaboradosMes( id_empleado );
+				//int diasLaboradosMes = 30 - getDiasLaboradosMes( id_empleado );
 						
 				print( "Empleado [" + empleado.getValue( "NOMBRES" ) + "]", id_planilla,id_empleado, clasificacion,departamento,formaDePago,cuenta, banco, diasLaborados );
 
@@ -214,7 +214,7 @@ public class PlanillaGenerator extends Thread {
 				planillaDetailBean.putValue( "POR_DIA" , String.valueOf( ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 )));
 				planillaDetailBean.putValue( "SUELDO_DEVENGADO" , String.valueOf( diasLaborados * ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 ) ) );
 				planillaDetailBean.putValue( "BONIFICACION" , empleado.getValue( "BONIFICACION","0" ));
-				planillaDetailBean.putValue( "INCENTIVO" , String.valueOf( Double.valueOf( empleado.getValue( "INCENTIVO","0" ) ) / 30 * diasLaborados ));  //TODO TBD
+				planillaDetailBean.putValue( "INCENTIVO" , String.valueOf( Double.valueOf( empleado.getValue( "INCENTIVO","0" ) ) / 30 * diasLaborados )); 
 				planillaDetailBean.putValue( "TOTAL_INGRESOS" ,  String.valueOf( 
 						Double.valueOf( planillaDetailBean.getValue( "SUELDO_DEVENGADO","0" ) ) +
 						Double.valueOf( planillaDetailBean.getValue( "BONIFICACION","0" ) ) +
@@ -229,8 +229,8 @@ public class PlanillaGenerator extends Thread {
 				} else {
 					planillaDetailBean.putValue( "IGSS" ,  "0" );
 				}
-				planillaDetailBean.putValue( "ANTICIPO_SUELDO" , String.valueOf( getAticipos(id_empleado) ));  //TODO TBD
-				planillaDetailBean.putValue( "PRESTAMO" , "0");  //TODO TBD
+				planillaDetailBean.putValue( "ANTICIPO_SUELDO" , String.valueOf( getAticipos(id_empleado) ));  
+				planillaDetailBean.putValue( "PRESTAMO" , String.valueOf( getPrestamos(id_empleado) ));  
 				
 				planillaDetailBean.putValue( "TOTAL_DEDUCCIONES" ,  String.valueOf( 
 						Double.valueOf( planillaDetailBean.getValue( "IGSS" ) ) +
@@ -287,23 +287,23 @@ public class PlanillaGenerator extends Thread {
 
 	}
 	
-	private int getDiasLaboradosMes( int id_empleado ){
-		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
-				new String[]{"FECHA"},
-					new int[]{ 
-					Constants.EXTENDED_TYPE_INTEGER 
-				} );
-		
-		String range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-31'";
-		
-		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
-				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado ) } );
-		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
-		return list.size();
-
-	}
-	
-	
+//	private int getDiasLaboradosMes( int id_empleado ){
+//		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
+//				new String[]{"FECHA"},
+//					new int[]{ 
+//					Constants.EXTENDED_TYPE_INTEGER 
+//				} );
+//		
+//		String range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-31'";
+//		
+//		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
+//				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado ) } );
+//		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
+//		return list.size();
+//
+//	}
+//	
+//	
 	
 	private double getAticipos( int id_empleado){
 		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "ADELANTOS", 
@@ -326,6 +326,31 @@ public class PlanillaGenerator extends Thread {
 			anticipos += Double.parseDouble( anticipo.getValue( "MONTO" ));
 		}
 		return anticipos;
+
+	}
+	
+	private double getPrestamos( int id_empleado){
+		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PRESTAMOS", 
+				new String[]{"MONTO"},
+					new int[]{ 
+					Constants.EXTENDED_TYPE_DOUBLE 
+				} );
+		
+		String range = "";
+		if( period == 15 ){
+			range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-15'";
+		} else if( period == 30 ){
+			range = "'" + year + "-" + month + "-16' AND ' " + year + "-" + month + "-30'";
+		}
+		
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
+				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado) } );
+		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
+		double prestamos = 0;
+		for( ExtendedFieldsBean anticipo: list ){
+			prestamos += Double.parseDouble( anticipo.getValue( "MONTO" ));
+		}
+		return prestamos;
 
 	}
 	

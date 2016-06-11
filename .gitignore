@@ -5,3 +5,13 @@
 .idea/
 .settings/
 
+
+urbautree-secmod/.classpath
+
+urbautree-secmod/.project
+
+*.prefs
+
+urbautree-secmod/.settings/org.eclipse.jdt.core.prefs
+
+urbautree-secmod/.settings/org.eclipse.wst.common.component
