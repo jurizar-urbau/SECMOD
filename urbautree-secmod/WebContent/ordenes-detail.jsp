@@ -100,6 +100,7 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
 	                  	  	  <tr>
+	                  	  	  	<th>Codigo</th>
                               	  <th>Producto</th> 
                               	  <th>Precio Unitario</th>
                                   <th>Cantidad</th>
@@ -111,7 +112,7 @@
                               	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-                              	  <td> <%= us.getId() %></td>
+                              	  <td><%= us.getReferenced( "ID_PRODUCTO", "PRODUCTOS", "CODIGO")  %></td>
                                   <td><%= us.getReferenced( "ID_PRODUCTO", "PRODUCTOS", "DESCRIPCION") %></td>
                                   <td><%= us.getValue( "PRECIO_UNITARIO" ) %></td>
                                   <td><%= us.getValue( "CANTIDAD" ) %></td>

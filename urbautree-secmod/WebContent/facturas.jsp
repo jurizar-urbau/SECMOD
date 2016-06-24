@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="com.urbau.misc.Constants"%>
@@ -11,8 +12,12 @@
 	<%@include file="fragment/head.jsp"%>
 	<%
 	
-	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "FACTURAS", 
-			new String[]{"FACTURA","ORDEN","FECHA","SUBTOTAL","TOTAL","NIT","NOMBRE"},
+	int selectedpunto = loggedUser.getPunto_de_venta();
+	   String queriedpunto = request.getParameter( "punto_de_venta" );
+	   String select = queriedpunto == null || "".equals( queriedpunto.trim() ) ? String.valueOf( selectedpunto ) : queriedpunto;
+		
+	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "FACTURAS FACT, ORDENES ORD", 
+			new String[]{"FACT.FACTURA","FACT.ORDEN","FACT.FECHA","FACT.SUBTOTAL","FACT.TOTAL","FACT.NIT","FACT.NOMBRE"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_STRING, 
 				Constants.EXTENDED_TYPE_INTEGER,
@@ -22,12 +27,32 @@
 				Constants.EXTENDED_TYPE_STRING,
 				Constants.EXTENDED_TYPE_STRING
 			} );
+	
+	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( 
+			new String[]{
+					"FACT.ORDEN",
+					"ORD.ID_PUNTO_VENTA"
+					},
+			new int[]{
+					ExtendedFieldsFilter.EQUALS,
+					ExtendedFieldsFilter.EQUALS
+					}, 
+			new int[]{ 
+					Constants.EXTENDED_TYPE_INTEGER,
+					Constants.EXTENDED_TYPE_INTEGER
+					},
+			new String[]{
+					"ORD.ID", 
+					select
+					});
+
+	
 			
 			int from = 0;
 			if( request.getParameter( "from" ) != null ){
 		from = Integer.parseInt( request.getParameter( "from" ) );
 			}
-			ArrayList<ExtendedFieldsBean> list = um.get( request.getParameter("q"), from );
+			ArrayList<ExtendedFieldsBean> list = um.getAllWithoutID(filter);
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
@@ -100,7 +125,21 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Facturas </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Facturas 
+	                  	  	  <form>
+	                  	  	  <select name="punto_de_venta" onchange="submit()">
+	                  	  	  	<%
+	                  	  	  	   
+	                  	  			ArrayList<String[]> puntos = um.getCombo("PUNTOSDEVENTAS", "ID", "NOMBRE");
+	                  	  			for( String[] punto : puntos ){
+	                  	  				%>
+	                  	  				<option value="<%= punto[ 0 ]  %>" <%= punto[ 0 ].equals( select ) ? "selected" : "" %>><%= punto[ 1 ] %></option>
+	                  	  				<%
+	                  	  			}
+	                  	  	  	%>
+	                  	  	  </select>
+	                  	  	  </form>
+	                  	  	  </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
@@ -119,13 +158,13 @@
                               	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-								  <td><%= us.getValue( "FACTURA" ) %></td>
-                                  <td><%= us.getValue( "ORDEN" ) %></td>
-                                  <td><%= us.getValue( "FECHA" ) %></td>
-                                  <td><%= us.getValue( "SUBTOTAL" ) %></td>
-                                  <td><%= us.getValue( "TOTAL" ) %></td>
-                                  <td><%= us.getValue( "NIT" ) %></td>
-                                  <td><%= us.getValue( "NOMBRE" ) %></td>
+								  <td><%= us.getValue( "FACT.FACTURA" ) %></td>
+                                  <td><%= us.getValue( "FACT.ORDEN" ) %></td>
+                                  <td><%= us.getValue( "FACT.FECHA" ) %></td>
+                                  <td><%= us.getValue( "FACT.SUBTOTAL" ) %></td>
+                                  <td><%= us.getValue( "FACT.TOTAL" ) %></td>
+                                  <td><%= us.getValue( "FACT.NIT" ) %></td>
+                                  <td><%= us.getValue( "FACT.NOMBRE" ) %></td>
                                   
                                   <td>
                                       <button class="btn btn-primary btn-xs" onclick="imprimirFactura('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>

@@ -133,7 +133,7 @@
           				
           				  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PRECIOS POR PUNTO DE VENTAS</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> PRECIOS POR UBICACI&Oacute;N</h4>
 	                  	  	  <h4 class="mb"><i class="fa fa-angle-left"></i><a href="puntosdeventas.jsp">&nbsp;Regresar</a> </h4>
 	                  	  	  
 	                  	  	  <hr>

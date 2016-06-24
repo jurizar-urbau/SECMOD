@@ -100,7 +100,7 @@
 		        
 		        	
 		        	<select class="form-control" name="punto_de_venta" onchange="reloadPage()">
-		        		<option value="null">Seleccione un punto de venta</option>
+		        		<option value="null">Seleccione una ubicaci&oacute;n</option> 
 		        		<%
 		        			for( PuntoDeVentaBean pdv : pdvList ){
 		        		%>

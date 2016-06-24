@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
 <%@page import="com.urbau.beans.TwoFieldsBean"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
@@ -11,18 +12,25 @@
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
+	
+   int selectedpunto = loggedUser.getPunto_de_venta();
+   String queriedpunto = request.getParameter( "punto_de_venta" );
+   String select = queriedpunto == null || "".equals( queriedpunto.trim() ) ? String.valueOf( selectedpunto ) : queriedpunto;
+	  	   
 	ExtendedFieldsBaseMain ordenesMain = new ExtendedFieldsBaseMain( 
 			"ORDENES" , 
-			new String[]{"FECHA","ID_CLIENTE","ID_BODEGA","MONTO","ID_USUARIO","ESTADO"}, 
+			new String[]{"FECHA","ID_CLIENTE","ID_BODEGA","MONTO","ID_USUARIO","ESTADO","ID_PUNTO_VENTA"}, 
 			new int[]{ 
 					Constants.EXTENDED_TYPE_DATE,
 					Constants.EXTENDED_TYPE_INTEGER,
 					Constants.EXTENDED_TYPE_INTEGER,
 					Constants.EXTENDED_TYPE_DOUBLE,
 					Constants.EXTENDED_TYPE_INTEGER,
-					Constants.EXTENDED_TYPE_STRING
+					Constants.EXTENDED_TYPE_STRING,
+					Constants.EXTENDED_TYPE_INTEGER
 			}
 	);
+	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_PUNTO_VENTA"},new int[]{ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER},new String[]{select});
 
 	
 	
@@ -31,7 +39,8 @@
 			if( request.getParameter( "from" ) != null ){
 		from = Integer.parseInt( request.getParameter( "from" ) );
 			}
-			ArrayList<ExtendedFieldsBean> list = ordenesMain.get( request.getParameter("q"), from );
+			ArrayList<ExtendedFieldsBean> list = ordenesMain.getAll(filter);
+					//ordenesMain.get( request.getParameter("q"), from );
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
@@ -114,6 +123,20 @@
           				  
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> Ordenes </h4>
+	                  	  	  <form>
+	                  	  	  <select name="punto_de_venta" onchange="submit()">
+	                  	  	  <option value="0">Seleccione ubicaci&oacute;n</option>
+	                  	  	  	<%
+	                  	  	  	   
+	                  	  			ArrayList<String[]> puntos = ordenesMain.getCombo("PUNTOSDEVENTAS", "ID", "NOMBRE");
+	                  	  			for( String[] punto : puntos ){
+	                  	  				%>
+	                  	  				<option value="<%= punto[ 0 ]  %>" <%= punto[ 0 ].equals( select ) ? "selected" : "" %>><%= punto[ 1 ] %></option>
+	                  	  				<%
+	                  	  			}
+	                  	  	  	%>
+	                  	  	  </select>
+	                  	  	  </form>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
@@ -140,7 +163,7 @@
                                   <td><%= us.getReferenced( "ID_USUARIO", "USUARIOS", "NOMBRE") %></td>
                                   <td><%= "I".equals( us.getValue( "ESTADO" ) ) ? "Ingresada" : ( "P".equals( us.getValue( "ESTADO" ) ) ? "Pagada" : "-" )  %></td>
                                   <td>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
                                       <button class="btn btn-warning btn-xs" onclick="printOrder('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>
                                   </td>
                               </tr>

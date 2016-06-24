@@ -32,12 +32,13 @@
 	
 	
 	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
-			new String[]{"EMPLEADO","FECHA","MOTIVO","OBSERVACIONES"},
+			new String[]{"EMPLEADO","FECHA","MOTIVO","OBSERVACIONES","GOCE_DE_SUELDO"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_INTEGER, 
 				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_INTEGER,
-				Constants.EXTENDED_TYPE_STRING
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_BOOLEAN
 			} );
 			
 			int from = 0;
@@ -132,6 +133,7 @@
                                   <th>Empleado</th>
                                   <th>Fecha</th>
                                   <th>Motivo</th>
+                                  <th>Con goce de sueldo</th>
                                   <th></th>
                               </tr>
                               </thead>
@@ -145,6 +147,7 @@
 								  <td><%= efb.getValue( "NOMBRES" ) %> <%= efb.getValue( "APELLIDOS" ) %></td>
                                   <td><%= us.getValue( "FECHA" ) %></td>
                                   <td><%= motivo.getDescripcion() %></td>
+                                  <td><%= "1".equals( us.getValue( "GOCE_DE_SUELDO" )) ? "Si" : "No" %></td>
                                   <td>
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>

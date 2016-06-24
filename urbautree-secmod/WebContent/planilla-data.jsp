@@ -98,7 +98,6 @@
 	    	 			data: { ID_PLANILLA: planillaid, PERIODO : periodo, MES : mes, ANIO : anio} ,
 	    	 			
 	    		        success: function(msg){		        	
-	    		        	//alert(msg);
 	    		        	$('#generateModal').modal('hide');
 	    		            location.reload();
 	    		        },
@@ -196,7 +195,7 @@
                                   <th>Total</th>
                                   <th>IGSS</th>
                                   <th>Anticipo</th>
-                                  <th>Prestamo</th>
+                                  <th>Prestamo/Cr&eacute;dito</th>
                                   <th>Deducciones</th>
                                   <th>L&iacute;quido</th>
                                   

@@ -118,7 +118,7 @@
           				  </span>
           				  <% } %>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left"><a href="puntosdeventas.jsp">Regresar...</a></i> Cajas de punto de venta <b><%= bean.getNombre() %></b></h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="puntosdeventas.jsp">Regresar...</a></i> CAJAS DE UBICACI&Oacute;N [<b><%= bean.getNombre() %></b>]</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>

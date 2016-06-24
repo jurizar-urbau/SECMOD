@@ -118,7 +118,7 @@ public class PlanillaGenerator extends Thread {
 				
 				int diasLaborados = 15 - getDiasLaborados( id_empleado );
 						
-				print( "Empleado [" + empleado.getValue( "NOMBRES" ) + "]", id_planilla,id_empleado, clasificacion,departamento,formaDePago,cuenta, banco, diasLaborados );
+				print( "Empleado [" + empleado.getValue( "NOMBRES" ) + "]", empleado.getValue( "INCENTIVO", "0" ),id_planilla,id_empleado, clasificacion,departamento,formaDePago,cuenta, banco, diasLaborados );
 
 				ExtendedFieldsBean planillaDetailBean = new ExtendedFieldsBean();
 				planillaDetailBean.putValue("ID_PLANILLA", String.valueOf( id_planilla ));
@@ -133,7 +133,7 @@ public class PlanillaGenerator extends Thread {
 				planillaDetailBean.putValue( "SUELDO_BASE" , empleado.getValue( "SUELDO_BASE","0" ));
 				planillaDetailBean.putValue( "POR_DIA" , String.valueOf( ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 )));
 				planillaDetailBean.putValue( "SUELDO_DEVENGADO" , String.valueOf( diasLaborados * ( Double.valueOf( empleado.getValue( "SUELDO_BASE","0" ) ) / 30 ) ) );
-				planillaDetailBean.putValue( "BONIFICACION" , empleado.getValue( "BONIFICACION","0" ));
+				planillaDetailBean.putValue( "BONIFICACION" ,"0");
 				planillaDetailBean.putValue( "INCENTIVO" , String.valueOf( Double.valueOf( empleado.getValue( "INCENTIVO","0" ) ) / 30 * diasLaborados ));  
 				planillaDetailBean.putValue( "TOTAL_INGRESOS" ,  String.valueOf( 
 						Double.valueOf( planillaDetailBean.getValue( "SUELDO_DEVENGADO","0" ) ) +
@@ -196,7 +196,7 @@ public class PlanillaGenerator extends Thread {
 				String banco = bancoBean.getDescripcion();
 				
 				int diasLaborados = 15 - getDiasLaborados( id_empleado );
-				//int diasLaboradosMes = 30 - getDiasLaboradosMes( id_empleado );
+				int diasLaboradosMes = 30 - getDiasLaboradosMes( id_empleado );
 						
 				print( "Empleado [" + empleado.getValue( "NOMBRES" ) + "]", id_planilla,id_empleado, clasificacion,departamento,formaDePago,cuenta, banco, diasLaborados );
 
@@ -224,7 +224,8 @@ public class PlanillaGenerator extends Thread {
 				
 				if( "1".equals( empleado.getValue( "PAGA_IGSS" ))){
 					planillaDetailBean.putValue( "IGSS" ,  String.valueOf( 
-						Double.valueOf( planillaDetailBean.getValue( "SUELDO_BASE" ) ) *  ( 4.83 / 100 )
+							Double.valueOf( planillaDetailBean.getValue( "SUELDO_BASE" ) ) / 30  
+							*  ( 4.83 / 100 ) * diasLaboradosMes
 						));
 				} else {
 					planillaDetailBean.putValue( "IGSS" ,  "0" );
@@ -269,9 +270,9 @@ public class PlanillaGenerator extends Thread {
 	
 	private int getDiasLaborados( int id_empleado ){
 		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
-				new String[]{"FECHA"},
+				new String[]{"FECHA","GOCE_DE_SUELDO"},
 					new int[]{ 
-					Constants.EXTENDED_TYPE_INTEGER 
+					Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_BOOLEAN 
 				} );
 		
 		String range = "";
@@ -280,29 +281,29 @@ public class PlanillaGenerator extends Thread {
 		} else if( period == 30 ){
 			range = "'" + year + "-" + month + "-16' AND ' " + year + "-" + month + "-30'";
 		}
-		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
-				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado ) } );
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO","GOCE_DE_SUELDO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS, ExtendedFieldsFilter.EQUALS}, 
+				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_BOOLEAN}, new String[]{range,String.valueOf( id_empleado ),"0" } );
 		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
 		return list.size();
 
 	}
 	
-//	private int getDiasLaboradosMes( int id_empleado ){
-//		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
-//				new String[]{"FECHA"},
-//					new int[]{ 
-//					Constants.EXTENDED_TYPE_INTEGER 
-//				} );
-//		
-//		String range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-31'";
-//		
-//		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS}, 
-//				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER}, new String[]{range,String.valueOf( id_empleado ) } );
-//		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
-//		return list.size();
-//
-//	}
-//	
+	private int getDiasLaboradosMes( int id_empleado ){
+		ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "PERMISOS", 
+				new String[]{"FECHA","GOCE_DE_SUELDO"},
+					new int[]{ 
+				    Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_BOOLEAN 
+				} );
+		
+		String range = "'" + year + "-" + month + "-01' AND ' " + year + "-" + month + "-31'";
+		
+		ExtendedFieldsFilter filter = new ExtendedFieldsFilter(new String[]{"FECHA","EMPLEADO","GOCE_DE_SUELDO"}, new int[]{ExtendedFieldsFilter.BETWEEN, ExtendedFieldsFilter.EQUALS, ExtendedFieldsFilter.EQUALS}, 
+				new int[]{Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_INTEGER, Constants.EXTENDED_TYPE_BOOLEAN}, new String[]{range,String.valueOf( id_empleado ),"0" } );
+		ArrayList<ExtendedFieldsBean> list = um.getAll(filter);
+		return list.size();
+
+	}
+	
 //	
 	
 	private double getAticipos( int id_empleado){
@@ -385,7 +386,7 @@ public class PlanillaGenerator extends Thread {
   				new String[]{"ID","NOMBRES","APELLIDOS","DIRECCION","TELEFONO","NUMERO_CEDULA","NIT","ESTADO_CIVIL","SEXO","FECHA_DE_NACIMIENTO","HIJOS","MUNICIPIO",
   				"PUESTO","TIPO_DE_PAGO","NUMERO_CUENTA","SUELDO_BASE","BONIFICACION","FECHA_DE_INGRESO",
   				"FECHA_DE_EGRESO","PORCENTAJE_AHORRO","CANTIDAD_DE_AHORRO","AHORRO","PAGA_IGSS","AFILIACION_IGSS","ESTADO","BANCO",
-  				"DESCUENTO_FIJO","ES_TEMPORAL","ES_IMPRIMIBLE"
+  				"DESCUENTO_FIJO","ES_TEMPORAL","ES_IMPRIMIBLE","INCENTIVO"
   		},
   				new int[]{ 
 				Constants.EXTENDED_TYPE_INTEGER,
@@ -416,7 +417,8 @@ public class PlanillaGenerator extends Thread {
   				Constants.EXTENDED_TYPE_INTEGER,
   				Constants.EXTENDED_TYPE_DOUBLE,
   				Constants.EXTENDED_TYPE_INTEGER,
-  				Constants.EXTENDED_TYPE_INTEGER
+  				Constants.EXTENDED_TYPE_INTEGER,
+  				Constants.EXTENDED_TYPE_DOUBLE
   				} );
   		
 		

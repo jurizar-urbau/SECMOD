@@ -40,6 +40,26 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	<script>
+		function searchClients( q ){
+			$( "#client-container" ).html("");
+			 $.get( "./bin/searchc?q=" + q, null, function(response){
+	             $.each(response, function(i, v) {
+	            	 var rootele;
+	            	 var htmltoadd =
+	            		"<tr>" +
+	             	  	"<td><input type='radio' name='clienteid' value='" + v.id + "," + v.nombres + " " + v.apellidos + "'></td>" +
+	                 	"<td>"+v.nit+"</td>" +                                  
+	                 	"<td>"+v.nombres+"</td>" +
+	                 	"<td>"+v.apellidos+"</td>" +         
+	                 	"</tr>";
+	     			$( "#client-container" ).append( htmltoadd );
+	            	
+	            	 
+	             });
+	          });
+		}
+	</script>
 	</head>
    
    <body>
@@ -147,47 +167,35 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	<!-- div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Usuario</label> 
-		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="ID_USUARIO" id="ID_USUARIO" value="<%= bean.getValue( "ID_USUARIO" ) %>">	                          	                          
+		                          	  	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
+			                          		<input type="hidden" class="form-control" name="ID_USUARIO" id="ID_USUARIO" value="<%= loggedUser.getId() %>">	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="ID_USUARIO" id="ID_USUARIO" disabled value="<%= bean.getValue( "ID_USUARIO" )  %>">	                          		
+			                          		<input type="hidden" class="form-control" name="ID_USUARIO" id="ID_USUARIO" disabled value="<%= bean.getValue( "ID_USUARIO" )  %>">	                          		
 			                          	<%}%>   	                                  
-		                              	</div>
-		                          	</div>
-		                          	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Fecha</label> 
-		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="date" class="form-control" name="FECHA_CREACION" id="FECHA_CREACION" value="<%= bean.getValue( "FECHA_CREACION" ) %>">	                          	                          
+			                          		<input type="hidden" class="form-control" name="FECHA_CREACION" id="FECHA_CREACION" value="NOW()">	                          	                          
 			                          	<%}else{%>
-			                          		<input type="date" class="form-control" name="FECHA_CREACION" id="FECHA_CREACION" disabled value="<%= bean.getValue( "FECHA_CREACION" )  %>">	                          		
+			                          		<input type="hidden" class="form-control" name="FECHA_CREACION" id="FECHA_CREACION" disabled value="<%= bean.getValue( "FECHA_CREACION" )  %>">	                          		
 			                          	<%}%>   	                                  
-		                              	</div>
-		                          	</div>
-		                          	<div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Estado</label> 
-		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="ESTADO" id="ESTADO" value="<%= bean.getValue( "ESTADO" ) %>">	                          	                          
+			                          		<input type="hidden" class="form-control" name="ESTADO" id="ESTADO" value="C">	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="ESTADO" id="ESTADO" disabled value="<%= bean.getValue( "ESTADO" )  %>">	                          		
+			                          		<input type="hidden" class="form-control" name="ESTADO" id="ESTADO" disabled value="<%= bean.getValue( "ESTADO" )  %>">	                          		
 			                          	<%}%>   	                                  
-		                              	</div>
-		                          	</div>
+		                           
 		                          	<div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">Cliente</label> 
 		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="ID_CLIENTE" id="ID_CLIENTE" value="<%= bean.getValue( "ID_CLIENTE" ) %>">	                          	                          
+		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>
+			                          		<input type="text" class="form-control" name="ID_CLIENTE_DISPLAY" id="ID_CLIENTE_DISPLAY"  onclick="chooseClient()">
+			                          		<input type="hidden" name="ID_CLIENTE" id="ID_CLIENTE" value="<%= bean.getValue( "ID_CLIENTE" ) %>">	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="ID_CLIENTE" id="ID_CLIENTE" disabled value="<%= bean.getValue( "ID_CLIENTE" )  %>">	                          		
+			                          	    <input type="hidden" name="ID_CLIENTE" id="ID_CLIENTE" value="<%= bean.getValue( "ID_CLIENTE" ) %>">
+			                          		<input type="text" class="form-control" name="ID_CLIENTE_DISPLAY" id="ID_CLIENTE_DISPLAY" disabled value="<%= bean.getValue( "ID_CLIENTE" )  %>">	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	<div class="form-group">
+		                          	<!-- div class="form-group">
 		                            	<label class="col-sm-2 col-sm-2 control-label">Numero de Orden</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
@@ -213,6 +221,50 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			
 		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
+      
+       <!-- clients modal -->
+      	 
+					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+						<form id="modalform" name="modalform" >
+						  <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Seleccione un cliente...</h4>
+			                          <span class="pull-right">
+			                          	
+			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
+			          				  </span>
+			          				  
+			          				  	<label>Buscar: <input type="text" class="form-control" id="search-client" name="q"></label> 
+			          				  
+			          				  
+			                          
+			                      </div>
+			                      <div class="modal-body">
+				                      
+						 <table class="table table-striped table-advance table-hover">
+	                  	  	  
+	                  	  	  <thead>
+                              <tr>
+                                  <th></th>
+                                  <th>Nit</th>                                  
+                                  <th>Nombres</th>
+                                  <th>Apellidos</th>                                                                    
+                              </tr>
+                              </thead>
+                              <tbody id="client-container">
+                              </tbody>
+                          </table>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" onclick="setClient();">Seleccionar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>
 
       <!--main content end-->
       <!--footer start-->
@@ -224,6 +276,35 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
   
 	<%@include file="fragment/footerscripts.jsp"%>
 <script>
+
+function setClient(){
+	var value = $('input[name=clienteid]:checked').val();
+	var values = value.split(',');
+	selected_client_id = values[0];
+	$('#ID_CLIENTE').val( selected_client_id );
+	$('#ID_CLIENTE_DISPLAY').val( value );
+	$('#clientid').val( selected_client_id );
+	hideClient();
+}
+function hideClient(){
+		$('#myModal').modal('hide');
+	}
+function chooseClient(){
+		
+		$('#myModal').modal('show');
+		$('#search-client').focus();
+		
+	}
+	
+		$(window).load(function(){
+			
+		    $( "#search-client" ).keyup(function() {
+		    	var value = $( "#search-client" ).val();
+		    	searchClients( value );
+			});
+		    
+		});
+	
             $(document).ready(function(){
              $('#form').validate(
              {

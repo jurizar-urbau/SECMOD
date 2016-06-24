@@ -18,8 +18,8 @@
 	ArrayList<KeyValueBean> municipiosList = municipiosMain.getForCombo();
 	
       	if( request.getParameter( "id" ) != null || "add".equals( request.getParameter( "mode" )) || "addModal".equals( request.getParameter( "mode" ))  ){
-      		TwoFieldsBaseMain tw = new TwoFieldsBaseMain( "PAISES" );
-      		ArrayList<KeyValueBean> paisesList = tw.getForCombo();
+      		/* TwoFieldsBaseMain tw = new TwoFieldsBaseMain( "PAISES" );
+      		ArrayList<KeyValueBean> paisesList = tw.getForCombo(); */
       		
       		ExtendedFieldsBaseMain rm = new ExtendedFieldsBaseMain( "EMPLEADOS", 
       				new String[]{"NOMBRES","APELLIDOS","DIRECCION","TELEFONO","NUMERO_CEDULA","NIT","ESTADO_CIVIL","SEXO","FECHA_DE_NACIMIENTO","HIJOS","MUNICIPIO",
@@ -480,7 +480,7 @@
 		                            	<label class="col-sm-2 col-sm-2 control-label">Fecha de Egreso</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="date" class="form-control" name="FECHA_DE_EGRESO" id="FECHA_DE_EGRESO" value="<%= bean.getValue( "FECHA_DE_EGRESO" ) %>">	                          	                          
+			                          		<input type="date" class="form-control" name="FECHA_DE_EGRESO" id="FECHA_DE_EGRESO" value="<%= "add".equals( mode ) ? "null" : bean.getValue( "FECHA_DE_EGRESO" ) %>">	                          	                          
 			                          	<%}else{%>
 			                          		<input type="date" class="form-control" name="FECHA_DE_EGRESO" id="FECHA_DE_EGRESO" disabled value="<%= bean.getValue( "FECHA_DE_EGRESO" )  %>">	                          		
 			                          	<%}%>   	                                  

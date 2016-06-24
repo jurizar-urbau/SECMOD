@@ -103,7 +103,7 @@
           				  </span>
           				<%//}%>  
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> PUNTOS DE VENTAS </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> UBICACIONES </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>                                  

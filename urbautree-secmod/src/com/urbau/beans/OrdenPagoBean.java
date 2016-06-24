@@ -17,6 +17,7 @@ public class OrdenPagoBean {
 	private int id_usuario;
 	private int punto_de_venta;
 	private int caja_punto_de_venta;
+	private int id_cupon;
 	
 	public int getPunto_de_venta() {
 		return punto_de_venta;
@@ -95,6 +96,12 @@ public class OrdenPagoBean {
 	}
 	public void setId_usuario(int id_usuario) {
 		this.id_usuario = id_usuario;
+	}
+	public int getId_cupon() {
+		return this.id_cupon;
+	}
+	public void setId_cupon( int id_cupon ){
+		this.id_cupon = id_cupon;
 	}
 	
 }

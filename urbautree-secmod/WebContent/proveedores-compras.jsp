@@ -118,7 +118,7 @@
                                   <th>Total</th>
                                   <th>Gastos</th>
                                   <th>Total con gastos</th>
-                                  <th>Saldo</th>
+                                
                                   
                                   
                                   <th></th>
@@ -136,7 +136,7 @@
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "GASTOS" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL_CON_GASTOS" ) )) %></td>
-                                  <td><span class="red">Q 10.00</span></td>
+                                  
                                   <td>
                                       <button class="btn btn-success btn-xs" onclick="detalle('<%= us.getId()  %>');"><i class="fa fa-eye">Ver detalle</i></button>
                                   </td>

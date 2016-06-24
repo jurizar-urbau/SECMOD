@@ -48,6 +48,7 @@ public class SavePayment extends Entity {
 			String autorizacion = request.getParameter( "autorizacion" );
 			String monto = request.getParameter( "monto" );
 			String factura = request.getParameter( "factura" );
+			String id_cupon = request.getParameter( "cupon" );
 			
 			
 			String message = validateParameters( id, tipo_pago, numero_cheque, banco, tipo_tarjeta, numero_tarjeta, autorizacion, monto );
@@ -76,6 +77,9 @@ public class SavePayment extends Entity {
 			b.setId_usuario( loggedUser.getId() );
 			b.setPunto_de_venta( loggedUser.getPunto_de_venta() );
 			b.setCaja_punto_de_venta( loggedUser.getCaja_punto_de_venta() );
+			b.setId_cupon( Integer.valueOf( id_cupon ) );
+			
+			//TODO marcar como usado.
 			
 			OrdenesPagoMain opm = new OrdenesPagoMain();
 			OrdenesMain ordenesMain = new OrdenesMain();

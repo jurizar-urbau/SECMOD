@@ -239,6 +239,7 @@
                         <option value="tarjeta">Tarjeta</option>
                         <option value="cheque">Cheque</option>
                         </select>
+                        Cheque/ref: <input type="text" name="cheque" id="cheque" class="form-control">
                           Total Productos:
                         </div>
                         <div class="details">

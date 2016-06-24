@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.ProveedoresHelper"%>
 <%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.beans.ProveedorBean"%>
 <%@page import="com.urbau.beans.MonedaBean"%>
@@ -15,6 +16,7 @@
 		ProveedoresMain um = new ProveedoresMain();
 		PaisesMain paises_main = new PaisesMain();
 		MonedasMain monedas_main = new MonedasMain();		
+		ProveedoresHelper proveedoresHelper = new ProveedoresHelper();
 		int from = 0;
 		if( request.getParameter( "from" ) != null ){
 			from = Integer.parseInt( request.getParameter( "from" ) );
@@ -132,7 +134,7 @@
                                   <td class="hidden-phone" ><%= proveedor.getRazonSocial() %></td>                                                                    
                                   <td><%= proveedor.getTelefono() %></td>
                                   <td class="hidden-phone" ><%= proveedor.getEmail() %></td>                                                                                                                                                                         
-                                  <td><%= proveedor.getSaldo() %></td>
+                                  <td><%= proveedoresHelper.getProveedorBalance( proveedor.getId() ) %></td>
                                                                     
                                   <td>
                                   	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_MODIFY)){ %>                                     

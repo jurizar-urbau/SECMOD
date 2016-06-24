@@ -47,7 +47,7 @@ ExtendedFieldsBaseMain ordenesMain = new ExtendedFieldsBaseMain( "ORDENES",
 
 
 ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES", 
-		new String[]{"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO"},
+		new String[]{"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","ID_USUARIO"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DATE, 
@@ -55,6 +55,7 @@ ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES"
 			Constants.EXTENDED_TYPE_DOUBLE,
 			Constants.EXTENDED_TYPE_STRING,
 			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER
 		} );
 
@@ -77,9 +78,10 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 					"EFECTIVO_CIERRE",
 					"TARJETA_CIERRE",
 					"CREDITO_CIERRE",
-					"CHEQUE_CIERRE" 
+					"CHEQUE_CIERRE",
+					"CORRELATIVO_CIERRE"
 		}	
-			, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_DOUBLE,Constants.EXTENDED_TYPE_INTEGER } 
+			, new int[]{ Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_DOUBLE,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER } 
 	);
 	ExtendedFieldsBean cierre =  cieres_caja.get( Integer.valueOf( id  ));
 
@@ -91,6 +93,11 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 <button onclick="regresar()" class="no-print">Regresar</button>
 <button onclick="window.print()" class="no-print">Imprimir</button>
 <table width="100%" style="text-align: left;">
+
+	<tr>
+		<th># Cierre</th>
+		<th><%= cierre.getValue( "CORRELATIVO_CIERRE")  %></th>
+	</tr>
 
 	<tr>
 		<th>Fecha Apertura</th>
@@ -129,11 +136,12 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 			<table border="1" width="100%" >
 				<thead>
                               <tr>
-                                  <th>Id orden</th>
+                              	  
+                              	  <th>Id orden</th>
                                   <td>Nit</td>
 								  <td>Cliente</td>
                                   <th>Fecha</th>
-                                  
+                                  <th>Usuario</th>
                                   <th>Autorizacion</th>
                                   <th>Cheque</th>
                                   <th>Banco</th>
@@ -146,11 +154,11 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               	String lastTitle = "";
 	                          	
                               	for( ExtendedFieldsBean us : list ){
-                              		
                               		String id_orden  = us.getValue( "ID_ORDEN" );
                               		String fecha     = us.getValue( "FECHA" );
                               		String tipo_pago = us.getValue( "TIPO_PAGO" );
                               		String monto     = us.getValue( "MONTO" );
+                              		String usuario     = us.getValue( "ID_USUARIO" );
                               		String no_auth   = us.getValue( "NO_AUTORIZACION" );
                               		String no_cheque = us.getValue( "NO_CHEQUE" );
                               		String banco  = us.getReferenced( "ID_BANCO", "BANCOS", "DESCRIPCION" );
@@ -169,14 +177,15 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               		}
                               %>
                               <tr>
-								  <td><%= id_orden %></td>
+                              	  
+                              	  <td><%= id_orden %></td>
 								  
 								  <td><%= nit %></td>
 								  <td><%= cliente %></td>
 								  
 								  <td><%= fecha %></td>
 								  
-								  
+								  <td><%= usuario %></td>
 								  <td><%= no_auth %></td>
 								  <td><%= no_cheque %></td>
 								  <td><%= banco %></td>
@@ -187,10 +196,10 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               } %>
                               <tr><td>&nbsp;</td></tr>
                               <tr>
+								  
+								   <td></td>
 								  <td></td>
 								  <td></td>
-								  
-								  
 								  <td></td>
 								  <td></td>
 								  <td></td>

@@ -51,6 +51,7 @@ public class IngresoBodega extends Entity {
 			String bodegaidStr = request.getParameter( "bodegaid" );
 			
 			String proveedoridStr = request.getParameter( "proveedorid" );
+			String cheque_ref     = request.getParameter( "cheque" );
 			
 			int bodegaid = Integer.valueOf( bodegaidStr );
 			String productidStr[] = request.getParameterValues( "productid" );
@@ -120,7 +121,7 @@ public class IngresoBodega extends Entity {
 							"ID_ORDEN_DE_COMPRA","TIPO_DE_PAGO",
 							"FORMA_DE_INGRESO","SUBTOTAL",
 							"DESCUENTO","TOTAL","GASTOS",
-							"TOTAL_CON_GASTOS","ESTADO"
+							"TOTAL_CON_GASTOS","ESTADO","CHEQUE_REF"
 					    },
 						new int[]{ 
 							Constants.EXTENDED_TYPE_DATE, 
@@ -133,7 +134,8 @@ public class IngresoBodega extends Entity {
 							Constants.EXTENDED_TYPE_DOUBLE,
 							Constants.EXTENDED_TYPE_DOUBLE,
 							Constants.EXTENDED_TYPE_DOUBLE,
-							Constants.EXTENDED_TYPE_INTEGER
+							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_STRING
 						} );
 				
 				double subtotal = 0;
@@ -158,7 +160,7 @@ public class IngresoBodega extends Entity {
 				compra.putValue( "GASTOS", "0" );
 				compra.putValue( "TOTAL_CON_GASTOS", "" + total  );
 				compra.putValue( "ESTADO", "0" );
-				
+				compra.putValue( "CHEQUE_REF", cheque_ref );
 				String addedCompra = comprasMain.addForTransaction(compra);
 				compraID = comprasMain.getIdFromTransaction( addedCompra );
 				System.out.println( "compra added: " + addedCompra );

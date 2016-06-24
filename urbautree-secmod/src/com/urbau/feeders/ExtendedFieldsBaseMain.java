@@ -327,7 +327,7 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 		case Constants.EXTENDED_TYPE_DOUBLE:
 			return doubleValue( value ) ;
 		case Constants.EXTENDED_TYPE_DATE:
-			return "NOW()".equals(value) ? value : "'" + value + "'";
+			return "NOW()".equals(value)  ? value : Util.isEmpty( value ) ? "null" : "'" + value + "'";
 		default:
 			return value;
 		}

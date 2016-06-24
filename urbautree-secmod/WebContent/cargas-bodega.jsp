@@ -35,7 +35,7 @@
 	%>
 	<script>
 		function view( id ){
-			location.replace( "cargas-bodega-detalle.jsp?id="+id);
+			location.replace( "rpt-cargas-bodega.jsp?id="+id);
 		} 
 		
 	</script>

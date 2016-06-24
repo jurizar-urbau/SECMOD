@@ -219,7 +219,9 @@
 				                          	</div>
 				                      	  	<label class="col-sm-2 col-sm-2 control-label">#Cupon de descuento</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="cupon" name="cupon" size="7">
+				                          		<!-- <input class="form-control" id="cupon" name="cupon" size="7"> -->
+				                          		<select class="form-control" id="cupon" name="cupon" onChange="setDescuento(this)">
+				                          		</select>
 				                          	</div>
 				                      	</div>
 				                      	
@@ -231,11 +233,23 @@
 				                          	</div>                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
 				                          	<div class="col-sm-4">
+				                          		<input class="form-control" id="subtotal" name="subtotal" size="7">
+				                          	</div>
+				                          	
+				                      	  	
+				                      	</div>
+				                      	 <div class="form-group">
+				                      	    <label class="col-sm-2 col-sm-2 control-label"></label>
+				                          	<div class="col-sm-4">
+				                          	</div>                      	
+				                          	<label class="col-sm-2 col-sm-2 control-label">Total</label>
+				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="monto" name="monto" size="7">
 				                          	</div>
 				                          	
 				                      	  	
 				                      	</div>
+				                      	
 				                   
 				                      </form>
 						 
@@ -314,6 +328,7 @@
 			$('#formnombres').html(nombres);
 			$('#formapellidos').html(apellidos);
 			$('#formmonto').html(monto.toFixed(2)  );
+			$('#subtotal').val( monto.toFixed(2) );
 			$('#monto').val( monto.toFixed(2) );
 			$('#myModal').modal('show');
 			if( aceptacredito ){
@@ -331,6 +346,16 @@
 			window.open( "print-orden.jsp?id="+selectedID);
 		}
 		
+		function setDescuento( monto ){
+			
+			console.log( 'total descuento', $( "#cupon option:selected" ).attr('monto'));
+			$( "#descuento" ).val($( "#cupon option:selected" ).attr('monto') );
+			$( "#monto" ).val($( "#subtotal" ).val() - $( "#descuento" ).val() );
+			
+		
+		}
+		
+		
 		function updateCupons( id ){
 			$.ajax({
 	     		type:'GET',
@@ -342,11 +367,20 @@
 		        	var dataJ = JSON.parse(msg);
 		        	console.log( "dataJ", dataJ );
 		        	console.log("size: " + dataJ.length );
+		        	var $select = $('#cupon');
+		        	
+		        	$select.empty();
+		        	$( "#descuento" ).val(0);
+		        	$select.append('<option value="0" monto="0">Seleccione un cupon</option>');
 		        	for( var n = 0; n < dataJ.length; n++ ){
+		        		
+		        	    $select.append('<option value="' + dataJ[n].id + '" monto="'+dataJ[n].monto+'">' + dataJ[n].descripcion + '</option>');
+	
+		        		console.log( "id", dataJ[n].id );
 		        		console.log( "monto", dataJ[n].monto );
 			        	console.log( "descripcion", dataJ[n].descripcion );
 		        	}
-		        	$("#descuento").val( dataJ.monto );
+		        	//$("#descuento").val( dataJ.monto );
 		        },
 	 			error: function(jqXHR, textStatus, errorThrown){
 	 				console.log("ERROR srtatus: ", textStatus);

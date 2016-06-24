@@ -59,10 +59,10 @@ public class CheckCupon extends HttpServlet {
 				} );
 		
 		ExtendedFieldsFilter filter = new ExtendedFieldsFilter( 
-											new String[]{ "ID_CLIENTE" }, 
-											new int[]   { ExtendedFieldsFilter.EQUALS }, 
-											new int[]   { Constants.EXTENDED_TYPE_INTEGER }, 
-											new String[]{ id_cliente } 
+											new String[]{ "ID_CLIENTE","ESTADO" }, 
+											new int[]   { ExtendedFieldsFilter.EQUALS,ExtendedFieldsFilter.EQUALS }, 
+											new int[]   { Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING }, 
+											new String[]{ id_cliente,"C" } 
 									);
 		
 		ArrayList<ExtendedFieldsBean> beans = main.getAll( filter );

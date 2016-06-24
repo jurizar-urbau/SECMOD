@@ -41,14 +41,7 @@
 	</head>
    
    <body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=159695794072494&version=v2.3";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+
 
   <section id="container" >
       <!-- **********************************************************************************************************************************************************
@@ -82,7 +75,7 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> PRECIOS</h3>
+          	<h3><i class="fa fa-angle-right"></i> DETALLE - PRECIO POR UBICACI&Oacute;N</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			

@@ -95,7 +95,7 @@
 				                          <% } %>
 				                          <li><a  href="eliminar-ordenes-caja.jsp">Eliminar orden</a></li>
 				                          
-				                          <li><a  href="puntosdeventas.jsp">Puntos De Ventas</a></li>
+				                          <li><a  href="puntosdeventas.jsp">Ubicaciones</a></li>
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
 					                      <li><a  href="descuentos.jsp">Cupones de Descuento</a></li>
 					                      <li><a  href="motivos-de-descuento.jsp">Motivos de Descuento</a></li>

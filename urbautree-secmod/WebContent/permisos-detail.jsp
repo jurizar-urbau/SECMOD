@@ -9,12 +9,13 @@
 <%
 
 	ExtendedFieldsBaseMain rm = new ExtendedFieldsBaseMain( "PERMISOS", 
-		new String[]{"EMPLEADO","FECHA","MOTIVO","OBSERVACIONES"},
+		new String[]{"EMPLEADO","FECHA","MOTIVO","OBSERVACIONES","GOCE_DE_SUELDO"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER, 
 			Constants.EXTENDED_TYPE_DATE,
 			Constants.EXTENDED_TYPE_INTEGER,
-			Constants.EXTENDED_TYPE_STRING
+			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_BOOLEAN
 		} );
 
 ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS", 
@@ -105,11 +106,13 @@ ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS",
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "FECHA" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "MOTIVO" ) %>"></input>
 		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "OBSERVACIONES" ) %>"></input>
+		                      	<input type="hidden" name="field_names" value="<%= EncryptUtils.base64encode( "GOCE_DE_SUELDO" ) %>"></input>
 		                      	
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_DATE )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_INTEGER )) %>"></input>
 		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_STRING )) %>"></input>
+		                      	<input type="hidden" name="data_types" value="<%= EncryptUtils.base64encode( String.valueOf( Constants.EXTENDED_TYPE_BOOLEAN )) %>"></input>
 		                      	
 		                      	
 		                      	<div class="form-group">
@@ -180,7 +183,22 @@ ExtendedFieldsBaseMain empleadosMain = new ExtendedFieldsBaseMain( "EMPLEADOS",
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	
+		                        <div class="form-group">
+		                            	<label class="col-sm-2 col-sm-2 control-label">Con goce de sueldo?</label> 
+		                              	<div class="col-sm-10">
+		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	
+		                              		<select class="form-control" name="GOCE_DE_SUELDO" id="GOCE_DE_SUELDO">
+		                              				<option value="1" <%= bean.getValue( "GOCE_DE_SUELDO" ).equals( "1" ) ? "SELECTED" : ""%>>Si</option>
+		                              				<option value="0" <%= bean.getValue( "GOCE_DE_SUELDO" ).equals( "0" ) ? "SELECTED" : ""%>>No</option>
+		                              		</select>                          		
+			                          	<%}else{%>
+			                          		<select class="form-control" name="GOCE_DE_SUELDO" id="GOCE_DE_SUELDO" disabled>
+		                              			<option value="1" <%= bean.getValue( "GOCE_DE_SUELDO" ).equals( "1" ) ? "SELECTED" : ""%>>Si</option>
+		                              			<option value="0" <%= bean.getValue( "GOCE_DE_SUELDO" ).equals( "0" ) ? "SELECTED" : ""%>>No</option>
+		                              		</select>	                          		
+			                          	<%}%>   	                                  
+		                              	</div>
+		                          	</div>  	
 	                          	
 	                          	
 	                          	

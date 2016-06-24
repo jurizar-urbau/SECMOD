@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.urbau._abstract.entity.Entity;
 import com.urbau.beans.UsuarioBean;
 import com.urbau.db.ConnectionManager;
+import com.urbau.misc.CorrelativosUtil;
 
 @WebServlet("/bin/ClosePayments")
 public class ClosePayments extends Entity {
@@ -62,13 +63,15 @@ public class ClosePayments extends Entity {
  					throw new Exception ( "No se pudo completar la transaccion." );
  				}
 			}
+			CorrelativosUtil correlativosUtil = new CorrelativosUtil();
 			String close_reg = "UPDATE CAJA_DETALLE SET "
 					+ "FECHA_CIERRE=NOW(),"
 					+ "USUARIO_CIERRE  =" + loggedUserId + ","
 					+ "EFECTIVO_CIERRE ="+pagos.get( "efectivo" )+","
 					+ "TARJETA_CIERRE  ="+pagos.get( "tarjeta" )+","
 					+ "CREDITO_CIERRE  ="+pagos.get( "credito" )+","
-					+ "CHEQUE_CIERRE   ="+pagos.get( "cheque" )+" "
+					+ "CHEQUE_CIERRE   ="+pagos.get( "cheque" )+", "
+					+ "CORRELATIVO_CIERRE   ="+correlativosUtil.getNextAndAdvance( "CIERRE_CAJA_" + id_caja ) +" "
 					+ "WHERE ID=" + id_caja_abierta;
 			int updated_caja = stmt_p.executeUpdate( close_reg );
 			if( updated_caja  > 0 ){
