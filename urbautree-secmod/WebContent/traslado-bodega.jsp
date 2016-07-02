@@ -119,11 +119,11 @@
                       	Bodega destino: <b><span id="storedisplay2"></span></b>
                       </div>
                       <div class="col-lg-12">
-		          		<form>
+		          		<form onsubmit="searchProducts(); return false;">
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-					                    <li><button class="btn btn-primary">Buscar</button></li>
+					                    <li><button class="btn btn-primary" onclick="searchProducts()">Buscar</button></li>
 					              </ul>
 				            </div>
 					    </form>

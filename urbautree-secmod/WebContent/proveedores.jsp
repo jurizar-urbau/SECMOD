@@ -134,7 +134,7 @@
                                   <td class="hidden-phone" ><%= proveedor.getRazonSocial() %></td>                                                                    
                                   <td><%= proveedor.getTelefono() %></td>
                                   <td class="hidden-phone" ><%= proveedor.getEmail() %></td>                                                                                                                                                                         
-                                  <td><%= proveedoresHelper.getProveedorBalance( proveedor.getId() ) %></td>
+                                  <td class="red"><%= proveedoresHelper.getProveedorBalance( proveedor.getId() ) %></td>
                                                                     
                                   <td>
                                   	<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_MODIFY)){ %>                                     
@@ -147,7 +147,6 @@
                                       <button class="btn btn-success btn-xs" onclick="view('<%= proveedor.getId()  %>');"><i class="fa fa-check"></i></button>
                                     <%}%>  
                                     <button class="btn btn-success btn-xs" onclick="compras('<%= proveedor.getId()  %>');"><i class="fa fa-check">Compras</i></button>
-                                    <button class="btn btn-success btn-xs" onclick="pagos('<%= proveedor.getId()  %>');"><i class="fa fa-check">Pagos</i></button>
                                   </td>
                               </tr>
                               <% } %>

@@ -3,6 +3,7 @@ package com.urbau.servlet;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -43,54 +44,62 @@ public class RenderImage extends HttpServlet {
 		int width = -1;
 		int height = -1;
 		
-		
-		System.out.println("Rendering the  image path: "+ imagePath);		
-		
-		if(null != imagePath && !imagePath.isEmpty()){
+		if(  null != imagePath && !imagePath.isEmpty()){
 			
 			byte[] bytesData = null;
 			try{
-				FileInputStream is = new FileInputStream(imagePath);
-				
+				File file = new File( imagePath );
+				FileInputStream is;
+				if( !file.exists() || file.isDirectory() ){
+					is = new FileInputStream(request.getSession().getServletContext().getRealPath("/assets/img/placeholder_default.png"));
+				} else {
+				    is = new FileInputStream(imagePath);
+				}
 				BufferedImage image = ImageIO.read( is );
-
-				if( !Util.isEmpty( w ) ){
-					width = Integer.valueOf( w ); 
-				}
-				if( !Util.isEmpty( h ) ){
-					height = Integer.valueOf( h ); 
-				}
-				if( Util.isEmpty( w ) && Util.isEmpty( h )){
-					width = image.getWidth();
-					height = image.getHeight();
-				}
 				
-				if( width > 0 ){
-					int type_hint = Image.SCALE_DEFAULT;;
-					if( "default".equals( type )  ){
-						type_hint = Image.SCALE_DEFAULT;
-					} else if( "smooth".equals( type )  ){
-						type_hint = Image.SCALE_SMOOTH;
-					} else if( "average".equals( type )  ){
-						type_hint = Image.SCALE_AREA_AVERAGING;
+				if( image != null ){
+					if( !Util.isEmpty( w ) ){
+						width = Integer.valueOf( w ); 
+					}
+					if( !Util.isEmpty( h ) ){
+						height = Integer.valueOf( h ); 
+					}
+					if( Util.isEmpty( w ) && Util.isEmpty( h )){
+						width = image.getWidth();
+						height = image.getHeight();
 					}
 					
-					Image scaledImage = image.getScaledInstance( width, height, type_hint );
-					BufferedImage after = toBufferedImage( scaledImage );
-					ImageIO.write(after, "png", response.getOutputStream());	
+					if( width > 0 ){
+						int type_hint = Image.SCALE_DEFAULT;;
+						if( "default".equals( type )  ){
+							type_hint = Image.SCALE_DEFAULT;
+						} else if( "smooth".equals( type )  ){
+							type_hint = Image.SCALE_SMOOTH;
+						} else if( "average".equals( type )  ){
+							type_hint = Image.SCALE_AREA_AVERAGING;
+						}
+						
+						Image scaledImage = image.getScaledInstance( width, height, type_hint );
+						BufferedImage after = toBufferedImage( scaledImage );
+						ImageIO.write(after, "png", response.getOutputStream());	
+					} else {
+						bytesData = IOUtils.toByteArray(is);
+					}
 				} else {
 					bytesData = IOUtils.toByteArray(is);
 				}
 
 				
 			}catch(FileNotFoundException e){
-				
-				System.out.println("Error in File Inpur Stream for a image : "+ e.getMessage());
+				System.out.println("Error in File Inpur Stream for an image : "+ e.getMessage());
 				FileInputStream is = new FileInputStream(request.getSession().getServletContext().getRealPath("/assets/img/placeholder_default.png"));
 				bytesData = IOUtils.toByteArray(is);
+			} catch (Exception e) {
+				System.out.println( "a general exception " + e.getMessage() );
+				e.printStackTrace();
 			}
 			
-			if(null != bytesData){
+			if( null != bytesData){
 				ServletOutputStream sos = response.getOutputStream();
 				sos.write(bytesData);
 				sos.flush();

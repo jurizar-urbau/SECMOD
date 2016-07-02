@@ -68,7 +68,15 @@ public class IngresoBodega extends Entity {
 			}
 			
 			
-			String descuento = request.getParameter( "descuento" );
+			String descuentoStr = request.getParameter( "descuento" );
+			double descuento = 0;
+			if( descuentoStr != null ){
+				try{
+					descuento = Double.valueOf( descuentoStr );
+				 } catch ( Exception ig ){
+					 
+				 }
+			}
 			
 			
 			System.out.println( "descuento: " + descuento );
@@ -155,8 +163,8 @@ public class IngresoBodega extends Entity {
 				compra.putValue( "TIPO_DE_PAGO", "0" );
 				compra.putValue( "FORMA_DE_INGRESO", "0" );
 				compra.putValue( "SUBTOTAL", "" + subtotal );
-				compra.putValue( "DESCUENTO", "0" );
-				compra.putValue( "TOTAL", "" + total );
+				compra.putValue( "DESCUENTO", ""+descuento );
+				compra.putValue( "TOTAL", "" + (total-descuento) );
 				compra.putValue( "GASTOS", "0" );
 				compra.putValue( "TOTAL_CON_GASTOS", "" + total  );
 				compra.putValue( "ESTADO", "0" );

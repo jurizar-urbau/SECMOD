@@ -21,7 +21,7 @@
 		bancosOptions.append( "<option value='" ).append( option[ 0 ] ).append( "'>").append( option[1] ).append("</option>");
 	}
 	ExtendedFieldsBaseMain creditos_cliente = new ExtendedFieldsBaseMain( "PROVEEDORES_PAGOS", 
-			new String[] { "ID_PROVEEDOR","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
+			new String[] { "ID_COMPRA","FECHA","MONTO","TIPO_PAGO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","TIPO_TARJETA","NO_TARJETA" }	
 			, new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DATE,
@@ -35,14 +35,11 @@
 			} );
 	
 	
-			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_PROVEEDOR"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id-proveedor" ) });
+			ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{"ID_COMPRA"},new int[]{ ExtendedFieldsFilter.EQUALS}, new int[]{ Constants.EXTENDED_TYPE_INTEGER}, new String[]{ request.getParameter( "id-compra" ) });
 			ArrayList<ExtendedFieldsBean> list = creditos_cliente.getAll( filter );
 	%>
 	<script>
-		function pagos( id ){
-			alert( "pagos!!!" );
-			location.replace( "clientes-creditos-pagos.jsp?id="+id);
-		}
+		
 		function add(){
 			$('#myModal').modal('show');
 		}
@@ -98,7 +95,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-left"><a href="proveedores.jsp">Regresar...</a></i> Pagos de credito </h4>
+	                  	  	  <h4><i class="fa fa-angle-left"><a href="proveedores-compras.jsp?id-proveedor=<%= request.getParameter("id-proveedor") %>">Regresar...</a></i> Pagos de credito </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
 	                  	  	  
@@ -153,7 +150,7 @@
 			                      <div class="modal-body">
 			                       <form id="modalform" name="modalform"  class="form-horizontal style-form">
 			                      
-			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id-proveedor" ) %>">
+			                      	<input type="hidden" name="formid" id="formid" value="<%= request.getParameter( "id-compra" ) %>">
 			                      	  <label>Saldo: <b id="formmonto"></b></label><br/>
 			                      	  
 			                      	  	<div class="form-group">                      	

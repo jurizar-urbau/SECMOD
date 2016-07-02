@@ -492,7 +492,6 @@ public class Util {
 	}	
 	
 	public static String getAbsoluteParent( String path, int level ){
-		System.out.println( "recieved: " + path );
 		String[] patStrings = path.split( "/" );
 		if ( patStrings.length >= level+1){
 			return "/" + patStrings[ level+1 ];
@@ -518,7 +517,7 @@ public class Util {
 	}
 	
 	public static String formatCurrencyWithNoRound( double value ){
-		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
+		DecimalFormat formatter = new DecimalFormat("'Q '#,##0.00");     
 		return formatter.format(value );
 	}
 	
@@ -531,7 +530,6 @@ public class Util {
 		double ee = value.longValue();
 		double fv = value - ee;
 		double returnValue = ee;
-		System.out.println( "float value of "+ value + "=" + fv );
 		if( fv > 0 && fv <= .25 ){
 			returnValue += .25;
 		} else if( fv > 0 &&  fv <= .5 ){
@@ -643,15 +641,11 @@ public class Util {
 	
 	
 	public static synchronized boolean isAllowedPrice( int precio, int store, int client ){
-		System.out.println( "checking price permission: precio:"+ precio + ",store:" + store + ",client:" + client );
 		if( isAllowedOnPuntosDeVenta(store, precio)){
-			System.out.println( "returning true" );
 			return true;
 		} else if( isAllowedOnClient(client, precio)) {
-			System.out.println( "returning true" );
 			return true;
 		} else {
-			System.out.println( "returning FALSE" );
 			return false;
 		}
 	}
@@ -664,7 +658,6 @@ public class Util {
 		try {
 			c = ConnectionManager.getConnection();
 			s = c.createStatement();
-			System.out.println( sql );
 			r = s.executeQuery( sql );
 			if( r.next() ){
 				return r.getInt( 1 ) > 0;
@@ -685,7 +678,6 @@ public class Util {
 		try {
 			c = ConnectionManager.getConnection();
 			s = c.createStatement();
-			System.out.println( sql );
 			r = s.executeQuery( sql );
 			if( r.next() ){
 				return r.getInt( 1 ) > 0;
@@ -707,7 +699,6 @@ public class Util {
 		try {
 			c = ConnectionManager.getConnection();
 			s = c.createStatement();
-			System.out.println( sql );
 			r = s.executeQuery( sql );
 			if( r.next() ){
 				total = r.getDouble( 1 );

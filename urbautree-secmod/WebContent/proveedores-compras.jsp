@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.ProveedoresHelper"%>
 <%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
@@ -9,11 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	<style>
-		.red {
-			color: red;
-		}
-	</style>
+	
 	<%@include file="fragment/head.jsp"%>
 	<%
 	
@@ -48,7 +45,11 @@
 		function detalle( id ){
 			location.replace( "proveedores-compras-detalle.jsp?id-proveedor=<%= request.getParameter("id-proveedor")%>&id="+id);
 		}
-		
+
+		function pagos( idcompra ){
+			location.replace( "proveedores-pagos.jsp?id-proveedor=<%= request.getParameter("id-proveedor")%>&id-compra="+idcompra);
+		}
+
 	</script>
 	</head>
    
@@ -116,8 +117,8 @@
                                   <th>Subtotal</th>
                                   <th>Descuentos</th>
                                   <th>Total</th>
-                                  <th>Gastos</th>
-                                  <th>Total con gastos</th>
+                                  <th>Saldo</th>
+                                  
                                 
                                   
                                   
@@ -134,11 +135,11 @@
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "SUBTOTAL" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "DESCUENTO" ) )) %></td>
                                   <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL" ) )) %></td>
-                                  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "GASTOS" ) )) %></td>
-                                  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "TOTAL_CON_GASTOS" ) )) %></td>
+                                  <td class="red"><%= Util.formatCurrency(ProveedoresHelper.getCompraBalance( us.getId() )) %>
                                   
                                   <td>
-                                      <button class="btn btn-success btn-xs" onclick="detalle('<%= us.getId()  %>');"><i class="fa fa-eye">Ver detalle</i></button>
+                                      <button class="btn btn-info btn-xs" onclick="detalle('<%= us.getId()  %>');"><i class="fa fa-eye">&nbsp;Detalle de compra</i></button>
+                                      <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-money">&nbsp;Pagos</i></button>
                                   </td>
                               </tr>
                               <% } %>

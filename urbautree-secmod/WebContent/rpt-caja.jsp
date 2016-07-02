@@ -46,8 +46,13 @@ ExtendedFieldsBaseMain ordenesMain = new ExtendedFieldsBaseMain( "ORDENES",
 			new int[]{ Constants.EXTENDED_TYPE_INTEGER } );
 
 
+ExtendedFieldsBaseMain cuponesMain = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
+	    new String[]{"MONTO"},
+		new int[]{ Constants.EXTENDED_TYPE_DOUBLE } );
+
+
 ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES", 
-		new String[]{"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","ID_USUARIO"},
+		new String[]{"ID_ORDEN","FECHA","TIPO_PAGO","MONTO","NO_AUTORIZACION","NO_CHEQUE","ID_BANCO","ID_USUARIO","ID_CUPON"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_DATE, 
@@ -55,6 +60,7 @@ ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "PAGOS_ORDENES"
 			Constants.EXTENDED_TYPE_DOUBLE,
 			Constants.EXTENDED_TYPE_STRING,
 			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER
 		} );
@@ -145,7 +151,9 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                                   <th>Autorizacion</th>
                                   <th>Cheque</th>
                                   <th>Banco</th>
-                                  <th>Monto</th>
+                                  <th style="text-align:right">Subtotal</th>
+                                  <th style="text-align:right">Descuento</th>
+                                  <th style="text-align:right">Total</th>
                               </tr>
                 </thead>
                 <tbody>
@@ -162,6 +170,17 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                               		String no_auth   = us.getValue( "NO_AUTORIZACION" );
                               		String no_cheque = us.getValue( "NO_CHEQUE" );
                               		String banco  = us.getReferenced( "ID_BANCO", "BANCOS", "DESCRIPCION" );
+                              		int id_cupon = -1;
+                              		if( us.getValue( "ID_CUPON") != null ){
+                              			try{
+                              				id_cupon = Integer.valueOf( us.getValue( "ID_CUPON" ));
+                              			} catch( Exception ignored ){
+                              				id_cupon = -1;
+                              			}
+                              		} 
+                              		String montoCupon = id_cupon > 0 ? cuponesMain.get( id_cupon ).getValue( "MONTO" ) : "0"; 
+                              		
+                              		double subtotal = Double.valueOf( monto ) + Double.valueOf( montoCupon );
                               		
                               		ExtendedFieldsBean orden = ordenesMain.get( Integer.valueOf( id_orden ) );
                               		String nit      = orden.getReferenced( "ID_CLIENTE", "CLIENTES", "NIT");
@@ -189,7 +208,9 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 								  <td><%= no_auth %></td>
 								  <td><%= no_cheque %></td>
 								  <td><%= banco %></td>
-								  <td><%= Util.formatCurrencyWithNoRound( Double.valueOf(  monto ))%></td>
+								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( subtotal ) %></td>
+								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( montoCupon ))%></td>
+								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf(  monto ))%></td>
                               </tr>
                               <%
                               total += Double.valueOf(  monto );
@@ -204,8 +225,10 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 								  <td></td>
 								  <td></td>
 								  <td></td>
-								  <td><B>Total</B></td>
-								  <th><b><%= Util.formatCurrencyWithNoRound( total )%></b></th>
+								  <td></td>
+								  <td></td>
+								  <td style="text-align:right"><B>Total</B></td>
+								  <th style="text-align:right"><b><%= Util.formatCurrencyWithNoRound( total )%></b></th>
                               </tr>
                               </tbody>
                 

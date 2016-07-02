@@ -1,3 +1,5 @@
+<%@page import="com.urbau.beans.TipoRubroBean"%>
+<%@page import="com.urbau.feeders.TiposRubrosMain"%>
 <%@page import="com.urbau.beans.PresupuestoProyeccionBean"%>
 <%@page import="com.urbau.feeders.PresupuestosProyeccionesMain"%>
 <%@page import="com.urbau.feeders.PresupuestoMain"%>
@@ -141,17 +143,20 @@
 	                  	  	  <thead>
                               <tr>                                                                                                    
                                   <th>Rubro</th>
+                                  <th>Tipo</th>
                                   <th>Monto</th>                                  
                                   <th></th>
                               </tr>
                               </thead>
                               <tbody>
-                              <%                              	                              
+                              <%                  
+                                TiposRubrosMain tipoRubro= new TiposRubrosMain();
                               	for( PresupuestoProyeccionBean bean : itemList ){
-                              		                            			                              			                                                           	
+                              		TipoRubroBean tipoR = tipoRubro.get( bean.getTipoRublo() );                            			                              			                                                           	
                               %>
                               <tr>                                                
-                                  <td ><%= bean.getRubloDescripcion() %></td>                                  
+                                  <td ><%= bean.getRubloDescripcion() %></td>
+								  <td ><%= "F".equals( tipoR.getTipo()) ? "Fijo" : "V".equals( tipoR.getTipo()) ? "Variable" : "P".equals( tipoR.getTipo()) ? "Planilla" : "-"   %></td>                                  
                                   <td ><%= bean.getMonto() %></td>
                                   <td>
                                     

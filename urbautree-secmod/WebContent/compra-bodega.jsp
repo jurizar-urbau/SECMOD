@@ -131,7 +131,8 @@
                       
                       <div class="col-lg-4 pull-right">
                       Busqueda:
-		          		<form>
+		          		<form id="searchform" onsubmit="searchByQuery(); return false;">
+		          			
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
@@ -388,20 +389,7 @@
 			              </div>
 		              </form>
 		          </div>
-      <!-- proveedores modal ends -->
-      
-		          
-      <!--main content end-->
-      <!--footer start-->
-      <!-- footer class="site-footer">
-          <div class="text-center">
-               <a href="http://www.urbau-digital.com">2015 - Urbau Digital</a>
-              <a href="home.jsp" class="go-top">
-                  <i class="fa fa-angle-up"></i>
-              </a>
-          </div>
-      </footer -->
-      <!--footer end-->
+     
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -605,6 +593,10 @@
 	        	console.log( "value", value );
 	        	searchProducts( value );
 			});
+	    });
+	    $('#searchform').submit(function(e) {
+	    	searchByQuery();
+	    	return null;
 	    });
 	    
 	    function searchByQuery( ){

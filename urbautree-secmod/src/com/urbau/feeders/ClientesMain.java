@@ -30,12 +30,10 @@ public class ClientesMain {
 			stmt = con.createStatement();
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
-				System.out.println( "sql:" + sql );
 				rs = stmt.executeQuery( sql );
 				
 			} else {
 				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
-				System.out.println( "sql:" + sql );
 				rs = stmt.executeQuery( sql);				
 			}
 			while( rs.next() ){
@@ -147,7 +145,6 @@ public class ClientesMain {
 			stmt= con.createStatement();
 			String sql = "INSERT INTO CLIENTES ( NIT, NOMBRES, APELLIDOS, DIRECCION, TELEFONO, CORREO, TIPODECLIENTE,ACEPTA_CREDITO ) VALUES " +
 						 "('" + bean.getNit() + "','"+bean.getNombres()+"','"+bean.getApellidos()+"','"+bean.getDireccion()+"','"+bean.getTelefono()+"','"+bean.getEmail()+"','"+bean.getTipoDeCliente()+ "'," + bean.getAcepta_credito() + ")";
-			System.out.println("sql: " +sql );
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -171,7 +168,7 @@ public class ClientesMain {
 			String sql = "UPDATE CLIENTES SET " +
 					"NIT=" + Util.vs( bean.getNit() ) + ", NOMBRES=" + Util.vs( bean.getNombres() ) + ", APELLIDOS=" + Util.vs( bean.getApellidos() ) + ", DIRECCION=" + Util.vs( bean.getDireccion() ) + "," + 
 					"CORREO=" + Util.vs( bean.getEmail() ) + ", TELEFONO=" + Util.vs( bean.getTelefono() )+ ", TIPODECLIENTE=" + Util.vs( bean.getTipoDeCliente() ) + ", ACEPTA_CREDITO=" + bean.getAcepta_credito() + " WHERE ID=" + bean.getId();
-			System.out.println("sql: " + sql);
+
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -223,11 +220,11 @@ boolean exists = true;
 			stmt = con.createStatement();
 			String sql = "SELECT count(ID) FROM CLIENTES WHERE NIT='" + nit + "'";
 			
-			System.out.println("SQL: " + sql );
+	
 			rs = stmt.executeQuery( sql );
 			if( rs.next() ){
 				int total = rs.getInt( 1 );
-				System.out.println( "total: " + total );
+	
 				if( total == 0  ){
 					exists = false;
 				}

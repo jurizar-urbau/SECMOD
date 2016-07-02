@@ -139,7 +139,7 @@
                       	Bodega: <b><span id="storedisplay"></span></b>
                       </div>
                       <div class="col-lg-12">
-		          		<form>
+		          		<form onsubmit="searchByQuery(); return false;">
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>

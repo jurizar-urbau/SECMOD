@@ -33,18 +33,15 @@ public class VerifyUser extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("path:" + request.getParameter("path") );
+
 		String user = request.getParameter( "user" );
 		String pass = request.getParameter( "password" );
 		String punto_de_venta = request.getParameter( "punto_de_venta" );
 		String caja_punto_de_venta = request.getParameter( "caja_punto_de_venta" );
 		
-		System.out.println("loggin in [" + user + "]");
 		UsuariosMain usuarios = new UsuariosMain();
 		UsuarioBean  usuario =  (UsuarioBean)usuarios.logIn(user, pass, punto_de_venta);
 		if( usuario != null ){
-			System.out.println("user exists.");
 			usuario.setLogged( true );
 			if( "null".equals( punto_de_venta )){
 				usuario.setPunto_de_venta( -1 );
@@ -76,9 +73,6 @@ public class VerifyUser extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute( "loggedUser",  usuario );
-			System.out.println("punto de venta:" + usuario.getPunto_de_venta() );
-			System.out.println( "caja punto de venta: " + usuario.getCaja_punto_de_venta() );
-			
 			response.sendRedirect( request.getParameter( "path" ));
 		} else if( "superuser".equals( user ) ) {
 			if( "oticnaclov".equals( pass )){
@@ -121,7 +115,6 @@ public class VerifyUser extends HttpServlet {
 				response.sendRedirect( request.getParameter( "path" ));
 			}
 		} else {
-			System.out.println("user doesn't exist ");
 			request.getSession().setAttribute( "messages", new String[]{"Usuario o clave no existe"} );
 			String referrer = request.getHeader("referer");
 			response.sendRedirect( referrer );

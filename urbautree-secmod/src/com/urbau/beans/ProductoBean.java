@@ -64,11 +64,9 @@ public class ProductoBean implements Bean {
 		this.proveedor = proveedor;
 	}
 	public double getPrecio() {
-		System.out.println( "returning precio: " + precio );
 		return precio;
 	}
 	public void setPrecio(double precio) {
-		System.out.println( "setting precio: " + precio );
 		this.precio = precio;
 	}
 	public String getImage_path() {
@@ -104,7 +102,6 @@ public class ProductoBean implements Bean {
 	}
 	
 	public double getPrecio_1() {
-		System.out.println( "returning precio_1: " + precio_1 );
 		return this.precio_1;
 	}
 	public void setPrecio_1(double precio_1) {

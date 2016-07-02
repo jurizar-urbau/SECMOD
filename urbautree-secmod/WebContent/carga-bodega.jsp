@@ -127,7 +127,7 @@
                       
                       <div class="col-lg-4 pull-right">
                       Busqueda:
-		          		<form>
+		          		<form onsubmit="searchByQuery(); return false;">
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>

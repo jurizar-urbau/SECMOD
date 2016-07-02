@@ -49,7 +49,6 @@ public abstract class AbstractMain {
 		try {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
-			System.out.println( "executing: " + sql );
 			res = stmt.executeQuery( sql );
 			while( res.next()){
                 String str [] = new String[]{res.getString(1),res.getString(2)};

@@ -18,6 +18,9 @@ body {
     margin: 0px !important;
     font-size:13px;
 }
+.red {
+			color: red;
+		}
 
 ul li {
     list-style: none;

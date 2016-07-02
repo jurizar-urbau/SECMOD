@@ -33,7 +33,8 @@
 			from = Integer.parseInt( fromParameter );
 		}				
 		
-		ArrayList<BodegaUsuarioBean> bodegaUsuarioList = preciosClientes_main.get( qParameter, from);
+		ArrayList<BodegaUsuarioBean> bodegaUsuarioList = preciosClientes_main.getFromUser( idUsuario ); 
+				//preciosClientes_main.get( qParameter, from);
 		
 		
 		int total_regs = -1;

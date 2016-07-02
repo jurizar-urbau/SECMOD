@@ -20,6 +20,39 @@ public class BodegasUsuariosMain extends AbstractMain {
 		return get( q, from, -1);
 	}
 	
+		public ArrayList<BodegaUsuarioBean> getFromUser( int iduser ){
+		
+		
+		ArrayList<BodegaUsuarioBean> list = new ArrayList<BodegaUsuarioBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		int total_regs = -1;
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+											
+			
+				String sql="SELECT ID,ID_BODEGA,ID_USUARIO FROM "+TABLE_NAME+" WHERE ID_USUARIO="+ iduser ;
+				System.out.println("1sql:"+sql);
+				rs = stmt.executeQuery( sql );
+				total_regs = Util.getTotalRegs( TABLE_NAME, " WHERE ID_USUARIO="+ iduser );
+			
+			while( rs.next() ){
+				BodegaUsuarioBean bean = new BodegaUsuarioBean();
+				bean.setId( rs.getInt   ( 1  ));
+				bean.setIdBodega(rs.getInt( 2  ));				
+				bean.setIdUsuario(rs.getInt( 3  ));
+				bean.setTotal_regs( total_regs );
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
 	public ArrayList<BodegaUsuarioBean> get( String q, int from, int limit){
 		
 		int items = limit > 0 ? limit : Constants.ITEMS_PER_PAGE;

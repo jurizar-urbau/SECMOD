@@ -88,7 +88,6 @@ public class UsuariosMain extends AbstractMain {
 			if( rs.next() ){
 				return get( rs.getInt( 1 ) );
 			} else {
-				System.out.println( sql );
 				return null;
 			}
 		} catch( Exception e ){
@@ -237,7 +236,6 @@ public class UsuariosMain extends AbstractMain {
 	
 	public boolean del( UsuarioBean bean ){
 		
-		System.out.println("bean.getId()>>>> " + bean.getId());
 		if ( bean.getId() <= 0 ){
 			return false;
 		}

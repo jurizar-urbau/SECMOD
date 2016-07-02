@@ -93,12 +93,21 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COBROS")) { %>
 				                          <li><a  href="ordenes-caja.jsp">CAJA</a></li>
 				                          <% } %>
+				                          <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"ORDENES")) { %>
 				                          <li><a  href="eliminar-ordenes-caja.jsp">Eliminar orden</a></li>
-				                          
+				                          <% } %>
+				                          <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"UBICACIONES")) { %>
 				                          <li><a  href="puntosdeventas.jsp">Ubicaciones</a></li>
+				                          <% }  %>
+				                          <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"ORDENES")) { %>
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
+					                      <% } %>
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"CUPONES_DE_DESCUENTO")) { %>
 					                      <li><a  href="descuentos.jsp">Cupones de Descuento</a></li>
+					                      <% } %>
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MOTIVOS_DE_DESCUENTO")) { %>
 					                      <li><a  href="motivos-de-descuento.jsp">Motivos de Descuento</a></li>
+					                      <% } %>
 					                      </ul>
 					</li>
 					<% } %>
@@ -203,6 +212,7 @@
                           <span>Reportes</span>
                       </a>
                       <ul class="sub">
+                        <li><a  href="filter-rpt-inventario.jsp">Inventario</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
                         <li><a  href="rpt-ingresos-empresa.jsp">Ingresos empresa</a></li>
                       </ul>

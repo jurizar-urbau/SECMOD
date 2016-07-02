@@ -23,12 +23,11 @@ public class SaveProviderPayment extends Entity {
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			System.out.println( "calling save provider payment...");
 			HttpSession session = request.getSession();
 			UsuarioBean loggedUser = getLoggedUser( session );
 			validateRequest( session );
 			
-			String id = request.getParameter( "formid" );
+			String idcompra = request.getParameter( "formid" );
 			String tipo_pago = request.getParameter( "tipo_pago" );
 			String numero_cheque = request.getParameter( "numero_cheque" );
 			String banco = request.getParameter( "banco" );
@@ -37,7 +36,7 @@ public class SaveProviderPayment extends Entity {
 			String autorizacion = request.getParameter( "autorizacion" );
 			String monto = request.getParameter( "monto" );
 			
-			String message = validateParameters( id, tipo_pago, numero_cheque, banco, tipo_tarjeta, numero_tarjeta, autorizacion, monto );
+			String message = validateParameters( idcompra, tipo_pago, numero_cheque, banco, tipo_tarjeta, numero_tarjeta, autorizacion, monto );
 				
 			if( message.length() > 0 ){
 				response.getOutputStream().write( message.getBytes() );
@@ -47,7 +46,7 @@ public class SaveProviderPayment extends Entity {
 			}
 			ExtendedFieldsBaseMain pagosMain = new ExtendedFieldsBaseMain( "PROVEEDORES_PAGOS", 
 					new String[]{
-							"ID_PROVEEDOR",
+							"ID_COMPRA",
 							"FECHA",
 							"MONTO",
 							"TIPO_PAGO",
@@ -75,7 +74,7 @@ public class SaveProviderPayment extends Entity {
 			
 			ExtendedFieldsBean b = new ExtendedFieldsBean();
 			
-			b.putValue( "ID_PROVEEDOR", id );
+			b.putValue( "ID_COMPRA", idcompra );
 			b.putValue("TIPO_PAGO", tipo_pago );
 			b.putValue( "NO_CHEQUE", numero_cheque );
 			if( banco != null ){
