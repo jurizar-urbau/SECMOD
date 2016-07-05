@@ -78,6 +78,30 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/bin/ToggleFieldValue</url-pattern>
   </servlet-mapping>
   
+  
+  <servlet>
+    <servlet-name>PayClientCredit</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PayClientCredit</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PayClientCredit</servlet-name>
+    <url-pattern>/bin/PayClientCredit</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  <servlet>
+    <servlet-name>PayCompraProveedor</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.PayCompraProveedor</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PayCompraProveedor</servlet-name>
+    <url-pattern>/bin/PayCompraProveedor</url-pattern>
+  </servlet-mapping>
+  
+  
+  
   <servlet>
     <servlet-name>ClosePayments</servlet-name>
     <servlet-class>com.urbau.servlet.entity.ClosePayments</servlet-class>

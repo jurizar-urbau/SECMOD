@@ -1,5 +1,7 @@
 package com.urbau._abstract.entity;
 
+import java.util.Date;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
@@ -35,5 +37,8 @@ public class Entity extends HttpServlet {
 		} catch( Exception e ){
 			e.printStackTrace();
 		}
+	}
+	public void println( HttpSession session,  String str ){
+		System.out.println( "[" + new Date() + getLoggedUser(session).getNombre() + "] " + str ); 
 	}
 }

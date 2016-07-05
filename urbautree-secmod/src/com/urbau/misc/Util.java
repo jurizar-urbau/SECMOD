@@ -809,4 +809,96 @@ public class Util {
 		return buffer;
 	}
 	
+	public static synchronized double getTotalClientPayments( String id_client ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT SUM(PAGO.MONTO) FROM CLIENTES_CREDITOS_PAGOS PAGO, CLIENTES_CREDITOS CRED WHERE CRED.ID = PAGO.ID_CREDITO AND CRED.ID_CLIENTE = " + id_client;
+		double total = 0;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				total = r.getDouble( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return total;	
+	}
+	public static synchronized double getTotalClientCredits( String id_client ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT SUM(MONTO) FROM CLIENTES_CREDITOS WHERE ID_CLIENTE=" + id_client;
+		double total = 0;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				total = r.getDouble( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return total;	
+	}
+	public static synchronized double getTotalComprasProveedores( String id_proveedor ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT SUM(TOTAL) FROM COMPRAS WHERE ID_PROVEEDOR=" + id_proveedor;
+		double total = 0;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				total = r.getDouble( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return total;	
+	}
+	public static synchronized double getTotalComprasProveedoresPayments( String id_proveedor ){
+		Connection c = null; 
+		Statement  s = null;
+		ResultSet  r = null;
+		String   sql = "SELECT SUM(PAGO.MONTO) FROM PROVEEDORES_PAGOS PAGO, COMPRAS COMP WHERE COMP.ID = PAGO.ID_COMPRA AND COMP.ID_PROVEEDOR = " + id_proveedor;
+		double total = 0;
+		try {
+			c = ConnectionManager.getConnection();
+			s = c.createStatement();
+			r = s.executeQuery( sql );
+			if( r.next() ){
+				total = r.getDouble( 1 );
+			}
+		} catch (Exception e) {
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( c, s, r );
+		}
+		return total;	
+	}
+	public static synchronized boolean isNumber( String monto ){
+		try {
+			Double.parseDouble( monto );
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

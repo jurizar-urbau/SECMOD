@@ -131,7 +131,7 @@
 									<button class="btn btn-danger btn-xs" onclick="removereg('<%= option.getId() %>');"><i class="fa fa-trash-o "></i></button>
 								<%}%>	
 								<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PACKING, Constants.OPTIONS_VIEW)){ %>
-									<button class="btn btn-success btn-xs" onclick="view('<%= option.getId() %>');"><i class="fa fa-check"></i></button>
+									<button class="btn btn-success btn-xs" onclick="view('<%= option.getId() %>');"><i class="fa fa-eye"></i></button>
 								<%}%>	
 								</td>
 							   </tr>

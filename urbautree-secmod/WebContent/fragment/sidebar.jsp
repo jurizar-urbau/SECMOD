@@ -74,6 +74,7 @@
 					                      </a>
 					                      <ul class="sub">
 					                      <li><a  href="clientes.jsp">Clientes</a></li>
+					                      <li><a  href="pago-credito-cliente.jsp">Pago cr&eacute;dito clientes</a></li>
 					                      </ul>
 					</li>
 					<% } %>
@@ -108,6 +109,7 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MOTIVOS_DE_DESCUENTO")) { %>
 					                      <li><a  href="motivos-de-descuento.jsp">Motivos de Descuento</a></li>
 					                      <% } %>
+					                      
 					                      </ul>
 					</li>
 					<% } %>
@@ -153,6 +155,7 @@
 						                      <% } %>
 						                      
 											<li><a  href="compra-bodega.jsp">Compras</a></li>
+											<li><a  href="pago-compra-proveedor.jsp">Pago compras a proveedor</a></li>
 					                      </ul>
 					</li>
 					<% } %>
