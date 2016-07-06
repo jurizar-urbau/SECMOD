@@ -71,6 +71,7 @@
 <button onclick="window.print()" class="no-print">Imprimir</button>
 
 <h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %><b>&nbsp;por&nbsp;</b><%= loggedUser.getNombre() %></h4>
+<h1>VOLCANCITO</h1>
 <h2>
 	INVENTARIO
 </h2>

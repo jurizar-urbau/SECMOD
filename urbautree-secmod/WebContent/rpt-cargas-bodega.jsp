@@ -83,6 +83,7 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_CARGA"
 <button onclick="window.print()" class="no-print">Imprimir</button>
 
 <h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %></h4>
+<h1>VOLCANCITO</h1>
 <h2>
 	REPORTE DE CARGA A BODEGA
 </h2>

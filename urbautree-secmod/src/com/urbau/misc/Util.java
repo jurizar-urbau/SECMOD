@@ -808,6 +808,31 @@ public class Util {
 		}
 		return buffer;
 	}
+	public static Object getAlias(String product_id) {
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT DESCRIPCION FROM ALIAS WHERE ID_PRODUCTO = " + product_id ;
+		String buffer = new String();
+		try {
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				 buffer +=  "<br>" + rs.getString( 1 )  ;
+			}
+			if( buffer.length() > 0 ){
+				buffer = buffer.substring( 4 );
+			}
+		} catch ( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace( );
+		} finally {
+			ConnectionManager.close(con, stmt, rs);
+		}
+		return buffer;
+	}
 	
 	public static synchronized double getTotalClientPayments( String id_client ){
 		Connection c = null; 

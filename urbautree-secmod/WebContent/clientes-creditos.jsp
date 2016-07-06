@@ -118,7 +118,7 @@
                                   <td><%= Util.formatCurrency( total_payments ) %>
                                   <td><%= Util.formatCurrency( balance ) %></td>
                                   <td>
-                                      <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-money">&nbsp;Pagos</i></button>
                                   </td>
                               </tr>
                               <% } %>

@@ -60,6 +60,10 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.FamiliasMain")) { %>
 					                          <li><a  href="familias.jsp">Familias</a></li>
 					                      <% } %>
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"BASE_DE_DATOS")) { %>
+					                          <li><a  href="filter-rpt-base-de-datos-productos.jsp">Base de Datos de productos</a></li>
+					                      <% } %>
+					                      
 					                      
 					                      </ul>
 					</li>
@@ -216,6 +220,7 @@
                       </a>
                       <ul class="sub">
                         <li><a  href="filter-rpt-inventario.jsp">Inventario</a></li>
+                        <li><a  href="rpt-utilidades.jsp">Utilidades</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
                         <li><a  href="rpt-ingresos-empresa.jsp">Ingresos empresa</a></li>
                       </ul>
