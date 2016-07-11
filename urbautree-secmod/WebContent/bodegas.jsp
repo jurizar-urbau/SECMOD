@@ -137,9 +137,7 @@
                                     <% if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_BODEGAS, Constants.OPTIONS_VIEW)){ %>  
                                       <button class="btn btn-success btn-xs" onclick="view('<%= bodega.getId()  %>');"><i class="fa fa-eye"></i></button>
                                     <%}%>  
-									<% if(Authorization.isAuthorizedOption(loggedUser.getRol(), "INVENTARIO_DE_BODEGA", Constants.OPTIONS_VIEW)){ %>                                                                        
-                                    <button class="btn btn-info btn-xs" onclick="inventarios('<%= bodega.getId()  %>');"><i class="fa fa-file-o">&nbsp;Inventario</i></button>
-                                    <% } %>
+									
                                                                                                                                                                                                            
                                   </td>
                               </tr>

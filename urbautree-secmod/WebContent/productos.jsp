@@ -94,7 +94,7 @@
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+			              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
 			                    <li><button class="btn btn-primary">Buscar</button></li>
 			              </ul>
 		            </div>

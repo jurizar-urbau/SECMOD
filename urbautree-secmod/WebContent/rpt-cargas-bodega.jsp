@@ -76,6 +76,10 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_CARGA"
 		  }
 	    
 	}
+	body{
+		padding: 25px;
+		
+	}
 	</style>
 </head>
 <body>

@@ -76,21 +76,7 @@
       <section id="main-content">
           <section class="wrapper site-min-height">
           <br/>
-          <div class="col-lg-6"> 
-           
-          </div>
-          <div class="col-lg-6 no-print">
-          		<form>
-	          		<div class="top-menu">
-			              <ul class="nav pull-right top-menu">
-			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-			                    <li><button class="btn btn-primary">Buscar</button></li>
-			              </ul>
-		            </div>
-			    </form>
-			  </div>
-			  <br/>
-			  
+            
           	
           	<div class="row mt">
           		<div class="col-lg-12">

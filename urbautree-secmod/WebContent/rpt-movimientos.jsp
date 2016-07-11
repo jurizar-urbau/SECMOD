@@ -17,7 +17,7 @@
 <%@include file="fragment/validator.jsp"%>
 <script>
 	function regresar(){
-		location.replace( "filter-rpt-utilidades.jsp" );
+		location.replace( "filter-rpt-movimientos.jsp" );
 	}
 </script>
 <style>
@@ -50,17 +50,14 @@
 			"	FAM.NOMBRE FAMILIA, " +
 			"	PROD.CODIGO CODIGO, " +
 			"	PROD.DESCRIPCION DESCRIPCION, " + 
-			"	SUM(PROD.PRECIO*DETALLE.CANTIDAD) COSTO, " +
-			"	SUM(DETALLE.CANTIDAD) UNIDADES, " +
-			"	SUM(DETALLE.TOTAL) VALOR, " +
-			"	SUM( DETALLE.TOTAL - (PROD.PRECIO*DETALLE.CANTIDAD) ) UTILIDAD " +
+			"	SUM(DETALLE.CANTIDAD) UNIDADES " +
 			"FROM " + 
 			"	ORDENES ORDEN, ORDENESDETALLE DETALLE, PRODUCTOS PROD, FAMILIAS FAM " + 
 			"WHERE " + 
 			"	ORDEN.ID = DETALLE.ID_ORDEN AND " + 
 			"	ORDEN.ESTADO = 'P' AND " +
 			"	DETALLE.ID_PRODUCTO = PROD.ID AND " +
-			"	PROD.FAMILIA = FAM.ID " ;
+			"	PROD.FAMILIA = FAM.ID ";
 
 			if( request.getParameter( "ubicacion") != null ){
 				sql += " AND ORDEN.ID_PUNTO_VENTA=  " + request.getParameter( "ubicacion" ) + " ";
@@ -68,6 +65,7 @@
 			if( request.getParameter( "fecha-inicio" ) != null && request.getParameter( "fecha-inicio" ).length() > 0  && request.getParameter( "fecha-fin" ) != null && request.getParameter( "fecha-fin" ).length() > 0 ){
 				sql += "AND ORDEN.FECHA BETWEEN '" + request.getParameter( "fecha-inicio" ) + "' AND '" + request.getParameter( "fecha-fin" ) + "' " ;
 			}
+			
 			//"AND " +
 	//		"   ORDEN.FECHA BETWEEN '2016-02-28' AND '2016-03-11' " +
 			sql += "GROUP BY " +
@@ -84,7 +82,7 @@
 <h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %><b>&nbsp;por&nbsp;</b><%= loggedUser.getNombre() %></h4>
 <h1>VOLCANCITO</h1>
 <h2>
-	REPORTE DE UTILIDADES
+	REPORTE DE MOVIMIENTOS
 </h2>
 <hr>	
 
@@ -99,9 +97,6 @@
                                   <th>Codigo</th>
                                   <th>Descripcion</th>
                                   <th align="right">Unidades</th>
-                                  <th align="right">Ventas</th>
-                                  <th align="right">Costo</th>
-                                  <th align="right">Utilidad</th>                                  
                               </tr>
                 </thead>
                 <tbody>
@@ -110,9 +105,6 @@
                                 boolean printtotals = false;
                                 
                                 long unidades = 0;
-                                double ventas = 0;
-                                double costo = 0;
-                                double utilidad = 0;
                                 int contador = 0;
                               	for( ExtendedFieldsBean us : list ){
                               		if( !lastFamily.equals( us.getValue( "1" )) ){
@@ -124,18 +116,11 @@
 										  <td></td>
 										  <td align="right"><B>Totales</B></td>
 										  <td align="right"><B><%= unidades %></B></td>
-										  <td align="right"><B>Q. <%= ventas %></B></td>
-										  <td align="right"><B>Q. <%= costo %></B></td>
-										  <td align="right"><B>Q. <%= utilidad %></B></td>
 		                              	</tr>
 		                              <%
 		                                 
 		                              	  printtotals = false;
 			                              unidades = 0;
-			                              ventas = 0;
-			                              costo = 0;
-			                              utilidad = 0;
-			                              
 		                              } 
 		                               lastFamily = us.getValue( "1" );
 		                               %>
@@ -149,27 +134,17 @@
                               		<tr>
 										  <td><%= us.getValue( "2" ) %></td>
 										  <td><%= us.getValue( "3" ) %></td>
-										  <td align="right"><%= us.getValue( "5" ) %></td>
-										  <td align="right">Q. <%= us.getValue( "6" ) %></td>
-										  <td align="right">Q. <%= us.getValue( "4" ) %></td>
-										  <td align="right">Q. <%= us.getValue( "7" ) %></td>
+										  <td align="right"><%= us.getValue( "4" ) %></td>
 	                              	</tr>
                               <%
-                              unidades += Double.valueOf( us.getValue("5") );
-                              ventas += Double.valueOf( us.getValue("6") );
-                              costo += Double.valueOf( us.getValue("4") );
-                              utilidad += Double.valueOf( us.getValue("7") );
-                              
+                              unidades += Double.valueOf( us.getValue("4") );
                               contador ++;
                              
                                } %>
                                <tr>
 										  <td></td>
-										  <td align="right"><B>Totales</B></td>
+										  <td align="right"><B>Total</B></td>
 										  <td align="right"><B><%= unidades %></B></td>
-										  <td align="right"><B>Q. <%= ventas %></B></td>
-										  <td align="right"><B>Q. <%= costo %></B></td>
-										  <td align="right"><B>Q. <%= utilidad %></B></td>
 		                              	</tr>
                               </tbody>
                 

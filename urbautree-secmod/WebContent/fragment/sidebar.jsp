@@ -220,7 +220,8 @@
                       </a>
                       <ul class="sub">
                         <li><a  href="filter-rpt-inventario.jsp">Inventario</a></li>
-                        <li><a  href="rpt-utilidades.jsp">Utilidades</a></li>
+                        <li><a  href="filter-rpt-utilidades.jsp">Utilidades</a></li>
+                        <li><a  href="filter-rpt-movimientos.jsp">Movimientos</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
                         <li><a  href="rpt-ingresos-empresa.jsp">Ingresos empresa</a></li>
                       </ul>

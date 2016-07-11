@@ -142,7 +142,7 @@
 		          		<form onsubmit="searchByQuery(); return false;">
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
-					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+					              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
 					                    <li><span class="btn btn-primary" onclick="searchByQuery()">Buscar</span></li>
 					              </ul>
 				            </div>
@@ -343,7 +343,7 @@
 			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
 			          				  </span>
 			          				  
-			          				  	<label>Buscar: <input type="text" class="form-control" id="search-client" name="q"></label> 
+			          				  	<label>Buscar: <input type="text" class="form-control" autocomplete="off" id="search-client" name="q"></label> 
 			          				  
 			          				  
 			                          
@@ -436,18 +436,7 @@
 			              </div>
 		              </form>
 		          </div>
-		          
-      <!--main content end-->
-      <!--footer start-->
-      <!-- footer class="site-footer">
-          <div class="text-center">
-               <a href="http://www.urbau-digital.com">2015 - Urbau Digital</a>
-              <a href="home.jsp" class="go-top">
-                  <i class="fa fa-angle-up"></i>
-              </a>
-          </div>
-      </footer -->
-      <!--footer end-->
+		
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->

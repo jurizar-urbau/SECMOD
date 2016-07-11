@@ -12,6 +12,11 @@ public class Constants {
 	public static final int OPTIONS_File = 5;
 	public static final int OPTIONS_DETAIL = 6;
 	
+	public static final int OPTIONS_TP_EFECTIVO = 9;
+	public static final int OPTIONS_TP_CREDITO = 10;
+	public static final int OPTIONS_TP_TARJETA = 11;
+	public static final int OPTIONS_TP_CHEQUE = 12;
+	
 	public static final String ACCOUNTS_ADDS = "H";
 	public static final String ACCOUNTS_SUBSTRACT = "D";
 	public static final String ACCOUNTS_ADDS_SUBSTRACT = "DH";

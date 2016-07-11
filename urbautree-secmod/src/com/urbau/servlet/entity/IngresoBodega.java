@@ -60,6 +60,7 @@ public class IngresoBodega extends Entity {
 			
 			String priceStr[] = request.getParameterValues( "price" );
 			
+			String numeroDeCompra = request.getParameter( "numero-de-compra" );
 			
 			boolean withProvider = false;
 			
@@ -129,7 +130,7 @@ public class IngresoBodega extends Entity {
 							"ID_ORDEN_DE_COMPRA","TIPO_DE_PAGO",
 							"FORMA_DE_INGRESO","SUBTOTAL",
 							"DESCUENTO","TOTAL","GASTOS",
-							"TOTAL_CON_GASTOS","ESTADO","CHEQUE_REF"
+							"TOTAL_CON_GASTOS","ESTADO","CHEQUE_REF","NUMERO_DE_COMPRA"
 					    },
 						new int[]{ 
 							Constants.EXTENDED_TYPE_DATE, 
@@ -143,6 +144,7 @@ public class IngresoBodega extends Entity {
 							Constants.EXTENDED_TYPE_DOUBLE,
 							Constants.EXTENDED_TYPE_DOUBLE,
 							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_STRING,
 							Constants.EXTENDED_TYPE_STRING
 						} );
 				
@@ -169,6 +171,7 @@ public class IngresoBodega extends Entity {
 				compra.putValue( "TOTAL_CON_GASTOS", "" + total  );
 				compra.putValue( "ESTADO", "0" );
 				compra.putValue( "CHEQUE_REF", cheque_ref );
+				compra.putValue( "NUMERO_DE_COMPRA", numeroDeCompra );
 				String addedCompra = comprasMain.addForTransaction(compra);
 				compraID = comprasMain.getIdFromTransaction( addedCompra );
 				System.out.println( "compra added: " + addedCompra );

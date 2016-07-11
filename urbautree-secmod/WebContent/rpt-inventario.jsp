@@ -64,6 +64,11 @@
 		  }
 	    
 	}
+	
+	body{
+		padding: 25px;
+		
+	}
 	</style>
 </head>
 <body>

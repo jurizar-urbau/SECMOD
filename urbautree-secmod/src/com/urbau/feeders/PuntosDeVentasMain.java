@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import com.urbau.beans.PuntoDeVentaBean;
+import com.urbau.beans.UsuarioBean;
 import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
@@ -65,6 +68,55 @@ public class PuntosDeVentasMain {
 			stmt = con.createStatement();
 			
 			String sql = "SELECT ID,NOMBRE,DIRECCION,TELEFONO FROM PUNTOSDEVENTAS";
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				PuntoDeVentaBean bean = new PuntoDeVentaBean();
+				bean.setId(  rs.getInt   ( 1  ));				
+				bean.setNombre(  Util.trimString( rs.getString( 2 )));				
+				bean.setDireccion( Util.trimString( rs.getString( 3 )) );
+				bean.setTelefono( Util.trimString( rs.getString( 4 )) );									
+				list.add( bean );
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return list;
+	}
+	
+	public ArrayList<PuntoDeVentaBean> getAll( HttpSession session ){
+		UsuarioBean loggedUser = (UsuarioBean)session.getAttribute( "loggedUser" );
+		
+		ArrayList<PuntoDeVentaBean> list = new ArrayList<PuntoDeVentaBean>();
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			
+			String sql = "SELECT "
+							+ "PUNTO.ID,"
+							+ "PUNTO.NOMBRE,"
+							+ "PUNTO.DIRECCION,"
+							+ "PUNTO.TELEFONO "
+						+ "FROM "
+							+ "BODEGAS BODEGA, "
+							+ "BODEGAS_USUARIOS BODEGAUSUARIO, "
+							+ "USUARIOS USU,"
+							+ "PUNTOSDEVENTAS PUNTO "
+						+ "WHERE "
+							+ "USU.ID = BODEGAUSUARIO.ID_USUARIO AND "
+							+ "BODEGAUSUARIO.ID_BODEGA = BODEGA.ID AND "
+							+ "PUNTO.ID = BODEGA.ID_PUNTO_DE_VENTA AND "
+							+ "USU.ID = " + loggedUser.getId() + " " 
+						+ "GROUP BY "
+							+ "PUNTO.ID,"
+							+ "PUNTO.NOMBRE,"
+							+ "PUNTO.DIRECCION,"
+							+ "PUNTO.TELEFONO";
 			rs = stmt.executeQuery( sql );
 			
 			while( rs.next() ){

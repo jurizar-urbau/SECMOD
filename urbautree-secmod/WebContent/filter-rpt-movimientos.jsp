@@ -1,13 +1,22 @@
 
-<%@page import="com.urbau.beans.BodegaUsuarioBean"%>
-<%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
+<%@page import="com.urbau.beans.PuntoDeVentaBean"%>
+<%@page import="com.urbau.feeders.PuntosDeVentasMain"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
 <%@page import="com.urbau.feeders.BodegasMain"%>
       
-  
+<%	
+			BodegasMain main = new BodegasMain();
+			ArrayList<String[]> listOfBodegas = main.getCombo( "BODEGAS", "ID", "NOMBRE"); 		
+				
+			PuntosDeVentasMain puntosDeVentas = new PuntosDeVentasMain();
+			ArrayList<PuntoDeVentaBean> puntos = puntosDeVentas.getAll( session );
+			
+			
+			
+%>  
 
 <%@page pageEncoding="utf-8" %>
 <!DOCTYPE html>
@@ -24,18 +33,7 @@
       <!--header start-->
       
       <header class="header black-bg">
-      		<%@include file="fragment/header.jsp"%> 
-      		<%	
-			BodegasMain main = new BodegasMain();
-			ArrayList<String[]> listOfBodegas = main.getCombo( "BODEGAS", "ID", "NOMBRE");
-			
-			BodegasUsuariosMain mainBodegas = new BodegasUsuariosMain();
-			ArrayList<BodegaUsuarioBean>  listOfBodegasUsuarios = mainBodegas.getFromUser( loggedUser.getId() );
-				
-			
-			
-			
-%>       
+      		<%@include file="fragment/header.jsp"%>        
         </header>
       <!--header end-->
       
@@ -66,18 +64,17 @@
           		<div class="col-lg-12">
           			
           			    <div class="form-panel">
-          			    <h3>REPORTE DE INVENTARIO</h3><br/>
-          			  <form class="form-horizontal style-form" id="form" name="form" action="rpt-inventario.jsp" method="GET">
+          			    <h3>REPORTE DE MOVIMIENTOS</h3><br/>
+          			  <form class="form-horizontal style-form" id="form" name="form" action="rpt-movimientos.jsp" method="POST">
                       
                       <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Bodega</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Ubicaci&oacute;n</label>
                               <div class="col-sm-10">
-	                              	<select  class="form-control"  name="bodega" id="bodega">
+	                              	<select  class="form-control"  name="ubicacion" id="ubicacion">
 	                              	<%
-	                              		for( BodegaUsuarioBean list : listOfBodegasUsuarios ){
-	                              			BodegaBean bod = main.getBodega( list.getIdBodega() );
+	                              		for( PuntoDeVentaBean punto : puntos ){
 	                              	%>
-	                              		<option value="<%= bod.getId() %>"><%= bod.getNombre() %></option>
+	                              		<option value="<%= punto.getId() %>"><%= punto.getNombre() %></option>
 	                              	<% 
 	                              		}
 	                              	%>
@@ -88,27 +85,22 @@
                           
                       
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Incluir imagen?</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Fecha inicial</label>
                               <div class="col-sm-10">
                               		                          		
-									<input type="checkbox" class="form-control" name="imagen" id="imagen"/>	                          	                          
+									<input type="date" class="form-control" name="fecha-inicio" id="fecha-inicio"/>	                          	                          
 	                          	
                               </div>
-                          </div>                                                 
+                          </div>
                           <div class="form-group">
-                              <label class="col-sm-2 col-sm-2 control-label">Tipo</label>
+                              <label class="col-sm-2 col-sm-2 control-label">Fecha final</label>
                               <div class="col-sm-10">
                               		                          		
-									<select  class="form-control" name="tipo" id="tipo">
-										<option value="V">Valorizado</option>
-										<option value="U">Unidades</option>
-									</select>	                          	                          
+									<input type="date" class="form-control" name="fecha-fin" id="fecha-fin"/>	                          	                          
 	                          	
                               </div>
                           </div>                                                 
-                          
-                      
-                           <div class="form-actions">
+                            <div class="form-actions">
                            	    <button type="submit" class="btn btn-success" id="savebutton">Generar</button> 
 					        </div>  
                                                                                                                            

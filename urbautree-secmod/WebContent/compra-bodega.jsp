@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.Constants"%>
 <%@page import="com.urbau.feeders.ProveedoresMain"%>
 <%@page import="com.urbau.beans.ProveedorBean"%>
 <%@page import="com.urbau.beans.PackingBean"%>
@@ -135,7 +136,7 @@
 		          			
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
-					              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
+					              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
 					                    <li><span class="btn btn-primary" onclick="searchByQuery()">Buscar</span></li>
 					              </ul>
 				            </div>
@@ -230,15 +231,32 @@
                    <h3>INGRESO ACTUAL</h3>
                    <div class="desc">
                         <div style="float:left">
+                        # De compra: <input type="text" name="numero-de-compra" id="numero-de-compra" class="form-control">
                         Subtotal: <input type="text" name="monto" id="monto" class="form-control" readonly>
                         Descuento: <input type="text" name="descuento" id="descuento" class="form-control" onchange="updateTotals()">
                         Total: <input type="text" name="total" id="total" class="form-control" readonly>
 
                         Tipo de pago: <select name="monto" class="form-control">
+                        <%
+                        	if( Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_EFECTIVO )){
+                        %>
                         <option value="efectivo">Efectivo</option>
+                        <% } %>
+                        <%
+                        	if( Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_CREDITO )){
+                        %>
                         <option value="credito">Credito</option>
+                        <% } %>
+                        <%
+                        	if( Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_TARJETA )){
+                        %>
                         <option value="tarjeta">Tarjeta</option>
+                        <% } %>
+                        <%
+                        	if( Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_CHEQUE )){
+                        %>
                         <option value="cheque">Cheque</option>
+                        <% } %>
                         </select>
                         Cheque/ref: <input type="text" name="cheque" id="cheque" class="form-control">
                           Total Productos:
