@@ -40,8 +40,11 @@
 <style>
 	@page { size: auto;  margin: 5mm; }
 
+
 	@media print
-	{    
+	{
+	
+		    
 	    .no-print, .no-print *
 	    {
 	        display: none !important;

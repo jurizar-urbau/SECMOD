@@ -3,6 +3,7 @@ package com.urbau.misc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class MergePrintableFile {
 		return null;
 	}
 	
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		MergePrintableFile mpf = new MergePrintableFile();
 		
 		File template = new File( "/Users/xumakgt/Desktop/templateEnvio.txt" );
@@ -42,5 +43,58 @@ public class MergePrintableFile {
 		mpf.merge(template, values);
 		
 	}
+	
+	
+	public static void main3(String[] args) {
+		AsciiPage page1 = new AsciiPage();
+		page1.writeString(53, 4, "0000021" );
+		page1.writeString(65, 4, "11" );
+		page1.writeString(71, 4, "07" );
+		page1.writeString(78, 4, "2016" );
+		
+		
+		page1.writeString(51, 7, "jurizar" );
+		
+		
+		System.out.println( "----------------INICIO-----------------" );
+		System.out.print( page1 );
+		System.out.println( "----------------  FIN  ----------------" );
+	}
+	
+	public static void main(String[] args) {
+		OrderDispatch od = new OrderDispatch();
+		od.setNoEnvio( "0001" );
+		od.setFecha(  Calendar.getInstance() );
+		od.setNoVendedor( "jurizar");
+		od.setNoSupervisor( "iburizar" );
+		od.setCliente("JOSE ALEJANDRO URIZAR");
+		od.setCarnetNumero( "021016" );
+		od.setDireccion( "#31 VILLA SANTORINI KM 25.5 CARRETERA A EL SALVADOR." );
+		od.setTel( "59935020" );
+		od.setTotal( "100.00" ); 
+		od.addDetail( "1", "1", "PB001", "COHETILLO CLASICO", "3.75", "3.75" );
+		od.addDetail( "2", "2.0", "PB002", "VOLCANCITO CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "2", "2.0", "PB002", "VOLCANCITO CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
 
+		
+		System.out.println( od );
+ 	}
 }
