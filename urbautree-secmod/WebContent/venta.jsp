@@ -648,7 +648,12 @@
   			
   			
   		    var ventasList = [];
+  		    var MAXLENGTH = 20;
   		    function addS( amount, price, description, imagepath,productid,packing ){
+  		    	if( ventasList.length == MAXLENGTH ){
+  		    		alert("No es posible agregar mas de " + MAXLENGTH + " productos en un mismo pedido.");
+  		    		return;
+  		    	}
   		    	var o = {};
   			    o.amount = amount;
   			    o.price = price;

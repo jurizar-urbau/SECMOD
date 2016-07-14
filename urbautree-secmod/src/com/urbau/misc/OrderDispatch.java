@@ -38,7 +38,7 @@ public class OrderDispatch {
 	
 	public void setFecha( Calendar date ){
 		firstPage.writeString(65, 4, date.get( Calendar.DAY_OF_MONTH ) );
-		firstPage.writeString(71, 4, date.get( Calendar.MONTH ) );
+		firstPage.writeString(71, 4, date.get( Calendar.MONTH ) + 1 );
 		firstPage.writeString(78, 4, date.get( Calendar.YEAR ) );
 	}
 	
@@ -48,10 +48,12 @@ public class OrderDispatch {
 			firstPage.writeString( 9,  currentDetailLine, unid );
 			firstPage.writeString( 14, currentDetailLine, codigo );
 			firstPage.writeString( 23, currentDetailLine, descripcion );
-			firstPage.writeString( 66, currentDetailLine, punit );
-			firstPage.writeString( 76, currentDetailLine, total );
+			firstPage.writeString( 66, currentDetailLine, Util.getFixedString(
+					String.valueOf( punit ), Util.ALIGN_RIGTH, 7, ' ') );
+			firstPage.writeString( 76,  currentDetailLine, Util.getFixedString(
+					String.valueOf( total ), Util.ALIGN_RIGTH, 10, ' ') );
 			currentDetailLine += 2;
-			if( currentDetailLine > 56 ){
+			if( currentDetailLine > 54 ){
 				appendable = false;
 			}
 		} else { 

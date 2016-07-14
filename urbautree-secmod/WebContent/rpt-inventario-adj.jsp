@@ -80,7 +80,7 @@
 		int mes = cal.get( Calendar.MONTH ) + 1 ;
 		int year = cal.get( Calendar.YEAR );
 		CorrelativosUtil correlativosUtil = new CorrelativosUtil();
-		int nextCorr = correlativosUtil.getNextAndAdvance( "GENERACION_INVENTARIO_" + bodegaBean.getId() );
+		int nextCorr = correlativosUtil.getNextAndAdvance( "GENERACION_INVENTARIO_ADJ_" + bodegaBean.getId() );
 	%>
 <h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %><b>&nbsp;por&nbsp;</b><%= loggedUser.getNombre() %></br><%= bodegaBean.getId() + "-" + nextCorr + "-" + mes + "-" + year %></h4>
 <h1>VOLCANCITO</h1>
@@ -102,52 +102,24 @@
                               <tr>
                                   <th>Codigo</th>
                                   <th>Descripcion</th>
-                                  <% if( request.getParameter( "imagen" ) != null ){  %>
-                                  <th>Imagen</th>
-                                  <% } %>
-                                  <th style="text-align:right">Cantidad</th>
-                                  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-                                  <th style="text-align:right">Unitario</th>
-                                  <th style="text-align:right">Total</th>
-                                  <% } %>
+                                  <th style="text-align:right">Cantidad Sistema</th>
+                                  <th style="text-align:right">Cantidad Conteo</th>
+                                  
                               </tr>
                               </thead>
                               <tbody>
                               <%
-                              	double total_costo =0;
-	                          	double total_precio1=0;
                               	for( ExtendedFieldsBean us : list ){
                               		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
                               %>
                               <tr>
 								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
 								  <td><%= us.getValue( "PRO.DESCRIPCION" ) %></td>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <td>
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </td>
-								  <% } %>
 								  <td style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></td>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
-								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></td>
-								  <% } %>
+								  <td style="text-align:right;border:1px"><input name="rpt"></td>
+								  
                               </tr>
                               <% } %>
-                              <tr>
-								  <td></td>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <td></td>
-								  <%} %>
-								  <td></td> 
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								  <td></td>
-								  <td style="text-align:right"><b><i>TOTAL</i></b></td>
-								  <td style="text-align:right"><b><%= Util.formatCurrencyWithNoRound( total_precio1 ) %></b></td>
-								   <% } %>
-                              </tr>
                               </tbody>
                           </table>
 

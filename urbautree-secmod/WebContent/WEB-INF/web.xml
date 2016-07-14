@@ -537,4 +537,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <param-name>file-upload-path</param-name>
     <param-value>/srv/volcancito/</param-value>
   </context-param>
+  <session-config>
+  	<session-timeout>60</session-timeout>
+</session-config>
 </web-app>

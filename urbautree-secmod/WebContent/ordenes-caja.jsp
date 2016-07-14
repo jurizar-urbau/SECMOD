@@ -388,12 +388,14 @@
 		        success: function(msg){
 		        	var messages = msg.split("|");
 		        	alert( messages[1] );
+		        	
+		        	if( confirm("Desea imprimir la orden?") ){
+		        		var win = window.open( "print-orden-plain.jsp?id="+selectedID);
+		        		win.print();
+		        	}
 		        	if( confirm("Desea imprimir la factura?") ){
 		        		window.open( "print-factura.jsp?id="+messages[ 0 ]);
 		        	}
-		        	if( confirm("Desea imprimir la orden?") ){
-		        		window.open( "print-orden.jsp?id="+selectedID);
-		        	} 
 		        	location.reload();
 		        	
 		        	if( !msg.startsWith('error') ){

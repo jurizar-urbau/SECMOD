@@ -109,7 +109,8 @@
                           
                       
                            <div class="form-actions">
-                           	    <button type="submit" class="btn btn-success" id="savebutton">Generar</button> 
+                           	    <button type="submit" class="btn btn-success" id="savebutton">Generar Reporte</button>
+                           	    <button type="submit" class="btn btn-info"  onclick="generarConteo()">Generar Conteo</button> 
 					        </div>  
                                                                                                                            
                       </form>
@@ -131,6 +132,12 @@
   </section>
   
 	<%@include file="fragment/footerscripts.jsp"%>
-        
+        <script type="text/javascript">
+        	function generarConteo(){
+        		document.form.action = "rpt-inventario-adj.jsp";
+        		document.form.submit();
+        		
+        	}
+        </script>
   </body>
 </html>

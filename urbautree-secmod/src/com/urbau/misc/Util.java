@@ -926,4 +926,27 @@ public class Util {
 			return false;
 		}
 	}
+
+	public static final int ALIGN_LEFT = 1;
+	public static final int ALIGN_RIGTH = 2;
+	
+	public static synchronized String getFixedString( String st, int align, int size,char fillChar ){
+		String str = "";
+		if( ALIGN_LEFT == align ){
+			str = st;
+			if( str.length() < size ){
+				for( int n = 0; n < size - str.length(); n++){
+					str += (char)fillChar;
+				}
+			}
+		} else {
+			if( str.length() < size ){
+				for( int n = 0; n < size - str.length(); n++){
+					str += (char)fillChar;
+				}
+			}
+			str += st;
+		}
+		return str;
+	}
 }

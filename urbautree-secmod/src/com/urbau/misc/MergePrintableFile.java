@@ -3,6 +3,7 @@ package com.urbau.misc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.ObjectInputStream.GetField;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,11 +91,45 @@ public class MergePrintableFile {
 		od.addDetail( "2", "2.0", "PB002", "VOLCANCITO CLASICO", "3.75", "3.75" );
 		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
 		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		
 		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
-		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
-		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", "3.75", "3.75" );
+		od.addDetail( "3", "3.0", "PB003", "TRONDADOR CLASICO", 
+				getFixedString("3.74", ALIGN_RIGTH, 10, ' '), 
+				"3.75" );
 
 		
+		
+		
 		System.out.println( od );
+		System.out.println( "final ["+getFixedString("3.74", ALIGN_RIGTH, 10, ' ')+"]");
  	}
+	
+	public static final int ALIGN_LEFT = 1;
+	public static final int ALIGN_RIGTH = 2;
+	
+	public static String getFixedString( String st, int align, int size,char fillChar ){
+		String str = "";
+		System.out.println( "ST: "+ st );
+		System.out.println( "ALIGN:" + align );
+		System.out.println( "SIZE: " + size );
+		System.out.println( "FILLCHAR: [" + fillChar + "]" );
+		
+		if( ALIGN_LEFT == align ){
+			str = st;
+			if( str.length() < size ){
+				for( int n = 0; n < size - str.length(); n++){
+					str += (char)fillChar;
+				}
+			}
+		} else {
+			if( str.length() < size ){
+				for( int n = 0; n < size - str.length(); n++){
+					str += (char)fillChar;
+				}
+			}
+			str += st;
+		}
+		return str;
+	}
+	
 }
