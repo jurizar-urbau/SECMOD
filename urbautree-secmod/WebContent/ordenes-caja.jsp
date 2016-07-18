@@ -214,11 +214,11 @@
 				                      	 <div class="form-group">
 				                      	    <label class="col-sm-2 col-sm-2 control-label">Descuento</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="descuento" name="descuento" size="7">
+				                          		<input class="form-control" id="descuento" name="descuento" size="7"  readonly>
 				                          	</div>                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="subtotal" name="subtotal" size="7">
+				                          		<input class="form-control" id="subtotal" name="subtotal" size="7" readonly>
 				                          	</div>
 				                          	
 				                      	  	

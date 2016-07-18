@@ -79,7 +79,8 @@ public class TrasladoBodega extends Entity {
 			ExtendedFieldsBean transaction = new ExtendedFieldsBean();
 			transaction.putValue("BODEGA_ORIGEN",  bodegaidStr  );
 			transaction.putValue("BODEGA_DESTINO", bodegaid2Str );
-			transaction.putValue( "FECHA", Util.getTodayDate() );  
+			//transaction.putValue( "FECHA", Util.getTodayDate() );  
+			transaction.putValue( "FECHA", "NOW()" );  
 			transaction.putValue( "ESTADO", "C" );
 			transaction.putValue( "USUARIO",  String.valueOf( user.getId() ));
 			

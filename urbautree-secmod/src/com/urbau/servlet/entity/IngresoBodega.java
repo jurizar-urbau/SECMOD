@@ -108,7 +108,8 @@ public class IngresoBodega extends Entity {
 			int next = correlativosUtil.getNextAndAdvance( "CARGA_BODEGA_" + bodegaid );
 			
 			carga_bean.putValue("BODEGA", String.valueOf( bodegaid)  );
-			carga_bean.putValue("FECHA", Util.getTodayDate() );
+			carga_bean.putValue("FECHA", "NOW()" );
+			//carga_bean.putValue("FECHA", Util.getTodayDate() );
 			carga_bean.putValue( "USUARIO", String.valueOf( loggedUser.getId() ));
 			carga_bean.putValue( "CORRELATIVO", String.valueOf( next ));
 			

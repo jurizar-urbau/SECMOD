@@ -27,6 +27,18 @@
 	BodegasMain bodegasMain = new BodegasMain();
 	BodegaBean bodegaBean = bodegasMain.getBodega( Integer.valueOf( bodega ));
 	
+	String sql =    "SELECT " + 
+					"FAM.NOMBRE, PRO.CODIGO,PRO.DESCRIPCION,PRO.PRECIO,PRO.ID,IMAGE_PATH,INV.AMOUNT,PRO.ID " + 
+					"FROM " + 
+					"	INV" + bodega + " INV, PRODUCTOS PRO, FAMILIAS FAM " + 
+					"WHERE " + 
+					"	PRO.FAMILIA = FAM.ID AND " + 
+					"	INV.ID_PRODUCT = PRO.ID AND " + 
+					"	ESTATUS = 'a' " + 
+					"ORDER BY " +  
+					"	FAM.NOMBRE, PRO.CODIGO";
+	
+	
 	ExtendedFieldsBaseMain reporteMain = new ExtendedFieldsBaseMain( "INV" + bodega + " INV, PRODUCTOS PRO", 
 			new String[]{"PRO.CODIGO","PRO.DESCRIPCION","PRO.PRECIO","PRO.ID","IMAGE_PATH","INV.AMOUNT"},
 				new int[]{ 
@@ -41,8 +53,8 @@
 			);
 	
 	ExtendedFieldsOrderBy orderBy = new ExtendedFieldsOrderBy(new String[]{"PRO.CODIGO"}, false );
-	
-	ArrayList<ExtendedFieldsBean> list = reporteMain.getAll( filter, orderBy );
+	ArrayList<ExtendedFieldsBean> list = Util.getFromQuery( sql );
+	//ArrayList<ExtendedFieldsBean> list = reporteMain.getAll( filter, orderBy );
 	ProductosMain productosMain = new ProductosMain();	
 	%>
 	
@@ -116,23 +128,40 @@
                               <%
                               	double total_costo =0;
 	                          	double total_precio1=0;
+	                          	String lastFamily = "";
                               	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              %>
+                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "8" )));
+                              		total_precio1 += Double.valueOf( us.getValue( "4" ) ) * Double.valueOf( us.getValue( "7" ) );
+                              
+                              	if( !lastFamily.equals( us.getValue( "1" )) ){
+	%>
+											<tr>
+		                              	<td colspan="6">
+		                              	&nbsp;
+		                              	</td>
+		                              	
+		                              	</tr>
+			                           <tr>
+		                              	<td colspan="6"><b><div style="text-transform: uppercase;"><%= us.getValue(  "1" ) %></div></b><hr></td>
+		                              	
+		                              	</tr>
+		                              <%
+		                              } 
+		                               lastFamily = us.getValue( "1" );
+		                               %>
                               <tr>
-								  <td><%= us.getValue( "PRO.CODIGO" ) %></td>
-								  <td><%= us.getValue( "PRO.DESCRIPCION" ) %></td>
+								  <td><%= us.getValue( "2" ) %></td>
+								  <td><%= us.getValue( "3" ) %></td>
 								  <% if( request.getParameter( "imagen" ) != null ){  %>
 								  <td>
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
+								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "6" ) %>&w=50&type=smooth" width="30px">
 								  </td>
 								  <% } %>
-								  <td style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></td>
+								  <td style="text-align:right"><%= us.getValue( "7" ) %></td>
 								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
 								    
-								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
-								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></td>
+								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "4" ) ))%></td>
+								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "4" ) ) * Integer.valueOf( us.getValue( "7" ) ) ) %></td>
 								  <% } %>
                               </tr>
                               <% } %>

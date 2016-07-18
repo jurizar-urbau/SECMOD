@@ -44,7 +44,10 @@
 		}
 		function view( id ){
 			location.replace( "descuentos-detail.jsp?mode=view&id="+id);
-		} 
+		}
+		function prt( id ){
+			location.replace( "print-cupon-de-descuento.jsp?id="+id);
+		}
 		function add(){
 			location.replace( "descuentos-detail.jsp?mode=add" );
 		}
@@ -113,6 +116,7 @@
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
+                              	  <th>No.</th>
                                   <th>Monto</th>
                                   <th>Descripci&oacute;n</th>
                                   <th>Motivo</th>
@@ -129,6 +133,7 @@
                               	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
+                              	  <td><%= us.getId()  %></td>
 								  <td><%= us.getValue( "MONTO" ) %></td>
                                   <td><%= us.getValue( "DESCRIPCION" ) %></td>
                                   <td><%= us.getReferenced( "ID_MOTIVO", "MOTIVOS_DE_DESCUENTO", "DESCRIPCION" ) %></td>
@@ -142,6 +147,8 @@
                                       <button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button>
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="prt('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>
+                                      
                                   </td>
                               </tr>
                               <% } %>
