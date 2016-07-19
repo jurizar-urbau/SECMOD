@@ -263,6 +263,36 @@ public class ProductosMain extends AbstractMain {
 		}
 		return exists;
 	}
+	public boolean existeAlias( String id,  String codigo ){
+		boolean exists = true;
+		
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			String sql = "";
+				if( !Util.isEmpty( id )){
+					sql = "SELECT COUNT(*) FROM ALIAS WHERE DESCRIPCION ='" + codigo + "' AND ID_PRODUCTO <> " + id;
+				} else {
+					sql = "SELECT COUNT(*) FROM ALIAS WHERE DESCRIPCION ='" + codigo + "'";
+				}
+			System.out.println( sql );
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				int total = rs.getInt( 1 );
+				if( total == 0  ){
+					exists = false;
+				}
+			}
+		} catch( Exception e ){
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return exists;
+	}
 
 	
 	

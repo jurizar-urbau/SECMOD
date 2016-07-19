@@ -6,16 +6,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.urbau.feeders.ClientesMain;
 import com.urbau.feeders.ProductosMain;
 
 
 /**
- * Servlet implementation class VidrioMarketConfig
+ * Servlet implementation class CheckCodigoProducto
  */
 @WebServlet( 
-		urlPatterns = { "/bin/CheckNit" } 
+		urlPatterns = { "/bin/CheckCodigoProducto" } 
 		)
 
 public class CheckCodigoProducto extends HttpServlet {
@@ -36,17 +34,10 @@ public class CheckCodigoProducto extends HttpServlet {
 		response.setContentType("application/json");
 		String codigo = request.getParameter( "codigo" );
 		String id     = request.getParameter( "id" );
-		
-		System.out.println( "id: " + id ); 
-		System.out.println( "codigo: " + codigo );
 		ProductosMain pm = new ProductosMain();
-		 
-		if(	pm.existeCodigo( id, codigo ) ){  
-			
+		if(	pm.existeCodigo( id, codigo ) || pm.existeAlias(id, codigo) ){  
 			response.getOutputStream().write( "false".getBytes() );
-			
 		}  else {
-			//response.getOutputStream().write( "success".getBytes() );
 			response.getOutputStream().write( "true".getBytes() );
 		}
 			response.getOutputStream().flush();

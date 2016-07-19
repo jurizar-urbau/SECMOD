@@ -73,7 +73,7 @@
                       <form class="form-horizontal style-form" id="form" name="form">
                       	                      
                       	<input type="hidden" name="mode" value="<%= mode%>">
-                      	<input type="hidden" name="idproducto" value="<%= idproducto %>">
+                      	<input type="hidden" id="idproducto" name="idproducto" value="<%= idproducto %>">
                       	<input type="hidden" name="id" value="<%= request.getParameter("id")%>">                      
                                                           		
                       	<div class="form-group">                      	
@@ -111,12 +111,25 @@
 		
         $(document).ready(function(){        	
          	$('#form').validate({         		
-              	rules: {                        
-            		name: {
-                  		minlength: 3,
-                  		maxlength: 50,
-                  		required: true
-                	}
+              	rules: {   
+              		name: {
+                        minlength: 1,
+                        maxlength: 30,
+                        required: true,
+                        remote: {
+                            url: "./bin/CheckCodigoProducto",
+                            type: "post",
+                            data: {
+                              codigo: function() {
+                                return $( "#name" ).val();
+                              },
+                              id :function() {
+                                return $( "#idproducto" ).val();
+                              }
+                            }
+                          }
+                      }
+            		
              	},
              	
               	highlight: function(element) {

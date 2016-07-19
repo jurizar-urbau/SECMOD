@@ -105,11 +105,22 @@
 									</select>	                          	                          
 	                          	
                               </div>
+                          </div>   
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Agrupado por</label>
+                              <div class="col-sm-10">
+                              		                          		
+									<select  class="form-control" name="agrupado" id="agrupado">
+										<option value="F">Familias</option>
+										<option value="C">Codigos</option>
+									</select>	                          	                          
+	                          	
+                              </div>
                           </div>                                                 
                           
                       
                            <div class="form-actions">
-                           	    <button type="submit" class="btn btn-success" id="savebutton">Generar Reporte</button>
+                           	    <button type="submit" class="btn btn-success" id="savebutton" onclick="enviar()">Generar Reporte</button>
                            	    <button type="submit" class="btn btn-info"  onclick="generarConteo()">Generar Conteo</button> 
 					        </div>  
                                                                                                                            
@@ -135,6 +146,15 @@
         <script type="text/javascript">
         	function generarConteo(){
         		document.form.action = "rpt-inventario-adj.jsp";
+        		document.form.submit();
+        		
+        	}
+        	function enviar(){
+        		if(document.form.agrupado.value == 'F' ){
+        			document.form.action = "rpt-inventario.jsp";	
+        		} else if(document.form.agrupado.value == 'C' ){
+        			document.form.action = "rpt-inventario-codigo.jsp";	
+        		}  
         		document.form.submit();
         		
         	}
