@@ -32,11 +32,37 @@ public class ProductosMain extends AbstractMain {
 				total_regs = Util.getTotalRegs( "PRODUCTOS", "" );
 				 
 			} else {
-				sql = "SELECT ID,CODIGO,DESCRIPCION,COEFICIENTE_UNIDAD,PROVEEDOR,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4,STOCK_MINIMO,IMAGE_PATH,FAMILIA FROM PRODUCTOS " + Util.getProductosWhere( q ) + "  ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				sql = "SELECT " +
+							"PROD.ID,PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.STOCK_MINIMO,PROD.IMAGE_PATH,PROD.FAMILIA " +
+							"FROM " +
+							"PRODUCTOS PROD RIGHT JOIN ALIAS ALI ON ALI.DESCRIPCION LIKE '%" + q + "%' " +
+							"WHERE " +
+							"PROD.ID = ALI.ID_PRODUCTO " + 
+							"UNION " +
+							"SELECT " + 
+							"PROD.ID,PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.STOCK_MINIMO,PROD.IMAGE_PATH,PROD.FAMILIA " +
+							"FROM " +
+							"PRODUCTOS PROD " +
+							"WHERE " +
+							"PROD.CODIGO LIKE '%" + q + "%'   OR  PROD.DESCRIPCION LIKE '%" + q + "%' " +
+							"ORDER BY ID DESC  LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				
+				total_regs = Util.getTotalRegsFromRegs( "SELECT COUNT( TOTAL ) FROM ( " +
+							"SELECT " + 
+							"COUNT(*) TOTAL " +
+							"FROM " +
+							"PRODUCTOS PROD RIGHT JOIN ALIAS ALI ON ALI.DESCRIPCION LIKE '%" + q + "%' " +
+							"WHERE " +
+							"PROD.ID = ALI.ID_PRODUCTO " + 
+							"UNION ALL " +
+							"SELECT  " +
+							"COUNT(*) TOTAL " +
+							"FROM " +
+							"PRODUCTOS PROD " +
+							"WHERE " +
+							"PROD.CODIGO LIKE '%" + q + "%'   OR  PROD.DESCRIPCION LIKE '%" + q + "%') RESULTADOS");
 				rs = stmt.executeQuery( sql );
-				total_regs = Util.getTotalRegs( "PRODUCTOS", Util.getProductosWhere( q ) );
 			}
-			System.out.println( "sql: " + sql );
 			while( rs.next() ){
 				ProductoBean bean = new ProductoBean();
 				bean.setTotal_regs( total_regs );

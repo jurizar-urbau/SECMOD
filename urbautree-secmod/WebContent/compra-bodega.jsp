@@ -59,7 +59,7 @@
                          "<div class=\"centered\">" +
                          
                  "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-                 "<p style=\"color:red\"></p>" +
+                 "<p style=\"color:red\">"+v.packings+"</p>" +
                   "       </div>" +
                   "     </div>" +
                   "   </div>" +
@@ -259,7 +259,7 @@
                         <% } %>
                         </select>
                         Cheque/ref: <input type="text" name="cheque" id="cheque" class="form-control">
-                          Total Productos:
+                          Total Compra:
                         </div>
                         <div class="details">
                           <p style="color:blue; font-size:18pt; text-align: right;" id="totalOrden">
@@ -510,8 +510,7 @@
     		        	if( !msg.startsWith('error') ){
     		        		
     		        		if( confirm( "Desea imprimir la carga?" ) ){
-    		        			window.open( 'cargas-bodega-detalle.jsp?autoprint=true&id=' + messages[ 0 ] );
-    		        			location.reload();
+    		        			location.replace( 'rpt-cargas-bodega.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
     		        		} else {
     		        			location.reload();
     		        		}
@@ -588,10 +587,11 @@
 				$( "#sale-container" ).append( htmltoadd );
 				
 			}
-  			$( "#totalOrden" ).html( totalOrden);
+  			
   			$( "#monto" ).val( montoTotal ) ;
   			var descuentoVal = $( "#descuento" ).val(  ) ;
-  			$( "#total" ).val( montoTotal - descuentoVal ) ;
+  			$( "#total" ).val( montoTotal - descuentoVal)  ;
+  			$( "#totalOrden" ).html( "Q " + (montoTotal - descuentoVal).toFixed(2));
   			
   		  }
   			
@@ -600,6 +600,7 @@
   			  var descuento = $( "#descuento" ).val() ;
   			  var total = monto - descuento;
   			$( "#total" ).val(  total  ) ;
+  			$( "#totalOrden" ).html( "Q " + total );
   		  }
   			
 	</script>  

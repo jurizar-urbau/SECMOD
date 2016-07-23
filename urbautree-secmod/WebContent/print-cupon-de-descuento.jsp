@@ -18,13 +18,14 @@ String idString = request.getParameter( "id" );
 int id = Integer.valueOf( idString );
 
 ExtendedFieldsBaseMain cuponesMain = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUENTO", 
-	    new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_MOTIVO"},
+	    new String[]{"MONTO","DESCRIPCION","ID_USUARIO","FECHA_CREACION","ESTADO","ID_CLIENTE","ID_MOTIVO","ID_ORDEN"},
 		new int[]{ 
 				Constants.EXTENDED_TYPE_DOUBLE,
 				Constants.EXTENDED_TYPE_STRING,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER } );
 
@@ -65,7 +66,7 @@ ExtendedFieldsBean cupon = cuponesMain.get( id );
 	</td>
 </tr>
 	<tr>
-		<th width="10%">No.</th>
+		<th width="10%">#Cupon</th>
 		<th><%= cupon.getId()  %></th>
 	</tr>
 	<tr>
@@ -92,6 +93,10 @@ ExtendedFieldsBean cupon = cuponesMain.get( id );
 	<tr>
 		<th>Estado</th>
 		<th><%= "C".equals( cupon.getValue( "ESTADO") ) ? "CREADO" : ( "U".equals( cupon.getValue( "ESTADO") ) ? "USADO" : "-" )  %></th>
+	</tr>
+	<tr>
+		<th>#Orden</th>
+		<th><%= cupon.getValue( "ID_ORDEN"  )  %></th>
 	</tr>
 	 <tr>
 		<th>Monto</th>

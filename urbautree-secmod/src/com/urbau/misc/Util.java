@@ -289,6 +289,26 @@ public class Util {
 		}
 		return total_regs;
 	}
+	public static int getTotalRegsFromRegs( String sql ){
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;		
+		int total_regs = -1;
+		try{
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			if( rs.next() ){
+				total_regs = rs.getInt( 1 );
+			}
+		} catch( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close( con, stmt, rs );
+		}
+		return total_regs;
+	}
 
 	public static String getNextGuia( ){
 		Connection con  = null;

@@ -49,6 +49,9 @@
 		function pagos( idcompra ){
 			location.replace( "proveedores-pagos.jsp?id-proveedor=<%= request.getParameter("id-proveedor")%>&id-compra="+idcompra);
 		}
+		function imprimir( id ){
+			location.replace( "rpt-compra.jsp?id="+id+"&id-proveedor=<%= request.getParameter("id-proveedor") %>");
+		}
 
 	</script>
 	</head>
@@ -140,6 +143,7 @@
                                   <td>
                                       <button class="btn btn-info btn-xs" onclick="detalle('<%= us.getId()  %>');"><i class="fa fa-eye">&nbsp;Detalle de compra</i></button>
                                       <button class="btn btn-success btn-xs" onclick="pagos('<%= us.getId()  %>');"><i class="fa fa-money">&nbsp;Pagos</i></button>
+                                      <button class="btn btn-info btn-xs" onclick="imprimir('<%= us.getId()  %>');"  alt="Imprimir" title="Imprimir"><i class="fa fa-print"></i></button>
                                   </td>
                               </tr>
                               <% } %>

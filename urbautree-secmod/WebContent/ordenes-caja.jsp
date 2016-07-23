@@ -393,8 +393,10 @@
 		        		var win = window.open( "print-orden-plain.jsp?id="+selectedID);
 		        		win.print();
 		        	}
-		        	if( confirm("Desea imprimir la factura?") ){
-		        		window.open( "print-factura.jsp?id="+messages[ 0 ]);
+		        	if(  $( "#factura" ).val().length > 0  ){
+			        	if( confirm("Desea imprimir la factura?")  ){
+			        		window.open( "print-factura.jsp?id="+messages[ 0 ]);
+			        	}
 		        	}
 		        	location.reload();
 		        	

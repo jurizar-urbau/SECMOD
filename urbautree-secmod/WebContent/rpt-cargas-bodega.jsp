@@ -58,7 +58,11 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_CARGA"
 %>
 <script>
 	function regresar(){
-		location.replace( "cargas-bodega.jsp" );
+		<% if( null != request.getParameter("referer") ){ %>
+			location.replace( "<%= request.getParameter("referer") %>" );
+		<% } else { %>
+			location.replace( "cargas-bodega.jsp" );	
+		<% } %>
 	}
 </script>
 <style>

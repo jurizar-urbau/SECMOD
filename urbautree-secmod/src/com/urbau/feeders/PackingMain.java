@@ -10,6 +10,7 @@ import com.urbau.db.ConnectionManager;
 import com.urbau.misc.Constants;
 import com.urbau.misc.Util;
 
+
 public class PackingMain {
 	
 	public ArrayList<PackingBean> get( String q, int from, int idproducto ){

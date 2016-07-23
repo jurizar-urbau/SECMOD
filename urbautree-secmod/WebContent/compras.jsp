@@ -58,6 +58,9 @@
 		function detail( id ){
 			location.replace( "compras-detail-detail.jsp?id="+id);
 		}
+		function imprimir( id ){
+			location.replace( "rpt-compra.jsp?id="+id);
+		}
 		function add(){
 			location.replace( "compras-detail.jsp?mode=add" );
 		}
@@ -164,6 +167,7 @@
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"  alt="Eliminar" title="Eliminar"><i class="fa fa-trash-o "></i></button>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"  alt="Ver" title="Ver"><i class="fa fa-check"></i></button>
                                       <button class="btn btn-info btn-xs" onclick="detail('<%= us.getId()  %>');"  alt="Detalle" title="Detalle"><i class="fa fa-list-alt"></i></button>
+                                      
                                   </td>
                               </tr>
                               <% } %>

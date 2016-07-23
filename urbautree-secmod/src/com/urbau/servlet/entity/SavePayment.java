@@ -216,9 +216,11 @@ public class SavePayment extends Entity {
 				message = "No ha seleccionado un banco";
 			} else if( Util.isEmpty( tipo_tarjeta )) {
 				message = "No ha seleccionado un tipo de tarjeta";
-			} else if ( Util.isEmpty( numero_tarjeta )){
-				message = "No ha ingresado un numero de tarjeta";
-			} else if ( Util.isEmpty( autorizacion )){
+			}
+//			else if ( Util.isEmpty( numero_tarjeta )){
+//				message = "No ha ingresado un numero de tarjeta";
+//			}
+			else if ( Util.isEmpty( autorizacion )){
 				message = "No ha ingresado una autorizacion";
 			}
 		} else if( "cheque".equals( tipo_pago  )){

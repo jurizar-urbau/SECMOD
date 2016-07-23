@@ -20,7 +20,7 @@
 	<%@include file="fragment/head.jsp"%>
 	<script>
 		function setClient(){
-			
+			console.log( "unused method setClient()");
 			
 		}
 		var current_stock = 0;
@@ -546,8 +546,12 @@
     		        		var values = ci.split(',');
     				    	$('#clientdisplay').html(ci);
     				    	$('#clientid').val( values[ 0 ] );
-    				    	hideClient();
+    				    	
+    				    	
+    				    	console.log("hidding NEW client");
     				    	hideNewClient();
+    				    	console.log("hidding client");
+    				    	hideClient();
     		        		
     		        	}
     		            //location.replace( "clientes.jsp" );
