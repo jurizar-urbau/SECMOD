@@ -139,11 +139,11 @@ public class InvetarioBean implements Bean {
 	@Override
 	public int getId() {
 		
-		return 0;
+		return getIdBodega();
 	}
 	@Override
 	public void setId(int i) {
-		// TODO Auto-generated method stub		
+		setIdBodega(i);		
 	}
 	public int getId_usuario() {
 		return id_usuario;

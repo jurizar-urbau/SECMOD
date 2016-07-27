@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<web-app 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" 
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true" version="3.0">
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+metadata-complete="true" 
+version="3.0">
   <description>
       Volcancito
     </description>
@@ -76,6 +79,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>ToggleFieldValue</servlet-name>
     <url-pattern>/bin/ToggleFieldValue</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RevertLoad</servlet-name>
+    <servlet-class>com.urbau.servlet.RevertLoadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RevertLoad</servlet-name>
+    <url-pattern>/bin/RevertLoad</url-pattern>
   </servlet-mapping>
   
   
@@ -240,6 +252,10 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-class>com.urbau.servlet.entity.SearchClients</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SearchStock</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SearchStock</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ProductosPorBodega</servlet-name>
     <servlet-class>com.urbau.json.service.ProductosPorBodega</servlet-class>
   </servlet>
@@ -327,6 +343,10 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>SearchClients</servlet-name>
     <url-pattern>/bin/searchc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchStock</servlet-name>
+    <url-pattern>/bin/searchstock</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>SavePayment</servlet-name>

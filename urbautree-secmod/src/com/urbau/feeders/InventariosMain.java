@@ -97,10 +97,11 @@ public class InventariosMain extends AbstractMain {
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + product_id +" AND ESTATUS='"+estatus+"'";
-			System.out.println("query:"+query);
+			System.out.println( "looking for products in store:" +  query );
 			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new InvetarioBean();
+				bean.setId( idBodega );
 			    bean.setId_product(  rs.getInt   ( 1  ));
 			    bean.setEstatus(  Util.trimString( rs.getString( 2 )));												
 			    bean.setAmount(  rs.getInt( 3 ));
@@ -130,6 +131,7 @@ public class InventariosMain extends AbstractMain {
 			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new InvetarioBean();
+				bean.setId( idBodega );
 			    bean.setId_product(  rs.getInt   ( 1  ));
 			    bean.setEstatus(  Util.trimString( rs.getString( 2 )));												
 			    bean.setAmount(  rs.getInt( 3 ));
@@ -146,6 +148,7 @@ public class InventariosMain extends AbstractMain {
 		
 	public InvetarioBean getBlankBean(){
 		InvetarioBean bean = new InvetarioBean();
+		
 		bean.setId_product(-1);
 		bean.setEstatus("");
 		bean.setAmount(0);	

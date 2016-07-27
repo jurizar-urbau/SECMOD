@@ -510,7 +510,8 @@
     		        	if( !msg.startsWith('error') ){
     		        		
     		        		if( confirm( "Desea imprimir la carga?" ) ){
-    		        			location.replace( 'rpt-cargas-bodega.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
+    		        			//location.replace( 'rpt-cargas-bodega.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
+    		        			location.replace( 'rpt-compra.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
     		        		} else {
     		        			location.reload();
     		        		}

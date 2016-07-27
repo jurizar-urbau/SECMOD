@@ -1,4 +1,5 @@
 
+            
 <%@page import="com.urbau.security.Authorization"%>
 <ul class="sidebar-menu no-print" id="nav-accordion">
                   <li class="mt">
@@ -63,7 +64,7 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"BASE_DE_DATOS")) { %>
 					                          <li><a  href="filter-rpt-base-de-datos-productos.jsp">Base de Datos de productos</a></li>
 					                      <% } %>
-					                      
+					                      <li><a  href="filter-revert.jsp">Revertir carga</a></li>
 					                      
 					                      </ul>
 					</li>
@@ -93,10 +94,10 @@
 					                      <ul class="sub">
 					                      
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_PEDIDOS")) { %>
-					                      <li><a  href="venta.jsp">VENTAS</a></li>
+					                      <li><a  href="venta.jsp">Pedidos</a></li>
 					                      <% } %>
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COBROS")) { %>
-				                          <li><a  href="ordenes-caja.jsp">CAJA</a></li>
+				                          <li><a  href="ordenes-caja.jsp">Cobros</a></li>
 				                          <% } %>
 				                          <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"ORDENES")) { %>
 				                          <li><a  href="eliminar-ordenes-caja.jsp">Eliminar orden</a></li>

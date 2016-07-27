@@ -128,7 +128,7 @@
 
               <div class="row">
                   <div class="col-lg-9  col-md-9 col-sm-9 main-chart">
-                  <h3>VENTA</h3>
+                  <h3>PEDIDO</h3>
                       <div class="row mt">
                       <div class="col-lg-12">
                       <i class="fa fa-cogs" onclick="chooseClient()"></i>
@@ -339,10 +339,8 @@
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			                          <h4 class="modal-title">Seleccione un cliente...</h4>
 			                          <span class="pull-right">
-			                          	
-			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
+			          				  	<a data-toggle="modal" class="btn btn-success" href="javascript: createNewClient()">+</a>  
 			          				  </span>
-			          				  
 			          				  	<label>Buscar: <input type="text" class="form-control" autocomplete="off" id="search-client" name="q"></label> 
 			          				  
 			          				  
@@ -509,6 +507,9 @@
   				$('#myModal').modal('show');
   				$('#search-client').focus();
   				
+  			}
+			function createNewClient(){
+  				$('#myModalNewClient').modal('show');
   			}
   			function chooseStore(){
   				$('#myStores').modal('show');

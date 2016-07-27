@@ -175,7 +175,7 @@ public class IngresoBodega extends Entity {
 				compra.putValue( "NUMERO_DE_COMPRA", numeroDeCompra );
 				String addedCompra = comprasMain.addForTransaction(compra);
 				compraID = comprasMain.getIdFromTransaction( addedCompra );
-				System.out.println( "compra added: " + addedCompra );
+				System.out.println( "compra added: " + addedCompra +"," + compraID );
 				
 			}
 			
@@ -222,7 +222,7 @@ public class IngresoBodega extends Entity {
 						a.setAmount( amount * pack );
 						
 						if( im.add( a ) ) {
-							message = carga_id + "|Carga agregada exitosamente!";
+							message = (compraID > 0 ? compraID : carga_id) + "|Carga agregada exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");
 						}
@@ -230,7 +230,7 @@ public class IngresoBodega extends Entity {
 						a.setAmount( a.getAmount() + ( amount * pack ) );
 						a.setIdBodega( bodegaid );
 						if( im.mod( a ) ) {
-							message = carga_id + "|Carga agregada exitosamente!";
+							message = (compraID > 0 ? compraID : carga_id) + "|Carga agregada exitosamente!";
 						} else {
 							System.out.println( "No se pudo agregar el nuevo inventario...");
 						}

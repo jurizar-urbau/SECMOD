@@ -12,7 +12,7 @@ import com.urbau.misc.Util;
 /**
  * Servlet implementation class Redirect
  */
-@WebServlet("/bin/Logout")
+
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

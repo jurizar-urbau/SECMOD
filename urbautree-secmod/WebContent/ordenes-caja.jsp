@@ -97,7 +97,7 @@
           				  <span class="pull-right"><button class="btn btn-success"  onclick="abrir()">Abrir Caja</button>&nbsp;</span>
           		<% } %>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> CAJA [<%= loggedUser.getNombre_caja_punto_venta() %>]</h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> COBROS [<%= loggedUser.getNombre_caja_punto_venta() %>]</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               

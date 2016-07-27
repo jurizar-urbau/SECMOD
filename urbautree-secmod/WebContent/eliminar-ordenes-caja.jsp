@@ -93,12 +93,7 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_ADD)){ %>          				
-          				  <span class="pull-right no-print">
-          				  	<button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;          				  
-          				  </span>
-          				<%//}%>  
-                          <table class="table table-striped table-advance table-hover">
+          				  <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> ELIMINAR ORDENES</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>

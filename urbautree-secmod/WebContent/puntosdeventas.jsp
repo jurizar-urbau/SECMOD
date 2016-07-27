@@ -129,7 +129,7 @@
                                       <button class="btn btn-danger btn-xs" onclick="removereg('<%= bean.getId()  %>');"><i class="fa fa-trash-o "></i></button>
                                     <%//}%>  
 									<% //if(Authorization.isAuthorizedOption(loggedUser.getRol(), Constants.NAME_PROVEEDORES, Constants.OPTIONS_VIEW)){ %>                                      
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-check"></i></button>
+                                      <button class="btn btn-success btn-xs" onclick="view('<%= bean.getId()  %>');"><i class="fa fa-eye"></i></button>
                                     <%//}%>
                                       <button class="btn btn-info btn-xs" onclick="PuntoDeVentaPrecios('<%= bean.getId()  %>');" alt="Precios por punto de venta" title="Precios por punto de venta"><i class="fa fa-file-o"></i>Precios</button>
                                       <button class="btn btn-info btn-xs" onclick="PuntoDeVentaCajas('<%= bean.getId()  %>');" alt="Cajas por punto de venta" title="Cajas por punto de venta"><i class="fa fa-file-o"></i>Cajas</button>	  

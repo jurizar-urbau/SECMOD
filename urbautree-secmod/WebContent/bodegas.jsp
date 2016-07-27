@@ -75,21 +75,63 @@
       <!--main content start-->
       
       <section id="main-content">
+      
+				<div aria-hidden="true" aria-labelledby="stockSearch" role="dialog" tabindex="-1" id="stockDialog" class="modal fade">
+						<form id="modalform" name="modalform" >
+						  <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Buscar existencia...</h4>
+			                          	<label>Buscar: <input type="text" class="form-control" autocomplete="off" id="stock-client" name="q"></label> 
+			                      </div>
+			                      <div class="modal-body">
+				                      
+						 <table class="table table-striped table-advance table-hover">
+	                  	  	  
+	                  	  	  <thead>
+                              <tr>
+                                  <th>Codigo</th>                                  
+                                  <th>Descripcion</th>
+                                  <th>Existencia</th>
+                                  <th>Bodega</th>                                                                    
+                              </tr>
+                              </thead>
+                              <tbody id="stock-container">
+                              </tbody>
+                          </table>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cerrar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>
+		          
           <section class="wrapper site-min-height">
+          
           <br/>
-          <div class="col-lg-6"> 
-           
-          </div>
+          
+          <div class="col-lg-6">
+	          		<div class="top-menu">
+			              <ul class="nav pull-left top-menu">
+			              		<li><button class="btn btn-seconday" onclick="javascript: $('#stockDialog').modal('show')">Existencia</button></li>
+			              </ul>
+		            </div>
+			  </div>
           <div class="col-lg-6">
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
 			              		<li><input type="text" class="form-control" id="search-query-3" name="q" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
 			                    <li><button class="btn btn-primary">Buscar</button></li>
+			                    
 			              </ul>
 		            </div>
 			    </form>
 			  </div>
+			  
 			  <br/>
 			  
           	
@@ -198,5 +240,34 @@
       <!--footer end-->
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
+	<script>
+		          $(window).load(function(){
+			  	    	$( "#stock-client" ).keyup(function() {
+			  	        	var value = $( "#stock-client" ).val();
+			  	        	searchStock( value );
+			  			});
+			  	        
+			  	    });
+		          function searchStock( q ){
+		  			$( "#stock-container" ).html("");
+		  			 $.get( "./bin/searchstock?q=" + q, null, function(response){
+		                   $.each(response, function(i, v) {
+		                  	 var rootele;
+		                  	
+		                  	$( "#stock-container" ).append( htmltoadd );
+		                  	 var htmltoadd =
+		                  		"<tr>" +
+		                   	  	"<td>"+v.codigo+"</td>" +                                  
+		                       	"<td>"+v.descripcion+"</td>" +
+		                       	"<td>"+v.existencia+"</td>" +
+		                       	"<td>"+ v.nombrebodega + "</td>" +
+		  	                 	"</tr>";
+		           			$( "#stock-container" ).append( htmltoadd );
+		                  	
+		                  	 
+		                   });
+		                });
+		  		}
+		          </script>
   </body>
 </html>
