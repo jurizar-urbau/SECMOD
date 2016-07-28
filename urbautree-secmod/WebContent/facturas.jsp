@@ -17,7 +17,7 @@
 	   String select = queriedpunto == null || "".equals( queriedpunto.trim() ) ? String.valueOf( selectedpunto ) : queriedpunto;
 		
 	ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "FACTURAS FACT, ORDENES ORD", 
-			new String[]{"FACT.FACTURA","FACT.ORDEN","FACT.FECHA","FACT.SUBTOTAL","FACT.TOTAL","FACT.NIT","FACT.NOMBRE"},
+			new String[]{"FACT.FACTURA","FACT.ORDEN","FACT.FECHA","FACT.SUBTOTAL","FACT.TOTAL","FACT.NIT","FACT.NOMBRE","FACT.ID"},
 				new int[]{ 
 				Constants.EXTENDED_TYPE_STRING, 
 				Constants.EXTENDED_TYPE_INTEGER,
@@ -25,7 +25,8 @@
 				Constants.EXTENDED_TYPE_DOUBLE,
 				Constants.EXTENDED_TYPE_DOUBLE,
 				Constants.EXTENDED_TYPE_STRING,
-				Constants.EXTENDED_TYPE_STRING
+				Constants.EXTENDED_TYPE_STRING,
+				Constants.EXTENDED_TYPE_INTEGER
 			} );
 	
 	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( 
@@ -120,10 +121,6 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
-          				  </span>
                           <table class="table table-striped table-advance table-hover">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> Facturas 
 	                  	  	  <form>
@@ -167,7 +164,7 @@
                                   <td><%= us.getValue( "FACT.NOMBRE" ) %></td>
                                   
                                   <td>
-                                      <button class="btn btn-primary btn-xs" onclick="imprimirFactura('<%= us.getId()  %>');"><i class="fa fa-print"></i></button>
+                                      <button class="btn btn-primary btn-xs" onclick="imprimirFactura('<%= us.getValue("FACT.ID")  %>');"><i class="fa fa-print"></i></button>
                                   </td>
                               </tr>
                               <% } %>
