@@ -67,7 +67,7 @@
           			
           			    <div class="form-panel">
           			    <h3>REPORTE DE INVENTARIO</h3><br/>
-          			  <form class="form-horizontal style-form" id="form" name="form" action="rpt-inventario.jsp" method="GET">
+          			  <form class="form-horizontal style-form" id="form" name="form" action="rpt-inventario.jsp" method="POST">
                       
                       <div class="form-group">
                               <label class="col-sm-2 col-sm-2 control-label">Bodega</label>
@@ -100,7 +100,9 @@
                               <div class="col-sm-10">
                               		                          		
 									<select  class="form-control" name="tipo" id="tipo">
+									<% if( Authorization.isAuthorizedOption( loggedUser.getRol(), "REPORTE_INVENTARIO", 13 )){ %>
 										<option value="V">Valorizado</option>
+									<% } %>
 										<option value="U">Unidades</option>
 									</select>	                          	                          
 	                          	

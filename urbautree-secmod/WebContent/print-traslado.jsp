@@ -50,7 +50,7 @@ boolean envio = !"transito".equals( request.getParameter( "from" ) );
 <%
 
 ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
-		new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID","DESTINATARIO"},
+		new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","TRANSID","DESTINATARIO","CORRELATIVO"},
 			new int[]{ 
 			Constants.EXTENDED_TYPE_INTEGER, 
 			Constants.EXTENDED_TYPE_INTEGER,
@@ -58,6 +58,7 @@ ExtendedFieldsBaseMain um = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER",
 			Constants.EXTENDED_TYPE_STRING,
 			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_STRING,
+			Constants.EXTENDED_TYPE_INTEGER,
 			Constants.EXTENDED_TYPE_INTEGER
 			
 		} );
@@ -127,6 +128,10 @@ if( !envio ){
 		<%
 	}
 	%>
+
+	<tr>
+		<th>Correlativo</th><td><%= bean.getValue( "CORRELATIVO" ) %></td>
+	</tr>
 	<tr>
 		<th>Bodega Origen</th><td><%= bodegaOrigen.getId() + " " + bodegaOrigen.getNombre() %></td>
 	</tr>

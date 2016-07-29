@@ -220,7 +220,11 @@
                           <span>Reportes</span>
                       </a>
                       <ul class="sub">
+                        <% 
+                      	 	if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"REPORTE_INVENTARIO")) { 
+                   		%>
                         <li><a  href="filter-rpt-inventario.jsp">Inventario</a></li>
+                        <% } %>
                         <li><a  href="filter-rpt-utilidades.jsp">Utilidades</a></li>
                         <li><a  href="filter-rpt-movimientos.jsp">Movimientos</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>

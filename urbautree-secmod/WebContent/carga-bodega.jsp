@@ -389,8 +389,8 @@
   			
   			
   			
-			$("#savesalebutton").click(function(){
-				
+			$("#savesalebutton").click(function(e){
+				e.preventDefault();
     			var form =$('#saleform');
     	     	$.ajax({
     	     		type:'POST',
@@ -421,7 +421,7 @@
     	 			error: function(jqXHR, textStatus, errorThrown){
     	 				console.log("ERROR srtatus: ", textStatus);
     	 				console.log("ERROR errorThrown: ", errorThrown);
-    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 				alert("Se prudujo un error al hacer la operacion");	
     	 			}
     		            		        
     	       });

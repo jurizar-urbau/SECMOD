@@ -17,6 +17,7 @@ import com.urbau.beans.UsuarioBean;
 import com.urbau.feeders.ExtendedFieldsBaseMain;
 import com.urbau.feeders.InventariosMain;
 import com.urbau.misc.Constants;
+import com.urbau.misc.CorrelativosUtil;
 import com.urbau.misc.InventarioHelper;
 import com.urbau.misc.Util;
 
@@ -30,9 +31,7 @@ public class TrasladoBodega extends Entity {
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			System.out.println( "traslado entre bodegas...");
 			HttpSession session = request.getSession();
-			//UsuarioBean loggedUser = getLoggedUser( session );
 			validateRequest( session );
 			Enumeration<String> parameter_list =  request.getParameterNames();
 			while( parameter_list.hasMoreElements() ){
@@ -64,8 +63,10 @@ public class TrasladoBodega extends Entity {
 			InventariosMain im = new InventariosMain();
 			
 			ExtendedFieldsBaseMain traslado_head = new ExtendedFieldsBaseMain( "TRASLADOS_HEADER", 
-					new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO"}, 
-					new int[] {Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER}
+					new String[]{"BODEGA_ORIGEN","BODEGA_DESTINO","FECHA","ESTADO","USUARIO","CORRELATIVO"}, 
+					new int[] {Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_DATE,Constants.EXTENDED_TYPE_STRING,Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_INTEGER}
 					);
 			
 			
@@ -76,13 +77,17 @@ public class TrasladoBodega extends Entity {
 					Constants.EXTENDED_TYPE_INTEGER,Constants.EXTENDED_TYPE_STRING}
 					);
 			
+			CorrelativosUtil correlativosUtil = new CorrelativosUtil();
+			int nextCorrelativo = correlativosUtil.getNextAndAdvance( "TRASLADO_" + bodegaidStr + "_" + bodegaid2Str  );
+			System.out.println( "assigning next number to transfer: " + nextCorrelativo );
 			ExtendedFieldsBean transaction = new ExtendedFieldsBean();
 			transaction.putValue("BODEGA_ORIGEN",  bodegaidStr  );
-			transaction.putValue("BODEGA_DESTINO", bodegaid2Str );
-			//transaction.putValue( "FECHA", Util.getTodayDate() );  
+			transaction.putValue("BODEGA_DESTINO", bodegaid2Str );  
 			transaction.putValue( "FECHA", "NOW()" );  
 			transaction.putValue( "ESTADO", "C" );
 			transaction.putValue( "USUARIO",  String.valueOf( user.getId() ));
+			transaction.putValue( "CORRELATIVO", String.valueOf( nextCorrelativo ));
+			
 			
 			String generatedID = traslado_head.addForTransaction( transaction );
 			int id = traslado_head.getIdFromTransaction( generatedID );
