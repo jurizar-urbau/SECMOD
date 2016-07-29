@@ -803,7 +803,7 @@ public class Util {
 		}
 		return list;
 	}
-	public static Object getPackings(String product_id) {
+	public static String getPackings(String product_id) {
 		Connection con  = null;
 		Statement  stmt = null;
 		ResultSet  rs   = null;
@@ -827,6 +827,32 @@ public class Util {
 			ConnectionManager.close(con, stmt, rs);
 		}
 		return buffer;
+	}
+	public static String getPackingsAsArray(String product_id) {
+		Connection con  = null;
+		Statement  stmt = null;
+		ResultSet  rs   = null;
+		String sql = "SELECT MULTIPLICADOR,NOMBRE FROM PACKINGS WHERE ID_PRODUCTO = " + product_id + " ORDER BY MULTIPLICADOR ASC";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( "[ " ); 
+		
+		try {
+			con  = ConnectionManager.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery( sql );
+			
+			while( rs.next() ){
+				 buffer.append( "{value:'").append( rs.getInt( 1 )).append("',descripcion:'").append(rs.getString( 2 )).append("'}" ).append(",");
+			}
+		} catch ( Exception e ){
+			System.out.println( sql );
+			e.printStackTrace( );
+		} finally {
+			ConnectionManager.close(con, stmt, rs);
+		}
+		buffer.deleteCharAt( buffer.length() - 1 );
+		buffer.append( "]" );
+		return buffer.toString();
 	}
 	public static Object getAlias(String product_id) {
 		Connection con  = null;
