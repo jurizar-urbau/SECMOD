@@ -1,14 +1,68 @@
-<%@page pageEncoding="utf-8" %><%@page 
-import="com.urbau.feeders.BodegasUsuariosMain"%><%@page 
-import="com.urbau.beans.BodegaBean"%><%@page 
-import="java.util.ArrayList"%><%@page 
-import="com.urbau.feeders.BodegasMain"%><% 
-	BodegasUsuariosMain bm = new BodegasUsuariosMain(); 
-%><!DOCTYPE html>
+<%@page import="com.urbau.beans.PackingBean"%>
+<%@page import="com.urbau.feeders.PackingMain"%>
+<%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
+<%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.beans.ProductoBean"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>
+<%@page pageEncoding="utf-8" %>
+<%@page import="com.urbau.feeders.BodegasMain"%>
+<% 
+	BodegasUsuariosMain bm = new BodegasUsuariosMain();
+    ProductosMain pm = new ProductosMain();
+    PackingMain packmain = new PackingMain();
+	long total_productos = pm.count();
+%>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	
+	<script>
+		
+		 
+		function searchProducts( q ){
+			console.log( "looking for products with [" + q + "]");
+			$( "#product-container" ).html("");
+			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+			
+                 $.each(response, function(i, v) {
+                	 console.log( i, v );
+                	 
+                	 var rootele;
+                	 
+                	 var htmltoadd = 
+                		 
+              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
+                     "<div class=\"col-md-3 col-sm-3 mb\">" +
+                       "<div class=\"white-panel pn\">" +
+                         "<div class=\"white-header\">" +
+                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
+                         "</div>" +
+             "<div class=\"row\">" +
+               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
+                 "<p>" + v.codigo +"</p>" +
+               "</div>" +
+               "<div class=\"col-sm-6 col-xs-6 goright\">" +
+               "<p>&nbsp;&nbsp;&nbsp;</p>" +
+             "</div>" +
+               "<div class=\"col-sm-6 col-xs-6\"></div>" +
+                         "</div>" +
+                         "<div class=\"centered\">" +
+                         
+                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
+                 "<p style=\"color:red\"></p>" +
+                 "<p>"+v.packings+"</p>" + 
+                  "       </div>" +
+                  "     </div>" +
+                  "   </div>" +
+         "</a>";
+         			$( "#product-container" ).append( htmltoadd );
+                	
+                	 
+                 });
+              });
+		}
+	</script>
 	<style>
 		div.separator {
 		    margin-top: 30px;
@@ -42,7 +96,7 @@ import="com.urbau.feeders.BodegasMain"%><%
                       </div>
                       <div class="col-lg-4 pull-right">
                       Busqueda:
-		          		<form>
+		          		<form onsubmit="searchByQuery(); return false;">
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
@@ -151,7 +205,25 @@ import="com.urbau.feeders.BodegasMain"%><%
 		              </form>
 		          </div>
       <!-- stores modal ends -->
-      <!--  INICIA MODAL UNICO  -->
+      
+      <script>
+      	function setProductModalValues(productid, imagePath, descripcion, packings ){
+			$("#productid").val(productid);
+			$("#imagePath").val(imagePath);
+			$("#descripcion").val(descripcion);
+			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
+			$("#modalDescription").html( descripcion );
+			$('#modalpackingscontainer').html("");
+			contador = 0;
+			$.each( packings, function( key, value ) {
+				$('#modalpackingscontainer').append(
+						'<input type="radio" name="packing" value="'+value.value+'" '+( contador==0 ?'checked':'' )+'   >&nbsp;'+value.descripcion+'<br>');
+				contador ++;
+ 			});
+			$("#productModal").modal("show");
+      	}
+      </script>
+		<!--  INICIA MODAL UNICO  -->
              <div aria-hidden="true" aria-labelledby="productModalLabel" role="dialog" tabindex="-1" id="productModal" class="modal fade">
 						<form id="productmodalform" name="productmodalform">
 							<input id="productid" name="productid" type="hidden">
@@ -213,72 +285,35 @@ import="com.urbau.feeders.BodegasMain"%><%
     <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
 
     <!--script for this page-->
-	<script>
-	  	var ventasList = [];	
-	  	var selected_bodega_id;
-		var allowed_prices;
-		var addingToStore = false;
-		
-		function searchProducts( q ){
-			$( "#product-container" ).html("");
-			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
-                 $.each(response, function(i, v) {
-                	 var rootele;
-                	 var htmltoadd = 
-			              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
-			                     "<div class=\"col-md-3 col-sm-3 mb\">" +
-			                       "<div class=\"white-panel pn\">" +
-			                         "<div class=\"white-header\">" +
-			                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
-			                         "</div>" +
-			             "<div class=\"row\">" +
-			               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
-			                 "<p>" + v.codigo +"</p>" +
-			               "</div>" +
-			               "<div class=\"col-sm-6 col-xs-6 goright\">" +
-			               "<p>&nbsp;&nbsp;&nbsp;</p>" +
-			             "</div>" +
-			               "<div class=\"col-sm-6 col-xs-6\"></div>" +
-			                         "</div>" +
-			                         "<div class=\"centered\">" +
-			                         
-			                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-			                 "<p style=\"color:red\"></p>" +
-			                 "<p>"+v.packings+"</p>" + 
-			                  "       </div>" +
-			                  "     </div>" +
-			                  "   </div>" +
-			         	 "</a>";
-         			$( "#product-container" ).append( htmltoadd );
-                 });
-              });
-		}
-	
-      	function setProductModalValues(productid, imagePath, descripcion, packings ){
-			$("#productid").val(productid);
-			$("#imagePath").val(imagePath);
-			$("#descripcion").val(descripcion);
-			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
-			$("#modalDescription").html( descripcion );
-			$('#modalpackingscontainer').html("");
-			contador = 0;
-			$.each( packings, function( key, value ) {
-				$('#modalpackingscontainer').append(
-						'<input type="radio" name="packing" value="'+value.value+'" '+( contador==0 ?'checked':'' )+'   >&nbsp;'+value.descripcion+'<br>');
-				contador ++;
- 			});
-			$("#productModal").modal("show");
-      	}
-          
+  
+  
+  <script type="text/javascript">
+  		  
+  		  var selected_bodega_id;
+  		  var allowed_prices;
+  		  
+		  function parseSecond(val) {
+			    var result = "Not found",
+			        tmp = [];
+			    var items = location.search.substr(1).split("&");
+			    for (var index = 0; index < items.length; index++) {
+			        tmp = items[index].split("=");
+			        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+			    }
+			    return result;
+			}
+  
+		    
 		    function setStore(){
 		    	var value = $('input[name=bodegaid]:checked').val();
 		    	var values = value.split(',');
+		    	console.log('bodega', values[0]);
 		    	selected_bodega_id = values[0];
 				$('#storedisplay').html(value);
 				$('#bodegaid').val( selected_bodega_id );
 		    	hideStore();
 		    }
-		    
+		    var addingToStore = false;
   			function addToStore( productid, imagepath, productname, amount, packvalue ){
   				if( !addingToStore ){
 	  				addingToStore = true;
@@ -287,8 +322,9 @@ import="com.urbau.feeders.BodegasMain"%><%
 	  				renderVentasList();
 	  				addingToStore = false;
   				} else {
-  					alert("already added... porque esto?");
+  					alert("already adding... what is doing this?");
   				}
+  				
   			}
   			
   			function chooseStore(){
@@ -298,9 +334,12 @@ import="com.urbau.feeders.BodegasMain"%><%
   				$(id).modal('hide');
   			}
   			
+  			
   			function hideStore(){
   				$('#myStores').modal('hide');
   			}
+  			
+  			
   			
 			$("#savesalebutton").click(function(e){
 				e.preventDefault();
@@ -314,9 +353,11 @@ import="com.urbau.feeders.BodegasMain"%><%
 	    	 			data: form.serialize(),
 	    	 			
 	    		        success: function(msg){
+	    		        	console.log( "msg:", msg );
 	    		        	var messages = msg.split('|');
 	    		        	alert( messages[ 1 ] );
 	    		        	if( !msg.startsWith('error') ){
+	    		        		
 	    		        		if( confirm( "Desea imprimir la carga?" ) ){
 	    		        			location.replace( 'rpt-cargas-bodega.jsp?referer=carga-bodega.jsp&id=' + messages[ 0 ] );
 	    		        		} else {
@@ -334,7 +375,6 @@ import="com.urbau.feeders.BodegasMain"%><%
 				} else {
 					$("#savesalebutton").prop('disabled',false );
 				}
-				return false;
     	 	});
   			
   			if (typeof String.prototype.startsWith != 'function') {
@@ -344,8 +384,11 @@ import="com.urbau.feeders.BodegasMain"%><%
   			  };
   			}
   			
-  		    
+  			
+  			
+  		    var ventasList = [];
   		    function addS( amount, packval, description, imagepath,productid ){
+  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", packval:" + packval );
   		    	var o = {};
   			    o.amount = amount;
   			    o.pack = packval;
@@ -381,14 +424,27 @@ import="com.urbau.feeders.BodegasMain"%><%
 		              "  </div>" +
 		              "</div>";
 				$( "#sale-container" ).append( htmltoadd );
+				
 			}
   			$( "#totalOrden" ).html( totalOrden);
   		  }
+  		    
   			
+	</script>  
+	
+	<script type="text/javascript">
+	    /*$(window).load(function(){
+	        $( "#search-query-3" ).keyup(function() {
+	        	var value = $( "#search-query-3" ).val();
+	        	console.log( "value", value );
+	        	searchProducts( value );
+			});
+	    });*/
+	    
 	    function searchByQuery( ){
 	    	var value = $( "#search-query-3" ).val();
+        	console.log( "value", value );
         	searchProducts( value );
-        	return false;
 	    }
 	    setStore();
 	</script>

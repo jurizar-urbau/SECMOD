@@ -1,3 +1,4 @@
+<%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.urbau.misc.Util"%>
 <%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
@@ -12,6 +13,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@include file="fragment/validator.jsp"%>
 <%
 String id = request.getParameter( "id" );
 ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "CARGAS_BODEGA_DETALLE", 
@@ -90,7 +92,7 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_CARGA"
 <button onclick="regresar()" class="no-print">Regresar</button>
 <button onclick="window.print()" class="no-print">Imprimir</button>
 
-<h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %></h4>
+<h4 style="text-align: right;"><b>GENERADO: &nbsp;</b><%= Util.getDateStringDMYHM( new Date() ) %><br/>Por: <%= loggedUser.getNombre() %></h4>
 <h1>VOLCANCITO</h1>
 <h2>
 	REPORTE DE CARGA A BODEGA

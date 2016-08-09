@@ -225,6 +225,7 @@
                    		%>
                         <li><a  href="filter-rpt-inventario.jsp">Inventario</a></li>
                         <% } %>
+                        <li><a  href="filter-rpt-compras.jsp">Compras</a></li>
                         <li><a  href="filter-rpt-utilidades.jsp">Utilidades</a></li>
                         <li><a  href="filter-rpt-movimientos.jsp">Movimientos</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
