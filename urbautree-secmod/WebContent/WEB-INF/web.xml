@@ -47,6 +47,10 @@ version="3.0">
     <servlet-class>com.urbau.servlet.entity.IngresoBodega</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SalidaBodega</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SalidaBodega</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>CheckCodigoProducto</servlet-name>
     <servlet-class>com.urbau.servlet.CheckCodigoProducto</servlet-class>
   </servlet>
@@ -387,6 +391,10 @@ version="3.0">
   <servlet-mapping>
     <servlet-name>IngresoBodega</servlet-name>
     <url-pattern>/bin/IngresoBodega</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SalidaBodega</servlet-name>
+    <url-pattern>/bin/SalidaBodega</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TrasladoBodega</servlet-name>

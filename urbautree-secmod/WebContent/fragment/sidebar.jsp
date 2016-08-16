@@ -49,6 +49,9 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"CARGA_DE_PRODUCTO")) { %>
 					                      <li><a  href="carga-bodega.jsp">Ingreso a Bodega</a></li>
 					                      <% } %>
+					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"SALIDAS_BODEGA")) { %>
+					                      <li><a  href="salida-bodega.jsp">Salida de Bodega</a></li>
+					                      <% } %>
  										 <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"com.urbau.feeders.BodegasMain")) { %>
 					                          <li><a  href="bodegas.jsp">Bodegas</a></li>
 					                      <% } %>

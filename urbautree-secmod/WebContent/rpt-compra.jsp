@@ -16,6 +16,12 @@
 <%
 String id = request.getParameter( "id" );
 
+
+
+
+
+
+
 ExtendedFieldsBaseMain headMain = new ExtendedFieldsBaseMain( "COMPRAS", 
 		new String[] { 
 				"FECHA",
@@ -59,12 +65,24 @@ ArrayList<ExtendedFieldsBean> list = detailMain.getAll( new ExtendedFieldsFilter
 
 
 
+ExtendedFieldsBaseMain cargaMain = new ExtendedFieldsBaseMain( "CARGAS_BODEGA", 
+		new String[] { 
+				"BODEGA"
+	}, new int[]{ 
+			Constants.EXTENDED_TYPE_INTEGER
+	} 
+);
+
+ExtendedFieldsBean cargaBean = cargaMain.get( head.getValueAsInt( "ID_ORDEN_DE_COMPRA" ) );
+
+
+
 
 %>
 <script>
 	function regresar(){
 		<% if( null != request.getParameter("referer") ){ %>
-			location.replace( "<%= request.getParameter("referer") %>" );
+			location.replace( "<%= request.getParameter("referer") %>?id-proveedor=<%= request.getParameter("id-proveedor")%>" );
 		<% } else { %>
 			location.replace( "proveedores-compras.jsp?id-proveedor=<%= request.getParameter("id-proveedor")%>" );	
 		<% } %>
@@ -110,6 +128,10 @@ ArrayList<ExtendedFieldsBean> list = detailMain.getAll( new ExtendedFieldsFilter
 	<tr>
 		<td><b>PROVEEDOR</b></td><td>:</td><td><%= head.getReferenced( "ID_PROVEEDOR", "PROVEEDORES", "NOMBRE") %></td>
 	</tr>
+	<tr>
+		<td><b>BODEGA</b></td><td>:</td><td> <%= cargaBean.getValue("BODEGA") + " " + cargaBean.getReferenced( "BODEGA", "BODEGAS", "NOMBRE" ) %></td>
+	</tr>
+	
 	<tr>
 		<td><b>TIPO DE PAGO</b></td><td>:</td><td><%= head.getValue( "TIPO_DE_PAGO" ) %></td>
 	</tr>

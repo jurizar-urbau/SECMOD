@@ -50,7 +50,7 @@
 			location.replace( "proveedores-pagos.jsp?id-proveedor=<%= request.getParameter("id-proveedor")%>&id-compra="+idcompra);
 		}
 		function imprimir( id ){
-			location.replace( "rpt-compra.jsp?id="+id+"&id-proveedor=<%= request.getParameter("id-proveedor") %>");
+			location.replace( "rpt-compra.jsp?referer=proveedores-compras.jsp&id-proveedor=<%= request.getParameter("id-proveedor")%>&id="+id+"&id-proveedor=<%= request.getParameter("id-proveedor") %>");
 		}
 
 	</script>

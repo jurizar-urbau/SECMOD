@@ -56,6 +56,7 @@ public class SearchExistentProductsInStore extends Entity {
 						jsonObject.put("id",          rs.getString( 4 ));
 						jsonObject.put("stock",       rs.getString( 5 ) );
 						jsonObject.put("packings", Util.getPackings( rs.getString( 4 )) );
+						jsonObject.put("packingsarray", Util.getPackingsAsArray( rs.getString( 4 )) );
 						jsonArray.add(jsonObject);
 						
 					}

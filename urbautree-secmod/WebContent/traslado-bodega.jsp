@@ -1,73 +1,15 @@
-<%@page import="com.urbau.beans.PackingBean"%>
-<%@page import="com.urbau.feeders.PackingMain"%>
 <%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
-<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page pageEncoding="utf-8" %>
-<%@page import="com.urbau.feeders.BodegasMain"%>
 <% 
 	BodegasUsuariosMain bm = new BodegasUsuariosMain();
-    ProductosMain pm = new ProductosMain();
-    PackingMain packmain = new PackingMain();
-	//long total_bodegas = bm.count();
-	long total_productos = pm.count();
 %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<script>
-		
-		function clickon( id ){
-			var ele = $( "#product-" + id );
-			ele.trigger('click');
-			console.log( 'clicking:', ele );
-		
-		} 
-		function searchProducts( q, bo ){
-			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
-			console.log( "looking for products with [" + q + "," + bo + "]");
-			$( "#product-container" ).html("");
-			$.get( "./bin/sepis?q=" + q + "&bo=" + bo, null, function(response){
-			
-                 $.each(response, function(i, v) {
-                	 console.log( i, v );
-                	 
-                	 var rootele;
-                	 
-                	 var htmltoadd = 
-              "<a  href=\"javascript: clickon('" + v.id + "');\">" + 
-                     "<div class=\"col-md-3 col-sm-3 mb\">" +
-                       "<div class=\"white-panel pn\">" +
-                         "<div class=\"white-header\">" +
-                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
-                         "</div>" +
-             "<div class=\"row\">" +
-               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
-                 "<p>" + v.codigo +"</p>" +
-               "</div>" +
-               "<div class=\"col-sm-6 col-xs-6 goright\">" +
-               "<p>&nbsp;&nbsp;&nbsp;</p>" +
-             "</div>" +
-               "<div class=\"col-sm-6 col-xs-6\"></div>" +
-                         "</div>" +
-                         "<div class=\"centered\">" +
-                         
-                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-                 "<p style=\"color:green\">"+v.stock+" disponibles</p>" +
-                  "       </div>" +
-                  "     </div>" +
-                  "   </div>" +
-         "</a>";
-         			$( "#product-container" ).append( htmltoadd );
-                	
-                	 
-                 });
-              });
-		}
-	</script>
+	
 	<style>
 		div.separator {
 		    margin-top: 30px;
@@ -119,91 +61,20 @@
                       	Bodega destino: <b><span id="storedisplay2"></span></b>
                       </div>
                       <div class="col-lg-12">
-		          		<form onsubmit="searchProducts(); return false;">
+		          		<form>
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
-					                    <li><button class="btn btn-primary" onclick="searchProducts()">Buscar</button></li>
+					                    <li><button class="btn btn-primary" onclick="searchProducts();return false">Buscar</button></li>
 					              </ul>
 				            </div>
 					    </form>
 					  </div>
 					  <br/><br/><br/>
-                      <!-- SERVER STATUS PANELS -->
-                     
-                        <%
-                        	ArrayList<ProductoBean> plist = pm.get(null, -1 );
-                        for( ProductoBean pbean: plist ){
-                            %>
-    			<a data-toggle="modal" href="traslado-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
-    			<% } 
-                        %>    	
-                        <%
-                        	for( ProductoBean pbean: plist ){
-                        %>
-						
-             <div aria-hidden="true" aria-labelledby="myModalLabel<%= pbean.getId() %>" role="dialog" tabindex="-1" id="myModal<%= pbean.getId() %>" class="modal fade">
-						<form id="modalform<%= pbean.getId() %>" name="modalform<%= pbean.getId() %>">
-						<input name="productid" type="hidden" value="<%= pbean.getId() %>">
-						
- 			              <div class="modal-dialog">
-			                  <div class="modal-content">
-				                  <div class="modal-header">
-			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Agregar a bodega...</h4>
-			                      </div>
-			                      <div class="modal-body col-lg-12">
-			                      <div class="col-sm-6">
-			                      	<img src="./bin/RenderImage?imagePath=<%= pbean.getImage_path() %>" width="220">
-			                      	</div>
-			                      	<div class="col-sm-6">
-			                      	<h3><%= pbean.getDescripcion() %></h3>
-			                      	
-			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
-			                          
-			                          <%
-			                          	ArrayList<PackingBean> packlist = packmain.getAll( pbean.getId() );
-			                          	int count = 0;
-			                          	
-			                          	for( PackingBean pb : packlist ){
-			                          	
-			                          %>
-			                          	<input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>&nbsp;<%= pb.getNombre() %><br> 
-			                          <%
-			                          
-			                          count++ ;
-			                          	} %>
-			                          
-			                          </br>
-			                          </br>
-			                          <!--p>Precio unitario:</p>
-			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
-			                          </br>  -->
-			                          
-			                          </div>
-			                      </div>
-			                      <div class="modal-footer">
-			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" onclick="addToStore(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.packing.value,document.modalform<%= pbean.getId() %>.cantidad.value);">Agregar</button>
-			                      </div>
-			                  </div>
-			              </div>
-		              </form>
-		          </div>         
-            <% } %>
             <div id="product-container" class="separator">
-                        
 					</div> <!--  content -->
                     </div><!-- /row -->
-                     	
-                            
-          
-          
-          
-          
                   </div><!-- /col-lg-9 END SECTION MIDDLE -->
-                  
                   
       <!-- **********************************************************************************************************************************************************
       RIGHT SIDEBAR CONTENT
@@ -224,9 +95,6 @@
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
                            <input type='hidden' name='bodega2id' id='bodega2id' value=''>
 		                   <div id="sale-container">
-		                                      
-		                      
-		                      
 		                  </div>
 		                  <button class="btn btn-theme" type="button" id="savesalebutton">Trasladar</button>
                   	</form>
@@ -246,12 +114,9 @@
 			                      </div>
 			                      <div class="modal-body">
 				                      <%
-				                      		
 											ArrayList<BodegaBean> listS = bm.getForUser( loggedUser.getId() );
-											
 										%>
 										 <table class="table table-striped table-advance table-hover">
-	                  	  	  
 	                  	  	  <thead>
                               <tr>
                               	<th></th>
@@ -293,7 +158,6 @@
 		              </form>
 		          </div>
       <!-- stores modal ends -->
-		          
 
     <!-- stores2 modal starts -->
       <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myStores2" class="modal fade">
@@ -305,13 +169,10 @@
 			                          <h4 class="modal-title">Seleccione la bodega destino...</h4>
 			                      </div>
 			                      <div class="modal-body">
-				                      <%
-				                      		
+				                      <%	
 											ArrayList<BodegaBean> listS2 = bm.getForUser( loggedUser.getId() );
-											
 										%>
 										 <table class="table table-striped table-advance table-hover">
-	                  	  	  
 	                  	  	  <thead>
                               <tr>
                               	<th></th>
@@ -334,8 +195,6 @@
 								  <td>
 								  	<%= bean.getNombre() %>
 								 </td>                                  
-                                                                            
-                                  
                               </tr>
                               <% 
                               bodega2Count++;
@@ -353,8 +212,45 @@
 		              </form>
 		          </div>
       <!-- stores2  modal ends -->		          
-		          
-     
+	  <!--  INICIA MODAL UNICO  -->
+             <div aria-hidden="true" aria-labelledby="productModalLabel" role="dialog" tabindex="-1" id="productModal" class="modal fade">
+						<form id="productmodalform" name="productmodalform">
+							<input id="productid" name="productid" type="hidden">
+							<input id="imagePath" name="imagePath" type="hidden">
+							<input id="descripcion" name="descripcion" type="hidden">
+							
+ 			              <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Agregar a bodega...</h4>
+			                      </div>
+			                      <div class="modal-body col-lg-12">
+			                      <div class="col-sm-6">
+			                      	<img id="modalImage" src="" width="220">
+			                      	</div>
+			                      	<div class="col-sm-6">
+			                      	<h3><span id="modalDescription"></span></h3>
+			                      	
+			                          <p>Cantidad</p>
+			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <div id="modalpackingscontainer">
+			                          	<input type="radio" name="packing" value="thevalue" checked>&nbsp;Unidad<br>
+			                          </div> 
+			                          <br/>
+			                          <br/>
+			                          
+			                          </div>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" id="addToStoreButton" onclick="addToStore(document.productmodalform.productid.value,document.productmodalform.imagePath.value,document.productmodalform.descripcion.value,document.productmodalform.cantidad.value,document.productmodalform.packing.value);">Agregar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div> 
+            <!-- FINALIZA MODAL UNICO -->
   </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -378,26 +274,69 @@
   
   <script type="text/javascript">
   		  
-  		  var selected_bodega_id;
-  		  var selected_bodega_id2;
-  		  var allowed_prices;
-  		  
-		  function parseSecond(val) {
-			    var result = "Not found",
-			        tmp = [];
-			    var items = location.search.substr(1).split("&");
-			    for (var index = 0; index < items.length; index++) {
-			        tmp = items[index].split("=");
-			        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
-			    }
-			    return result;
-			}
-  
-		    
+  		  	var ventasList = [];	
+  		  	var selected_bodega_id;
+  		  	var selected_bodega_id2;
+  		  	var allowed_prices;
+			var addingToStore = false;
+	
+			
+		function searchProducts( q, bo ){
+			var value = $( "#search-query-3" ).val();
+			$( "#product-container" ).html("");
+			$.get( "./bin/sepis?q=" + value + "&bo=" + selected_bodega_id, null, function(response){
+                 $.each(response, function(i, v) {
+                	 var rootele;
+                	 var htmltoadd =
+                		 
+              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" +
+                     "<div class=\"col-md-3 col-sm-3 mb\">" +
+                       "<div class=\"white-panel pn\">" +
+                         "<div class=\"white-header\">" +
+                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
+                         "</div>" +
+             "<div class=\"row\">" +
+               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
+                 "<p>" + v.codigo +"</p>" +
+               "</div>" +
+               "<div class=\"col-sm-6 col-xs-6 goright\">" +
+               "<p>&nbsp;&nbsp;&nbsp;</p>" +
+             "</div>" +
+               "<div class=\"col-sm-6 col-xs-6\"></div>" +
+                         "</div>" +
+                         "<div class=\"centered\">" +
+                         
+                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
+                 "<p style=\"color:green\">"+v.stock+" disponibles</p>" +
+                  "       </div>" +
+                  "     </div>" +
+                  "   </div>" +
+         "</a>";
+         			$( "#product-container" ).append( htmltoadd );
+                 });
+              });
+			
+		}		
+		
+      	function setProductModalValues(productid, imagePath, descripcion, packings ){
+			$("#productid").val(productid);
+			$("#imagePath").val(imagePath);
+			$("#descripcion").val(descripcion);
+			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
+			$("#modalDescription").html( descripcion );
+			$('#modalpackingscontainer').html("");
+			contador = 0;
+			$.each( packings, function( key, value ) {
+				$('#modalpackingscontainer').append(
+						'<input type="radio" name="packing" value="'+value.value+'" '+( contador==0 ?'checked':'' )+'   >&nbsp;'+value.descripcion+'<br>');
+				contador ++;
+ 			});
+			$("#productModal").modal("show");
+      	}
+		  	    
 		    function setStore(){
 		    	var value = $('input[name=bodegaid]:checked').val();
 		    	var values = value.split(',');
-		    	console.log('bodega', values[0]);
 		    	selected_bodega_id = values[0];
 				$('#storedisplay').html(value);
 				$('#bodegaid').val( selected_bodega_id );
@@ -406,19 +345,24 @@
 		    function setStore2(){
 		    	var value = $('input[name=bodega2id]:checked').val();
 		    	var values = value.split(',');
-		    	console.log('bodega2', values[0]);
 		    	selected_bodega_id2 = values[0];
 				$('#storedisplay2').html(value);
 				$('#bodega2id').val( selected_bodega_id2 );
 		    	hideStore2();
 		    }
-  			function addToStore( productid, imagepath, productname, amount, packvalue ){
-  				addS( amount, packvalue, productname, imagepath,productid );
-  				hideModal('#myModal' + productid );
-  				renderVentasList();
-  				
+		    
+		    function addToStore( productid, imagepath, productname, amount, packvalue ){
+  				if( !addingToStore ){
+	  				addingToStore = true;
+	  				addS( amount, packvalue, productname, imagepath,productid );
+	  				$("#productModal").modal("hide");
+	  				renderVentasList();
+	  				addingToStore = false;
+  				} else {
+  					alert("already added... porque esto?");
+  				}
   			}
-  			
+		    
   			function chooseStore(){
   				$('#myStores').modal('show');
   			}
@@ -436,10 +380,9 @@
   			function hideStore2(){
   				$('#myStores2').modal('hide');
   			}
-  			
-  			
-  			
-			$("#savesalebutton").click(function(){
+			$("#savesalebutton").click(function(e){
+				e.preventDefault();
+				$("#savesalebutton").prop('disabled',true);
 				if( confirm( "Confirma que desea hacer el traslado?" ) ){
 	    			var form =$('#saleform');
 	    	     	$.ajax({
@@ -459,10 +402,7 @@
 	    		        		msgm = msg;
 	    		        	}
 	    		        	alert(msgm);
-	    		            console.log( "id:", idm );
-	    		            console.log( "msgm:", msgm );
-	    		            console.log( "msg:", msg );
-	    		        	if( idm !== -1 ){ 
+	    		            if( idm !== -1 ){ 
 	    		        		location.replace( "print-traslado.jsp?id="+idm);
 	    		        	 } 
 	    		            
@@ -474,22 +414,14 @@
 	    	 			}
 	    		            		        
 	    	       });
+	    	     	return false;
+				} else {
+					$("#savesalebutton").prop('disabled',false );
 				}
-    	     	return false;
+				return false;
     	 	});
   			
-  			if (typeof String.prototype.startsWith != 'function') {
-  			  // see below for better implementation!
-  			  String.prototype.startsWith = function (str){
-  			    return this.indexOf(str) === 0;
-  			  };
-  			}
-  			
-  			
-  			
-  		    var ventasList = [];
   		    function addS( amount, packval, description, imagepath,productid ){
-  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", packval:" + packval );
   		    	var o = {};
   			    o.amount = amount;
   			    o.pack = packval;
@@ -529,18 +461,6 @@
 			}
   			$( "#totalOrden" ).html( totalOrden);
   		  }
-  		    
-  			
-	</script>  
-	
-	<script type="text/javascript">
-	    $(window).load(function(){
-	        $( "#search-query-3" ).keyup(function() {
-	        	var value = $( "#search-query-3" ).val();
-	        	console.log( "value", value );
-	        	searchProducts( value, selected_bodega_id );
-			});
-	    });
 	    setStore();
 	    setStore2();
 	</script>

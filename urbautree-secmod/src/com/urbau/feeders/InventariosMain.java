@@ -40,17 +40,14 @@ public class InventariosMain extends AbstractMain {
 			
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
 				String sql = "SELECT "+ bodegaTabla+".ID_PRODUCT,"+bodegaTabla+".ESTATUS,"+bodegaTabla+".AMOUNT,PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.IMAGE_PATH,PROD.STOCK_MINIMO FROM "+bodegaTabla+" INNER JOIN PRODUCTOS AS PROD ON "+ bodegaTabla+".ID_PRODUCT=PROD.ID  LIMIT " + from + "," + items;
-				
-				System.out.println("sql: "+sql);
 				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( TABLE_NAME+idBodega, "" );
 			} else {
 				String rem_where = Util.getMonedasWhere( q );
-				//String sql = "SELECT ID_PRODUCT,ESTATUS,AMOUNT FROM "+TABLE_NAME+idBodega+" " + rem_where + " LIMIT " + from + "," + items;
 				String sql = "SELECT "+ bodegaTabla+".ID_PRODUCT,"+bodegaTabla+".ESTATUS,"+bodegaTabla+".AMOUNT," +
 						"PROD.CODIGO,PROD.DESCRIPCION,PROD.COEFICIENTE_UNIDAD,PROD.PROVEEDOR,PROD.PRECIO,PROD.PRECIO_1,PROD.PRECIO_2,PROD.PRECIO_3,PROD.PRECIO_4,PROD.IMAGE_PATH,PROD.STOCK_MINIMO " +
 						"FROM "+bodegaTabla+" INNER JOIN PRODUCTOS AS PROD ON "+ bodegaTabla+".ID_PRODUCT=PROD.ID  LIMIT " + from + "," + items;
-				System.out.println("sql: "+sql);
+
 				rs = stmt.executeQuery( sql );
 				total_regs = Util.getTotalRegs( TABLE_NAME+idBodega, rem_where );
 			}
@@ -97,7 +94,6 @@ public class InventariosMain extends AbstractMain {
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + product_id +" AND ESTATUS='"+estatus+"'";
-			System.out.println( "looking for products in store:" +  query );
 			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new InvetarioBean();
@@ -127,7 +123,6 @@ public class InventariosMain extends AbstractMain {
 			con  = ConnectionManager.getConnection();
 			stmt = con.createStatement();
 			String query = "SELECT ID_PRODUCT,ESTATUS,AMOUNT,ID_ORDEN FROM "+TABLE_NAME+idBodega+" WHERE ID_PRODUCT=" + product_id +" AND ESTATUS='"+estatus+"' AND ID_ORDEN=" + idOrden;
-			System.out.println("query:"+query);
 			rs = stmt.executeQuery( query);
 			while( rs.next() ){
 				bean = new InvetarioBean();
@@ -172,7 +167,6 @@ public class InventariosMain extends AbstractMain {
 						"VALUES " +
 					"("+ bean.getId_product()+",'"+bean.getEstatus()+"',"+bean.getAmount()+"," + bean.getId_orden() + ")";
 			
-			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 			
@@ -185,7 +179,6 @@ public class InventariosMain extends AbstractMain {
 	}
 	public boolean mod( InvetarioBean bean ){
 		if ( bean.getIdBodega() <= 0 ){
-			System.out.println("bodega id["+ bean.getId() + "]" );
 			return false;
 		}
 		Connection con = null;
@@ -200,8 +193,6 @@ public class InventariosMain extends AbstractMain {
 					"AMOUNT = " + bean.getAmount() + " " +
 					"WHERE ID_PRODUCT = " + bean.getId_product() + " " + 
 					"AND ESTATUS = " + Util.vs( bean.getEstatus() );
-					
-			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -214,7 +205,6 @@ public class InventariosMain extends AbstractMain {
 	
 	public boolean modWithoutStatus( InvetarioBean bean ){
 		if ( bean.getIdBodega() <= 0 ){
-			System.out.println("bodega id["+ bean.getId() + "]" );
 			return false;
 		}
 		Connection con = null;
@@ -229,9 +219,6 @@ public class InventariosMain extends AbstractMain {
 					" WHERE " +
 			"ID_PRODUCT = " + bean.getId_product() + " AND " +
 			"ID_ORDEN = " +bean.getId_orden() ;
-			
-					
-			System.out.println(sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -252,7 +239,6 @@ public class InventariosMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "DELETE FROM "+TABLE_NAME+bean.getIdBodega()+" WHERE ID_PRODUCT = " + bean.getId_product() + " AND ESTATUS = '"+bean.getEstatus()+"' AND ID_ORDEN=" + bean.getId_orden();
-			System.out.println("sql:"+sql);
 			int total = stmt.executeUpdate( sql );
 			return total>0;
 		} catch (Exception e) {
@@ -263,28 +249,6 @@ public class InventariosMain extends AbstractMain {
 		}
 	}
 	
-	/*
-	 * Se necesita agregar el idBodega para la tabla de inventario
-	public long count( ){
-		Connection con  = null;
-		Statement  stmt = null;
-		ResultSet  rs   = null;
-		long count = 0;
-		try{
-			con  = ConnectionManager.getConnection();
-			stmt = con.createStatement();
-			rs = stmt.executeQuery( "SELECT count(ID_PRODUCT,ESTATUS) FROM " + TABLE_NAME );
-			if( rs.next() ){
-				count = rs.getLong( 1 );
-			}
-		} catch( Exception e ){
-			e.printStackTrace();
-		} finally {
-			ConnectionManager.close( con, stmt, rs );
-		}
-		return count;
-	}
-	*/
 	
 	public boolean duplicate( InvetarioBean bean ){
 		

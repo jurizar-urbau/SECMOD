@@ -697,7 +697,7 @@
 					"			<span style='color:black; font-size:10pt'>X</span>" +
 					"			<span style='color:blue; font-size:10pt'>Q "+ventasList[ i ].price+" </span>" +
 					"			<span style='color:black; font-size:10pt'>=</span>" +
-					"			<span style='color:blue; font-size:10pt'>Q " + ( ventasList[ i ].amount * ventasList[ i ].packing * ventasList[ i ].price ).toFixed(2) + "</span>" +
+					"			<span style='color:blue; font-size:10pt'>Q " + ( ventasList[ i ].amount * ventasList[ i ].packing * ventasList[ i ].price ).format(2) + "</span>" +
 					"		</p>" +  
 					"	</div>" +
 					"</div>" ;
@@ -705,7 +705,7 @@
 				$( "#sale-container" ).append( htmltoadd );
 				
 			}
-  			$( "#totalOrden" ).html("Q " + totalOrden.toFixed(2)
+  			$( "#totalOrden" ).html("Q " + totalOrden.format(2)
   					);
   		  }
   		    

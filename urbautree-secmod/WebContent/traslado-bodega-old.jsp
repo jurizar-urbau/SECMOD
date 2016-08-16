@@ -1,9 +1,18 @@
+<%@page import="com.urbau.beans.PackingBean"%>
+<%@page import="com.urbau.feeders.PackingMain"%>
 <%@page import="com.urbau.feeders.BodegasUsuariosMain"%>
 <%@page import="com.urbau.beans.BodegaBean"%>
+<%@page import="com.urbau.beans.ProductoBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="com.urbau.feeders.ProductosMain"%>
 <%@page pageEncoding="utf-8" %>
+<%@page import="com.urbau.feeders.BodegasMain"%>
 <% 
 	BodegasUsuariosMain bm = new BodegasUsuariosMain();
+    ProductosMain pm = new ProductosMain();
+    PackingMain packmain = new PackingMain();
+	//long total_bodegas = bm.count();
+	long total_productos = pm.count();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +27,7 @@
 		
 		} 
 		function searchProducts( q, bo ){
+			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
 			console.log( "looking for products with [" + q + "," + bo + "]");
 			$( "#product-container" ).html("");
 			$.get( "./bin/sepis?q=" + q + "&bo=" + bo, null, function(response){

@@ -164,7 +164,7 @@
 			                  <div class="modal-content">
 				                  <div class="modal-header">
 			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Agregar a bodega...</h4>
+			                          <h4 class="modal-title">Agregar a compra...</h4>
 			                      </div>
 			                      <div class="modal-body col-lg-12">
 			                      <div class="col-sm-6">
@@ -236,7 +236,7 @@
                         Descuento: <input type="text" name="descuento" id="descuento" class="form-control" onchange="updateTotals()">
                         Total: <input type="text" name="total" id="total" class="form-control" readonly>
 
-                        Tipo de pago: <select name="monto" class="form-control">
+                        Tipo de pago: <select name="tipo_pago" class="form-control">
                         <%
                         	if( Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_EFECTIVO )){
                         %>
@@ -561,6 +561,9 @@
 			  	ventasList.splice( index, 1 );
 				renderVentasList();
 		  }  
+  		  
+  		
+	    
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
@@ -581,7 +584,7 @@
 		              "  <div class=\"details\">" +
 		              "    <p style=\"color:black; font-size:12pt\">" +
 		              "       <span style=\"color:red; font-size:20pt\">" +( ventasList[ i ].amount * ventasList[ i ].pack ) + "</span>" + ventasList[ i ].description + "<br/>" +
-		              "       <span style=\"color:green; font-size:12pt\">Q. " +( ventasList[ i ].amount * ventasList[ i ].pack * ventasList[ i ].preciounitario ) + "</span>" + ventasList[ i ].description + "<br/>" +
+		              "       <span style=\"color:green; font-size:12pt\">Q. " +( ventasList[ i ].amount * ventasList[ i ].pack * ventasList[ i ].preciounitario ).format(2) + "</span>" + ventasList[ i ].description + "<br/>" +
 		              "    </p>" +
 		              "  </div>" +
 		              "</div>";
@@ -592,7 +595,7 @@
   			$( "#monto" ).val( montoTotal ) ;
   			var descuentoVal = $( "#descuento" ).val(  ) ;
   			$( "#total" ).val( montoTotal - descuentoVal)  ;
-  			$( "#totalOrden" ).html( "Q " + (montoTotal - descuentoVal).toFixed(2));
+  			$( "#totalOrden" ).html( "Q " + (montoTotal - descuentoVal).format(2));
   			
   		  }
   			
@@ -625,6 +628,9 @@
         	searchProducts( value );
 	    }
 	    setStore();
+	    
+	    
+
 	    
 	</script>
   </body>

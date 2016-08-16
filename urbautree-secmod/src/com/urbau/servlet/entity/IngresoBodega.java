@@ -137,7 +137,7 @@ public class IngresoBodega extends Entity {
 							Constants.EXTENDED_TYPE_DATE, 
 							Constants.EXTENDED_TYPE_INTEGER,
 							Constants.EXTENDED_TYPE_INTEGER,
-							Constants.EXTENDED_TYPE_INTEGER,
+							Constants.EXTENDED_TYPE_STRING,
 							Constants.EXTENDED_TYPE_INTEGER,
 							Constants.EXTENDED_TYPE_DOUBLE,
 							Constants.EXTENDED_TYPE_DOUBLE,
@@ -163,7 +163,7 @@ public class IngresoBodega extends Entity {
 				compra.putValue( "FECHA", "NOW()" );
 				compra.putValue( "ID_PROVEEDOR", proveedoridStr );
 				compra.putValue( "ID_ORDEN_DE_COMPRA",  String.valueOf( carga_id ) );
-				compra.putValue( "TIPO_DE_PAGO", "0" );
+				compra.putValue( "TIPO_DE_PAGO", request.getParameter( "tipo_pago" ) );
 				compra.putValue( "FORMA_DE_INGRESO", "0" );
 				compra.putValue( "SUBTOTAL", "" + subtotal );
 				compra.putValue( "DESCUENTO", ""+descuento );
