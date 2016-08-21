@@ -11,13 +11,14 @@
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD", 
-			new String[]{"DIA","MES","ANIO","FECHA"},
+	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "SALIDAS_BODEGA", 
+			new String[]{"BODEGA","FECHA","USUARIO","CORRELATIVO","OBSERVACIONES"},
 				new int[]{ 
-				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER,
-				Constants.EXTENDED_TYPE_DATE
+				Constants.EXTENDED_TYPE_STRING
 			} );
 	
 	
@@ -34,21 +35,10 @@
 			}
 	%>
 	<script>
-		function edit( id ){
-			location.replace( "planilla-detail.jsp?mode=edit&id="+id);
-		}
-		function removereg( id ){
-			location.replace( "planilla-detail.jsp?mode=remove&id="+id);
-		}
 		function view( id ){
-			location.replace( "planilla-detail.jsp?mode=view&id="+id);
+			location.replace( "rpt-descargas-bodega.jsp?id="+id);
 		} 
-		function add(){
-			location.replace( "planilla-detail.jsp?mode=add" );
-		}
-		function generate( pid , periodo, mes, anio ){
-			location.replace( "planilla-data.jsp?pid=" + pid + "&periodo=" +  periodo + "&mes="+  mes + "&anio=" +  anio);
-		}
+		
 	</script>
 	</head>
    
@@ -89,7 +79,7 @@
           <div class="col-lg-6"> 
            
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6 no-print" >
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
@@ -105,19 +95,17 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
           				  
-          				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Planilla </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Descargas a bodega </h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                              	  <th>D&iacute;a</th>
-                                  <th>Mes</th>
-                                  <th>A&ntilde;o</th>
-                                  <th>Fecha de creaci&oacute;n</th>
+                              	  <th>No. descarga de bodega</th>
+                              	  <th>Bodega</th>
+                              	  <th>Fecha</th>
+                                  <th>Usuario</th>
+                                  <th>Observaciones</th>
                                   <th></th>
                               </tr>
                               </thead>
@@ -126,15 +114,13 @@
                               	for( ExtendedFieldsBean us : list ){
                               %>
                               <tr>
-								  <td><%= us.getValue( "DIA" ) %></td>
-								  <td><%= us.getValue( "MES" ) %></td>
-								  <td><%= us.getValue( "ANIO" ) %></td>
-                                  <td><%= us.getValue( "FECHA" ) %></td>
-                                  <td>
-                                      <!-- button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button> -->
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
+                              	<td><%= us.getValue("CORRELATIVO") %></td>
+                              	  <td><%= us.getReferenced( "BODEGA" , "BODEGAS", "NOMBRE") %></td>
+								  <td><%= us.getValue( "FECHA" ) %></td>
+								  <td><%= us.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></td>
+								  <td><%= us.getValue( "OBSERVACIONES" ) %></td>
+								  <td>
                                       <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
-                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>','<%= us.getValue( "DIA") %>','<%= us.getValue( "MES") %>','<%= us.getValue( "ANIO") %>');"><i class="fa fa-book">&nbsp;Detalle</i></button>
                                   </td>
                               </tr>
                               <% } %>
@@ -161,7 +147,7 @@
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="descargas-bodega.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -170,7 +156,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="descargas-bodega.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">

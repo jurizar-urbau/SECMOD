@@ -17,11 +17,6 @@
 String id = request.getParameter( "id" );
 
 
-
-
-
-
-
 ExtendedFieldsBaseMain headMain = new ExtendedFieldsBaseMain( "COMPRAS", 
 		new String[] { 
 				"FECHA",
@@ -47,7 +42,7 @@ ExtendedFieldsBaseMain headMain = new ExtendedFieldsBaseMain( "COMPRAS",
 	} 
 );
 ExtendedFieldsBean head = headMain.get( Integer.parseInt( id ));
-
+head.printValues();
 ExtendedFieldsBaseMain detailMain = new ExtendedFieldsBaseMain( "COMPRAS_DETALLE", 
 		new String[] { 
 				"ID_PRODUCTO","UNIDADES","COSTO","SUBTOTAL"

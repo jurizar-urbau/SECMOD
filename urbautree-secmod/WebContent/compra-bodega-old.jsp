@@ -12,28 +12,65 @@
 <%@page import="com.urbau.feeders.BodegasMain"%>
 <% 
 	BodegasUsuariosMain bm = new BodegasUsuariosMain();
-	
-
+    ProductosMain pm = new ProductosMain();
+    PackingMain packmain = new PackingMain();
+	//long total_bodegas = bm.count();
+	long total_productos = pm.count();
 %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
-	<%
-	if( 
-			!Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_EFECTIVO ) &&
-			!Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_CREDITO ) &&
-			!Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_TARJETA ) &&
-			!Authorization.isAuthorizedOption( loggedUser.getRol(), "INICIO_COMPRAS", Constants.OPTIONS_TP_CHEQUE ) 
-			) {
-	%>
-		<script>
-			alert("Usuario no tiene permisos para aceptar pagos de ningun tipo.\nSolicite los permisos con el administrador del sistema e intentelo de nuevo.");
-			location.replace('home.jsp');
-		</script>
-	<%
-	}
-	%>
+	<script>
+		
+		function clickon( id ){
+			var ele = $( "#product-" + id );
+			ele.trigger('click');
+			console.log( 'clicking:', ele );
+		
+		} 
+		function searchProducts( q ){
+			// select DESCRIPCION,CODIGO,COEFICIENTE_UNIDAD,PRECIO,PRECIO_1,PRECIO_2,PRECIO_3,PRECIO_4 from productos where descripcion like '%P0%' or codigo like'%P0%' or ID in (select id_producto from Alias where descripcion like '%P0%');
+			console.log( "looking for products with [" + q + "]");
+			$( "#product-container" ).html("");
+			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+			
+                 $.each(response, function(i, v) {
+                	 console.log( i, v );
+                	 
+                	 var rootele;
+                	 
+                	 var htmltoadd = 
+              "<a  href=\"javascript: clickon('" + v.id + "');\">" + 
+                     "<div class=\"col-md-3 col-sm-3 mb\">" +
+                       "<div class=\"white-panel pn\">" +
+                         "<div class=\"white-header\">" +
+                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
+                         "</div>" +
+             "<div class=\"row\">" +
+               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
+                 "<p>" + v.codigo +"</p>" +
+               "</div>" +
+               "<div class=\"col-sm-6 col-xs-6 goright\">" +
+               "<p>&nbsp;&nbsp;&nbsp;</p>" +
+             "</div>" +
+               "<div class=\"col-sm-6 col-xs-6\"></div>" +
+                         "</div>" +
+                         "<div class=\"centered\">" +
+                         
+                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
+                 "<p style=\"color:red\">"+v.packings+"</p>" +
+                  "       </div>" +
+                  "     </div>" +
+                  "   </div>" +
+         "</a>";
+         			$( "#product-container" ).append( htmltoadd );
+                	
+                	 
+                 });
+              });
+		}
+	</script>
 	<style>
 		div.separator {
 		    margin-top: 30px;
@@ -45,15 +82,33 @@
    
 
   <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      
       <header class="header black-bg">
       		<%@include file="fragment/header.jsp"%>        
         </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
       <aside>
           <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
               <%@include file="fragment/sidebar.jsp"%>
+              <!-- sidebar menu end-->
           </div>
       </aside>
+      <!--sidebar end-->
       
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
 
@@ -68,9 +123,16 @@
                       <div class="col-lg-12" onclick="chooseProveedor()">
                       	Proveedor: <b><span id="proveedordisplay"></span></b>
                       </div>
+                      <!-- div class="col-lg-3 pull-left">
+                      	Fecha carga: <input type="date" name="fecha_carga" id="fecha_carga" class="form-control">
+                      	</div>
+                      	<div class="col-lg-3 pull-left">
+                      	No. Compra: <input type="text" name="no_compra" id="no_compra" class="form-control">
+                      </div-->
+                      
                       <div class="col-lg-4 pull-right">
                       Busqueda:
-		          		<form>
+		          		<form id="searchform" onsubmit="searchByQuery(); return false;">
 		          			
 			          		<div class="top-menu">
 					              <ul class="nav pull-right top-menu">
@@ -82,8 +144,73 @@
 					  </div>
 					  <br/><br/><br/>
                       <!-- SERVER STATUS PANELS -->
-             
-            			<div id="product-container" class="separator">
+                     
+                        <%
+                        	ArrayList<ProductoBean> plist = pm.get(null, -1 );
+                        for( ProductoBean pbean: plist ){
+                            %>
+    			<a data-toggle="modal" href="carga-bodega.jsp#myModal<%= pbean.getId() %>" id="product-<%= pbean.getId() %>"></a>
+    			<% } 
+                        %>    	
+                        <%
+                        	for( ProductoBean pbean: plist ){
+                        %>
+						
+             <div aria-hidden="true" aria-labelledby="myModalLabel<%= pbean.getId() %>" role="dialog" tabindex="-1" id="myModal<%= pbean.getId() %>" class="modal fade">
+						<form id="modalform<%= pbean.getId() %>" name="modalform<%= pbean.getId() %>">
+						<input name="productid" type="hidden" value="<%= pbean.getId() %>">
+						
+ 			              <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Agregar a compra...</h4>
+			                      </div>
+			                      <div class="modal-body col-lg-12">
+			                      <div class="col-sm-6">
+			                      	<img src="./bin/RenderImage?imagePath=<%= pbean.getImage_path() %>" width="220">
+			                      	</div>
+			                      	<div class="col-sm-6">
+			                      	<h3><%= pbean.getDescripcion() %></h3>
+			                      	
+			                          <p>Cantidad</p>
+			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <br/><p>Costo por unidad</p>
+			                          <input type="text" name="costo" autocomplete="off" class="form-control placeholder-no-fix" value="">
+			                          <br/>
+			                         
+			                          <%
+			                          	ArrayList<PackingBean> packlist = packmain.getAll( pbean.getId() );
+			                          	int count = 0;
+			                          	
+			                          	
+			                          	for( PackingBean pb : packlist ){
+			                          	
+			                          %>
+			                          	<input type="radio" name="packing" value="<%= pb.getMultiplicador() %>" <%= ( count == 0 ? "checked" : "" ) %>>&nbsp;<%= pb.getNombre() %> <br> 
+			                          <%
+			                          
+			                          count++ ;
+			                          	} %>
+			                          
+			                          </br>
+			                          </br>
+			                          <!--p>Precio unitario:</p>
+			                          <input type="text" name="precio" autocomplete="off" class="form-control placeholder-no-fix" value="<%= pbean.getPrecio() %>">
+			                          </br>  -->
+			                          
+			                          </div>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" onclick="addToStore(<%= pbean.getId() %>,'<%= pbean.getImage_path() %>','<%= pbean.getDescripcion() %>',document.modalform<%= pbean.getId() %>.cantidad.value,document.modalform<%= pbean.getId() %>.packing.value,document.modalform<%= pbean.getId() %>.costo.value);">Agregar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>         
+            <% } %>
+            <div id="product-container" class="separator">
                         
 					</div> <!--  content -->
                     </div><!-- /row -->
@@ -280,54 +407,6 @@
 			              </div>
 		              </form>
 		          </div>
-		          
-            <!-- INICIA MODAL UNICO -->
-		          
-		          <div aria-hidden="true" aria-labelledby="productModalLabel" role="dialog" tabindex="-1" id="productModal" class="modal fade">
-						<form id="productmodalform" name="productmodalform">
-							<input id="productid" name="productid" type="hidden">
-							<input id="imagePath" name="imagePath" type="hidden">
-							<input id="descripcion" name="descripcion" type="hidden">
-						
- 			              <div class="modal-dialog">
-			                  <div class="modal-content">
-				                  <div class="modal-header">
-			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                          <h4 class="modal-title">Agregar a compra...</h4>
-			                      </div>
-			                      <div class="modal-body col-lg-12">
-			                      <div class="col-sm-6">
-			                      	<img id="modalImage" src="" width="220">
-			                      	</div>
-			                      	<div class="col-sm-6">
-			                      	<h3><span id="modalDescription"></span></h3>
-			                      	
-			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
-			                          <br/><p>Costo por unidad</p>
-			                          <input type="text" name="costo" autocomplete="off" class="form-control placeholder-no-fix" value="">
-			                          <br/>
-			                          <!--  loop -->
-			                          <div id="modalpackingscontainer">
-			                          	<input type="radio" name="packing" value="thevalue" checked>&nbsp;Unidad<br>
-			                          </div> 
-			                          <!--  end loop  -->
-			                          </br>
-			                          </br>
-			                          
-			                          </div>
-			                      </div>
-			                      <div class="modal-footer">
-				                      <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-			                          <button class="btn btn-theme" type="button" id="addToStoreButton" onclick="addToStore(document.productmodalform.productid.value,document.productmodalform.imagePath.value,document.productmodalform.descripcion.value,document.productmodalform.cantidad.value,document.productmodalform.packing.value,document.productmodalform.costo.value);">Agregar</button>
-			                      </div>
-			                  </div>
-			              </div>
-		              </form>
-		          </div>         
-            
-
-            <!-- FINALIZA MODAL UNICO -->
      
   </section>
 
@@ -349,68 +428,26 @@
 
     <!--script for this page-->
   
-  <script>
- 
   
-  		var ventasList = [];	
-		var selected_bodega_id;
-		var allowed_prices;
-		var addingToStore = false;
-		
-		function searchProducts( q ){
-			$( "#product-container" ).html("");
-			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
-                 $.each(response, function(i, v) {
-                	 var rootele;
-                	 var htmltoadd =
-		              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
-		                     "<div class=\"col-md-3 col-sm-3 mb\">" +
-		                       "<div class=\"white-panel pn\">" +
-		                         "<div class=\"white-header\">" +
-		                 "<h5 style=\"color:red\">" + v.descripcion + "</h5>" +
-		                         "</div>" +
-		             "<div class=\"row\">" +
-		               "<div class=\"col-sm-6 col-xs-6 goleft\">" +
-		                 "<p>" + v.codigo +"</p>" +
-		               "</div>" +
-		               "<div class=\"col-sm-6 col-xs-6 goright\">" +
-		               "<p>&nbsp;&nbsp;&nbsp;</p>" +
-		             "</div>" +
-		               "<div class=\"col-sm-6 col-xs-6\"></div>" +
-		                         "</div>" +
-		                         "<div class=\"centered\">" +
-		                         
-		                 "<img src=\"./bin/RenderImage?imagePath=" + v.imagepath + "\" width=\"90\">" +
-		                 "<p style=\"color:red\">"+v.packings+"</p>" +
-		                  "       </div>" +
-		                  "     </div>" +
-		                  "   </div>" +
-		         "</a>";
-         			$( "#product-container" ).append( htmltoadd );
-                	
-                	 
-                 });
-              });
-		}
-	
-		function setProductModalValues(productid, imagePath, descripcion, packings ){
-			$("#productid").val(productid);
-			$("#imagePath").val(imagePath);
-			$("#descripcion").val(descripcion);
-			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
-			$("#modalDescription").html( descripcion );
-			$('#modalpackingscontainer').html("");
-			contador = 0;
-			$.each( packings, function( key, value ) {
-				$('#modalpackingscontainer').append(
-						'<input type="radio" name="packing" value="'+value.value+'" '+( contador==0 ?'checked':'' )+'   >&nbsp;'+value.descripcion+'<br>');
-				contador ++;
- 			});
-			$("#productModal").modal("show");
-      	}
-          
-		
-		   function setStore(){
+  <script type="text/javascript">
+  		  
+  		  var selected_bodega_id;
+  		  var selected_proveedor_id;
+  		  var allowed_prices;
+  		  
+		  function parseSecond(val) {
+			    var result = "Not found",
+			        tmp = [];
+			    var items = location.search.substr(1).split("&");
+			    for (var index = 0; index < items.length; index++) {
+			        tmp = items[index].split("=");
+			        if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+			    }
+			    return result;
+			}
+  
+		    
+		    function setStore(){
 		    	var value = $('input[name=bodegaid]:checked').val();
 		    	var values = value.split(',');
 		    	console.log('bodega', values[0]);
@@ -419,20 +456,7 @@
 				$('#bodegaid').val( selected_bodega_id );
 		    	hideStore();
 		    }
-
- 			function addToStore( productid, imagepath, productname, amount, packvalue, preciounitario  ){
- 				if( !addingToStore ){
-	  				addingToStore = true;
-	  				addS( amount, packvalue, productname, imagepath,productid, preciounitario  );
-	  				$("#productModal").modal("hide");
-	  				renderVentasList();
-	  				addingToStore = false;
- 				} else {
- 					alert("already added... porque esto?");
- 				}
- 			}
- 			 
-		   
+		    
 		    function setProveedor(){
 		    	var value = $('input[name=proveedorid]:checked').val();
 		    	var values = value.split(',');
@@ -444,6 +468,13 @@
 		    }
 		    
 		    
+  			function addToStore( productid, imagepath, productname, amount, packvalue, preciounitario ){
+  				addS( amount, packvalue, productname, imagepath,productid,preciounitario );
+  				hideModal('#myModal' + productid );
+  				renderVentasList();
+  				
+  			}
+  			
   			function chooseStore(){
   				$('#myStores').modal('show');
   			}
@@ -464,47 +495,43 @@
   			
   			
   			
-			$("#savesalebutton").click(function(e){
-				e.preventDefault();
-				$("#savesalebutton").prop('disabled',true);
-				if(confirm('Confirma que desea hacer la compra?')){
-	    			
+			$("#savesalebutton").click(function(){
 				
-				
-				
-	    			var form =$('#saleform');
-	    	     	$.ajax({
-	    	     		type:'POST',
-	    	     		dataType: "text",
-	    	 			url: './bin/IngresoBodega',
-	    	 			data: form.serialize(),
-	    	 			
-	    		        success: function(msg){
-	    		        	var messages = msg.split('|');
-	    		        	alert( messages[ 1 ] );
-	    		        	if( !msg.startsWith('error') ){
-	    		        		
-	    		        		if( confirm( "Desea imprimir la compra?" ) ){
-	    		        			location.replace( 'rpt-compra.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
-	    		        		} else {
-	    		        			location.reload();
-	    		        		}
-	    		        	}
-	    		            
-	    		        },
-	    	 			error: function(jqXHR, textStatus, errorThrown){
-	    	 				console.log("ERROR srtatus: ", textStatus);
-	    	 				console.log("ERROR errorThrown: ", errorThrown);
-	    	 				alert("Se prudujo un error al hacer la operaciòn");	
-	    	 			}
-	    		            		        
-	    	       });
-	    	     	
-	    	     	return false;
-					} else {
-						$("#savesalebutton").prop('disabled',false );
-					}
-					return false;
+    			var form =$('#saleform');
+    	     	$.ajax({
+    	     		type:'POST',
+    	     		dataType: "text",
+    	 			url: './bin/IngresoBodega',
+    	 			data: form.serialize(),
+    	 			
+    		        success: function(msg){
+    		        	var messages = msg.split('|');
+    		        	alert( messages[ 1 ] );
+    		        	if( !msg.startsWith('error') ){
+    		        		
+    		        		if( confirm( "Desea imprimir la carga?" ) ){
+    		        			//location.replace( 'rpt-cargas-bodega.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
+    		        			location.replace( 'rpt-compra.jsp?referer=compra-bodega.jsp&id=' + messages[ 0 ] );
+    		        		} else {
+    		        			location.reload();
+    		        		}
+    		        		// if( confirm("desea imprimir la carga?") ){
+    		        		//	location.replace( 'cargas-bodega-detalle.jsp?id=6' );
+    		        		 //} else {
+    		        			
+    		        		//}
+    		        	}
+    		            
+    		        },
+    	 			error: function(jqXHR, textStatus, errorThrown){
+    	 				console.log("ERROR srtatus: ", textStatus);
+    	 				console.log("ERROR errorThrown: ", errorThrown);
+    	 				alert("Se prudujo un error al hacer la operaciòn");	
+    	 			}
+    		            		        
+    	       });
+    	     	
+    	     	return false;
     	 	});
   			
   			if (typeof String.prototype.startsWith != 'function') {
@@ -514,7 +541,11 @@
   			  };
   			}
   			
+  			
+  			
+  		    var ventasList = [];
   		    function addS( amount, packval, description, imagepath,productid,preciounitario ){
+  		    	console.log("actually adding sale productid: "+ productid + ", amount:" + amount + ", packval:" + packval +", preciounitario:" + preciounitario );
   		    	var o = {};
   			    o.amount = amount;
   			    o.pack = packval;
@@ -525,11 +556,14 @@
   	  		    ventasList.push( o );  	
   		    }
   		    
-	  		  function removeItem( index ){
-				  	ventasList.splice( index, 1 );
-					renderVentasList();
-			  }  
+  		    
+  		  function removeItem( index ){
+			  	ventasList.splice( index, 1 );
+				renderVentasList();
+		  }  
   		  
+  		
+	    
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
@@ -573,10 +607,25 @@
   			$( "#totalOrden" ).html( "Q " + total );
   		  }
   			
+	</script>  
+	
+	<script type="text/javascript">
+	    $(window).load(function(){
+	        $( "#search-query-3" ).keyup(function() {
+	        	var value = $( "#search-query-3" ).val();
+	        	console.log( "value", value );
+	        	searchProducts( value );
+			});
+	    });
+	    $('#searchform').submit(function(e) {
+	    	searchByQuery();
+	    	return null;
+	    });
+	    
 	    function searchByQuery( ){
 	    	var value = $( "#search-query-3" ).val();
+        	console.log( "value", value );
         	searchProducts( value );
-        	return false;
 	    }
 	    setStore();
 	    

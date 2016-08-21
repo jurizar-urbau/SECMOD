@@ -16,6 +16,9 @@ public class ExtendedFieldsBean {
 	
 	private Map<String, String> values = new HashMap<String, String>();
 	
+	public void printValues(){
+		System.out.println( "Values:" +  values );
+	}
 	public int getId() {
 		return id;
 	}

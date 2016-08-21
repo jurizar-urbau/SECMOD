@@ -1,3 +1,4 @@
+<%@page import="com.urbau.misc.ExtendedFieldsFilter"%>
 <%@page import="com.urbau.beans.TwoFieldsBean"%>
 <%@page import="com.urbau.beans.KeyValueBean"%>
 <%@page import="com.urbau.feeders.TwoFieldsBaseMain"%>
@@ -11,22 +12,44 @@
 	<head>
 	<%@include file="fragment/head.jsp"%>
 	<%
-	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "PLANILLA_HEAD", 
-			new String[]{"DIA","MES","ANIO","FECHA"},
+	
+	String id = request.getParameter( "id" );
+	ExtendedFieldsBaseMain planillaHead = new ExtendedFieldsBaseMain( "SALIDAS_BODEGA_DETALLE", 
+		new String[]{"ID_SALIDA","ID_PRODUCTO","UNIDADES_PRODUCTO","UNITARIO","PACKING_SELECCIONADO"},
+			new int[]{ 
+			Constants.EXTENDED_TYPE_INTEGER, 
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER,
+			Constants.EXTENDED_TYPE_INTEGER
+		} );
+	
+
+	
+	ExtendedFieldsBaseMain cargaHead = new ExtendedFieldsBaseMain( "SALIDAS_BODEGA", 
+			new String[]{"BODEGA","FECHA","USUARIO","CORRELATIVO","OBSERVACIONES"},
 				new int[]{ 
-				Constants.EXTENDED_TYPE_INTEGER, 
+				Constants.EXTENDED_TYPE_INTEGER,
+				Constants.EXTENDED_TYPE_DATE,
 				Constants.EXTENDED_TYPE_INTEGER,
 				Constants.EXTENDED_TYPE_INTEGER,
-				Constants.EXTENDED_TYPE_DATE
+				Constants.EXTENDED_TYPE_STRING
 			} );
 	
+			ExtendedFieldsBean head = cargaHead.get( Integer.valueOf( id ));
 	
+
+	ExtendedFieldsFilter filter = new ExtendedFieldsFilter( new String[]{ "ID_SALIDA" }, 
+			new int[]{ ExtendedFieldsFilter.EQUALS}, 
+			new int[]{Constants.EXTENDED_TYPE_INTEGER}, 
+			new String[]{ id });
+
 	
 			int from = 0;
 			if( request.getParameter( "from" ) != null ){
 		from = Integer.parseInt( request.getParameter( "from" ) );
 			}
-			ArrayList<ExtendedFieldsBean> list = planillaHead.get( request.getParameter("q"), from );
+			ArrayList<ExtendedFieldsBean> list = planillaHead.getAll(filter);
 			int total_regs = -1;
 			
 			if( list.size() > 0 ){
@@ -34,22 +57,21 @@
 			}
 	%>
 	<script>
-		function edit( id ){
-			location.replace( "planilla-detail.jsp?mode=edit&id="+id);
-		}
-		function removereg( id ){
-			location.replace( "planilla-detail.jsp?mode=remove&id="+id);
-		}
 		function view( id ){
-			location.replace( "planilla-detail.jsp?mode=view&id="+id);
+			location.replace( "descargas-bodega-detalle.jsp?id="+id);
 		} 
-		function add(){
-			location.replace( "planilla-detail.jsp?mode=add" );
-		}
-		function generate( pid , periodo, mes, anio ){
-			location.replace( "planilla-data.jsp?pid=" + pid + "&periodo=" +  periodo + "&mes="+  mes + "&anio=" +  anio);
-		}
+		
 	</script>
+	<style>
+	@page  
+		{ 
+		    size: auto;   /* auto is the initial value */ 
+		
+		    /* this affects the margin in the printer settings */ 
+		    margin: 25mm 25mm 25mm 25mm;  
+		} 
+			
+	</style>
 	</head>
    
    <body>
@@ -89,7 +111,7 @@
           <div class="col-lg-6"> 
            
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6 no-print" >
           		<form>
 	          		<div class="top-menu">
 			              <ul class="nav pull-right top-menu">
@@ -105,37 +127,41 @@
           	<div class="row mt">
           		<div class="col-lg-12">
           		<div class="content-panel">
-          				  <span class="pull-right">
-          				  <button type="button" class="btn btn-success" onclick="add();">+</button>&nbsp;&nbsp;&nbsp;
-          				  
-          				  </span>
-                          <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Planilla </h4>
+          					<span class="pull-right no-print">
+          				  		<button type="button" class="btn btn-success" onclick="print();">Imprimir</button>&nbsp;&nbsp;&nbsp;
+          				  	</span>
+          				  <table class="table table-striped table-advance table-hover">
+	                  	  	  <h4>
+	                  	  	  	<i class="fa fa-angle-left no-print">&nbsp;<a href="cargas-bodega.jsp">Regresar...</a> &nbsp;</i> <BR>
+	                  	  	  	<b>Detalle de carga No:</b> <%= head.getValue( "CORRELATIVO") %><br>
+	                  	  	  	<b>Bodega :</b> <%= head.getReferenced( "BODEGA", "BODEGAS", "NOMBRE") %><br>
+	                  	  	  	<b>Fecha&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%= head.getValue( "FECHA" ) %><br>
+	                  	  	  	<b>Usuario&nbsp;:</b> <%= head.getReferenced( "USUARIO" , "USUARIOS", "NOMBRE") %></h4>
+	                  	  	  	<b>Observaciones&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%= head.getValue( "OBSERVACIONES" ) %><br>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
-                              	  <th>D&iacute;a</th>
-                                  <th>Mes</th>
-                                  <th>A&ntilde;o</th>
-                                  <th>Fecha de creaci&oacute;n</th>
-                                  <th></th>
+                              	  <th>Codigo</th>
+                              	  <th>Descripci&oacute;n</th>
+                                  <th>Unidades</th>
+                                  <th>Unidades en packing</th>
+                                  <th>Total Unidades cargadas</th>
+                                  
                               </tr>
                               </thead>
                               <tbody>
                               <%
                               	for( ExtendedFieldsBean us : list ){
+                              	
                               %>
                               <tr>
-								  <td><%= us.getValue( "DIA" ) %></td>
-								  <td><%= us.getValue( "MES" ) %></td>
-								  <td><%= us.getValue( "ANIO" ) %></td>
-                                  <td><%= us.getValue( "FECHA" ) %></td>
-                                  <td>
-                                      <!-- button class="btn btn-primary btn-xs" onclick="edit('<%= us.getId()  %>');"><i class="fa fa-pencil"></i></button> -->
-                                      <button class="btn btn-danger btn-xs" onclick="removereg('<%= us.getId()  %>');"><i class="fa fa-trash-o "></i></button>
-                                      <button class="btn btn-success btn-xs" onclick="view('<%= us.getId()  %>');"><i class="fa fa-eye"></i></button>
-                                      <button class="btn btn-warning btn-xs" onclick="generate('<%= us.getId()  %>','<%= us.getValue( "DIA") %>','<%= us.getValue( "MES") %>','<%= us.getValue( "ANIO") %>');"><i class="fa fa-book">&nbsp;Detalle</i></button>
-                                  </td>
+                              	  <td><%= us.getReferenced( "ID_PRODUCTO" , "PRODUCTOS", "CODIGO") %></td>
+                              	  <td><%= us.getReferenced( "ID_PRODUCTO" , "PRODUCTOS", "DESCRIPCION") %></td>
+								  <td><%= us.getValue( "UNITARIO" ) %></td>
+								  <td><%= us.getValue( "PACKING_SELECCIONADO" ) %></td>
+								  <td><%= us.getValue( "UNIDADES_PRODUCTO" ) %></td>
+								  
+								 
                               </tr>
                               <% } %>
                               
@@ -157,11 +183,11 @@
 				forwardButton = false;
 			}
 		%>
-		              <nav>
+		              <nav class="no-print">
 					  <ul class="pager">
 					  <% if( backButton ) {%>
 					  <li class="previous">
-					    		<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
+					    		<a href="descargas-bodega.jsp?q=<%= request.getParameter("q") %>&from=<%= from - Constants.ITEMS_PER_PAGE  %>">
 					    			<span aria-hidden="true">&larr;</span> Anterior</a></li>
 					  <% } else { %>
 					  <li class="previous disabled">
@@ -170,7 +196,7 @@
 					  <% } %>
 					    <% if( forwardButton ){  %>
 					    <li class="next">
-					    	<a href="planilla.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
+					    	<a href="descargas-bodega.jsp?q=<%= request.getParameter("q") %>&from=<%= end  %>">
 					    		Siguiente <span aria-hidden="true">&rarr;</span></a></li>
 					    <% } else { %>
 					    <li class="next disabled">
@@ -195,4 +221,14 @@
   </section>
 	<%@include file="fragment/footerscripts.jsp"%>
   </body>
+  <%
+ 	if( "true".equals( request.getParameter( "autoprint" )) ){
+ 		%>
+ 		<script>
+ 			window.print();
+ 		</script>
+ 		
+ 		<% 
+ 	}
+  %>
 </html>
