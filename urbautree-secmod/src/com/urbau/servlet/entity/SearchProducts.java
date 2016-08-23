@@ -81,10 +81,15 @@ public class SearchProducts extends Entity {
 						jsonObject.put("precio_2",    Util.formatCurrency(bean.compiled_2())  );
 						jsonObject.put("precio_3",    Util.formatCurrency(bean.compiled_3()) );
 						jsonObject.put("precio_4",    Util.formatCurrency(bean.compiled_4()) );
+						jsonObject.put("precio_1_value",    bean.getRoundedCompiled(1));
+						jsonObject.put("precio_2_value",    bean.getRoundedCompiled(2));
+						jsonObject.put("precio_3_value",    bean.getRoundedCompiled(3));
+						jsonObject.put("precio_4_value",    bean.getRoundedCompiled(4));
 						jsonObject.put("imagepath",    rs.getString( 9 ));
 						jsonObject.put("id",    rs.getString( 10 ));
 						jsonObject.put("stock", bean.getStock_minimo() );
 						jsonObject.put("packings", Util.getPackings( rs.getString( 10 )) );
+						jsonObject.put("packingsarray", Util.getPackingsAsArray( rs.getString( 10 )) );
 						
 						jsonArray.add(jsonObject);
 						

@@ -52,6 +52,16 @@ import="com.urbau.feeders.BodegasMain"%><%
 					    </form>
 					  </div>
 					  <br/><br/><br/>
+					  <div id="loadingDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+		              	<div style="background:url(ripple.gif) no-repeat center center;height:125px;">
+		              	<br/><br/><br/>BUSCANDO...
+		              	</div>
+		              </div>
+		              <div id="noresultsDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+		              	<div style="background:height:125px;">
+		              	<br/><br/><br/>NO SE ENCONTRARON PRODUCTOS...
+		              	</div>
+		              </div>
                       <!-- SERVER STATUS PANELS -->
             		 <div id="product-container" class="separator">
                      </div>
@@ -221,9 +231,16 @@ import="com.urbau.feeders.BodegasMain"%><%
 		var addingToStore = false;
 		
 		function searchProducts( q ){
+			$('#loadingDIV').show();
+			$('#noresultsDIV').hide();
 			$( "#product-container" ).html("");
+			var totalproducts = 0;
 			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+				$('#loadingDIV').hide();
+				 $('#noresultsDIV').hide();
+				 
                  $.each(response, function(i, v) {
+                	 totalproducts++;
                 	 var rootele;
                 	 var htmltoadd = 
 			              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
@@ -252,6 +269,9 @@ import="com.urbau.feeders.BodegasMain"%><%
 			         	 "</a>";
          			$( "#product-container" ).append( htmltoadd );
                  });
+                 if( totalproducts === 0 ){
+                	 $('#noresultsDIV').show();
+                 }
               });
 		}
 	

@@ -469,6 +469,9 @@ public class ExtendedFieldsBaseMain extends AbstractMain {
 			if( data_types[ Util.getIndexOf( field_name, field_names) ] == Constants.EXTENDED_TYPE_STRING ){
 				sb.append( " OR " + field_name + " LIKE '%" + q + "%'" );
 			}
+			if( data_types[ Util.getIndexOf( field_name, field_names) ] == Constants.EXTENDED_TYPE_INTEGER  || Util.isNumber( field_name )){
+				sb.append( " OR " + field_name + " LIKE '%" + q + "%'" );
+			}
 		}
 		if ( sb.length() > 4 ){
 			return " WHERE " + sb.substring( 3 );

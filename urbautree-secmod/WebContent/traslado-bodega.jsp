@@ -71,6 +71,16 @@
 					    </form>
 					  </div>
 					  <br/><br/><br/>
+					  <div id="loadingDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:url(ripple.gif) no-repeat center center;height:125px;">
+	              	<br/><br/><br/>BUSCANDO...
+	              	</div>
+	              </div>
+	              <div id="noresultsDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:height:125px;">
+	              	<br/><br/><br/>NO SE ENCONTRARON PRODUCTOS...
+	              	</div>
+	              </div>
             <div id="product-container" class="separator">
 					</div> <!--  content -->
                     </div><!-- /row -->
@@ -283,9 +293,16 @@
 			
 		function searchProducts( q, bo ){
 			var value = $( "#search-query-3" ).val();
+			$('#loadingDIV').show();
+			$('#noresultsDIV').hide();
 			$( "#product-container" ).html("");
+			var totalproducts = 0;
 			$.get( "./bin/sepis?q=" + value + "&bo=" + selected_bodega_id, null, function(response){
+				$('#loadingDIV').hide();
+				 $('#noresultsDIV').hide();
+				 
                  $.each(response, function(i, v) {
+                	 totalproducts++;
                 	 var rootele;
                 	 var htmltoadd =
                 		 
@@ -314,6 +331,9 @@
          "</a>";
          			$( "#product-container" ).append( htmltoadd );
                  });
+                 if( totalproducts === 0 ){
+                	 $('#noresultsDIV').show();
+                 }
               });
 			
 		}		

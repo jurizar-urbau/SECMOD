@@ -1,6 +1,7 @@
 package com.urbau.beans;
 
 import com.urbau.beans._interface.Bean;
+import com.urbau.misc.Util;
 
 public class ProductoBean implements Bean {
 
@@ -135,6 +136,21 @@ public class ProductoBean implements Bean {
 	@Override
 	public int getProgramId() {
 		return 1;
+	}
+	
+	public double getRoundedCompiled( int n ){
+		switch (n) {
+		case 1:
+			return  Util.applyRoundRules( compiled_1());
+		case 2:
+			return  Util.applyRoundRules( compiled_2());
+		case 3:
+			return  Util.applyRoundRules( compiled_3());
+		case 4:
+			return  Util.applyRoundRules( compiled_4());
+		default:
+			return compiled_1();
+		}
 	}
 	
 }

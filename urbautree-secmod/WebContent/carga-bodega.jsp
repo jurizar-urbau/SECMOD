@@ -7,31 +7,25 @@ import="com.urbau.feeders.BodegasMain"%><%
 %><!DOCTYPE html>
 <html lang="en">
 	<head>
-	<%@include file="fragment/head.jsp"%>
-	
-	<style>
-		div.separator {
-		    margin-top: 30px;
-		}
-	</style>
+		<%@include file="fragment/head.jsp"%>
+		<style>
+			div.separator {
+			    margin-top: 30px;
+			}
+		</style>
 	</head>
-   
-   <body>
-   
-
-  <section id="container" >
-      <header class="header black-bg">
-      		<%@include file="fragment/header.jsp"%>        
-        </header>
-      <aside>
-          <div id="sidebar"  class="nav-collapse ">
-              <%@include file="fragment/sidebar.jsp"%>
-          </div>
-      </aside>
-   
-      <section id="main-content">
+    <body>
+	   <section id="container" >
+      		<header class="header black-bg">
+	      		<%@include file="fragment/header.jsp"%>        
+	        </header>
+		    <aside>
+	            <div id="sidebar"  class="nav-collapse ">
+	              <%@include file="fragment/sidebar.jsp"%>
+	            </div>
+		    </aside>
+      	<section id="main-content">
           <section class="wrapper">
-
               <div class="row">
               	<h1></h1>
                   <div class="col-lg-9  col-md-9 col-sm-9  main-chart">
@@ -52,16 +46,21 @@ import="com.urbau.feeders.BodegasMain"%><%
 					    </form>
 					  </div>
 					  <br/><br/><br/>
-                      <!-- SERVER STATUS PANELS -->
+					  <div id="loadingDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:url(ripple.gif) no-repeat center center;height:125px;">
+	              	<br/><br/><br/>BUSCANDO...
+	              	</div>
+	              </div>
+	              <div id="noresultsDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:height:125px;">
+	              	<br/><br/><br/>NO SE ENCONTRARON PRODUCTOS.
+	              	</div>
+	              </div>
             		 <div id="product-container" class="separator">
                      </div>
                    </div>
               </div>
                   
-                  
-      <!-- **********************************************************************************************************************************************************
-      RIGHT SIDEBAR CONTENT
-      *********************************************************************************************************************************************************** -->                  
                   <div class="col-lg-3 ds col-md-3 col-sm-3">
                    <h3>INGRESO ACTUAL</h3>
                    <div class="desc">
@@ -220,9 +219,18 @@ import="com.urbau.feeders.BodegasMain"%><%
 		var addingToStore = false;
 		
 		function searchProducts( q ){
+			$('#loadingDIV').show();
+			$('#noresultsDIV').hide();
 			$( "#product-container" ).html("");
+			var totalproducts = 0;
 			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+				
+				 $('#loadingDIV').hide();
+				 $('#noresultsDIV').hide();
+				 
+				 
                  $.each(response, function(i, v) {
+                	 totalproducts++;
                 	 var rootele;
                 	 var htmltoadd = 
 			              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
@@ -251,6 +259,9 @@ import="com.urbau.feeders.BodegasMain"%><%
 			         	 "</a>";
          			$( "#product-container" ).append( htmltoadd );
                  });
+                 if( totalproducts === 0 ){
+                	 $('#noresultsDIV').show();
+                 }
               });
 		}
 	

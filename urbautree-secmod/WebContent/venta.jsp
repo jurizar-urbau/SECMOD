@@ -54,12 +54,22 @@
 					              		<li><input type="text" class="form-control" id="search-query-3" name="q" autocomplete="off" value="<%= ( request.getParameter( "q" ) != null && !"null".equals( request.getParameter( "q" ) )) ? request.getParameter( "q" ) : "" %>" ></li>
 					                    <li><span class="btn btn-primary" onclick="searchByQuery()">Buscar</span></li>
 					              </ul>
+					             					              
 				            </div>
 					    </form>
 					  </div>
 					  
 					  <br/><br/><br/>
-                     
+                     <div id="loadingDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:url(ripple.gif) no-repeat center center;height:125px;">
+	              	<br/><br/><br/>BUSCANDO...
+	              	</div>
+	              </div>
+	              <div id="noresultsDIV" style="display: none; width:100%; padding:70px 2px;text-align:center;">
+	              	<div style="background:height:125px;">
+	              	<br/><br/><br/>NO SE ENCONTRARON PRODUCTOS...
+	              	</div>
+	              </div>
            			<div id="product-container" class="separator">
                     </div> <!--  content -->
                     
@@ -179,10 +189,14 @@
 			                          <span class="pull-right">
 			          				  	<a data-toggle="modal" class="btn btn-success" href="javascript: createNewClient()">+</a>  
 			          				  </span>
-			          				  	<label>Buscar: <input type="text" class="form-control" autocomplete="off" id="search-client" name="q"></label> 
 			          				  
-			          				  
-			                          
+							              <ul class="nav pull-left top-menu">
+							              		<li><input type="text" class="form-control" autocomplete="off" id="search-client" name="q"></li>
+							                    <li><button class="btn" type="button" onclick="searchClientsNew()">Buscar</button></li>
+							              </ul>
+						            <br/><br/><br/>
+
+			          				   
 			                      </div>
 			                      <div class="modal-body">
 				                      
@@ -303,8 +317,6 @@
 			                      	
 			                          <p>Cantidad</p>
 			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
-			                          <br/><p>Costo por unidad</p>
-			                          <input type="text" name="costo" autocomplete="off" class="form-control placeholder-no-fix" value="">
 			                          <br/>
 			                          <!--  loop -->
 			                          <div id="modalpackingscontainer">
@@ -315,16 +327,16 @@
 			                          </br>
 			                          <p>Precio:</p>
 			                          <div class="price1" style="display: none;">
-			                          	(1)<input type="radio" name="precio" id="precio1" value="<%=  Util.applyRoundRules( pbean.compiled_1()) %>" checked> <%=  Util.formatCurrency(pbean.compiled_1()) %><br/>
+			                          	(1)<input type="radio" name="precio" id="precio1" value="" checked><span id="precio1value"></span> <br/>
 			                          </div>
 			                          <div class="price2" style="display: none;">
-				                        (2)<input class="price2" id="precio2" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_2()) %>" > <%=  Util.formatCurrency(pbean.compiled_2()) %><br/>
+				                        (2)<input class="price2" id="precio2" type="radio" name="precio" value="" ><span id="precio2value"></span><br/>
 			                          </div>
 			                          <div class="price3" style="display: none;">
-			                          	(3)<input class="price3" id="precio3" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_3()) %>" > <%=  Util.formatCurrency(pbean.compiled_3()) %><br/>
+			                          	(3)<input class="price3" id="precio3" type="radio" name="precio" value="" ><span id="precio3value"></span><br/>
 			                          </div>
 			                          <div class="price4" style="display: none;">
-			                          	(4)<input class="price4" id="precio4" type="radio" name="precio" value="<%=  Util.applyRoundRules( pbean.compiled_4()) %>" > <%=  Util.formatCurrency(pbean.compiled_4()) %><br/>
+			                          	(4)<input class="price4" id="precio4" type="radio" name="precio" value="" ><span id="precio4value"></span><br/>
 			                          </div>
 			                          
 			                          </div>
@@ -371,23 +383,24 @@
 	  var current_stock = 0;
 	  var ventasList = [];
 	  var MAXLENGTH = 20;
+	  var addingToStore = false;
 	  
-	  function clickon( id, stock ){
-			
-			var ele = $( "#product-" + id );
-			ele.trigger('click');
-		}
 	  
 		function searchProducts( q ){
+			$('#loadingDIV').show();
+			$('#noresultsDIV').hide();
 			$( "#product-container" ).html("");
 			 $.get( "./bin/searchp?q=" + q + "&bodega=" + selected_bodega_id + "&cliente=" + selected_client_id, null, function(response){
+				 $('#loadingDIV').hide();
+				 $('#noresultsDIV').hide();
+				 
+				 var totalproducts = 0;
                  $.each(response, function(i, v) {
-                	 
+                	 totalproducts++;
                 	 var rootele;
                 	 
                 	 var htmltoadd =
-              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + "," + v.stock + ","+ v.precio_1 +","+ v.precio_2 +","+ v.precio_3 +","+ v.precio_4 +" );\">" + 		 
-//              "<a  href=\"javascript: clickon('" + v.id + "'," + v.stock + ");\">" + 
+              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + "," + v.stock + ",'"+ v.precio_1 +"','"+ v.precio_2 +"','"+ v.precio_3 +"','"+ v.precio_4 +"',"+ v.precio_1_value +","+ v.precio_2_value +","+ v.precio_3_value +","+ v.precio_4_value +" );\">" + 		  
                      "<div class=\"col-md-3 col-sm-3 mb\">" +
                        "<div class=\"white-panel pn\">" +
                          "<div class=\"white-header\">" +
@@ -413,17 +426,26 @@
          "</a>";
          			$( "#product-container" ).append( htmltoadd );
                  });
+                 if( totalproducts === 0 ){
+                	 $('#noresultsDIV').show();
+                 }
               });
 		}
 		
-		function setProductModalValues(productid, imagePath, descripcion, packings, stock, precio_1, precio_2, precio_3, precio_4 ){
+		function setProductModalValues(productid, imagePath, descripcion, packings, stock, precio_1, precio_2, precio_3, precio_4, precio_1_value, precio_2_value, precio_3_value, precio_4_value ){
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);
-			$("#precio1").val(precio_1);
-			$("#precio2").val(precio_2);
-			$("#precio3").val(precio_3);
-			$("#precio4").val(precio_4);
+			$("#precio1").val(precio_1_value);
+			$("#precio2").val(precio_2_value);
+			$("#precio3").val(precio_3_value);
+			$("#precio4").val(precio_4_value);
+			
+			$("#precio1value").html(precio_1);
+			$("#precio2value").html(precio_2);
+			$("#precio3value").html(precio_3);
+			$("#precio4value").html(precio_4);
+			
 			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
 			$("#modalDescription").html( descripcion );
 			$('#modalpackingscontainer').html("");
@@ -431,6 +453,7 @@
 			current_stock = stock;
 			
 			contador = 0;
+			console.log("packings",packings);
 			$.each( packings, function( key, value ) {
 				$('#modalpackingscontainer').append(
 						'<input type="radio" name="packing" value="'+value.value+'" '+( contador==0 ?'checked':'' )+'   >&nbsp;'+value.descripcion+'<br>');
@@ -711,17 +734,14 @@
 	    	$('#search-client').focus();
 	        $('#myModal').modal('show');
 	        
-	        $( "#search-query-3" ).keyup(function() {
-	        	var value = $( "#search-query-3" ).val();
-	        	searchProducts( value );
-			});
-	        $( "#search-client" ).keyup(function() {
-	        	var value = $( "#search-client" ).val();
-	        	searchClients( value );
-			});
-	        
 	    });
+	    function searchClientsNew(){
+	    	var value = $( "#search-client" ).val();
+        	searchClients( value );	
+	    }
 	    function searchByQuery( ){
+	    	
+	    	
 	    	var value = $( "#search-query-3" ).val();
         	console.log( "value", value );
         	searchProducts( value );
