@@ -113,7 +113,7 @@ public class SalidaBodega extends Entity {
 		} catch( Exception exception ){
 			System.out.println( "Error: " + exception.getMessage() );
 			exception.printStackTrace();
-			response.getOutputStream().write( exception.getMessage().getBytes() );
+			response.getOutputStream().write( ( "error|" + exception.getMessage()).getBytes() );
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		}

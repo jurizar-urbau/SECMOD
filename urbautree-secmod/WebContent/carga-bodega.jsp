@@ -171,7 +171,7 @@ import="com.urbau.feeders.BodegasMain"%><%
 			                      	<h3><span id="modalDescription"></span></h3>
 			                      	
 			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <input type="text" name="cantidad" id="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          
 			                          <!--  loop -->
 			                          <div id="modalpackingscontainer">
@@ -217,6 +217,7 @@ import="com.urbau.feeders.BodegasMain"%><%
 	  	var selected_bodega_id;
 		var allowed_prices;
 		var addingToStore = false;
+		
 		
 		function searchProducts( q ){
 			$('#loadingDIV').show();
@@ -265,7 +266,8 @@ import="com.urbau.feeders.BodegasMain"%><%
               });
 		}
 	
-      	function setProductModalValues(productid, imagePath, descripcion, packings ){
+      	function setProductModalValues(productid, imagePath, descripcion, packings,stock ){
+      		$("#cantidad").val("1");
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);

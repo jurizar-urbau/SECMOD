@@ -20,7 +20,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
 import static com.urbau.misc.Constants.Q_PARAMETER;
-import static com.urbau.misc.Constants.CLIENTE_PARAMETER;
 import static com.urbau.misc.Constants.BODEGA_PARAMETER;
 
 @WebServlet("/bin/searchp")
@@ -32,7 +31,6 @@ public class SearchProducts extends Entity {
     	response.setContentType("application/json");
     	
 		String q = request.getParameter( Q_PARAMETER );
-		String cliente = request.getParameter( CLIENTE_PARAMETER );
 		String bodega = request.getParameter( BODEGA_PARAMETER );
 		
 		JSONArray jsonArray = new JSONArray();
@@ -45,7 +43,7 @@ public class SearchProducts extends Entity {
 			String sql = 
 					"SELECT " + 
 					" PRO.DESCRIPCION,PRO.CODIGO,PRO.COEFICIENTE_UNIDAD,PRO.PRECIO,PRO.PRECIO_1,PRO.PRECIO_2,PRO.PRECIO_3,PRO.PRECIO_4,PRO.IMAGE_PATH,PRO.ID, INV.AMOUNT " + 
-					" FROM PRODUCTOS PRO, INV"+bodega+" INV WHERE PRO.ID = INV.ID_PRODUCT AND INV.ESTATUS='a' AND " +
+					" FROM PRODUCTOS PRO, INV"+bodega+" INV WHERE INV.AMOUNT > 0 AND  PRO.ID = INV.ID_PRODUCT AND INV.ESTATUS='a' AND " +
 					" ( DESCRIPCION LIKE '%" + q + "%' OR CODIGO LIKE'%" + q + "%' OR ID IN  " +
 					" (SELECT ID_PRODUCTO FROM ALIAS WHERE DESCRIPCION LIKE '%" + q + "%') " +
 					" OR FAMILIA IN (SELECT ID FROM FAMILIAS WHERE NOMBRE LIKE '%" + q + "%'))";

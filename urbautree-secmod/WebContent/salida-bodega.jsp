@@ -183,7 +183,7 @@ import="com.urbau.feeders.BodegasMain"%><%
 			                      	<h3><span id="modalDescription"></span></h3>
 			                      	
 			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <input type="text" name="cantidad" id="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          
 			                          <!--  loop -->
 			                          <div id="modalpackingscontainer">
@@ -229,13 +229,15 @@ import="com.urbau.feeders.BodegasMain"%><%
 	  	var selected_bodega_id;
 		var allowed_prices;
 		var addingToStore = false;
+		var current_stock = 0;
 		
 		function searchProducts( q ){
 			$('#loadingDIV').show();
 			$('#noresultsDIV').hide();
 			$( "#product-container" ).html("");
 			var totalproducts = 0;
-			$.get( "./bin/searchexistentp?q=" + q , null, function(response){
+			//$.get( "./bin/searchp?q=" + q , null, function(response){
+			  $.get( "./bin/searchp?q=" + q + "&bodega=" + selected_bodega_id, null, function(response){
 				$('#loadingDIV').hide();
 				 $('#noresultsDIV').hide();
 				 
@@ -243,7 +245,7 @@ import="com.urbau.feeders.BodegasMain"%><%
                 	 totalproducts++;
                 	 var rootele;
                 	 var htmltoadd = 
-			              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" + 
+			              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + "," + v.stock + " );\">" + 
 			                     "<div class=\"col-md-3 col-sm-3 mb\">" +
 			                       "<div class=\"white-panel pn\">" +
 			                         "<div class=\"white-header\">" +
@@ -254,9 +256,9 @@ import="com.urbau.feeders.BodegasMain"%><%
 			                 "<p>" + v.codigo +"</p>" +
 			               "</div>" +
 			               "<div class=\"col-sm-6 col-xs-6 goright\">" +
-			               "<p>&nbsp;&nbsp;&nbsp;</p>" +
+			               "<p>" + v.stock +"&nbsp;&nbsp;&nbsp;</p>" +
 			             "</div>" +
-			               "<div class=\"col-sm-6 col-xs-6\"></div>" +
+			              "<div class=\"col-sm-6 col-xs-6\"></div>" +
 			                         "</div>" +
 			                         "<div class=\"centered\">" +
 			                         
@@ -275,13 +277,16 @@ import="com.urbau.feeders.BodegasMain"%><%
               });
 		}
 	
-      	function setProductModalValues(productid, imagePath, descripcion, packings ){
+      	function setProductModalValues(productid, imagePath, descripcion, packings,stock ){
+      		
+      		$("#cantidad").val("1");
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);
 			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
 			$("#modalDescription").html( descripcion );
 			$('#modalpackingscontainer').html("");
+			current_stock = stock;
 			contador = 0;
 			$.each( packings, function( key, value ) {
 				$('#modalpackingscontainer').append(
@@ -301,6 +306,11 @@ import="com.urbau.feeders.BodegasMain"%><%
 		    }
 		    
   			function addToStore( productid, imagepath, productname, amount, packvalue ){
+  				if( amount > current_stock ){
+  					alert( "Cantidad sobrepasa la existencia de " + current_stock + "." );
+  					return false;
+  				}
+  				
   				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid );
@@ -343,6 +353,8 @@ import="com.urbau.feeders.BodegasMain"%><%
 	    		        		} else {
 	    		        			location.reload();
 	    		        		}
+	    		        	} else {
+		    		          location.reload();
 	    		        	}
 	    		        },
 	    	 			error: function(jqXHR, textStatus, errorThrown){

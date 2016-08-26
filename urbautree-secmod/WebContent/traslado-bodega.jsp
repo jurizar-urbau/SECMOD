@@ -243,7 +243,7 @@
 			                      	<h3><span id="modalDescription"></span></h3>
 			                      	
 			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <input type="text" name="cantidad"  id="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          <div id="modalpackingscontainer">
 			                          	<input type="radio" name="packing" value="thevalue" checked>&nbsp;Unidad<br>
 			                          </div> 
@@ -289,7 +289,7 @@
   		  	var selected_bodega_id2;
   		  	var allowed_prices;
 			var addingToStore = false;
-	
+			var current_stock = 0;
 			
 		function searchProducts( q, bo ){
 			var value = $( "#search-query-3" ).val();
@@ -306,7 +306,7 @@
                 	 var rootele;
                 	 var htmltoadd =
                 		 
-              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + " );\">" +
+              "<a  href=\"javascript: setProductModalValues( "+ v.id + ", '" + v.imagepath + "', '" + v.descripcion + "', " + v.packingsarray + ","+ v.stock +" );\">" +
                      "<div class=\"col-md-3 col-sm-3 mb\">" +
                        "<div class=\"white-panel pn\">" +
                          "<div class=\"white-header\">" +
@@ -338,13 +338,16 @@
 			
 		}		
 		
-      	function setProductModalValues(productid, imagePath, descripcion, packings ){
+      	function setProductModalValues(productid, imagePath, descripcion, packings, stock ){
+      		
+      		$("#cantidad").val("1");
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);
 			$("#modalImage").attr("src", './bin/RenderImage?imagePath=' + imagePath);
 			$("#modalDescription").html( descripcion );
 			$('#modalpackingscontainer').html("");
+			current_stock = stock;
 			contador = 0;
 			$.each( packings, function( key, value ) {
 				$('#modalpackingscontainer').append(
@@ -372,6 +375,10 @@
 		    }
 		    
 		    function addToStore( productid, imagepath, productname, amount, packvalue ){
+		    	if( amount > current_stock ){
+  					alert( "Cantidad sobrepasa la existencia de " + current_stock + "." );
+  					return false;
+  				}
   				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid );
