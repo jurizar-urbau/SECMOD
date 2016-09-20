@@ -66,7 +66,7 @@
                       	<div class="box1">
                         	<a href="carga-bodega.jsp">
                   				<span class="li_data"></span>
-                  				<h3>Bodegas</h3>
+                  				<h3>Ingreso Bodega</h3>
                   	        </a>
                         </div>
                   		<p>Cargar productos a Bodega.</p>
@@ -74,7 +74,22 @@
                       <% 
                       addedFirst = true;  
                     } %>     
-                    
+                    <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COMPRAS")) { 
+		                    	
+		                    %>
+                      
+                      <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
+                        <div class="box1">
+                        	<a href="compra-bodega.jsp">
+			                  <span class="li_stack"></span>
+			                  <h3>Compras</h3>
+			                </a>
+		                </div>
+		                <p>Registrar una compra.</p>
+                      </div>
+                      <% 
+	                      addedFirst = true;  
+	                    } %>
                          <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_TRASLADOS")) { 
                     	
                     %>
@@ -142,22 +157,7 @@
 	                      addedFirst = true;  
 	                    } %>
 	                    
-                    <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"INICIO_COMPRAS")) { 
-		                    	
-		                    %>
-                      
-                      <div class="col-md-2 col-sm-2 box0 <%= addedFirst ? "" : "col-md-offset-1" %>">
-                        <div class="box1">
-                        	<a href="compra-bodega.jsp">
-			                  <span class="li_stack"></span>
-			                  <h3>Compras</h3>
-			                </a>
-		                </div>
-		                <p>Registrar una compra.</p>
-                      </div>
-                      <% 
-	                      addedFirst = true;  
-	                    } %>
+                    
 	                    
                       </div>
                       <!-- /row mt -->

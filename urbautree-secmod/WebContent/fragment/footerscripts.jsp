@@ -108,6 +108,11 @@
             });
         });
         
+        $( "a[href|='<%=actualpath%>']" ).parent().parent().parent().children(":first").addClass("active")
+        	var selectedelement = $( "a[href|='<%=actualpath%>']" ).parent().parent().parent().children()[1];
+        	selectedelement.style.display = "block";
+        
+        
         
        /*  function myNavFunction(id) {
             $("#date-popover").hide();

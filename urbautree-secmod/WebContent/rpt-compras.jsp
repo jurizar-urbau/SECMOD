@@ -57,7 +57,7 @@
 				sql += " AND ID_PROVEEDOR =" + request.getParameter( "proveedor" ) + " ";
 			}
 			if( request.getParameter( "fecha-inicio" ) != null && request.getParameter( "fecha-inicio" ).length() > 0  && request.getParameter( "fecha-fin" ) != null && request.getParameter( "fecha-fin" ).length() > 0 ){
-				sql += "AND COMP.FECHA BETWEEN '" + request.getParameter( "fecha-inicio" ) + "' AND '" + request.getParameter( "fecha-fin" ) + "' " ;
+				sql += "AND COMP.FECHA BETWEEN '" + request.getParameter( "fecha-inicio" ) + " 00:00' AND '" + request.getParameter( "fecha-fin" ) + " 23:59' " ;
 			}
 			if( "P".equals( request.getParameter( "agrupado" ))){
 				sql += " ORDER BY PRO.NOMBRE";
@@ -104,6 +104,12 @@
                                 double subtotal = 0;
                                 double descuento = 0;
                                 double total = 0;
+                                
+                                double grandsubtotal = 0;
+                                double granddescuento = 0;
+                                double grandtotal = 0;
+                                
+                                
                                 int contador = 0;
                               	for( ExtendedFieldsBean us : list ){
                               		if( !lastFamily.equals( us.getValue( "1" )) ){
@@ -146,6 +152,12 @@
                               subtotal  += Double.valueOf( us.getValue("4") );
                               descuento += Double.valueOf( us.getValue("5") );
                               total     += Double.valueOf( us.getValue("6") );
+                              
+                              
+                              grandsubtotal  += Double.valueOf( us.getValue("4") );
+                              granddescuento += Double.valueOf( us.getValue("5") );
+                              grandtotal     += Double.valueOf( us.getValue("6") );
+                              
                               contador ++;
                              
                                } %>
@@ -156,6 +168,14 @@
 										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( subtotal ) %></B></td>
 										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( descuento ) %></B></td>
 										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( total ) %></B></td>
+		                              	</tr>
+		                              	<tr>
+										  <td></td>
+										  
+										  <td align="right"><B>Gran Total</B></td>
+										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( grandsubtotal ) %></B></td>
+										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( granddescuento ) %></B></td>
+										  <td align="right"><B><%= Util.formatCurrencyWithNoRound( grandtotal ) %></B></td>
 		                              	</tr>
                               </tbody>
                 

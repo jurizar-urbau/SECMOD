@@ -1,6 +1,11 @@
 
             
 <%@page import="com.urbau.security.Authorization"%>
+<%
+	String actualpath = this.getClass().getSimpleName().replaceFirst("_jsp","").replaceAll("_002d","-") + ".jsp";
+%>
+<div rendered-url="<%=actualpath%>"></div>
+
 <ul class="sidebar-menu no-print" id="nav-accordion">
                   <li class="mt">
                       <a class="active" href="home.jsp">
@@ -41,7 +46,7 @@
                    %>
                  
 					<li class="sub-menu" id="menu-inventario">
-					                      <a href="javascript:;" >
+					                      <a href="javascript:;">
 					                          <i class="fa fa-tasks"></i>
 					                          <span>Inventario</span> 
 					                      </a>
@@ -70,7 +75,19 @@
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"BASE_DE_DATOS")) { %>
 					                          <li><a  href="filter-rpt-base-de-datos-productos.jsp">Base de Datos de productos</a></li>
 					                      <% } %>
+					                      
+					                      <% 
+						                      	 	if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"REPORTE_TRASLADOS")) { 
+						                   		%>
+						                        <li><a  href="filter-rpt-traslados.jsp">Reporte de traslados</a></li>
+						                        <% } %>
 					                      <li><a  href="filter-revert.jsp">Revertir carga</a></li>
+					                      
+					                      <% 
+						                      	 	if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"REPORTE_SALIDAS")) { 
+						                   		%>
+						                        <li><a  href="filter-rpt-salidas.jsp">Reporte de salidas </a></li>
+						                        <% } %>
 					                      
 					                      </ul>
 					</li>
@@ -272,5 +289,5 @@
                   
                   <% } %>
                   
-              </ul>
+              </ul>              
               

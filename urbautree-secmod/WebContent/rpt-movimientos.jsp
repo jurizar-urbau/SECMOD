@@ -63,7 +63,7 @@
 				sql += " AND ORDEN.ID_PUNTO_VENTA=  " + request.getParameter( "ubicacion" ) + " ";
 			}
 			if( request.getParameter( "fecha-inicio" ) != null && request.getParameter( "fecha-inicio" ).length() > 0  && request.getParameter( "fecha-fin" ) != null && request.getParameter( "fecha-fin" ).length() > 0 ){
-				sql += "AND ORDEN.FECHA BETWEEN '" + request.getParameter( "fecha-inicio" ) + "' AND '" + request.getParameter( "fecha-fin" ) + "' " ;
+				sql += "AND ORDEN.FECHA BETWEEN '" + request.getParameter( "fecha-inicio" ) + " 00:00' AND '" + request.getParameter( "fecha-fin" ) + " 23:59' " ;
 			}
 			
 			//"AND " +

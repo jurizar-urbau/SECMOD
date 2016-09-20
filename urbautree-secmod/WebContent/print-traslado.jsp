@@ -154,11 +154,12 @@ if( !envio ){
 	<tr>
 		<th>Fecha</th><td><%= bean.getValue( "FECHA" ) %></td>
 	</tr>
+	
 	<tr>
-		<td colspan="4">
-			<table border="1" width="100%" >
+		<td colspan="4"><hr/>
+			<table border="0" width="100%" >
 				<tr>
-					<th width="30px">Unidades</th><th>Descripcion</th><th>Packing</th>
+					<th>C&oacute;digo</th><th>Descripcion</th><th>Unidades</th><th>Packing</th><th>Total</th>
 				</tr>
 				
 				<%
@@ -172,7 +173,11 @@ if( !envio ){
 						ExtendedFieldsBean producto = pm.get( b.getValueAsInt( "PRODUCTO" ));
 					%>
 					<tr>
-						<td><%= b.getValue( "UNIDADES" ) %></td><td><%= producto.getValue( "CODIGO" ) + " " + producto.getValue( "DESCRIPCION" )%></td><td><%= b.getValue( "PACKING" ) %></td>
+						<td><%= producto.getValue( "CODIGO" ) %></td>
+						<td><%= producto.getValue( "DESCRIPCION" )%></td>
+						<td><%= b.getValue( "UNIDADES" ) %></td>
+						<td><%= b.getValue( "PACKING" ) %></td>
+						<td><%= b.getValueAsInt("UNIDADES") * b.getValueAsInt( "PACKING" ) %></td>
 					</tr>
 				<% } %>
 			</table>

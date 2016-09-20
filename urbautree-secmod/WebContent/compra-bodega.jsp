@@ -440,6 +440,22 @@
 		    }
 
  			function addToStore( productid, imagepath, productname, amount, packvalue, preciounitario  ){
+ 				if( ! $.isNumeric( amount ) ){
+  					alert( "El valor debe ser numerico" );
+  					return false;
+  				}
+ 				if( amount < 1 ){
+  					alert( "El valor debe ser un numero positivo" );
+  					return false;
+  				}
+ 				if( ! $.isNumeric( preciounitario ) ){
+  					alert( "El costo debe ser numerico" );
+  					return false;
+  				}
+ 				if( preciounitario < 0 ){
+  					alert( "El costo debe ser un numero positivo" );
+  					return false;
+  				}
  				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid, preciounitario  );

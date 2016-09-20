@@ -293,6 +293,14 @@ import="com.urbau.feeders.BodegasMain"%><%
 		    }
 		    
   			function addToStore( productid, imagepath, productname, amount, packvalue ){
+  				if( ! $.isNumeric( amount ) ){
+  					alert( "El valor debe ser numerico" );
+  					return false;
+  				}
+  				if( amount < 1 ){
+  					alert( "El valor debe ser un numero positivo" );
+  					return false;
+  				}
   				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid );
