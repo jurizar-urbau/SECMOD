@@ -46,7 +46,8 @@ public class IngresoBodega extends Entity {
 			System.out.println( "calling save orders...");
 			HttpSession session = request.getSession();
 			//UsuarioBean loggedUser = getLoggedUser( session );
-			validateRequest( session );
+			//validateRequest( session );
+			validateRequestForTransaction(session);
 			
 			String bodegaidStr = request.getParameter( "bodegaid" );
 			

@@ -37,7 +37,8 @@ public class Ordenes extends Entity {
 			System.out.println( "calling save orders...");
 			HttpSession session = request.getSession();
 			UsuarioBean loggedUser = getLoggedUser( session );
-			validateRequest( session );
+			//validateRequest( session );
+			validateRequestForTransaction(session);
 			
 			String clientidStr = request.getParameter( CLIENT_ID_PARAMETER );
 			String bodegaidStr = request.getParameter( BODEGA_ID_PARAMETER );

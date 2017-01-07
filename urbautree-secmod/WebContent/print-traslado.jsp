@@ -34,7 +34,7 @@ boolean envio = !"transito".equals( request.getParameter( "from" ) );
 	}
 </script>
 <style>
-	@page { size: auto;  margin: 0mm; }
+	@page { size: auto;  margin: 10mm; }
 
 	@media print
 	{    
@@ -47,6 +47,9 @@ boolean envio = !"transito".equals( request.getParameter( "from" ) );
 		    content: none !important;
 		  }
 	    
+	}
+	.avoidBreak { 
+	    page-break-inside:avoid;
 	}
 	</style>
 <%
@@ -158,9 +161,11 @@ if( !envio ){
 	<tr>
 		<td colspan="4"><hr/>
 			<table border="0" width="100%" >
+				<div class="avoidBreak">
 				<tr>
 					<th>C&oacute;digo</th><th>Descripcion</th><th>Unidades</th><th>Packing</th><th>Total</th>
 				</tr>
+				</div>
 				
 				<%
 					ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
@@ -172,6 +177,7 @@ if( !envio ){
 					for( ExtendedFieldsBean b : details ){
 						ExtendedFieldsBean producto = pm.get( b.getValueAsInt( "PRODUCTO" ));
 					%>
+					<div class="avoidBreak">
 					<tr>
 						<td><%= producto.getValue( "CODIGO" ) %></td>
 						<td><%= producto.getValue( "DESCRIPCION" )%></td>
@@ -179,6 +185,7 @@ if( !envio ){
 						<td><%= b.getValue( "PACKING" ) %></td>
 						<td><%= b.getValueAsInt("UNIDADES") * b.getValueAsInt( "PACKING" ) %></td>
 					</tr>
+					</div>
 				<% } %>
 			</table>
 		</td>

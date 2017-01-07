@@ -32,7 +32,8 @@ public class TrasladoBodega extends Entity {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
 			HttpSession session = request.getSession();
-			validateRequest( session );
+			//validateRequest( session );
+			validateRequestForTransaction( session );
 			Enumeration<String> parameter_list =  request.getParameterNames();
 			while( parameter_list.hasMoreElements() ){
 				String param_name = parameter_list.nextElement();

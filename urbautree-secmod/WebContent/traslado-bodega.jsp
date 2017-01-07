@@ -387,6 +387,13 @@
   					alert( "Cantidad sobrepasa la existencia de " + current_stock + "." );
   					return false;
   				}
+		    	$.each( ventasList, function( i, vl ) {
+		    		if( vl.id == productid ){
+		    			alert( "El producto seleccionado ya fue agregado." );
+		    			return false;
+		    		}
+		    	});	
+	  			
   				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid );
@@ -455,7 +462,8 @@
 				}
 				return false;
     	 	});
-  			
+			
+            
   		    function addS( amount, packval, description, imagepath,productid ){
   		    	var o = {};
   			    o.amount = amount;
@@ -474,30 +482,44 @@
   		  function renderVentasList(){
   			$( "#sale-container" ).html( "" );
   			var totalOrden = 0.00;
-  			for (i = 0; i < ventasList.length; i++) { 
-  				totalOrden +=  ( ventasList[ i ].amount * ventasList[ i ].pack );
+  			$.each( ventasList, function( i, vl ) {
+  				
+  				totalOrden +=  ( vl.amount * vl.pack );
 				var htmltoadd =
 					  "<div class=\"desc\">" +
 					  "<button type='button' class='close' aria-hidden='true' onclick='removeItem(\"" + i + "\")'>×</button>" +
-					  "<input type='hidden' name='productid' value='" + ventasList[ i ].id + "'>" +
-					  "<input type='hidden' name='amount' value='" + ventasList[ i ].amount + "'>" +
-					  "<input type='hidden' name='pack' value='" + ventasList[ i ].pack + "'>" +
+					  "<input type='hidden' name='productid' value='" + vl.id + "'>" +
+					  "<input type='hidden' name='amount' value='" + vl.amount + "'>" +
+					  "<input type='hidden' name='pack' value='" + vl.pack + "'>" +
 					  "  <div style=\"float:left\">" +
-		              "    <img width=\"70\" src=\"./bin/RenderImage?imagePath=" + ventasList[ i ].imagepath + "\">" +
+		              "    <img width=\"70\" src=\"./bin/RenderImage?imagePath=" + vl.imagepath + "\">" +
 		              "  </div>" +
 		              "  <div class=\"details\">" +
 		              "    <p style=\"color:black; font-size:12pt\">" +
-		              "       <span style=\"color:red; font-size:20pt\">" +( ventasList[ i ].amount * ventasList[ i ].pack ) + "</span>" + ventasList[ i ].description + "<br/>" +
+		              "       <span style=\"color:red; font-size:20pt\">" +( vl.amount * vl.pack ) + "</span>" + vl.description + "<br/>" +
 		              "    </p>" +
 		              "  </div>" +
 		              "</div>";
 				$( "#sale-container" ).append( htmltoadd );
-				
-			}
+			});
+  			
+  			
   			$( "#totalOrden" ).html( totalOrden);
   		  }
 	    setStore();
 	    setStore2();
+	    
+	    /**
+	        function keepMeAlive(imgName) {
+		       myImg = document.getElementById(imgName);
+		       if (myImg) myImg.src = myImg.src.replace(/?.*$/, '?' + Math.random());
+		    }
+		    window.setInterval("keepMeAlive('keepAliveIMG')", 100000);
+
+	    **/
+	    
+	    
 	</script>
+	<img id="keepAliveIMG" width="1" height="1" src="assets/img/spacer.gif" />
   </body>
 </html>

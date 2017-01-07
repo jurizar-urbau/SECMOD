@@ -316,7 +316,7 @@
 			                      	<h3><span id="modalDescription"></span></h3>
 			                      	
 			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <input type="text" name="cantidad" id="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          <br/>
 			                          <!--  loop -->
 			                          <div id="modalpackingscontainer">
@@ -433,6 +433,7 @@
 		}
 		
 		function setProductModalValues(productid, imagePath, descripcion, packings, stock, precio_1, precio_2, precio_3, precio_4, precio_1_value, precio_2_value, precio_3_value, precio_4_value ){
+			$("#cantidad").val("1");
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);

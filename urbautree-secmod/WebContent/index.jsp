@@ -172,8 +172,8 @@
     <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
     <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
     <script>
-        $.backstretch("https://upload.wikimedia.org/wikipedia/commons/0/0b/Sparklers_moving_slow_shutter_speed.jpg", {speed: 500});
-        //$.backstretch("assets/img/volcancitowall.jpg", {speed: 500});
+        $.backstretch("assets/img/volcanbg.jpg", {speed: 500});
+        
     </script>
 
 

@@ -6,7 +6,7 @@ if ( !loggedUser.isLogged() ){
 	
 %>
 <script> 
-alert( "No hay ningun usuario logaedo.");
+alert( "No hay ningun usuario logeado.");
 location.replace( "<%= Util.getAbsoluteParent(request.getRequestURI () , 0) %>" );
 </script>
 <% }

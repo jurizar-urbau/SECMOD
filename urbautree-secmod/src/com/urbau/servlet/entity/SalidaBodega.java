@@ -25,7 +25,7 @@ public class SalidaBodega extends Entity {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
 			HttpSession session = request.getSession();
-			validateRequest( session );
+			validateRequestForTransaction(session);
 			
 			String bodegaidStr = request.getParameter( "bodegaid" );
 			int bodegaid = Integer.valueOf( bodegaidStr );
