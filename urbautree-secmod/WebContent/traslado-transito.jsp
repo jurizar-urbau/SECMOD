@@ -106,7 +106,8 @@
 	                              <th>Bodega origen</th>
 	                              <th>Bodega destino</th>
                                   <th>Usuario</th>
-                                  <th>Transacci&oacute;n</th>                                                                    
+                                  <th>Transacci&oacute;n</th>
+                                  <th></th>                                                                    
                               </tr>
                               </thead>
                               <tbody>
@@ -114,13 +115,15 @@
                               	for(ExtendedFieldsBean bean: transitList ){
                               		if ( bean.getValue( "BODEGA_DESTINO" ).equals( request.getParameter("bodega") ) ){
                               %>
-                              <tr onclick="chargeOrder('<%= bean.getValue( "ID" ) %>')">
+                              <tr>
                               	  <td><%= bean.getValue( "FECHA")  %></td>
                                   <td><%= bean.getReferenced( "BODEGA_ORIGEN", "BODEGAS", "NOMBRE")  %></td>
                                   <td><%= bean.getReferenced( "BODEGA_DESTINO", "BODEGAS", "NOMBRE")   %></td>
                                   <td><%= bean.getReferenced( "USUARIO", "USUARIOS", "NOMBRE")   %></td>
                                   <td><%= bean.getValue( "TRANSID")  %></td>                                  
-                                                                                                                                                                                                           
+                                  <td>
+                                  	<span class="btn-xs btn-success" onclick="chargeOrder('<%= bean.getValue( "ID" ) %>')">Recibir</span>
+                                  </td>                                                                                                                                                                         
                                                                     
                                  
                               </tr>

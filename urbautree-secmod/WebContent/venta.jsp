@@ -40,12 +40,11 @@
                   <h3>PEDIDO</h3>
                       <div class="row mt">
                       <div class="col-lg-12">
-                      <i class="fa fa-cogs" onclick="chooseClient()"></i>
-                      	Cliente: <b><span id="clientdisplay"></span></b>
+                      	<span class="btn-xs btn-success" onclick="chooseClient()">Cambiar</span> Cliente: <b><span id="clientdisplay"></span></b>
                       </div>
+                      <br/><br/>
                       <div class="col-lg-12">
-                      <i class="fa fa-cogs" onclick="chooseStore()"></i>
-                      	Bodega: <b><span id="storedisplay"></span></b>
+                      	<span class="btn-xs btn-success" onclick="chooseStore()">Cambiar</span> Bodega: <b><span id="storedisplay"></span></b>
                       </div>
                       <div class="col-lg-12">
 		          		<form>

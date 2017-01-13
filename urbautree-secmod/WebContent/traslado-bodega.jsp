@@ -54,11 +54,12 @@
               	  <div class="col-lg-9  col-md-9 col-sm-9  main-chart">
               	  <h3>TRASLADO ENTRE BODEGAS</h3>
                       <div class="row mt">
-                      <div class="col-lg-12" onclick="chooseStore()">
-                      	Bodega origen: <b><span id="storedisplay"></span></b>
+                      <div class="col-lg-12">
+                      <span class="btn-xs btn-success" onclick="chooseStore()">Cambiar</span> Bodega origen: <b><span id="storedisplay"></span></b>
                       </div>
-                      <div class="col-lg-12" onclick="chooseStore2()">
-                      	Bodega destino: <b><span id="storedisplay2"></span></b>
+                      <br/><br/>
+                      <div class="col-lg-12">
+                      <span class="btn-xs btn-success" onclick="chooseStore2()">Cambiar</span> Bodega destino: <b><span id="storedisplay2"></span></b>
                       </div>
                       <div class="col-lg-12">
 		          		<form>

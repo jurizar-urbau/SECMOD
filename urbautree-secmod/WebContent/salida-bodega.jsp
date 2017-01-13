@@ -37,8 +37,8 @@ import="com.urbau.feeders.BodegasMain"%><%
                   <div class="col-lg-9  col-md-9 col-sm-9  main-chart">
                   <h3>SALIDA DE BODEGA</h3>
                       <div class="row mt">
-                      <div class="col-lg-12" onclick="chooseStore()">
-                      	Bodega: <b><span id="storedisplay"></span></b>
+                      <div class="col-lg-12" >
+                      	<span class="btn-xs btn-success" onclick="chooseStore()">Cambiar</span> Bodega: <b><span id="storedisplay"></span></b>
                       </div>
                       <div class="col-lg-4 pull-right">
                       Busqueda:
