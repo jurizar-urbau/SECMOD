@@ -47,7 +47,7 @@ public class Ordenes extends Entity {
 			String priceStr[] = request.getParameterValues( PRICE_PARAMETER );
 			String packingStr[] = request.getParameterValues( PACKING_PARAMETER );
 			String postfecha = request.getParameter( "postfecha" );
-			
+			String name = request.getParameter( "name" );
 			
 			String message = validateParameters( clientidStr, bodegaidStr, productidStr, amountStr, priceStr, packingStr );
 			
@@ -68,6 +68,7 @@ public class Ordenes extends Entity {
 			ordenBean.setEstado( ESTADO_INGRESADO );
 			ordenBean.setUid( ordenBean.getId_cliente() + "-" + getUID() );
 			ordenBean.setId_punto_venta( loggedUser.getPunto_de_venta() );
+			ordenBean.setName( name );
 			
 			if( Util.isEmpty( postfecha )){
 				ordenBean.setFecha( null );

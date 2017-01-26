@@ -95,7 +95,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
       <section id="main-content">
           <section class="wrapper site-min-height">
           
-          	<h3><i class="fa fa-angle-right"></i> Detalle de cupones de descuento</h3>
+          	<h3><i class="fa fa-angle-right"></i> Detalle de nota de cr&eacute;dito</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
           			
@@ -129,9 +129,9 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 		                            	<label class="col-sm-2 col-sm-2 control-label">Monto</label> 
 		                              	<div class="col-sm-10">
 		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="MONTO" id="MONTO" value="<%= bean.getValue( "MONTO" ) %>">	                          	                          
+			                          		Q.<input type="text" class="form-control" name="MONTO" id="MONTO" value="<%= bean.getValue( "MONTO" ) %>">	                          	                          
 			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="MONTO" id="MONTO" disabled value="<%= bean.getValue( "MONTO" )  %>">	                          		
+			                          		Q.<input type="text" class="form-control" name="MONTO" id="MONTO" disabled value="<%= bean.getValue( "MONTO" )  %>">	                          		
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
@@ -195,21 +195,7 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			                          	<%}%>   	                                  
 		                              	</div>
 		                          	</div>
-		                          	<!-- div class="form-group">
-		                            	<label class="col-sm-2 col-sm-2 control-label">Numero de Orden</label> 
-		                              	<div class="col-sm-10">
-		                              	<%if( "edit".equals( mode ) || "add".equals( mode ) ){%>	                          		
-			                          		<input type="text" class="form-control" name="ID_ORDEN" id="ID_ORDEN" value="<%= bean.getValue( "ID_ORDEN" ) %>">	                          	                          
-			                          	<%}else{%>
-			                          		<input type="text" class="form-control" name="ID_ORDEN" id="ID_ORDEN" disabled value="<%= bean.getValue( "ID_ORDEN" )  %>">	                          		
-			                          	<%}%>   	                                  
-		                              	</div-->
-		                          	</div>
 		                          	
-	                          	
-	                          	
-	                          	
-	                          	
                           	</form>
                          </div>
                          <div class="form-actions">
@@ -235,10 +221,12 @@ ExtendedFieldsBaseMain cupones = new ExtendedFieldsBaseMain( "CUPONES_DE_DESCUEN
 			                          	
 			          				  	<a data-toggle="modal" class="btn btn-success" href="venta.jsp#myModalNewClient">+</a>          				  
 			          				  </span>
+			          				  <ul class="nav pull-left top-menu">
+							              		<li><input type="text" class="form-control" id="search-client" name="q"></li>
+							                    <li><button class="btn" type="button" onclick="searchClientsNew()">Buscar</button></li>
+							              </ul>
 			          				  
-			          				  	<label>Buscar: <input type="text" class="form-control" id="search-client" name="q"></label> 
-			          				  
-			          				  
+			          				  <br/><br/>
 			                          
 			                      </div>
 			                      <div class="modal-body">
@@ -296,14 +284,11 @@ function chooseClient(){
 		
 	}
 	
-		$(window).load(function(){
-			
-		    $( "#search-client" ).keyup(function() {
-		    	var value = $( "#search-client" ).val();
-		    	searchClients( value );
-			});
-		    
-		});
+	function searchClientsNew(){
+		var value = $( "#search-client" ).val();
+		searchClients( value );	
+	}
+	
 	
             $(document).ready(function(){
              $('#form').validate(

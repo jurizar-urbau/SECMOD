@@ -14,6 +14,7 @@
 <html lang="en">
 	<head>
 	<%@include file="fragment/head.jsp"%>
+	
 	</head>
    
    <body>
@@ -155,7 +156,7 @@
         		if(document.form.agrupado.value == 'F' ){
         			document.form.action = "rpt-inventario.jsp";	
         		} else if(document.form.agrupado.value == 'C' ){
-        			document.form.action = "rpt-inventario-codigo.jsp";	
+        			document.form.action = "rpt-inventario-codigo-new.jsp";	
         		}  
         		document.form.submit();
         		

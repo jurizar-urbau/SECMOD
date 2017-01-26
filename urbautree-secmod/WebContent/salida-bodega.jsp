@@ -318,6 +318,7 @@ import="com.urbau.feeders.BodegasMain"%><%
   					return false;
   				}
   				
+  				
   				if( !addingToStore ){
 	  				addingToStore = true;
 	  				addS( amount, packvalue, productname, imagepath,productid );
@@ -343,6 +344,11 @@ import="com.urbau.feeders.BodegasMain"%><%
 			$("#savesalebutton").click(function(e){
 				e.preventDefault();
 				$("#savesalebutton").prop('disabled',true);
+				if ( $('#observaciones' ).val().trim() == '' )  {
+					alert("Las observaciones son obligatorias");
+					$("#savesalebutton").prop('disabled',false);
+					return false;
+				}
 				if(confirm('Confirma que desea hacer la salida?')){
 	    			var form =$('#saleform');
 	    	     	$.ajax({

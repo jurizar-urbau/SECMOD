@@ -532,7 +532,7 @@ public class Util {
 	}
 	
 	public static String formatCurrency( double value ){
-		DecimalFormat formatter = new DecimalFormat("'Q '0.00");     
+		DecimalFormat formatter = new DecimalFormat("'Q '#,##0.00");     
 		return formatter.format( applyRoundRules ( value ) );
 	}
 	

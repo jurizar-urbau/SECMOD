@@ -15,6 +15,7 @@ public class OrdenExtendedBean implements Bean {
 	private String cliente_nit;
 	private String cliente_nombres;
 	private String cliente_apellidos;
+	private String name;
 	private int usuario_id;
 	private String usuario_nombre;
 	private boolean acepta_credito;
@@ -156,6 +157,18 @@ public class OrdenExtendedBean implements Bean {
 	@Override
 	public int getProgramId() {
 		return 2;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

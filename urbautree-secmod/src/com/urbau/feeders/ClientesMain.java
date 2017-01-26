@@ -28,14 +28,28 @@ public class ClientesMain {
 		try{
 			con = ConnectionManager.getConnection();
 			stmt = con.createStatement();
+			
 			if( q == null || "null".equalsIgnoreCase( q ) || "".equals( q.trim() )){
-				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;
+				
+				String sql = "";
+				if( limit == -1 ){
+					sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES ORDER BY ID";
+				} else {
+					sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES LIMIT " + from + "," + Constants.ITEMS_PER_PAGE;					
+				}
 				rs = stmt.executeQuery( sql );
 				
 			} else {
-				String sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
+				String sql = "";
+				
+				if( limit == -1 ){
+					sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES " + Util.getClientesWhere( q ) + " ORDER BY ID";	
+				} else {
+					sql = "SELECT ID,NIT,NOMBRES,APELLIDOS,DIRECCION,TELEFONO,CORREO,TIPODECLIENTE,ACEPTA_CREDITO FROM CLIENTES " + Util.getClientesWhere( q ) + " LIMIT " + from + "," + Constants.ITEMS_PER_PAGE ;
+				}
+				
 				rs = stmt.executeQuery( sql);				
-			}
+			} 
 			while( rs.next() ){
 				ClienteBean bean = new ClienteBean();
 				bean.setId(  rs.getInt   ( 1  ));

@@ -132,7 +132,7 @@
 					                      <li><a  href="ordenes.jsp">Ordenes</a></li>
 					                      <% } %>
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"CUPONES_DE_DESCUENTO")) { %>
-					                      <li><a  href="descuentos.jsp">Cupones de Descuento</a></li>
+					                      <li><a  href="descuentos.jsp">Notas de cr&eacute;dito</a></li>
 					                      <% } %>
 					                      <% if( Authorization.isAuthorizedProgram( loggedUser.getRol(),"MOTIVOS_DE_DESCUENTO")) { %>
 					                      <li><a  href="motivos-de-descuento.jsp">Motivos de Descuento</a></li>
@@ -253,6 +253,8 @@
                         <li><a  href="filter-rpt-movimientos.jsp">Movimientos</a></li>
                         <li><a  href="rpt-cuentas-por-cobrar.jsp">Cuentas por cobrar</a></li>
                         <li><a  href="rpt-ingresos-empresa.jsp">Ingresos empresa</a></li>
+                        <li><a  href="rpt-base-de-datos-proveedores.jsp">Proveedores</a></li>
+                        <li><a  href="rpt-base-de-datos-clientes.jsp">Clientes</a></li>
                       </ul>
                   </li> 
                   

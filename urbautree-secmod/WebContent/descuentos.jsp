@@ -112,7 +112,7 @@
           				  
           				  </span>
                           <table class="table table-striped table-advance table-hover">
-	                  	  	  <h4><i class="fa fa-angle-right"></i> Cupones de Descuento </h4>
+	                  	  	  <h4><i class="fa fa-angle-right"></i> Notas de cr&eacute;dito</h4>
 	                  	  	  <hr>
 	                  	  	  <thead>
                               <tr>
@@ -134,7 +134,7 @@
                               %>
                               <tr>
                               	  <td><%= us.getId()  %></td>
-								  <td><%= us.getValue( "MONTO" ) %></td>
+								  <td><%= Util.formatCurrency( Double.valueOf( us.getValue( "MONTO" ) ) )   %></td>
                                   <td><%= us.getValue( "DESCRIPCION" ) %></td>
                                   <td><%= us.getReferenced( "ID_MOTIVO", "MOTIVOS_DE_DESCUENTO", "DESCRIPCION" ) %></td>
                                   <td><%= us.getReferenced( "ID_USUARIO" ,"USUARIOS", "NOMBRE" ) %></td>

@@ -18,6 +18,8 @@ public class OrdenBean implements Bean {
 	private String estado;
 	private int id_punto_venta;
 	
+	private String name;
+	
 	public int getId_punto_venta() {
 		return id_punto_venta;
 	}
@@ -117,5 +119,14 @@ public class OrdenBean implements Bean {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 }

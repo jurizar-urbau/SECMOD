@@ -15,7 +15,7 @@ import com.urbau.misc.Util;
 
 public class OrdenesMain extends AbstractMain {
 	
-	private String allColumnNames = " ID,FECHA,ID_CLIENTE,ID_BODEGA,MONTO,ID_USUARIO,MONTO,ID_USUARIO ";
+	private String allColumnNames = " ID,FECHA,ID_CLIENTE,ID_BODEGA,MONTO,ID_USUARIO,MONTO,ID_USUARIO,NAME ";
 	
 	public static int getProgramId(){
 		return -2;
@@ -53,6 +53,7 @@ public class OrdenesMain extends AbstractMain {
 				bean.setId_usuario( rs.getInt(6) );
 				bean.setEstado( rs.getString( 7 ));
 				bean.setUid( rs.getString( 8 ));
+				bean.setName( rs.getString( 9 ));
 				bean.setTotal_regs( total_regs );
 				list.add( bean );
 			}
@@ -86,6 +87,7 @@ public class OrdenesMain extends AbstractMain {
 				bean.setId_usuario( rs.getInt(6) );
 				bean.setEstado( rs.getString( 7 ));
 				bean.setUid( rs.getString( 8 ));
+				bean.setName( rs.getString( 9 ));
 				bean.setTotal_regs( 1 );
 												
 			}
@@ -119,6 +121,7 @@ public class OrdenesMain extends AbstractMain {
 				bean.setId_usuario( rs.getInt(6) );
 				bean.setEstado( rs.getString( 7 ));
 				bean.setUid( rs.getString( 8 ));
+				bean.setName( rs.getString( 9 ));
 				bean.setTotal_regs( 1 );
 												
 			}
@@ -140,6 +143,7 @@ public class OrdenesMain extends AbstractMain {
 		bean.setFecha(null);		
 		bean.setEstado( null );
 		bean.setUid(  null );
+		bean.setName( null );
 		return bean;
 	}
 	public boolean add( OrdenBean bean ){
@@ -150,9 +154,9 @@ public class OrdenesMain extends AbstractMain {
 			con = ConnectionManager.getConnection();
 			stmt= con.createStatement();
 			String sql = "INSERT INTO ORDENES " +
-					"(FECHA,ID_CLIENTE,ID_BODEGA,MONTO,ID_USUARIO,ESTADO,UID,ID_PUNTO_VENTA) " +
+					"(FECHA,ID_CLIENTE,ID_BODEGA,MONTO,ID_USUARIO,ESTADO,UID,ID_PUNTO_VENTA,NAME) " +
 						"VALUES " +
-					"( "+getDateFor(bean)+","+bean.getId_cliente()+","+bean.getId_bodega()+","+bean.getMonto()+","+bean.getId_usuario()+",'"+bean.getEstado()+"','" + bean.getUid() + "'," + bean.getId_punto_venta() + ")";
+					"( "+getDateFor(bean)+","+bean.getId_cliente()+","+bean.getId_bodega()+","+bean.getMonto()+","+bean.getId_usuario()+",'"+bean.getEstado()+"','" + bean.getUid() + "'," + bean.getId_punto_venta() + ",'"+bean.getName()+"')";
 			int total = stmt.executeUpdate( sql );					
 			return total>0;
 			 
@@ -188,7 +192,8 @@ public class OrdenesMain extends AbstractMain {
 					" ID_USUARIO="+bean.getId_usuario()+", " +
 					" ESTADO='"+bean.getId_usuario()+"', " +
 					" ID_PUNTO_VENTA='"+bean.getId_punto_venta()+"', " +
-					" UID='"+bean.getId_usuario()+"' " +
+					" UID='"+bean.getId_usuario()+"', " +
+					" NAME='"+ bean.getName() + "' " +
 					" WHERE ID = " + bean.getId();
 			int total = stmt.executeUpdate( sql );
 			return total>0;

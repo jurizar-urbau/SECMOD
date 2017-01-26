@@ -100,7 +100,8 @@
                       <form name="saleform" id="saleform" method="POST">
                            <input type='hidden' name='clientid' id='clientid' value=''>
                            <input type='hidden' name='bodegaid' id='bodegaid' value=''>
-                           Fecha: <input type="date" name="postfecha">
+                           Fecha: <input class="form-control" type="date" name="postfecha"><br/>
+                           Nombre:<input class="form-control" type="text" name="name" id="name">
 		                   <div id="sale-container">
 		                  </div>
 		                  <button class="btn btn-theme" type="button" id="savesalebutton">Guardar Pedido</button>
@@ -627,6 +628,7 @@
 			$("#savesalebutton").click(function(e){
 				e.preventDefault();
 				$("#savesalebutton").prop('disabled',true);
+				if( ( selected_client_id > 0 ) || (selected_client_id == 0 ) && ($.trim($("#name").val())!=="") ){
 				if( confirm( "Confirma que desea guardar esta orden?" ) ){
     			var form =$('#saleform');
     	     	$.ajax({
@@ -664,6 +666,10 @@
     		            		        
     	       });
 				}
+			} else { 
+				alert( "Ingrese un nombre para el pedido" );
+			}
+				
 				$("#savesalebutton").prop('disabled', false);
     	     	return false;
     	 	});

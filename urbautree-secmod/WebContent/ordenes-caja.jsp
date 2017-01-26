@@ -116,12 +116,17 @@
                               	for(OrdenExtendedBean bean: list ){
                               		
                               %>
-                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>,<%= bean.getCliente_id() %>)">
+                              <tr onclick="chargeOrder('<%= bean.getId() %>','<%= Util.getDateStringDMYHM( bean.getFecha() ) %>','<%= bean.getCliente_nit() %>','<%= bean.getCliente_nombres()  %>', '<%= bean.getCliente_apellidos() %>',<%= bean.getMonto() %>,<%= bean.isAcepta_credito() %>,<%= bean.getCliente_id() %>,'<%=Util.formatCurrency( bean.getMonto() )%>')">
                               	  <td><%= bean.getId() %></td>
                                   <td><%= Util.getDateStringDMYHM( bean.getFecha() ) %></td>                                  
                                   <td><%= bean.getCliente_nit() %></td>
+                                  <% if( bean.getCliente_id() > 0 ){ %>
                                   <td><%= bean.getCliente_nombres() %></td>                                                                    
                                   <td><%= bean.getCliente_apellidos() %></td>
+                                  <% } else { %>
+                                  <td><%= bean.getName() %></td>                                                                    
+                                  <td></td>
+                                  <% } %>
                                   <td><%= Util.formatCurrency( bean.getMonto() )%></td>                                                                                                                                                                         
                                                                     
                                  
@@ -202,7 +207,7 @@
 				                          	<div class="col-sm-4">
 				                          		<input class="form-control" id="autorizacion" name="autorizacion">
 				                          	</div>
-				                      	  	<label class="col-sm-2 col-sm-2 control-label">#Cupon de descuento</label>
+				                      	  	<label class="col-sm-2 col-sm-2 control-label">#Nota de cr&eacute;dito</label>
 				                          	<div class="col-sm-4">
 				                          		<!-- <input class="form-control" id="cupon" name="cupon" size="7"> -->
 				                          		<select class="form-control" id="cupon" name="cupon" onChange="setDescuento(this)">
@@ -214,11 +219,11 @@
 				                      	 <div class="form-group">
 				                      	    <label class="col-sm-2 col-sm-2 control-label">Descuento</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="descuento" name="descuento" size="7"  readonly>
+				                          		Q.<input class="form-control" id="descuento" name="descuento" size="7"  readonly>
 				                          	</div>                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Monto</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="subtotal" name="subtotal" size="7" readonly>
+				                          		Q.<input class="form-control" id="subtotal" name="subtotal" size="7" readonly>
 				                          	</div>
 				                          	
 				                      	  	
@@ -229,7 +234,7 @@
 				                          	</div>                      	
 				                          	<label class="col-sm-2 col-sm-2 control-label">Total</label>
 				                          	<div class="col-sm-4">
-				                          		<input class="form-control" id="monto" name="monto" size="7">
+				                          		Q.<input class="form-control" id="monto" name="monto" size="7">
 				                          	</div>
 				                          	
 				                      	  	
@@ -305,14 +310,14 @@
 			}
 		}
 		
-		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito, idcliente ){
+		function chargeOrder( id, fecha,nit,nombres,apellidos,monto, aceptacredito, idcliente,formattedmonto ){
 			selectedID = id;
 			$('#formid').val( id );
 			$('#formfecha').html(fecha);
 			$('#formnit').html(nit);
 			$('#formnombres').html(nombres);
 			$('#formapellidos').html(apellidos);
-			$('#formmonto').html(monto.toFixed(2)  );
+			$('#formmonto').html( formattedmonto  );
 			$('#subtotal').val( monto.toFixed(2) );
 			$('#monto').val( monto.toFixed(2) );
 			$('#myModal').modal('show');
@@ -356,7 +361,7 @@
 		        	
 		        	$select.empty();
 		        	$( "#descuento" ).val(0);
-		        	$select.append('<option value="0" monto="0">Seleccione un cupon</option>');
+		        	$select.append('<option value="0" monto="0">Seleccione una nota</option>');
 		        	for( var n = 0; n < dataJ.length; n++ ){
 		        		
 		        	    $select.append('<option value="' + dataJ[n].id + '" monto="'+dataJ[n].monto+'">' + dataJ[n].descripcion + '</option>');
