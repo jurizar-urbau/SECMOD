@@ -256,6 +256,10 @@ version="3.0">
     <servlet-class>com.urbau.servlet.entity.SearchClients</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>SearchProveedores</servlet-name>
+    <servlet-class>com.urbau.servlet.entity.SearchProveedores</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>SearchStock</servlet-name>
     <servlet-class>com.urbau.servlet.entity.SearchStock</servlet-class>
   </servlet>
@@ -347,6 +351,10 @@ version="3.0">
   <servlet-mapping>
     <servlet-name>SearchClients</servlet-name>
     <url-pattern>/bin/searchc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchProveedores</servlet-name>
+    <url-pattern>/bin/searchproveedor</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>SearchStock</servlet-name>

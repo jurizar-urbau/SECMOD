@@ -151,6 +151,7 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
                                   <th>Autorizacion</th>
                                   <th>Cheque</th>
                                   <th>Banco</th>
+                                  <th>Id Cupon</th>
                                   <th style="text-align:right">Subtotal</th>
                                   <th style="text-align:right">Descuento</th>
                                   <th style="text-align:right">Total</th>
@@ -208,6 +209,7 @@ ExtendedFieldsFilter filter = new ExtendedFieldsFilter(
 								  <td><%= no_auth %></td>
 								  <td><%= no_cheque %></td>
 								  <td><%= banco %></td>
+								  <td><%= id_cupon > 0 ? id_cupon : "" %>
 								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( subtotal ) %></td>
 								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( montoCupon ))%></td>
 								  <td style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf(  monto ))%></td>

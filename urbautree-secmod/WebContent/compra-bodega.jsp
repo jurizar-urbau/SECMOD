@@ -232,10 +232,49 @@
 		              </form>
 		          </div>
       <!-- stores modal ends -->
-      
+      <!-- new proveedores modal start -->
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myProveedores" class="modal fade">
+						<form id="modalform" name="modalform" >
+						  <div class="modal-dialog">
+			                  <div class="modal-content">
+				                  <div class="modal-header">
+			                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                          <h4 class="modal-title">Seleccione un proveedor...</h4>
+			                              <ul class="nav pull-left top-menu">
+							              		<li><input type="text" class="form-control" autocomplete="off" id="search-proveedor" name="q"></li>
+							                    <li><button class="btn" type="button" onclick="searchProveedoresNew()">Buscar</button></li>
+							              </ul>
+						            <br/><br/><br/>
+
+			          				   
+			                      </div>
+			                      <div class="modal-body">
+				                      
+						 <table class="table table-striped table-advance table-hover">
+	                  	  	  
+	                  	  	  <thead>
+                              <tr>
+                                  <th></th>
+                                  <th>Nit</th>                                  
+                                  <th>Nombre</th>
+                              </tr>
+                              </thead>
+                              <tbody id="proveedor-container">
+                              </tbody>
+                          </table>
+			                      </div>
+			                      <div class="modal-footer">
+			                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+			                          <button class="btn btn-theme" type="button" onclick="setProveedor();">Seleccionar</button>
+			                      </div>
+			                  </div>
+			              </div>
+		              </form>
+		          </div>
+      <!--  new proveedores modal ends -->
       
       <!-- proveedores modal starts -->
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myProveedores" class="modal fade">
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myProveedores2" class="modal fade">
 						<form id="modalform" name="modalform" >
 						  <div class="modal-dialog">
 			                  <div class="modal-content">
@@ -313,7 +352,7 @@
 			                      	<h3><span id="modalDescription"></span></h3>
 			                      	
 			                          <p>Cantidad</p>
-			                          <input type="text" name="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
+			                          <input type="text" name="cantidad" id="cantidad" autocomplete="off" class="form-control placeholder-no-fix" value="1">
 			                          <br/><p>Costo por unidad</p>
 			                          <input type="text" name="costo" autocomplete="off" class="form-control placeholder-no-fix" value="">
 			                          <br/>
@@ -414,6 +453,7 @@
 		}
 	
 		function setProductModalValues(productid, imagePath, descripcion, packings ){
+			$("#cantidad").val("1");
 			$("#productid").val(productid);
 			$("#imagePath").val(imagePath);
 			$("#descripcion").val(descripcion);
@@ -616,8 +656,34 @@
 	    }
 	    setStore();
 	    
+	    function searchProveedoresNew(){
+	    	var value = $( "#search-proveedor" ).val();
+        	searchProveedores( value );	
+	    }
 	    
-
+	    function searchProveedores( q ){
+			$( "#proveedor-container" ).html("");
+			 $.get( "./bin/searchproveedor?q=" + q, null, function(response){
+				 var n = 0;
+                 $.each(response, function(i, v) {
+                	 var rootele;
+                	 var htmltoadd =
+                		"<tr onclick='selectProd("+n+")'>" +
+                 	  	"<td><input type='radio' id='proid"+n+"' name='proveedorid' value='" + v.id + "," + v.nombre + "'></td>" +
+                     	"<td>"+v.nit+"</td>" +                                  
+                     	"<td>"+v.nombre+"</td>" +
+                     	"</tr>";
+                     	n++;
+         			$( "#proveedor-container" ).append( htmltoadd );
+                	
+                	 
+                 });
+              });
+		}
+	
+	    function selectProd( n ) {
+	    	document.getElementById( 'proid' + n ).checked = true;
+	    }
 	    
 	</script>
   </body>
