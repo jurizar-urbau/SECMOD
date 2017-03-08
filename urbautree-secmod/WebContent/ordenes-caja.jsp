@@ -266,6 +266,7 @@
 	
 		var acepta_credito = false;
 		var selectedID;
+		var tipopago = 'efectivo';
 		
 		function abrir(){
 			if( confirm( "Confirma que desea abrir la caja? " ) ){
@@ -384,6 +385,11 @@
 		$("#savebutton").click(function(){
 			
 			var form =$('#modalform');
+			if( tipopago === 'tarjeta' && $('#modalform input#factura').val() === '' ){
+				alert("Debe ingresar una factura");
+				return false;
+			}
+		
 	     	$.ajax({
 	     		type:'POST',
 	     		dataType: "text",
@@ -423,6 +429,7 @@
 		
 			
          function setTarjeta(){
+        	 tipopago = 'tarjeta';
        	  $('#numero_cheque').val('');
        	  //$('#banco').val('');
        	  $('#tipo_tarjeta').val('');
@@ -442,6 +449,7 @@
          }
          
          function setEfectivio(){
+        	 tipopago = 'efectivo';
        	  $('#numero_cheque').val('');
        	  $('#banco').val('');
        	  $('#tipo_tarjeta').val('');
@@ -461,6 +469,7 @@
          }
          
          function setCheque(){
+        	 tipopago = 'cheque';
 	       	  $('#numero_cheque').val('');
 	       	  $('#banco').val('');
 	       	  $('#tipo_tarjeta').val('');

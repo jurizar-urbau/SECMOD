@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+@page { size: auto;  margin: 10mm; }
+
+@media print {    
+	    .no-print, .no-print *
+	    {
+	        display: none !important;
+	    }
+	    
+  		a[href]:after {
+		    content: none !important;
+		  }
+	    .row {
+			display: table-row;
+			width: 100%;
+		}
+		.col {
+			border: 1px solid #999999;
+			display: table-cell;
+			padding: 3px 10px;
+		}
+	}
+	
+	body{
+		padding: 25px;
+	}
+	
+	.col100 {
+		width: 100px;
+	} 
+	.col200 {
+		width: 200px;
+	}
+	.col300 {
+		width: 300px;
+	}
+	.col400 {
+		width: 400px;
+	}

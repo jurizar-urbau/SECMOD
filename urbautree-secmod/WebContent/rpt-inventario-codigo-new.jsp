@@ -19,6 +19,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="assets/css/reports.css" rel="stylesheet">
 <%@include file="fragment/validator.jsp"%>
 <%
 	
@@ -51,37 +52,6 @@
 		location.replace( "filter-rpt-inventario.jsp" );
 	}
 </script>
-<style>
-	@page { size: auto;  margin: 10mm; }
-
-	@media print
-	{    
-	    .no-print, .no-print *
-	    {
-	        display: none !important;
-	    }
-	    
-  		a[href]:after {
-		    content: none !important;
-		  }
-	    .row {
-			display: table-row;
-			width: 100%;
-		}
-		.col {
-			border: 1px solid #999999;
-			display: table-cell;
-			padding: 3px 10px;
-		}
-	}
-	
-	body{
-		padding: 25px;
-		
-	}
-		
-	
-	</style>
 </head>
 <body>
 <button onclick="regresar()" class="no-print">Regresar</button>
@@ -107,20 +77,18 @@
           				  <%
 	                  	  	  	Date date = new Date();
 	                  	  	  	date.setTime( System.currentTimeMillis() );
-	                  	  	  	
-	                  	  	  	int globalcounter=1;
 	                  	  	  %>
 	                  	  	  <thead>
                               <tr>
-                                  <th>Codigo</th>
-                                  <th>Descripcion</th>
+                                  <th class="col100" >Codigo</th>
+                                  <th class="col300">Descripcion</th>
                                   <% if( request.getParameter( "imagen" ) != null ){  %>
-                                  <th>Imagen</th>
+                                  <th class="col100">Imagen</th>
                                   <% } %>
-                                  <th style="text-align:right">Cantidad</th>
+                                  <th  class="col100" style="text-align:right">Cantidad</th>
                                   <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-                                  <th style="text-align:right">Unitario</th>
-                                  <th style="text-align:right">Total</th>
+                                  <th class="col100" style="text-align:right">Unitario</th>
+                                  <th  class="col100" style="text-align:right">Total</th>
                                   <% } %>
                               </tr>
                               </thead>
@@ -134,117 +102,23 @@
                               		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
                               		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
                               %>
-                              <div class="row">
-								  <div class="col"><%= globalcounter++ %>  <%= us.getValue( "PRO.CODIGO" ) %></div>
-								  <div class="col"><%= us.getValue( "PRO.DESCRIPCION" ) %></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div class="col">
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </div>
-								  <% } %>
-								  <div class="col" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></div>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></div>
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></div>
-								  <% } %>
-                              </div>
+                              <table width="100%" style="text-align: left;">
+                              	<tr>
+                              		<td class="col100"><%= us.getValue( "PRO.CODIGO" ) %></td>
+                              		<td class="col300"><%= us.getValue( "PRO.DESCRIPCION" ) %></td>
+                              		<% if( request.getParameter( "imagen" ) != null ){  %>
+									  <td class="col100">
+									  	<img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
+									  </td>
+									  <% } %>
+                              		<td class="col100" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></td>
+                              		<% if( "V".equals( request.getParameter( "tipo" )  )){  %>
+									  <td  class="col100" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></td>
+									  <td  class="col100" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></td>
+									  <% } %>
+                              	</tr>
+                              </table>
+                              
                               	<% } %>
-                              	 <%
-                              	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              %>
-                              <div class="row">
-								  <div class="col"><%= globalcounter++ %> <%= us.getValue( "PRO.CODIGO" ) %></div>
-								  <div class="col"><%= us.getValue( "PRO.DESCRIPCION" ) %></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div class="col">
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </div>
-								  <% } %>
-								  <div class="col" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></div>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></div>
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></div>
-								  <% } %>
-                              </div>
-                              	<% } %>
-                              	<%
-                              	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              %>
-                              <div class="row">
-								  <div class="col"><%= globalcounter++ %> <%= us.getValue( "PRO.CODIGO" ) %></div>
-								  <div class="col"><%= us.getValue( "PRO.DESCRIPCION" ) %> <%= us.getValue( "PRO.DESCRIPCION" ) %></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div class="col">
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </div>
-								  <% } %>
-								  <div class="col" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></div>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></div>
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></div>
-								  <% } %>
-                              </div>
-                              	<% } %>
-                              	<%
-                              	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              %>
-                              <div class="row">
-								  <div class="col"><%= globalcounter++ %> <%= us.getValue( "PRO.CODIGO" ) %></div>
-								  <div class="col"><%= us.getValue( "PRO.DESCRIPCION" ) %></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div class="col">
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </div>
-								  <% } %>
-								  <div class="col" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></div>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></div>
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></div>
-								  <% } %>
-                              </div>
-                              	<% } %>
-                              	<%
-                              	for( ExtendedFieldsBean us : list ){
-                              		ProductoBean producto = productosMain.get( Integer.valueOf( us.getValue( "PRO.ID" )));
-                              		total_precio1 += Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Double.valueOf( us.getValue( "INV.AMOUNT" ) );
-                              %>
-                              <div class="row">
-								  <div class="col"><%= globalcounter++ %> <%= us.getValue( "PRO.CODIGO" ) %></div>
-								  <div class="col"><%= us.getValue( "PRO.DESCRIPCION" ) %></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div class="col">
-								  <img src="./bin/RenderImage?imagePath=<%= us.getValue( "IMAGE_PATH" ) %>&w=50&type=smooth" width="30px">
-								  </div>
-								  <% } %>
-								  <div class="col" style="text-align:right"><%= us.getValue( "INV.AMOUNT" ) %></div>
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								    
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ))%></div>
-								  <div class="col" style="text-align:right"><%= Util.formatCurrencyWithNoRound( Double.valueOf( us.getValue( "PRO.PRECIO" ) ) * Integer.valueOf( us.getValue( "INV.AMOUNT" ) ) ) %></div>
-								  <% } %>
-                              </div>
-                              	<% } %>
-                              <div class="row">
-								  <div></div>
-								  <% if( request.getParameter( "imagen" ) != null ){  %>
-								  <div></div>
-								  <%} %>
-								  <div></div> 
-								  <% if( "V".equals( request.getParameter( "tipo" )  )){  %>
-								  <div></div>
-								  <div style="text-align:right"><b><i>TOTAL</i></b></div>
-								  <div style="text-align:right"><b><%= Util.formatCurrencyWithNoRound( total_precio1 ) %></b></div>
-								   <% } %>
-                              </div>
 		</body>
 </html>
